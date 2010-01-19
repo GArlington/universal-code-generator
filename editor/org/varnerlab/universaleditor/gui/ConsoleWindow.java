@@ -221,7 +221,7 @@ public class ConsoleWindow extends javax.swing.JInternalFrame {
 
         jTabbedPane1.addTab("Server", jScrollPane2);
 
-        jButton1.setText("Clear");
+        jButton1.setText("Clear message buffer");
 
         org.jdesktop.layout.GroupLayout jPanel1Layout = new org.jdesktop.layout.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
