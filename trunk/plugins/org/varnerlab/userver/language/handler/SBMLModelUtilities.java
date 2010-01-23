@@ -19,6 +19,8 @@ public class SBMLModelUtilities {
 		GIOL.write(strPath,buffer);
     }
 	
+	
+	
 	// Build the data file - these are always the same, so put here
     public static void buildDataFileBuffer(StringBuffer datafile,Model model,LoadXMLPropFile propTree) throws Exception
     {
@@ -223,6 +225,48 @@ public class SBMLModelUtilities {
         String strWorkingDir = _xmlPropTree.getProperty("//working_directory/text()");
         String strFileName = _xmlPropTree.getProperty("//MassBalanceFunction/massbalance_filename/text()");
         String strFilePath = _xmlPropTree.getProperty("//MassBalanceFunction/massbalance_path/text()");
+        
+        String strSBMLFile = "";
+        if (strFilePath.isEmpty())
+        {
+        	strSBMLFile = strWorkingDir+"/"+strFileName;
+        }
+        else
+        {
+        	strSBMLFile = strWorkingDir+"/"+strFilePath+"/"+strFileName;
+        }
+        
+        GIOL.write(strSBMLFile,massbalances);
+    	
+    }
+    
+    public static void dumpAdjDriverFileToDisk(StringBuffer massbalances,LoadXMLPropFile _xmlPropTree) throws Exception
+    {
+    	// I have populated the string buffer, dump that mofo
+        String strWorkingDir = _xmlPropTree.getProperty("//working_directory/text()");
+        String strFileName = _xmlPropTree.getProperty("//SensitivityAnalysis/adjoint_driver_filename/text()");
+        String strFilePath = _xmlPropTree.getProperty("//SensitivityAnalysis/adjoint_driver_path/text()");
+        
+        String strSBMLFile = "";
+        if (strFilePath.isEmpty())
+        {
+        	strSBMLFile = strWorkingDir+"/"+strFileName;
+        }
+        else
+        {
+        	strSBMLFile = strWorkingDir+"/"+strFilePath+"/"+strFileName;
+        }
+        
+        GIOL.write(strSBMLFile,massbalances);
+    	
+    }
+    
+    public static void dumpAdjFunctionFileToDisk(StringBuffer massbalances,LoadXMLPropFile _xmlPropTree) throws Exception
+    {
+    	// I have populated the string buffer, dump that mofo
+        String strWorkingDir = _xmlPropTree.getProperty("//working_directory/text()");
+        String strFileName = _xmlPropTree.getProperty("//SensitivityAnalysis/adjoint_equations_filename/text()");
+        String strFilePath = _xmlPropTree.getProperty("//SensitivityAnalysis/adjoint_equations_path/text()");
         
         String strSBMLFile = "";
         if (strFilePath.isEmpty())
