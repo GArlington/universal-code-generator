@@ -143,18 +143,24 @@ public class XPathRemoteFileSystemSelectionListener implements ListSelectionList
 						NamedNodeMap childAttributes = childNode.getAttributes();
                         String strChildTmp = childAttributes.getNamedItem("name").getNodeValue();
                         
-                        //System.out.println("Name of child = "+strChildTmp);
+                        // Check for hidden directory -
+                        int INT_DOT = strChildTmp.indexOf(".");
+                        if (INT_DOT!=0)
+                        {
                         
-                        // put in the model -
-                        
-                        // Reset the dir flag just in case it has not been set -
-                        renderer.setDirectoryFlag(strChildTmp,"DIRECTORY");
-                        renderer.setBackground(Color.BLUE);
-                                            
-                        // Create a file -
-                        PublishService.submitData("I'm looking at what node - "+childNode);
-                        File tmpFile = new File(strChildTmp);
-                        listModel.addElement(tmpFile);
+	                        //System.out.println("Name of child = "+strChildTmp);
+	                        
+	                        // put in the model -
+	                        
+	                        // Reset the dir flag just in case it has not been set -
+	                        renderer.setDirectoryFlag(strChildTmp,"DIRECTORY");
+	                        renderer.setBackground(Color.BLUE);
+	                                            
+	                        // Create a file -
+	                        PublishService.submitData("I'm looking at what node - "+childNode);
+	                        File tmpFile = new File(strChildTmp);
+	                        listModel.addElement(tmpFile);
+                        }
 					}
 					
 					// Ok, so I have a directory node - get the kids which are files -
@@ -166,18 +172,24 @@ public class XPathRemoteFileSystemSelectionListener implements ListSelectionList
 						NamedNodeMap childAttributes = childNode.getAttributes();
                         String strChildTmp = childAttributes.getNamedItem("name").getNodeValue();
                         
-                        // System.out.println("Name of child = "+strChildTmp);
+                        // Check for hidden file -
+                        int INT_DOT = strChildTmp.indexOf(".");
+                        if (INT_DOT!=0)
+                        {
                         
-                        // put in the model -
-                        
-                        // Reset the dir flag just in case it has not been set -
-                        renderer.setDirectoryFlag(strChildTmp,"FILE");
-                        renderer.setBackground(Color.BLUE);                   
-                        
-                        // Create a file -
-                        PublishService.submitData("I'm looking at what node - "+childNode);
-                        File tmpFile = new File(strChildTmp);
-                        listModel.addElement(tmpFile);
+	                        // System.out.println("Name of child = "+strChildTmp);
+	                        
+	                        // put in the model -
+	                        
+	                        // Reset the dir flag just in case it has not been set -
+	                        renderer.setDirectoryFlag(strChildTmp,"FILE");
+	                        renderer.setBackground(Color.BLUE);                   
+	                        
+	                        // Create a file -
+	                        PublishService.submitData("I'm looking at what node - "+childNode);
+	                        File tmpFile = new File(strChildTmp);
+	                        listModel.addElement(tmpFile);
+                        }
 					}			
 				}
 				else
