@@ -33,6 +33,9 @@ public class WriteOctaveCModel implements IOutputHandler {
         StringBuffer massbalances_buffer = new StringBuffer();
         StringBuffer driver_buffer = new StringBuffer();
         StringBuffer data_buffer = new StringBuffer();
+        StringBuffer adj_driver_buffer = new StringBuffer();
+        StringBuffer adj_buffer = new StringBuffer();
+        
         double[][] dblSTMatrix = null;
         OctaveCModel octave = new OctaveCModel();
         
@@ -50,6 +53,9 @@ public class WriteOctaveCModel implements IOutputHandler {
         
         // Get the resource type (sbml model) -
         Model model_wrapper = (Model)object;
+        
+        // Set the reference to the model wrapper -
+        octave.setModel(model_wrapper);
         
         // Check to make sure all the reversible rates are 0,inf
         CodeGenUtilMethods.convertReversibleRates(model_wrapper);
@@ -70,13 +76,26 @@ public class WriteOctaveCModel implements IOutputHandler {
         octave.buildKineticsBuffer(massbalances_buffer,model_wrapper);
         octave.buildDriverBuffer(driver_buffer,_xmlPropTree);
         
+        // Ok, build adj buffer -
+        octave.buildSolveAdjBalBuffer(adj_driver_buffer, _xmlPropTree);
+        octave.buildAdjBalFntBuffer(adj_buffer, _xmlPropTree);
+        octave.buildKineticsBuffer(adj_buffer,model_wrapper);
+        octave.buildDSDTBuffer(adj_buffer);
+        octave.buildMassBalanceEquations(adj_buffer);
+        octave.buildJacobianBuffer(adj_buffer);
+        octave.buildPMatrixBuffer(adj_buffer);
+        
         // Build the data file -
         SBMLModelUtilities.buildDataFileBuffer(data_buffer, model_wrapper, _xmlPropTree);
         
-        // Dump to disk -
+        // Dump to regular model to disk -
         SBMLModelUtilities.dumpDriverToDisk(driver_buffer,_xmlPropTree);
         SBMLModelUtilities.dumpMassBalancesToDisk(massbalances_buffer,_xmlPropTree);
         SBMLModelUtilities.dumpStoichiometricMatrixToDisk(dblSTMatrix,_xmlPropTree,model_wrapper);
         SBMLModelUtilities.dumpDataFileToDisk(data_buffer,_xmlPropTree);
+        
+        // Dump the sensitivity analysis -
+        SBMLModelUtilities.dumpAdjDriverFileToDisk(adj_driver_buffer,_xmlPropTree);
+        SBMLModelUtilities.dumpAdjFunctionFileToDisk(adj_buffer, _xmlPropTree);
 	}    
 }
