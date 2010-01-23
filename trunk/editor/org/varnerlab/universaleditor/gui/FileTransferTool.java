@@ -504,13 +504,18 @@ public class FileTransferTool extends javax.swing.JInternalFrame implements Acti
   	  		// Get the name of this dir - (we'll update it in the renderer)
   	  		strTmp = tmpNode.getNodeValue();
   	  		
-  	  		// Get the name -
-  	  		fileOnServer = new File(strTmp);
-  	  		remoteRender.setDirectoryFlag(fileOnServer.getName(), "DIRECTORY");
-  	  		model.addElement(fileOnServer);
+  	  		int INT_DOT = strTmp.indexOf(".");
+  	  		if (INT_DOT!=0)
+  	  		{
   	  		
-  	  		// Grab the string -
-  	  		System.out.println(tmpNode.getNodeValue());
+  	  			// Get the name -
+  	  			fileOnServer = new File(strTmp);
+  	  			remoteRender.setDirectoryFlag(fileOnServer.getName(), "DIRECTORY");
+  	  			model.addElement(fileOnServer);
+  	  		
+  	  			// Grab the string -
+  	  			System.out.println(tmpNode.getNodeValue());
+  	  		}
   	  	}
     }
     
@@ -554,13 +559,18 @@ public class FileTransferTool extends javax.swing.JInternalFrame implements Acti
   	  		// Get the name of this dir - (we'll update it in the renderer)
   	  		strTmp = tmpNode.getNodeValue();
   	  		
-  	  		// Get the name -
-  	  		fileOnServer = new File(strTmp);
-  	  		remoteRender.setDirectoryFlag(fileOnServer.getName(), "DIRECTORY");
-  	  		model.addElement(fileOnServer);
+  	  		int INT_DOT = strTmp.indexOf(".");
+  	  		if (INT_DOT!=0)
+  	  		{
   	  		
-  	  		// Grab the string -
-  	  		PublishService.submitData(tmpNode.getNodeValue());
+  	  			// Get the name -
+  	  			fileOnServer = new File(strTmp);
+  	  			remoteRender.setDirectoryFlag(fileOnServer.getName(), "DIRECTORY");
+  	  			model.addElement(fileOnServer);
+  	  		
+  	  			// Grab the string -
+  	  			PublishService.submitData(tmpNode.getNodeValue());
+  	  		}
   	  	}
   	  	
   	  	// Formulate the XPath string for directories under the current node -
@@ -578,16 +588,20 @@ public class FileTransferTool extends javax.swing.JInternalFrame implements Acti
   	  		
   	  		// Get the name of this file - (we'll update the name in the renderer)
   	  		strTmp = tmpNode.getNodeValue();
-  	  		
-  	  		// Get the name -
-  	  		fileOnServer = new File(strTmp);
-  	  		remoteRender.setDirectoryFlag(fileOnServer.getName(), "FILE");
-  	  		model.addElement(fileOnServer);
-  	  		
-  	  		// Grab the string -
-  	  		// System.out.println(tmpNode.getNodeValue());
-  	  	}
   	  	
+  	  		int INT_DOT = strTmp.indexOf(".");
+  	  		if (INT_DOT!=0)
+  	  		{
+  	  		
+  	  			// Get the name -
+  	  			fileOnServer = new File(strTmp);
+  	  			remoteRender.setDirectoryFlag(fileOnServer.getName(), "FILE");
+  	  			model.addElement(fileOnServer);
+  	  		
+  	  			// Grab the string -
+  	  			// System.out.println(tmpNode.getNodeValue());
+  	  		}
+  	  	}
     }
 
     public void processNodes(Node node,DefaultListModel model,boolean blnUpdateComboBox)
