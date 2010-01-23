@@ -92,6 +92,7 @@ public class FileTransferTool extends javax.swing.JInternalFrame implements Acti
     private VLRemoteFileSystemListCellRenderer remoteRender = new VLRemoteFileSystemListCellRenderer();
     private XPathRemoteFileSystemSelectionListener _remoteListener = new XPathRemoteFileSystemSelectionListener();
     private VLRemoteComboBoxSelectionListener _remoteJComboListener = new VLRemoteComboBoxSelectionListener();
+    private TransferToolFocusListener _focusListener =  new TransferToolFocusListener();
     
     // Create a xpFactory/xpath obj (we'll use this a zillion times -)
 	private XPathFactory  _xpFactory = XPathFactory.newInstance();
@@ -226,7 +227,9 @@ public class FileTransferTool extends javax.swing.JInternalFrame implements Acti
         //jComboBox1.putClientProperty(com.sun.java.swing.SwingUtilities2.AA_TEXT_PROPERTY_KEY,Boolean.TRUE );
 
         // Add a focus/click listerner -
-        this.addInternalFrameListener(new TransferToolFocusListener());
+        _focusListener.setProperty("LOCAL_JLIST_MODEL", _listModelJList1);
+        _focusListener.setProperty("LOCAL_COMBOBOX", jComboBox1);
+        this.addInternalFrameListener(_focusListener);
 
         // Setup the remote file system list selection -
         _remoteListener.setReferences("JLIST", jList2);
