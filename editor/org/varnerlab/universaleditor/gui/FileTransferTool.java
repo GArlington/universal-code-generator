@@ -210,8 +210,7 @@ public class FileTransferTool extends javax.swing.JInternalFrame implements Acti
         // Set the listener -
         jList1.addListSelectionListener(this);
         jList2.addListSelectionListener(_remoteListener);
-        
-        
+              
         // add this to the Systemwide -
         SystemwideEventService.registerUsernameListener(this);
         SystemwideEventService.registerSessionListener(this);
