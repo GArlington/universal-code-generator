@@ -32,10 +32,14 @@ public class FileSystemService {
         {
 
             // Get the last index -
-
-            
-            // add the match to the results list
-            results.add(file);
+        	// Ok, so we need to see if this file *starts* w/a .
+        	String strFileName = file.getName();
+        	int INT_DOT = strFileName.indexOf(".");
+        	if (INT_DOT!=0)
+        	{
+        		// add the match to the results list
+                results.add(file);
+        	}
         }
     }
 
