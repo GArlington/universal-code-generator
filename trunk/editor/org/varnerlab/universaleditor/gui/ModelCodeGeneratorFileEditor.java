@@ -510,20 +510,21 @@ public class ModelCodeGeneratorFileEditor extends javax.swing.JInternalFrame imp
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
-        jButton4.setIcon(new javax.swing.ImageIcon("/Users/jeffreyvarner/dev/UniversalWeb/UniversalEditor/images/YellowFile-12-Grey.png")); // NOI18N
-        jButton4.setToolTipText("Add new property");
+        jButton4.setIcon(new javax.swing.ImageIcon("/Users/jeffreyvarner/dev/UniversalWeb/UniversalEditor/images/Control-panel-12-Grey.png")); // NOI18N
+        jButton4.setToolTipText("Test this properties file...");
         jButton4.setBorderPainted(false);
         jButton4.setDoubleBuffered(true);
         jButton4.setEnabled(false);
         jButton4.setRolloverEnabled(true);
-        jButton4.setRolloverIcon(new javax.swing.ImageIcon("/Users/jeffreyvarner/dev/UniversalWeb/UniversalEditor/images/YellowFile-12.png")); // NOI18N
+        jButton4.setRolloverIcon(new javax.swing.ImageIcon("/Users/jeffreyvarner/dev/UniversalWeb/UniversalEditor/images/Control-panel-12.png")); // NOI18N
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                createNewProperty(evt);
+                testThisPropertiesFile(evt);
             }
         });
 
-        jButton5.setIcon(new javax.swing.ImageIcon("/Users/jeffreyvarner/dev/UniversalWeb/UniversalEditor/images/Delete-12-Grey.png")); // NOI18N
+        
+        jButton5.setIcon(new javax.swing.ImageIcon("/Users/jeffreyvarner/dev/UniversalWeb/UniversalEditor/images/Control-panel-12-Grey.png")); // NOI18N
         jButton5.setToolTipText("Delete current property");
         jButton5.setBorderPainted(false);
         jButton5.setEnabled(false);
@@ -537,6 +538,7 @@ public class ModelCodeGeneratorFileEditor extends javax.swing.JInternalFrame imp
                 deletePropertyNode(evt);
             }
         });
+       
 
         jTextField1.setText("Search ...");
 
@@ -702,10 +704,16 @@ public class ModelCodeGeneratorFileEditor extends javax.swing.JInternalFrame imp
         
     }//GEN-LAST:event_loadNewPropFileAction
 
-    private void createNewProperty(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createNewProperty
+    private void testThisPropertiesFile(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createNewProperty
         // TODO add your handling code here:
-        AddNewPropertyLeafAction action = new AddNewPropertyLeafAction();
-        action.actionPerformed(evt);
+        // AddNewPropertyLeafAction action = new AddNewPropertyLeafAction();
+        // action.actionPerformed(evt);
+    	
+    	// need an action to check to see if all the required fields have been filled -
+    	CheckPropertiesFileAction action = new CheckPropertiesFileAction();
+    	action.setToolReference(this);
+    	action.actionPerformed(evt);	
+    	
     }//GEN-LAST:event_createNewProperty
 
     private void deletePropertyNode(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deletePropertyNode
