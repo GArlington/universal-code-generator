@@ -32,6 +32,7 @@ public class OctaveCModel {
     // Class/instance members -
 	private int NUMBER_OF_RATES = 0;
 	private int NUMBER_OF_SPECIES = 0;
+	private Model model_wrapper = null;
 	
     
     /** Creates a new instance of OctaveCModel */
@@ -41,8 +42,12 @@ public class OctaveCModel {
         System.out.println("New - "+System.getProperty("java.library.path"));
         System.loadLibrary("sbmlj");     
     }
-
-     
+    
+    public void setModel(Model model)
+	{
+		model_wrapper = model;
+	}
+ 
     public void buildMassBalanceEquations(StringBuffer buffer) throws Exception {
         // Ok, so we need to build the buffer with the mass balance equations in it -
         buffer.append("void calculateMassBalances(int NRATES,int NSTATES,Matrix& STMATRIX,ColumnVector& rV,ColumnVector& dx)\n");
@@ -50,9 +55,6 @@ public class OctaveCModel {
         buffer.append("\tdx=STMATRIX*rV;\n");
         buffer.append("}\n");
     }
-    
-    
-            
             
     public void buildKineticsBuffer(StringBuffer buffer,Model model_wrapper) throws Exception
     {
@@ -203,10 +205,8 @@ public class OctaveCModel {
     }
     
     
-    
     // Calculates using the Jacobian and PMatrix   (B)
-    
-    public void buildAdjBalFntBuffer(StringBuffer buffer) throws Exception {
+    public void buildAdjBalFntBuffer(StringBuffer buffer,LoadXMLPropFile propTree) throws Exception {
         buffer.append("#include <octave/oct.h>\n");
         buffer.append("#include <ov-struct.h>\n");
         buffer.append("#include <iostream>\n");
@@ -220,7 +220,15 @@ public class OctaveCModel {
         buffer.append("void calculateJacobian(int, ColumnVector&, ColumnVector&, Matrix&);\n");
         buffer.append("void calculatePMatrix(int, int, ColumnVector&, ColumnVector&, Matrix&);\n");
         buffer.append("\n");
-        buffer.append("DEFUN_DLD(AdjBalFntC,args,nargout,\"Calculate the adjoined mass and sensitivity balances.\")\n");
+        
+        // Grab the function name -
+    	String strAdjFunctionNameRaw = propTree.getProperty("//SensitivityAnalysis/adjoint_equations_filename/text()");
+    	int INT_2_DOT = strAdjFunctionNameRaw.indexOf(".");
+    	String strAdjFunctionName = strAdjFunctionNameRaw.substring(0, INT_2_DOT);
+        
+        buffer.append("DEFUN_DLD(");
+        buffer.append(strAdjFunctionName);
+        buffer.append(",args,nargout,\"Calculate the adjoined mass and sensitivity balances.\")\n");
         buffer.append("{\n");
         buffer.append("\n");
         buffer.append("\t//Initialize variables\n");
@@ -283,89 +291,9 @@ public class OctaveCModel {
         buffer.append("\t// return the time derivatives\n");
         buffer.append("\treturn octave_value(da);\n");
         buffer.append("};\n");
-
+        buffer.append("\n");
     }
     
-    // Calculates using hard coded DSDT  (A)
-    
-//    public void buildAdjBalFntBuffer(StringBuffer buffer) throws Exception {
-//        buffer.append("#include <octave/oct.h>\n");
-//        buffer.append("#include <ov-struct.h>\n");
-//        buffer.append("#include <iostream>\n");
-//        buffer.append("#include <Math.h>\n");
-//        buffer.append("\n");
-//        buffer.append("// Function prototypes - \n");
-//        buffer.append("void calculateKinetics(int,ColumnVector&,ColumnVector&,ColumnVector&);\n");
-//        buffer.append("void calculateInputs();\n");
-//        buffer.append("void calculateMassBalances(int,int,Matrix&,ColumnVector&,ColumnVector&);\n");
-//        buffer.append("void calculateDSDT(Matrix&,ColumnVector&, ColumnVector&, Matrix&);\n");
-//        buffer.append("\n");
-//        buffer.append("DEFUN_DLD(AdjBalFntC,args,nargout,\"Calculate the adjoined mass and sensitivity balances.\")\n");
-//        buffer.append("{\n");
-//        buffer.append("\n");
-//        buffer.append("\t//Initialize variables\n");
-//        buffer.append("\tColumnVector aV(args(0).vector_value());	// Get the adjoined state & sensitivity  vector (index 0);\n");
-//        buffer.append("\tMatrix STMATRIX(args(2).matrix_value());	// Get the stoichiometric matrix;\n");
-//        buffer.append("\tColumnVector kV(args(3).vector_value());		// Rate constant vector;\n");
-//        buffer.append("\tconst int NRATES = args(4).int_value();	// Number of rates\n");
-//        buffer.append("\tconst int NSTATES = args(5).int_value();	// Number of states\n");
-//        buffer.append("\tColumnVector rV=ColumnVector(NRATES);	// Setup the rate vector;\n");
-//        buffer.append("\tColumnVector dx = ColumnVector(NSTATES);	// dxdt vector;\n");
-//        buffer.append("\tColumnVector xV = ColumnVector(NSTATES);  // state vector \n");
-//        buffer.append("\tMatrix DSDT = Matrix(NSTATES,NRATES); // time derivative of sensitivity matrix\n");
-//        buffer.append("\tMatrix SC = Matrix(NSTATES,NRATES); // the sensitivity coefficent matrix\n");
-//        buffer.append("\tColumnVector da = ColumnVector(NSTATES+NSTATES*NRATES); //time derivative of ajoined vector;\n");
-//        buffer.append("\tint i;\n");
-//        buffer.append("\tint j;\n");
-//        buffer.append("\tint q;\n");
-//        buffer.append("\n");
-//        buffer.append("\t// get values for xV from the input aV\n");
-//        buffer.append("\tfor (i=0;i<NSTATES;i++){\n");
-//        buffer.append("\t\txV(i) = aV(i);\n");
-//        buffer.append("  \t}\n");
-//        buffer.append("  \t// get values for SC from the input aV\n");
-//        buffer.append("\tq = NSTATES;\n");
-//        buffer.append("\tfor (i=0;i<NSTATES;i++){\n");
-//        buffer.append("\t\tfor (j=0;j<NRATES;j++){\n");
-//        buffer.append("\t\t\tSC(i,j) = aV(q);\n");
-//        buffer.append("\t\t\tq = q+1;\n");
-//        buffer.append("\t\t}\n");
-//        buffer.append("\t}\n");
-//        buffer.append("\n");
-//        buffer.append("\t//Call the methods to calc the kinetic, massbalances and etc\n");
-//        buffer.append("\n");
-//        buffer.append("\t// Calculate the kinetics\n");
-//        buffer.append("\tcalculateKinetics(NRATES,kV,xV,rV);\n");
-//        buffer.append("\n");
-//        buffer.append("\t// Calculate the input vector -\n");
-//        buffer.append("\tcalculateInputs();\n");
-//        buffer.append("\n");
-//        buffer.append("\t// Calculate the mass balance equations - \n");
-//        buffer.append("\tcalculateMassBalances(NRATES,NSTATES,STMATRIX,rV,dx);\n");
-//        buffer.append("\n");
-//        buffer.append("\t// Calculate the DSDT matrix\n");
-//        buffer.append("\tcalculateDSDT(SC,kV,xV,DSDT);\n");
-//        buffer.append("\n");
-//        buffer.append("\t// put the required dx's into the out going da vector\n");
-//        buffer.append("\tfor (i=0;i<NSTATES;i++){\n");
-//        buffer.append("\t\tda(i) = dx(i);\n");
-//        buffer.append("\t}\n");
-//        buffer.append("\n");
-//        buffer.append("\t// put the required DSDT values into the out going da vector \n");
-//        buffer.append("\tq = NSTATES;\n");
-//        buffer.append("\tfor (i=0;i<NSTATES;i++){\n");
-//        buffer.append("\t\tfor (j=0;j<NRATES;j++){\n");
-//        buffer.append("\t\t\tda(q) = DSDT(i,j);\n");
-//        buffer.append("\t\t\tq = q+1;\n");
-//        buffer.append("\t\t}\n");
-//        buffer.append("\t}\n");
-//        buffer.append("\n");
-//        buffer.append("\t// return the time derivatives\n");
-//        buffer.append("\treturn octave_value(da);\n");
-//        buffer.append("};\n");
-//
-//    }
-
     public void buildMassBalanceBuffer(StringBuffer buffer,LoadXMLPropFile propTree) throws Exception {
         buffer.append("#include <octave/oct.h>\n");
         buffer.append("#include <ov-struct.h>\n");
@@ -449,12 +377,20 @@ public class OctaveCModel {
     }
     
     
-    public void buildSolveAdjBalBuffer(StringBuffer driver) throws Exception {
+    public void buildSolveAdjBalBuffer(StringBuffer driver,LoadXMLPropFile propTree) throws Exception {
         
-        // Put in the header and go -
-        driver.append("function [TSIM,C,S,eT]=SolveAdjBalC(DataFile,TSTART,TSTOP,Ts,DFIN)\n");
-        driver.append("% Original rat44 @ 20080103\n");
-        driver.append("% solves both the concentration, C, and the Sensitivity, S. balances\n");
+    	// Grab the driver function name -
+    	String strFunctionNameRaw = propTree.getProperty("//SensitivityAnalysis/adjoint_driver_filename/text()");
+    	int INT_2_DOT = strFunctionNameRaw.indexOf(".");
+    	String strFunctionName = strFunctionNameRaw.substring(0, INT_2_DOT);
+    	
+        // Go -
+        driver.append("function [TSIM,C,S,eT]=");
+        driver.append(strFunctionName);
+        driver.append("(DataFile,TSTART,TSTOP,Ts,DFIN)\n");
+        driver.append("% ========= Original template rat44@cornell.edu @ 20080103 ========= \n");
+        driver.append("% Solves both the concentration, C, and the Sensitivity, S. balances \n");
+        driver.append("% ================================================================== \n");
         driver.append("\n");
         driver.append("startTime = clock();\n");
         driver.append("\n");
@@ -477,8 +413,15 @@ public class OctaveCModel {
         driver.append("% combine S and C inital conditions for IC\n");
         driver.append("IC = [CIC;SIC];\n");
         driver.append("% prep the function to be solved\n");
-        //@todo should use the name the user passed in..
-        driver.append("f = @(x,t)AdjBalFntC(x,t,STM,kV,nParam,nStates);\n");
+       
+        // Grab the function name -
+    	String strAdjFunctionNameRaw = propTree.getProperty("//SensitivityAnalysis/adjoint_equations_filename/text()");
+    	INT_2_DOT = strAdjFunctionNameRaw.indexOf(".");
+    	String strAdjFunctionName = strAdjFunctionNameRaw.substring(0, INT_2_DOT);
+        
+        driver.append("f = @(x,t)");
+        driver.append(strAdjFunctionName);
+        driver.append("(x,t,STM,kV,nParam,nStates);\n");
         driver.append("% prep the ODE solver - the default is LSODE\n");
         driver.append("lsode_options('integration method','adams');\n");
         driver.append("lsode_options('relative tolerance',1E-5);\n");
@@ -535,7 +478,6 @@ public class OctaveCModel {
          */
     }
     
-    
     // uses Jacobian and PMatrix to find DSDT   (B)
     public void buildDSDTBuffer(StringBuffer buffer) throws Exception
     {
@@ -551,7 +493,338 @@ public class OctaveCModel {
         buffer.append("\tcalculatePMatrix(NSTATES, NRATES, k, x, P);\n");
         buffer.append("\tDSDT=J*SC+P;\n");
         buffer.append("}\n");
+    }
+    
+    public void buildJacobianBuffer(StringBuffer buffer) throws Exception
+    {
+        
+    	// Get the dimension of the system -
+        int NROWS = (int)model_wrapper.getNumSpecies();
+        int NCOLS = (int)model_wrapper.getNumReactions();
+        
+        // Create a local copy of the stoichiometric matrix -
+        double[][] matrix = new double[NROWS][NCOLS];
+        SBMLModelUtilities.buildStoichiometricMatrix(matrix, model_wrapper);
 
-    } 
+        // Ok, when I get here I have the stoichiometric matrix -
+        // Initialize the array -
+        String[][] strJacobian = new String[NROWS][NROWS];
+        for (int counter_outer=0;counter_outer<NROWS;counter_outer++)
+        {
+            for (int counter_inner=0;counter_inner<NROWS;counter_inner++)
+            {
+                strJacobian[counter_outer][counter_inner]="0.0";
+            }
+        }
+   
+        //StringBuffer tmpBuffer = new StringBuffer();
+        //Vector<String> vecConnect = new Vector<String>();
+        //Vector<String> vecSpeciesRate = new Vector<String>();
+        for (int state_counter_outer=0;state_counter_outer<NROWS;state_counter_outer++)
+        {
+            for (int state_counter_inner=0;state_counter_inner<NROWS;state_counter_inner++)
+            {
+                // put jacobian logic here -
+                strJacobian[state_counter_outer][state_counter_inner]=formulateJacobianElement(matrix,state_counter_outer,state_counter_inner);
+            }
+        }
+        
+        // Ok, so when I get here I have the Jacobian - we need to convert it into a string buffer
+        buffer.append("void calculateJacobian(int NSTATES, ColumnVector& k, ColumnVector& x, Matrix& JM)\n");
+        buffer.append("{\n");
+        buffer.append("\t// Machine generated dfdx matrix (Jacobian).\n");
+        buffer.append("\n");
+        buffer.append("\tint i;\n");
+        buffer.append("\tint j;\n");
+        buffer.append("\tfor (i=0;i<NSTATES;i++){\n");
+        buffer.append("\t\tfor (j=0;j<NSTATES;j++){\n");
+        buffer.append("\t\t\tJM(i,j) = 0.0;\n");
+        buffer.append("\t\t}\n");
+        buffer.append("\t}\n");
+        for (int state_counter_outer=0;state_counter_outer<NROWS;state_counter_outer++)
+        {
+            for (int state_counter_inner=0;state_counter_inner<NROWS;state_counter_inner++)
+            {
+                // skip this entry if it is zero
+                if(!strJacobian[state_counter_outer][state_counter_inner].equals("0.0")){
+                    // put the entries in the string buffer -
+                    buffer.append("\tJM(");
+                    buffer.append(state_counter_outer);
+                    buffer.append(",");
+                    buffer.append(state_counter_inner);
+                    buffer.append(")=");
+                    buffer.append(strJacobian[state_counter_outer][state_counter_inner]);
+                    buffer.append(";\n");
+                }
+            }
+        }
+        
+        buffer.append("}\n");
+    }
+    
+    
+    public void buildPMatrixBuffer(StringBuffer buffer) throws Exception
+    {
+    	// Get the dimension of the system -
+        int NROWS = (int)model_wrapper.getNumSpecies();
+        int NCOLS = (int)model_wrapper.getNumReactions();
+        
+        // Create a local copy of the stoichiometric matrix -
+        double[][] matrix = new double[NROWS][NCOLS];
+        SBMLModelUtilities.buildStoichiometricMatrix(matrix, model_wrapper);
+
+        // Ok, when I get here I have the stoichiometric matrix -
+        // Initialize the pmatrix array -
+        String[][] strPMatrix = new String[NROWS][NROWS+NCOLS];
+        for (int counter_outer=0;counter_outer<NROWS;counter_outer++)
+        {
+            for (int counter_inner=0;counter_inner<(NROWS+NCOLS);counter_inner++)
+            {
+                strPMatrix[counter_outer][counter_inner]="0.0";
+            }
+        }
+        
+        // Ok, figure out the PMatrix -
+        for (int counter_outer=0;counter_outer<NROWS;counter_outer++)
+        {
+            for (int counter_inner=0;counter_inner<NCOLS;counter_inner++)
+            {
+                strPMatrix[counter_outer][counter_inner]=formulatePMatrixElement(matrix,counter_outer,counter_inner);
+            }
+        }
+        
+        // Convert into string buffer -
+        buffer.append("void calculatePMatrix(int NSTATES, int NRATES, ColumnVector& k, ColumnVector& x, Matrix& PM)\n");
+        buffer.append("{\n");
+        buffer.append("\t// Machine generated dfdp matrix.\n");
+        buffer.append("\n");
+        buffer.append("\tint i;\n");
+        buffer.append("\tint j;\n");
+        buffer.append("\tfor (i=0;i<NSTATES;i++){\n");
+        buffer.append("\t\tfor (j=0;j<NRATES;j++){\n");
+        buffer.append("\t\t\tPM(i,j) = 0.0;\n");
+        buffer.append("\t\t}\n");
+        buffer.append("\t}\n");
+        
+        for (int state_counter_outer=0;state_counter_outer<NROWS;state_counter_outer++)
+        {
+            for (int state_counter_inner=0;state_counter_inner<(NROWS+NCOLS);state_counter_inner++)
+            {
+                // if it is a zero entry, just skip it
+                if(!strPMatrix[state_counter_outer][state_counter_inner].equals("0.0")){
+                    // put the entries in the string buffer -
+                    buffer.append("\tPM(");
+                    buffer.append(state_counter_outer);
+                    buffer.append(",");
+                    buffer.append(state_counter_inner);
+                    buffer.append(")=");
+                    buffer.append(strPMatrix[state_counter_outer][state_counter_inner]);
+                    buffer.append(";\n");
+                }
+            }
+        }
+        buffer.append("}\n");
+    }
+    
+    
+    private String formulatePMatrixElement(double[][] matrix,int massbalance,int parameter)
+    {
+        StringBuffer buffer = new StringBuffer();
+        String rString = "0.0";
+        
+        // Get the size of the system -
+        int NROWS = (int)model_wrapper.getNumSpecies();
+        int NCOLS = (int)model_wrapper.getNumReactions();
+
+        double dblStmElement = matrix[massbalance][parameter];
+        if (dblStmElement!=0.0)
+        {
+            // If I get here then I have a non-zero element in the st matrix for this rate -
+            
+            // find out the states in this rate -
+            // Ok, so when I get here, I have to formulate the entry in the  p-matrix -
+            buffer.append(dblStmElement);
+            buffer.append("*");
+            for (int state_counter=0;state_counter<NROWS;state_counter++)   
+            {
+                // Ok, figure out the non-zero elements - this will handle normal rates -
+                double tempStmElement;
+                if ((tempStmElement = matrix[state_counter][parameter])<0.0)
+                {
+                    tempStmElement = Math.abs(tempStmElement);
+                    // check to see if exponent is 0
+                    if(tempStmElement>-1E-6&&tempStmElement<1E-6){
+                        // do nothing
+                    }
+                    // check to see if exponent is 1
+                    else if(tempStmElement>(1-1E-6)&&tempStmElement<(1+1E-6)){
+                        // no need to raise to a power
+                        buffer.append("x(");
+                        buffer.append(state_counter);
+                        buffer.append(")*");
+                    }
+                    // any thing else I need to raise to a power
+                    else {
+                        buffer.append("pow(x(");
+                        buffer.append(state_counter);
+                        buffer.append("),");
+                        buffer.append(tempStmElement);
+                        buffer.append(")*");
+                    }
+                }
+            }
+            
+            // When I get here I need to cuttof the trailing * 
+            rString = buffer.toString();
+            if (rString.lastIndexOf("*")==rString.length()-1)
+            {
+                rString=rString.substring(0,rString.length()-1);
+            }
+        }
+        
+        // return -
+        return(rString);
+    }
+    
+    
+    // This logic will need to be overriden -
+    private String formulateJacobianElement(double[][] matrix,int massbalance,int state)
+    {
+        StringBuffer buffer = new StringBuffer();
+        String rString = "";
+                
+        // Get the dimension of the system -
+        int NROWS = (int)model_wrapper.getNumSpecies();
+        int NCOLS = (int)model_wrapper.getNumReactions();
+
+        Vector<String> vecRates = new Vector<String>(); 
+        for (int counter=0;counter<NCOLS;counter++)
+        {
+            if (matrix[massbalance][counter]!=0.0)
+            {
+                vecRates.addElement(String.valueOf(counter));
+            }
+        }
+        
+        int NRATES = vecRates.size();
+        boolean lFlag = false;
+        for (int rate_index=0;rate_index<NRATES;rate_index++)
+        {
+            int test_index = Integer.parseInt(vecRates.get(rate_index));
+            
+            double tempStmElement;
+            if ((tempStmElement = matrix[state][test_index])<0.0)
+            {
+                // add the plus if this is not the first time
+                if(lFlag){
+                    buffer.append("+");
+                }
+                else{
+                    lFlag = true;
+                }
+                // I'm on a rate that has my state in it -  
+                
+                // check to see if exponent is 0
+                tempStmElement = Math.abs(tempStmElement);
+                if((tempStmElement-1)>-1E-6&&(tempStmElement-1)<1E-6){
+                    buffer.append(matrix[massbalance][test_index]);
+                    buffer.append("*");
+                    buffer.append(tempStmElement);
+                    buffer.append("*");
+                    buffer.append("k(");
+                    buffer.append(test_index);
+                    buffer.append(")");
+                }
+                // check to see if exponent is 1
+                else if((tempStmElement-1)>(1-1E-6)&&(tempStmElement-1)<(1+1E-6)){
+                    // no need to raise to a power
+                    buffer.append(matrix[massbalance][test_index]);
+                    buffer.append("*");
+                    buffer.append(tempStmElement);
+                    buffer.append("*");
+                    buffer.append("k(");
+                    buffer.append(test_index);
+                    buffer.append(")*x(");
+                    buffer.append(state);
+                    buffer.append(")");
+                }
+                // any thing else I need to raise to a power
+                else {
+                    buffer.append(matrix[massbalance][test_index]);
+                    buffer.append("*");
+                    buffer.append(tempStmElement);
+                    buffer.append("*");
+                    buffer.append("k(");
+                    buffer.append(test_index);
+                    buffer.append(")*pow(x(");
+                    buffer.append(state);
+                    buffer.append("),");
+                    buffer.append(tempStmElement-1);
+                    buffer.append(")");
+                }
+                
+                
+                /*
+                if (lFlag)
+                {
+                    buffer.append("+");
+                    lFlag = false;
+                }*/
+
+                // I need to check to see if there are more species here -
+                for (int species_index=0;species_index<NROWS;species_index++)
+                {
+                    double tempStmElement2;
+                    if ((tempStmElement2 = matrix[species_index][test_index])<0.0 && species_index!=state)
+                    {
+                        
+                        
+                        tempStmElement2 = Math.abs(tempStmElement2);
+                        // check to see if exponent is 0
+                        if((tempStmElement2)>-1E-6&&(tempStmElement2)<1E-6){
+                            // do nothing
+                        }
+                        // check to see if exponent is 1
+                        else if((tempStmElement2)>(1-1E-6)&&(tempStmElement2)<(1+1E-6)){
+                            // no need to raise to a power
+                            buffer.append("*x(");
+                            buffer.append(species_index);
+                            buffer.append(")");
+                        }
+                        // any thing else I need to raise to a power
+                        else {
+                            buffer.append("*pow(x(");
+                            buffer.append(species_index);
+                            buffer.append("),");
+                            buffer.append(tempStmElement2);
+                            buffer.append(")");
+                        }
+                        
+                        
+                    }
+                }
+                
+                
+            }
+        }
+        
+       
+        // do a quick check here -
+        if (buffer.length()==0)
+        {
+            buffer.append("0.0");
+        }
+        
+        rString = buffer.toString();
+        if (rString.lastIndexOf("+")==rString.length()-1)
+        {
+            rString=rString.substring(0,rString.length()-1);
+        }
+        
+        
+        
+        // return the buffer -
+        return(rString);
+    }
     
 }
