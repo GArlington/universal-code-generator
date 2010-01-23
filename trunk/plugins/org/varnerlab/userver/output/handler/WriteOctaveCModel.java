@@ -84,6 +84,7 @@ public class WriteOctaveCModel implements IOutputHandler {
         octave.buildMassBalanceEquations(adj_buffer);
         octave.buildJacobianBuffer(adj_buffer);
         octave.buildPMatrixBuffer(adj_buffer);
+        octave.buildInputsBuffer(adj_buffer);
         
         // Build the data file -
         SBMLModelUtilities.buildDataFileBuffer(data_buffer, model_wrapper, _xmlPropTree);
