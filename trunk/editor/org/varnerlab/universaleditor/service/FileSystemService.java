@@ -25,6 +25,7 @@ public class FileSystemService {
     {
         // get all the files and directories
         File [] children = dir.listFiles();
+        Vector<File> tmpVector = new Vector();
         String strSep = Launcher._SLASH;
 
         // loop over the file/directory listing
@@ -38,7 +39,30 @@ public class FileSystemService {
         	if (INT_DOT!=0)
         	{
         		// add the match to the results list
-                results.add(file);
+        		tmpVector.add(file);
+        	}
+        }
+        
+        // Ok, so I want to put this in dir ... files order 
+        
+        // Directory -
+        int NUM_FILES = tmpVector.size();
+        for (int index=0;index<NUM_FILES;index++)
+        {
+        	File file = tmpVector.elementAt(index);
+        	if (file.isDirectory())
+        	{
+        		results.add(file);
+        	}
+        }
+        
+        // Files -
+        for (int index=0;index<NUM_FILES;index++)
+        {
+        	File file = tmpVector.elementAt(index);
+        	if (file.isFile())
+        	{
+        		results.add(file);
         	}
         }
     }
