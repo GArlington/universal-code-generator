@@ -23,6 +23,9 @@ import java.io.*;
 import org.varnerlab.universaleditor.gui.*;
 import org.varnerlab.universaleditor.gui.widgets.*;
 import org.varnerlab.universaleditor.domain.*;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 
 
@@ -34,7 +37,29 @@ public class SaveSBMLFileAction implements ActionListener {
     // class/instance attributes
     Component focusedComponent = null;
     KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+    ArrayList<String> aList = new ArrayList<String>();
 
+    public SaveSBMLFileAction()
+    {
+    	// These are container labels - 
+        aList.add("sbml");
+        aList.add("model");
+        aList.add("listOfSpecies");
+        aList.add("listOfParameters");
+        aList.add("listOfCompartments");
+        aList.add("listOfUnits");
+        aList.add("listOfUnitDefinitions");
+        aList.add("unitDefinition");
+        aList.add("listOfReactions");
+        aList.add("notes");
+        aList.add("listOfReactants");
+        aList.add("listOfProducts");
+        aList.add("reaction");
+        aList.add("math");
+        aList.add("kineticLaw");
+
+    }
+    
     public void actionPerformed(ActionEvent e) {
 
         // First, you'll need to load the file chooser - hey by the way, I'm Rick Jamessss Bit*h!
@@ -61,75 +86,151 @@ public class SaveSBMLFileAction implements ActionListener {
                // Create buffer for the file on disk -
                StringBuffer buffer = new StringBuffer();
 
+               // Populate the string buffer -
+               VLTreeNode userRoot = (VLTreeNode)rootNode.getUserObject();
+               
+               // Process me -
+               // Ok, get the xmlNode that is attached to the userRoot -
+               Node xmlNode = (Node)userRoot.getProperty("XML_TREE_NODE");
+               
                // put header string -
-               buffer.append("<sbml xmlns=\"http://www.sbml.org/sbml/level2/version3\" level=\"2\" version=\"3\">\n");
-               buffer.append("\t");
+               buffer.append("<?xml version=\"1.0\"?>\n");
 
                // Build the tree -
-               processMyKids(rootNode,buffer);
+               processMyKids(xmlNode,buffer);
 
-               // put the closing tag -
-               buffer.append("</sbml>\n");
-
+               // Ok, let's replace the < and > chars so we can re-import
+               String tmpBuffer = buffer.toString();
+               String strTwo = tmpBuffer.replaceAll("<=", "&lt;=");
+               String strThree = strTwo.replaceAll("=>", "=&gt;");
+               String strFour = strThree.replaceAll("->", "-&gt;");
+               
                // Dump to disk -
                File file=fc.getSelectedFile();
                String tmp = file.getPath();
                //System.out.println("File path -"+tmp);
-               VLIOLib.write(file.getPath(), buffer);
+               VLIOLib.write(file.getPath(),strFour);
 
            }
         }
         catch (Exception error)
         {
-            // Do nothing -
+           error.printStackTrace();
         }
 
     }
 
-    private void processMyKids(DefaultMutableTreeNode rootNode,StringBuffer buffer) throws Exception
-    {
-           // Populate the string buffer -
-           VLTreeNode userRoot = (VLTreeNode)rootNode.getUserObject();
-           int NUMBER_OF_KIDS = rootNode.getChildCount();
-           
-           userRoot.writeTree(buffer,NUMBER_OF_KIDS);
-
-           // Add a tab -
-           buffer.append("\t");
-
-            // get the number of kids that I have -
-           
-           for (int kid_index=0;kid_index<NUMBER_OF_KIDS;kid_index++)
+    private void processMyKids(Node xmlNode,StringBuffer buffer) throws Exception
+    { 
+           // Ok, we to get the node name -
+           String strNodeName = xmlNode.getNodeName();
+           if (!strNodeName.contains("#"))
            {
-                // Get the kid -
-                DefaultMutableTreeNode node = (DefaultMutableTreeNode)rootNode.getChildAt(kid_index);
-
-                buffer.append("\t");
-
-                // Call this method on my kids -
-                processMyKids(node,buffer);
-
-           }
-
-           if (NUMBER_OF_KIDS==0)
-           {
-
-               // If I gete here I'm a leaf - let's remove the last char and replace w/the proper ending -
-               int LENGTH = buffer.length();
-               //buffer = buffer.replace(LENGTH-1, LENGTH,"/>\n");
-           }
-           else
-           {
-                String strClassName = userRoot.getProperty("DISPLAY_LABEL").toString();
-                
-                // Ok, so I have the class-name string - but I need to convert the first letter to lowercase -
-                StringBuffer stbfTmp = new StringBuffer(strClassName);
-                stbfTmp.setCharAt(0, Character.toLowerCase(stbfTmp.charAt(0)));
-
-                buffer.append("</");
-                buffer.append(stbfTmp.toString());
-                buffer.append(">\n");
+        	   // Ok, process my kids -
+        	   if (!aList.contains(strNodeName))
+        	   {
+	        	   // process me -
+	        	   buffer.append("\t<");
+	        	   buffer.append(strNodeName);
+	        	   //buffer.append(" ");
+	           
+	        	   int NUMBER_OF_ATTR = xmlNode.getAttributes().getLength();
+	        	   NamedNodeMap attList = xmlNode.getAttributes();
+	        	   if (NUMBER_OF_ATTR>0)
+	        	   {
+	        	   		// Ok, process my attributes -
+	        	   		for (int index=0;index<NUMBER_OF_ATTR;index++)
+	        	   		{
+	        	   			Node attributeNode = attList.item(index);
+	           	
+	        	   			// Set the value in the table -
+	        	   			String strName = attributeNode.getNodeName();
+	        	   			String strAtt = attributeNode.getNodeValue();
+	           			
+	        	   			// Add to buffer -
+	        	   			buffer.append(" ");
+	        	   			buffer.append(strName);
+	        	   			buffer.append("=\"");
+	        	   			buffer.append(strAtt);
+	        	   			buffer.append("\"");			
+	        	   		}
+	        	   		
+	        	   		buffer.append("/>\n");
+	        	   }
+	        	   else
+	        	   {
+	        		   // Ok, so if I get here then I have no attributes, but I can have data in elements -
+	        	   		// If I get here, then my node has no attributes (oh yea, that's what she said...). Maybe I have data has a value
+	           			String strName = xmlNode.getNodeName();
+	           			String strNodeValue = xmlNode.getTextContent();
+	           	
+	           			System.out.println("Hey now - I'm looking at "+strName+" has "+strNodeValue);
+	           			
+	           			if (strNodeValue!=null)
+	           			{
+	           				// Ok, if I'm here then I have text content -
+	           				buffer.append(">");
+	           				buffer.append(strNodeValue);
+	           				buffer.append("</");
+	           				buffer.append(strName);
+	           				buffer.append(">\n");
+	           			}
+	        	   }
+	           }
+	           else
+	           {
+	        	   buffer.append("<");
+	        	   buffer.append(strNodeName);
+	        	   //buffer.append(" ");
+	        	   
+	        	   // process my attributes -
+	        	   processMyAttributes(xmlNode,buffer);
+	        	   
+	        	   int NUMBER_OF_KIDS = xmlNode.getChildNodes().getLength();
+	        	   NodeList kidsList = xmlNode.getChildNodes();
+	        	   for (int index=0;index<NUMBER_OF_KIDS;index++)
+	        	   {
+	        		   processMyKids(kidsList.item(index),buffer);
+	        	   }
+	        	   
+	        	   buffer.append("</");
+	        	   buffer.append(strNodeName);
+	        	   buffer.append(">\n");
+	           }           
            }
     }
-
+    
+    
+    private void processMyAttributes(Node xmlNode,StringBuffer buffer) throws Exception
+    {
+    	int NUMBER_OF_ATTR = xmlNode.getAttributes().getLength();
+ 	   	NamedNodeMap attList = xmlNode.getAttributes();
+ 	   	if (NUMBER_OF_ATTR>0)
+ 	   	{
+ 	   		// Ok, process my attributes -
+ 	   		for (int index=0;index<NUMBER_OF_ATTR;index++)
+ 	   		{
+ 	   			Node attributeNode = attList.item(index);
+    	
+ 	   			// Set the value in the table -
+ 	   			String strName = attributeNode.getNodeName();
+ 	   			String strAtt = attributeNode.getNodeValue();
+    			
+ 	   			// Add to buffer -
+ 	   			buffer.append(" ");
+ 	   			buffer.append(strName);
+ 	   			buffer.append("=\"");
+ 	   			buffer.append(strAtt);
+ 	   			buffer.append("\"");			
+ 	   		}
+ 	   		
+ 	   		buffer.append(">\n");
+ 	   	}
+ 	   	else
+ 	   	{
+ 	   		buffer.append(">\n");
+ 	   	}
+ 	   
+    }
+    
 }
