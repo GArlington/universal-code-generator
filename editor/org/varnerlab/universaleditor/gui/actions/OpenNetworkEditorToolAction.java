@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 import org.varnerlab.universaleditor.gui.*;
+import org.varnerlab.universaleditor.service.VLIconManagerService;
 
 /**
  *  Action that opens process explorer window
@@ -25,17 +26,16 @@ public class OpenNetworkEditorToolAction implements ActionListener {
         Launcher _main=Launcher.getInstance();
 
 
-       // Create process explorer
-       NetworkEditorTool _tool= new NetworkEditorTool();
+        // Create process explorer
+        NetworkEditorTool _tool= new NetworkEditorTool();
         _tool.setVisible(true);
         
-       // Set the frameIcon
-        _tool.setFrameIcon((new ImageIcon(VLImageLoader.getPNGImage("agt_business-32-Grey.png"))));
-        
-        
+        // Set the frameIcon
+        _tool.setFrameIcon(VLIconManagerService.getIcon("NETWORKFILEEDITOR-GREY-ICON"));
+            
         // Ok, we need to store the icons on the tool so I can switch w/out loading -
-        _tool.setOffIcon((new ImageIcon(VLImageLoader.getPNGImage("agt_business-32-Grey.png"))));
-        _tool.setOnIcon((new ImageIcon(VLImageLoader.getPNGImage("agt_business-32.png"))));
+        _tool.setOffIcon(VLIconManagerService.getIcon("NETWORKFILEEDITOR-GREY-ICON"));
+        _tool.setOnIcon(VLIconManagerService.getIcon("NETWORKFILEEDITOR-ICON"));
 
 
         // Add the tool to the workspace -
