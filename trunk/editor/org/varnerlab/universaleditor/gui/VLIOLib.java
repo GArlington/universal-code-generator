@@ -66,4 +66,14 @@ public class VLIOLib extends Object {
         writer.write(buffer.toString());
         writer.close();
     }
+    
+    public static void write(String path,String buffer) throws Exception {
+        // Create writer
+        File oFile=new File(path);
+        BufferedWriter writer=new BufferedWriter(new FileWriter(oFile));
+        
+        // Write buffer to file system and close writer
+        writer.write(buffer);
+        writer.close();
+    }
 }
