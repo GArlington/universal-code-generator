@@ -51,6 +51,7 @@ import org.varnerlab.universaleditor.domain.sbml.species;
 import org.varnerlab.universaleditor.domain.sbml.speciesReference;
 import org.varnerlab.universaleditor.domain.sbml.times;
 import org.varnerlab.universaleditor.gui.actions.LoadSBMLTreeAction;
+import org.varnerlab.universaleditor.gui.actions.NewSBMLTreeAction;
 import org.varnerlab.universaleditor.gui.actions.SaveSBMLFileAction;
 import org.varnerlab.universaleditor.gui.widgets.IVLTableCellEditor;
 import org.varnerlab.universaleditor.gui.widgets.NetworkTableCellEditor;
@@ -368,6 +369,12 @@ public class NetworkEditorTool extends javax.swing.JInternalFrame implements Tab
         });
 
         jButton3.setText("New");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buildNewNetworkFile(evt);
+            }
+        });
+        
 
         jSplitPane1.setDividerLocation(300);
         jSplitPane1.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
@@ -448,6 +455,13 @@ public class NetworkEditorTool extends javax.swing.JInternalFrame implements Tab
         jButton1.setEnabled(true);
 
     }//GEN-LAST:event_loadNetworkFile
+    
+    // This gets called when we need to load a *new* file -
+    private void buildNewNetworkFile(java.awt.event.ActionEvent evt)
+    {
+    	NewSBMLTreeAction action = new NewSBMLTreeAction();
+    	action.actionPerformed(evt);
+    }
 
     private void saveSBMLFileToDisk(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveSBMLFileToDisk
        SaveSBMLFileAction saveFile = new SaveSBMLFileAction();
