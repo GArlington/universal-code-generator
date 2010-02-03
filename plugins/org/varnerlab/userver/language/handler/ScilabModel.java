@@ -334,15 +334,15 @@ public class ScilabModel {
 
     }      
     
-    public void buildKineticsBuffer(StringBuffer kinetics) throws Exception
+    public void buildKineticsBuffer(StringBuffer kinetics,Vector vecReactions) throws Exception
     {
     	// Get the dimension of the system -
         int NROWS = (int)model_wrapper.getNumSpecies();
-        int NCOLS = (int)model_wrapper.getNumReactions();
+        int NCOLS = (int)vecReactions.size();
         
         // Create a local copy of the stoichiometric matrix -
         double[][] matrix = new double[NROWS][NCOLS];
-        SBMLModelUtilities.buildStoichiometricMatrix(matrix, model_wrapper);
+        SBMLModelUtilities.buildStoichiometricMatrix(matrix, model_wrapper,vecReactions);
 
         // Ok, so add the header to the file -
 		kinetics.append("function [r] = Kinetics(t,x,DF)\n\n");
@@ -431,15 +431,15 @@ public class ScilabModel {
         kinetics.append("return;");
     }
 
-    public void buildJacobianBuffer(StringBuffer buffer) throws Exception
+    public void buildJacobianBuffer(StringBuffer buffer,Vector vecReactions) throws Exception
     {
     	// Get the dimension of the system -
         int NROWS = (int)model_wrapper.getNumSpecies();
-        int NCOLS = (int)model_wrapper.getNumReactions();
+        int NCOLS = (int)vecReactions.size();
         
         // Create a local copy of the stoichiometric matrix -
         double[][] matrix = new double[NROWS][NCOLS];
-        SBMLModelUtilities.buildStoichiometricMatrix(matrix, model_wrapper);
+        SBMLModelUtilities.buildStoichiometricMatrix(matrix, model_wrapper,vecReactions);
 
         // Ok, when I get here I have the stoichiometric matrix -
         // Initialize the array -
@@ -625,15 +625,15 @@ public class ScilabModel {
     }
 
 
-    public void buildPMatrixBuffer(StringBuffer buffer) throws Exception
+    public void buildPMatrixBuffer(StringBuffer buffer,Vector vecReactions) throws Exception
     {
         // Get the dimension of the system -
         int NROWS = (int)model_wrapper.getNumSpecies();
-        int NCOLS = (int)model_wrapper.getNumReactions();
+        int NCOLS = (int)vecReactions.size();
         
         // Create a local copy of the stoichiometric matrix -
         double[][] matrix = new double[NROWS][NCOLS];
-        SBMLModelUtilities.buildStoichiometricMatrix(matrix, model_wrapper);
+        SBMLModelUtilities.buildStoichiometricMatrix(matrix, model_wrapper,vecReactions);
 
         // Ok, when I get here I have the stoichiometric matrix -
         // Initialize the pmatrix array -

@@ -75,7 +75,7 @@ public class GSLModel {
 
 
 
-    public void buildKineticsBuffer(StringBuffer buffer) throws Exception {
+    public void buildKineticsBuffer(StringBuffer buffer,Vector vecReactions) throws Exception {
         // Ok, build the kinetics -
 
     	// First things first - get the size of the system -
@@ -84,7 +84,7 @@ public class GSLModel {
         
         // Create a local copy of the stoichiometric matrix -
         double[][] matrix = new double[NUMBER_OF_SPECIES][NUMBER_OF_RATES];
-        SBMLModelUtilities.buildStoichiometricMatrix(matrix, model_wrapper);
+        SBMLModelUtilities.buildStoichiometricMatrix(matrix, model_wrapper,vecReactions);
 
         // Now the fun begins -
         buffer.append("static void Kinetics(double t, const double x[], gsl_vector *pRateConstantVector, gsl_vector *pRateVector)\n");
@@ -740,17 +740,17 @@ public class GSLModel {
 
     }
 
-    public void buildJacobianBuffer(StringBuffer buffer) throws Exception
+    public void buildJacobianBuffer(StringBuffer buffer,Vector vecReactions) throws Exception
     {
 
         
         // First things first - get the size of the system -
         int NUMBER_OF_SPECIES = (int)model_wrapper.getNumSpecies(); 
-        int NUMBER_OF_RATES = (int)model_wrapper.getNumReactions(); 
+        int NUMBER_OF_RATES = (int)vecReactions.size();
 
         // Create a local copy of the stoichiometric matrix -
         double[][] matrix = new double[NUMBER_OF_SPECIES][NUMBER_OF_RATES];
-        SBMLModelUtilities.buildStoichiometricMatrix(matrix, model_wrapper);
+        SBMLModelUtilities.buildStoichiometricMatrix(matrix, model_wrapper,vecReactions);
         
         // Ok, when I get here I have the stoichiometric matrix -
         // Initialize the array -
@@ -855,15 +855,15 @@ public class GSLModel {
     }
 
 
-    public void buildPMatrixBuffer(StringBuffer buffer) throws Exception
+    public void buildPMatrixBuffer(StringBuffer buffer,Vector vecReactions) throws Exception
     {
     	// Get the dimension of the system -
         int NROWS = (int)model_wrapper.getNumSpecies();
-        int NCOLS = (int)model_wrapper.getNumReactions();
+        int NCOLS = (int)vecReactions.size();
         
         // Create a local copy of the stoichiometric matrix -
         double[][] matrix = new double[NROWS][NCOLS];
-        SBMLModelUtilities.buildStoichiometricMatrix(matrix, model_wrapper);
+        SBMLModelUtilities.buildStoichiometricMatrix(matrix, model_wrapper,vecReactions);
     	
         // Ok, when I get here I have the stoichiometric matrix -
         // Initialize the pmatrix array -
