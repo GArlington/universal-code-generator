@@ -1,8 +1,9 @@
 package org.varnerlab.userver.output.handler;
 
 import java.util.Hashtable;
+import java.util.Vector;
 
-import org.sbml.libsbml.Model;
+import org.sbml.libsbml.*;
 import org.varnerlab.server.transport.IOutputHandler;
 import org.varnerlab.server.transport.LoadXMLPropFile;
 import org.varnerlab.userver.language.handler.CodeGenUtilMethods;
@@ -28,6 +29,7 @@ public class WriteGSLModel implements IOutputHandler {
 		StringBuffer massbalances_buffer = new StringBuffer();
         StringBuffer shell_buffer = new StringBuffer();
         StringBuffer compile_buffer = new StringBuffer();
+        Vector<Reaction> vecReactions = new Vector<Reaction>();
         
 		GSLModel gslModel = new GSLModel();
 		double[][] dblSTMatrix = null;
@@ -36,7 +38,7 @@ public class WriteGSLModel implements IOutputHandler {
         Model model_wrapper = (Model)object;
         
         // Check to make sure all the reversible rates are 0,inf
-        CodeGenUtilMethods.convertReversibleRates(model_wrapper);
+        SBMLModelUtilities.convertReversibleRates(model_wrapper,vecReactions);
         
         // Ok, lets build the stoichiometric matrix -
         int NUMBER_OF_SPECIES = (int)model_wrapper.getNumSpecies(); 
@@ -46,7 +48,7 @@ public class WriteGSLModel implements IOutputHandler {
         dblSTMatrix = new double[NUMBER_OF_SPECIES][NUMBER_OF_RATES];
         
         // Build the matrix -
-        SBMLModelUtilities.buildStoichiometricMatrix(dblSTMatrix, model_wrapper);
+        SBMLModelUtilities.buildStoichiometricMatrix(dblSTMatrix, model_wrapper,vecReactions);
 		
         // Set some properties -
         gslModel.setModel(model_wrapper);
@@ -55,13 +57,13 @@ public class WriteGSLModel implements IOutputHandler {
         // Build the different components of the GSL program -
         gslModel.buildMassBalanceBuffer(massbalances_buffer);
         gslModel.buildMassBalanceEquations(massbalances_buffer);
-        gslModel.buildKineticsBuffer(massbalances_buffer);
-        gslModel.buildJacobianBuffer(massbalances_buffer);
+        gslModel.buildKineticsBuffer(massbalances_buffer,vecReactions);
+        gslModel.buildJacobianBuffer(massbalances_buffer,vecReactions);
         gslModel.buildBuildFileBuffer(compile_buffer);
         gslModel.buildShellCommandBuffer(shell_buffer);
             
         // Dump stuff to disk -
-        SBMLModelUtilities.dumpStoichiometricMatrixToDisk(dblSTMatrix,_xmlPropTree,model_wrapper);
+        SBMLModelUtilities.dumpStoichiometricMatrixToDisk(dblSTMatrix,_xmlPropTree,model_wrapper,vecReactions);
         SBMLModelUtilities.dumpMassBalancesToDisk(massbalances_buffer,_xmlPropTree);
         SBMLModelUtilities.dumpShellCommandToDisk(shell_buffer, _xmlPropTree);
         SBMLModelUtilities.dumpBuildFileToDisk(compile_buffer, _xmlPropTree);
