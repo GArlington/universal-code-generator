@@ -72,7 +72,7 @@ public class OctaveCModel {
             buffer.append("\tdouble ");
             
             // replace the - w/underscores -
-            String strTmpName = species_tmp.getName();
+            String strTmpName = species_tmp.getId();
             
             //buffer.append(strTmpName.replaceAll("-","_"));
             buffer.append(strTmpName);
