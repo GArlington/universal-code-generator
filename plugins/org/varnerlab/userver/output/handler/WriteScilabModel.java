@@ -1,8 +1,9 @@
 package org.varnerlab.userver.output.handler;
 
 import java.util.Hashtable;
+import java.util.Vector;
 
-import org.sbml.libsbml.Model;
+import org.sbml.libsbml.*;
 import org.varnerlab.server.transport.IOutputHandler;
 import org.varnerlab.server.transport.LoadXMLPropFile;
 import org.varnerlab.userver.language.handler.SBMLModelUtilities;
@@ -30,6 +31,7 @@ public class WriteScilabModel implements IOutputHandler {
         StringBuffer kinetics_buffer = new StringBuffer();
         StringBuffer jacabian_buffer = new StringBuffer();
         StringBuffer bmatrix_buffer = new StringBuffer();
+        Vector<Reaction> vecReactions = new Vector<Reaction>();
         
         double[][] dblSTMatrix = null;
         ScilabModel scilab = new ScilabModel();
@@ -38,7 +40,7 @@ public class WriteScilabModel implements IOutputHandler {
         Model model_wrapper = (Model)object;
               
         // Check for reversible rates -
-        SBMLModelUtilities.convertReversibleRates(model_wrapper);
+        SBMLModelUtilities.convertReversibleRates(model_wrapper,vecReactions);
         
         // set props on octave -
         scilab.setModel(model_wrapper);
@@ -46,27 +48,27 @@ public class WriteScilabModel implements IOutputHandler {
 
         // Ok, lets build the stoichiometric matrix - get the system dimension 
         int NUMBER_OF_SPECIES = (int)model_wrapper.getNumSpecies(); 
-        int NUMBER_OF_RATES = (int)model_wrapper.getNumReactions(); 
+        int NUMBER_OF_RATES = (int)vecReactions.size(); 
         
         // Initialize the stoichiometric matrix -
         dblSTMatrix = new double[NUMBER_OF_SPECIES][NUMBER_OF_RATES];
         
         // Build the matrix -
-        SBMLModelUtilities.buildStoichiometricMatrix(dblSTMatrix, model_wrapper);
+        SBMLModelUtilities.buildStoichiometricMatrix(dblSTMatrix, model_wrapper,vecReactions);
         
         // Ok, so let's build the different parts of the scilab program -
         scilab.buildMassBalanceBuffer(massbalances_buffer);
         scilab.buildInputsBuffer(inputs_buffer);
-        scilab.buildKineticsBuffer(kinetics_buffer);
+        scilab.buildKineticsBuffer(kinetics_buffer,vecReactions);
         scilab.buildDataFileBuffer(data_buffer);
 		scilab.buildDriverBuffer(driver_buffer);
-		scilab.buildJacobianBuffer(jacabian_buffer);
-		scilab.buildPMatrixBuffer(bmatrix_buffer);
+		scilab.buildJacobianBuffer(jacabian_buffer,vecReactions);
+		scilab.buildPMatrixBuffer(bmatrix_buffer,vecReactions);
 		
 		// Dump the different components to disk -
 		SBMLModelUtilities.dumpDriverToDisk(driver_buffer,_xmlPropTree);
         SBMLModelUtilities.dumpMassBalancesToDisk(massbalances_buffer,_xmlPropTree);
-        SBMLModelUtilities.dumpStoichiometricMatrixToDisk(dblSTMatrix,_xmlPropTree,model_wrapper);
+        SBMLModelUtilities.dumpStoichiometricMatrixToDisk(dblSTMatrix,_xmlPropTree,model_wrapper,vecReactions);
         SBMLModelUtilities.dumpDataFileToDisk(data_buffer,_xmlPropTree);
         SBMLModelUtilities.dumpKineticsToDisk(kinetics_buffer, _xmlPropTree);
 		SBMLModelUtilities.dumpInputFunctionToDisk(inputs_buffer, _xmlPropTree);

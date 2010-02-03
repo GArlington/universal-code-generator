@@ -1,8 +1,9 @@
 package org.varnerlab.userver.output.handler;
 
 import java.util.Hashtable;
+import java.util.Vector;
 
-import org.sbml.libsbml.Model;
+import org.sbml.libsbml.*;
 import org.varnerlab.server.transport.IOutputHandler;
 import org.varnerlab.server.transport.LoadXMLPropFile;
 import org.varnerlab.userver.language.handler.CodeGenUtilMethods;
@@ -33,34 +34,35 @@ public class WriteSundialsModel implements IOutputHandler {
 		// Method attributes -
 		SUNDIALSModel sundialsModel = new SUNDIALSModel();
 		double[][] dblSTMatrix = null;
+		Vector<Reaction> vecReactions = new Vector<Reaction>();
 		
 		// Get the resource type (sbml model) -
         Model model_wrapper = (Model)object;
         
         // Check to make sure all the reversible rates are 0,inf
-        CodeGenUtilMethods.convertReversibleRates(model_wrapper);
+        SBMLModelUtilities.convertReversibleRates(model_wrapper,vecReactions);
         
         // Ok, lets build the stoichiometric matrix -
         int NUMBER_OF_SPECIES = (int)model_wrapper.getNumSpecies(); 
-        int NUMBER_OF_RATES = (int)model_wrapper.getNumReactions(); 
+        int NUMBER_OF_RATES = (int)vecReactions.size();
         
         // Initialize the stoichiometric matrix -
         dblSTMatrix = new double[NUMBER_OF_SPECIES][NUMBER_OF_RATES];
         
         // Build the matrix -
-        SBMLModelUtilities.buildStoichiometricMatrix(dblSTMatrix, model_wrapper);
+        SBMLModelUtilities.buildStoichiometricMatrix(dblSTMatrix, model_wrapper,vecReactions);
 		
 		// Generate Model.c
 		sundialsModel.buildMassBalanceBuffer(bufferModelC,model_wrapper);
 		sundialsModel.buildMassBalanceEquations(bufferModelC);
-		sundialsModel.buildKineticsBuffer(bufferModelC,model_wrapper);
-		sundialsModel.buildJacobianBuffer(bufferModelC,model_wrapper);
+		sundialsModel.buildKineticsBuffer(bufferModelC,model_wrapper,vecReactions);
+		sundialsModel.buildJacobianBuffer(bufferModelC,model_wrapper,vecReactions);
 		SBMLModelUtilities.dumpMassBalancesToDisk(bufferModelC, _xmlPropTree);
 		
 		// Generate Build.sh
 		sundialsModel.buildBuildFileBuffer(bufferBuilder,_xmlPropTree);
 		SBMLModelUtilities.dumpBuildFileToDisk(bufferBuilder,_xmlPropTree);
-		SBMLModelUtilities.dumpStoichiometricMatrixToDisk(dblSTMatrix,_xmlPropTree,model_wrapper);
+		SBMLModelUtilities.dumpStoichiometricMatrixToDisk(dblSTMatrix,_xmlPropTree,model_wrapper,vecReactions);
 		
 		// Generate RunModel.sh
 		sundialsModel.buildShellCommand(bufferRunModel,_xmlPropTree);
