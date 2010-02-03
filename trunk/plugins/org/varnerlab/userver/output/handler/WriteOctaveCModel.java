@@ -40,8 +40,7 @@ public class WriteOctaveCModel implements IOutputHandler {
         OctaveCModel octave = new OctaveCModel();
         
         System.out.println("Im here...writeResources");
-        
-        
+         
         // Grab some names - mass balances
         String strMassBalanceFileName = _xmlPropTree.getProperty("//MassBalanceFunction/massbalance_filename/text()");
         String strMassBalancePath = _xmlPropTree.getProperty("//MassBalanceFunction/massbalance_path/text()");
