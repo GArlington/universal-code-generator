@@ -500,7 +500,7 @@ public class OctaveCModel {
         
     	// Get the dimension of the system -
         int NROWS = (int)model_wrapper.getNumSpecies();
-        int NCOLS = (int)model_wrapper.getNumReactions();
+        int NCOLS = (int)vecReactions.size();
         
         // Create a local copy of the stoichiometric matrix -
         double[][] matrix = new double[NROWS][NCOLS];
@@ -567,7 +567,7 @@ public class OctaveCModel {
     {
     	// Get the dimension of the system -
         int NROWS = (int)model_wrapper.getNumSpecies();
-        int NCOLS = (int)model_wrapper.getNumReactions();
+        int NCOLS = (int)vecReactions.size();
         
         // Create a local copy of the stoichiometric matrix -
         double[][] matrix = new double[NROWS][NCOLS];
