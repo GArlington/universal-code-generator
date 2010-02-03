@@ -1,8 +1,9 @@
 package org.varnerlab.userver.output.handler;
 
 import java.util.Hashtable;
+import java.util.Vector;
 
-import org.sbml.libsbml.Model;
+import org.sbml.libsbml.*;
 import org.varnerlab.server.transport.IOutputHandler;
 import org.varnerlab.server.transport.LoadXMLPropFile;
 import org.varnerlab.userver.language.handler.*;
@@ -35,6 +36,7 @@ public class WriteOctaveCModel implements IOutputHandler {
         StringBuffer data_buffer = new StringBuffer();
         StringBuffer adj_driver_buffer = new StringBuffer();
         StringBuffer adj_buffer = new StringBuffer();
+        Vector<Reaction> vecReactions = new Vector<Reaction>();
         
         double[][] dblSTMatrix = null;
         OctaveCModel octave = new OctaveCModel();
@@ -57,41 +59,41 @@ public class WriteOctaveCModel implements IOutputHandler {
         octave.setModel(model_wrapper);
         
         // Check to make sure all the reversible rates are 0,inf
-        CodeGenUtilMethods.convertReversibleRates(model_wrapper);
+        SBMLModelUtilities.convertReversibleRates(model_wrapper,vecReactions);
         
         // Ok, lets build the stoichiometric matrix -
         NUMBER_OF_SPECIES = (int)model_wrapper.getNumSpecies(); 
-        NUMBER_OF_RATES = (int)model_wrapper.getNumReactions(); 
+        NUMBER_OF_RATES = (int)vecReactions.size();
         
         // Initialize the stoichiometric matrix -
         dblSTMatrix = new double[NUMBER_OF_SPECIES][NUMBER_OF_RATES];
         
         // Build the matrix -
-        SBMLModelUtilities.buildStoichiometricMatrix(dblSTMatrix, model_wrapper);
+        SBMLModelUtilities.buildStoichiometricMatrix(dblSTMatrix, model_wrapper,vecReactions);
             
         // Ok, so lets start spanking my monkey ...
         octave.buildMassBalanceBuffer(massbalances_buffer,_xmlPropTree);
         octave.buildMassBalanceEquations(massbalances_buffer);
-        octave.buildKineticsBuffer(massbalances_buffer,model_wrapper);
+        octave.buildKineticsBuffer(massbalances_buffer,model_wrapper,vecReactions);
         octave.buildDriverBuffer(driver_buffer,_xmlPropTree);
         
         // Ok, build adj buffer -
         octave.buildSolveAdjBalBuffer(adj_driver_buffer, _xmlPropTree);
         octave.buildAdjBalFntBuffer(adj_buffer, _xmlPropTree);
-        octave.buildKineticsBuffer(adj_buffer,model_wrapper);
+        octave.buildKineticsBuffer(adj_buffer,model_wrapper,vecReactions);
         octave.buildDSDTBuffer(adj_buffer);
         octave.buildMassBalanceEquations(adj_buffer);
-        octave.buildJacobianBuffer(adj_buffer);
-        octave.buildPMatrixBuffer(adj_buffer);
+        octave.buildJacobianBuffer(adj_buffer,vecReactions);
+        octave.buildPMatrixBuffer(adj_buffer,vecReactions);
         octave.buildInputsBuffer(adj_buffer);
         
         // Build the data file -
-        SBMLModelUtilities.buildDataFileBuffer(data_buffer, model_wrapper, _xmlPropTree);
+        SBMLModelUtilities.buildDataFileBuffer(data_buffer, model_wrapper, _xmlPropTree,vecReactions);
         
         // Dump to regular model to disk -
         SBMLModelUtilities.dumpDriverToDisk(driver_buffer,_xmlPropTree);
         SBMLModelUtilities.dumpMassBalancesToDisk(massbalances_buffer,_xmlPropTree);
-        SBMLModelUtilities.dumpStoichiometricMatrixToDisk(dblSTMatrix,_xmlPropTree,model_wrapper);
+        SBMLModelUtilities.dumpStoichiometricMatrixToDisk(dblSTMatrix,_xmlPropTree,model_wrapper,vecReactions);
         SBMLModelUtilities.dumpDataFileToDisk(data_buffer,_xmlPropTree);
         
         // Dump the sensitivity analysis -

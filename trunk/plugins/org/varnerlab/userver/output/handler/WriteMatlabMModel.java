@@ -1,8 +1,9 @@
 package org.varnerlab.userver.output.handler;
 
 import java.util.Hashtable;
+import java.util.Vector;
 
-import org.sbml.libsbml.Model;
+import org.sbml.libsbml.*;
 import org.varnerlab.server.transport.IOutputHandler;
 import org.varnerlab.server.transport.LoadXMLPropFile;
 import org.varnerlab.userver.language.handler.CodeGenUtilMethods;
@@ -36,6 +37,7 @@ public class WriteMatlabMModel implements IOutputHandler {
         StringBuffer kinetics_buffer = new StringBuffer();
         double[][] dblSTMatrix = null;
         MatlabModel octave = new MatlabModel();
+        Vector<Reaction> vecReactions = new Vector<Reaction>();
         
         // Get the resource type (SBML model tree)
         Model model_wrapper = (Model)object;
@@ -49,25 +51,25 @@ public class WriteMatlabMModel implements IOutputHandler {
         
         // Ok, lets build the stoichiometric matrix - get the system dimension 
         NUMBER_OF_SPECIES = (int)model_wrapper.getNumSpecies(); 
-        NUMBER_OF_RATES = (int)model_wrapper.getNumReactions(); 
+        NUMBER_OF_RATES = (int)vecReactions.size(); 
         
         // Initialize the stoichiometric matrix -
         dblSTMatrix = new double[NUMBER_OF_SPECIES][NUMBER_OF_RATES];
         
         // Build the matrix -
-        SBMLModelUtilities.buildStoichiometricMatrix(dblSTMatrix, model_wrapper);
+        SBMLModelUtilities.buildStoichiometricMatrix(dblSTMatrix, model_wrapper,vecReactions);
              
         // Ok, so let's start building the different parts of the octave m program -
         octave.buildMassBalanceBuffer(massbalances_buffer);
         octave.buildInputsBuffer(inputs_buffer);
-        octave.buildKineticsBuffer(kinetics_buffer,model_wrapper);
+        octave.buildKineticsBuffer(kinetics_buffer,model_wrapper,vecReactions);
         octave.buildDriverBuffer(driver_buffer, _xmlPropTree);
         SBMLModelUtilities.buildDataFileBuffer(data_buffer, model_wrapper, _xmlPropTree);
         
 		// Dump out the model code to disk -
         SBMLModelUtilities.dumpDriverToDisk(driver_buffer,_xmlPropTree);
         SBMLModelUtilities.dumpMassBalancesToDisk(massbalances_buffer,_xmlPropTree);
-        SBMLModelUtilities.dumpStoichiometricMatrixToDisk(dblSTMatrix,_xmlPropTree,model_wrapper);
+        SBMLModelUtilities.dumpStoichiometricMatrixToDisk(dblSTMatrix,_xmlPropTree,model_wrapper,vecReactions);
         SBMLModelUtilities.dumpDataFileToDisk(data_buffer,_xmlPropTree);
         SBMLModelUtilities.dumpKineticsToDisk(kinetics_buffer, _xmlPropTree);
 	}
