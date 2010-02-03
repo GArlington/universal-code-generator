@@ -104,12 +104,12 @@ public class MatlabModel {
         driver.append("return;\n");
     }
     
-    public void buildKineticsBuffer(StringBuffer buffer,Model model_wrapper) throws Exception
+    public void buildKineticsBuffer(StringBuffer buffer,Model model_wrapper,Vector rate_list) throws Exception
     {
 		
 		// First things first - get the size of the system -
         int NUMBER_OF_SPECIES = (int)model_wrapper.getNumSpecies(); 
-        int NUMBER_OF_RATES = (int)model_wrapper.getNumReactions(); 
+        int NUMBER_OF_RATES = (int)rate_list.size();
 		
 		// Setup the kinetics filename -
         String strKineticesFunctionNameRaw = _xmlPropTree.getProperty("//KineticsFunction/kinetics_filename/text()");
@@ -159,7 +159,7 @@ public class MatlabModel {
         
         // Ok, so I need to see if the rates have kinietc laws, if so use those. Otherwise
         // use mass action as the default
-        ListOf rate_list = model_wrapper.getListOfReactions();
+        //ListOf rate_list = model_wrapper.getListOfReactions();
         for (int rcounter=0;rcounter<NUMBER_OF_RATES;rcounter++)
         {
             // Get the reaction object 

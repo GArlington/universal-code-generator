@@ -56,7 +56,7 @@ public class OctaveCModel {
         buffer.append("}\n");
     }
             
-    public void buildKineticsBuffer(StringBuffer buffer,Model model_wrapper) throws Exception
+    public void buildKineticsBuffer(StringBuffer buffer,Model model_wrapper,Vector<Reaction> vecReactions) throws Exception
     {
     	buffer.append("\n");
         buffer.append("void calculateKinetics(ColumnVector& kV,ColumnVector& x,ColumnVector& rV)\n");
@@ -103,12 +103,12 @@ public class OctaveCModel {
         
         // Ok, so I need to see if the rates have kinietc laws, if so use those. Otherwise
         // use mass action as the default
-        ListOf rate_list = model_wrapper.getListOfReactions();
-        long NUMBER_OF_RATES = model_wrapper.getNumReactions();
+        //ListOf rate_list = model_wrapper.getListOfReactions();
+        int NUMBER_OF_RATES = vecReactions.size();
         for (int rcounter=0;rcounter<NUMBER_OF_RATES;rcounter++)
         {
             // Get the reaction object 
-            Reaction rxn_obj = (Reaction)rate_list.get(rcounter);
+            Reaction rxn_obj = (Reaction)vecReactions.get(rcounter);
             
             if (rxn_obj.isSetKineticLaw())
             {
@@ -495,7 +495,7 @@ public class OctaveCModel {
         buffer.append("}\n");
     }
     
-    public void buildJacobianBuffer(StringBuffer buffer) throws Exception
+    public void buildJacobianBuffer(StringBuffer buffer,Vector vecReactions) throws Exception
     {
         
     	// Get the dimension of the system -
@@ -504,7 +504,7 @@ public class OctaveCModel {
         
         // Create a local copy of the stoichiometric matrix -
         double[][] matrix = new double[NROWS][NCOLS];
-        SBMLModelUtilities.buildStoichiometricMatrix(matrix, model_wrapper);
+        SBMLModelUtilities.buildStoichiometricMatrix(matrix, model_wrapper,vecReactions);
 
         // Ok, when I get here I have the stoichiometric matrix -
         // Initialize the array -
@@ -563,7 +563,7 @@ public class OctaveCModel {
     }
     
     
-    public void buildPMatrixBuffer(StringBuffer buffer) throws Exception
+    public void buildPMatrixBuffer(StringBuffer buffer,Vector vecReactions) throws Exception
     {
     	// Get the dimension of the system -
         int NROWS = (int)model_wrapper.getNumSpecies();
@@ -571,7 +571,7 @@ public class OctaveCModel {
         
         // Create a local copy of the stoichiometric matrix -
         double[][] matrix = new double[NROWS][NCOLS];
-        SBMLModelUtilities.buildStoichiometricMatrix(matrix, model_wrapper);
+        SBMLModelUtilities.buildStoichiometricMatrix(matrix, model_wrapper,vecReactions);
 
         // Ok, when I get here I have the stoichiometric matrix -
         // Initialize the pmatrix array -
