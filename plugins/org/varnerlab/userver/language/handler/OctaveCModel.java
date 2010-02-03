@@ -83,6 +83,7 @@ public class OctaveCModel {
         }
         buffer.append("\n");
         
+        /*
         // connect the parameter names to incoming parameter vector from datafile
         ListOf parameter_list_tmp = model_wrapper.getListOfParameters();
         long NUMBER_OF_PARAMETERS = model_wrapper.getNumParameters();
@@ -95,9 +96,9 @@ public class OctaveCModel {
             buffer.append("kV(");
             buffer.append(scounter);
             buffer.append(",0);\n");
-        }
+        }*/
                 
-        buffer.append("\n");
+        // buffer.append("\n");
         
         buffer.append("\t// List of the rates -- \n");
         
