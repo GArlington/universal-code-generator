@@ -96,7 +96,6 @@ public class GetFileFromServerAction implements ActionListener {
         JList jList = (JList)_propTable.get("JLIST");
         JComboBox jComboBox = (JComboBox)_propTable.get("LOCAL_COMBOBOX");
 
-        
         // Get the selected file from the jList -
         Object[] objArr = jList.getSelectedValues();
         int NUMBER_OF_SELECTED = objArr.length;
@@ -114,6 +113,7 @@ public class GetFileFromServerAction implements ActionListener {
             Document remoteTree = (Document)session.getProperty("REMOTE_FILESYSTEM_TREE");
             
             try {
+            	
             	// Formulate the XPath string -
             	strXPath = "//File[@name=\""+strFile+"\"]/@path";
             	XPathExpression expr = _xpath.compile(strXPath);
@@ -121,7 +121,6 @@ public class GetFileFromServerAction implements ActionListener {
       	  		
       	  		// Grab the path from this node (in the tree)
       	  		strPath = fileNode.getNodeValue();
-      	  		
             }
             catch (Exception error)
             {
