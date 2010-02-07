@@ -7,6 +7,9 @@ package org.varnerlab.universaleditor.gui.actions;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.Component;
+import java.awt.Cursor;
+import java.awt.KeyboardFocusManager;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -24,6 +27,8 @@ import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathFactory;
 
 import org.varnerlab.universaleditor.domain.UEditorSession;
+import org.varnerlab.universaleditor.gui.FileTransferTool;
+import org.varnerlab.universaleditor.gui.NetworkEditorTool;
 import org.varnerlab.universaleditor.service.FileSystemService;
 import org.varnerlab.universaleditor.service.PublishService;
 import org.varnerlab.universaleditor.service.ServerJobTypes;
@@ -42,6 +47,8 @@ import org.xml.sax.InputSource;
 public class GetFileFromServerAction implements ActionListener {
     // Method attributes -
     private Hashtable _propTable = new Hashtable();
+    private Component focusedComponent = null;
+    private KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
  
     // Create a xpFactory/xpath obj (we'll use this a zillion times -)
 	private XPathFactory  _xpFactory = XPathFactory.newInstance();
@@ -90,6 +97,13 @@ public class GetFileFromServerAction implements ActionListener {
         StringBuffer pathBuffer = new StringBuffer();
         String strXPath = "";
         String strPath = "";
+        focusedComponent = manager.getFocusOwner();
+        FileTransferTool windowFrame = windowFrame = (FileTransferTool)focusedComponent.getFocusCycleRootAncestor();
+        
+        try {
+        // set the cursor -
+        // Get the currently focused component -   
+        //windowFrame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         
         // Get some stuff ...
         UEditorSession session = (UEditorSession)_propTable.get("SESSION");
@@ -231,6 +245,11 @@ public class GetFileFromServerAction implements ActionListener {
             pathBuffer.delete(0, pathBuffer.length());
             buffer.delete(0, buffer.length());
             vecFile.clear();
+        }
+        }
+        finally
+        {
+        	//windowFrame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR)); 
         }
     }
 
