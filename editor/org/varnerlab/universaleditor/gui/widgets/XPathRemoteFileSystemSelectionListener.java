@@ -36,8 +36,12 @@ public class XPathRemoteFileSystemSelectionListener implements ListSelectionList
     {
     	String strTmp = "";
     	
+    	// Get the session -
+    	UEditorSession session = (UEditorSession)_propTable.get("SESSION");
+    	String strUserName = (String)session.getProperty("VALIDATED_USERNAME");
+    	
     	// Get the index of the username -
-    	int INT_USERNAME = strPath.indexOf("jdv27");
+    	int INT_USERNAME = strPath.indexOf(strUserName);
     	int INT_LAST_SLASH = strPath.lastIndexOf("/");
     	
     	// Get the selected dir -
@@ -55,16 +59,11 @@ public class XPathRemoteFileSystemSelectionListener implements ListSelectionList
         JComboBox jComboBox = (JComboBox)_propTable.get("REMOTE_COMBOBOX");
         String strFileSystemName = (String)_propTable.get("REMOTE_FILESYSTEM_TREE");
         VLListDoubleClickAdaptor _doubleClickAdapter = (VLListDoubleClickAdaptor)_propTable.get("MOUSE_ADAPTER");
-
         Document doc = null;
 
         // Get the selected file -
         File file = (File)jList.getSelectedValue();
-        
-
-        // Get the selected -
-        //File file = (File)_doubleClickAdapter.getProperty("SELECTED_NODE");
-
+   
         if (file!=null)
         {     	
             // Check to see if this is a dir or a file -
@@ -81,9 +80,64 @@ public class XPathRemoteFileSystemSelectionListener implements ListSelectionList
                 doc = (Document)session.getProperty("REMOTE_FILESYSTEM_TREE");
             }
             
+            // Populate the combobox ------------------------------------------- //
+            // I need to check to see of the item is already in the combobox -
+            Vector<String> tmpVector = new Vector<String>();
+            int NUMBER_OF_ITEMS = jComboBox.getItemCount();
+            for (int index=0;index<NUMBER_OF_ITEMS;index++)
+            {
+            	tmpVector.addElement(((File)jComboBox.getItemAt(index)).getAbsolutePath());
+            }
+            
+            // Ok, so I've put the items into the vector - let's use the contains option
+            String strFilePath = file.getAbsolutePath();
+            if (!tmpVector.contains(strFilePath))
+            {
+            	// Add the dir to drop down -
+                jComboBox.addItem(file);
+                jComboBox.setSelectedItem(file);
+            }
+            else
+            {
+            	// Ok, so we already have this item just set the selected item -
+            	jComboBox.setSelectedItem(file);
+            }      
+            // ------------------------------------------------------------------- //
+            
+            // Generate the xpath string -
+            StringBuffer tmpBuffer = new StringBuffer();
+            tmpBuffer.append("//");
+            int INT_SELECTED_INDEX = jComboBox.getSelectedIndex();
+        	for (int index=1;index<INT_SELECTED_INDEX;index++)
+        	{
+        		// Get the raw path -
+        		String strTmpRaw = tmpVector.get(index);
+        	
+        		// Get the name of the selected item -
+        		int INT_LAST_SLASH = strTmpRaw.lastIndexOf("/");
+            	String strTmpNew = strTmpRaw.substring(INT_LAST_SLASH+1, strTmpRaw.length());
+            	
+            	// Ok, add a Dir call to the xpath string -
+            	tmpBuffer.append("Directory[@name='");
+            	tmpBuffer.append(strTmpNew);
+            	tmpBuffer.append("']");
+            	
+            	if (index<=NUMBER_OF_ITEMS-1)
+            	{
+            		tmpBuffer.append("/");
+            	}
+            }
+        
+            // Ok, so always add the currently selected dir to the xpath string (the jcombo box lags)
+        	tmpBuffer.append("Directory[@name='");
+        	tmpBuffer.append(strFileName);
+        	tmpBuffer.append("']");
+            
+            // Ok, so we need to formulate the correct xpath string -
+            String expression = tmpBuffer.toString();
+            
             // Ok, so let's fire up the xpath -
         	XPath xpath = XPathFactory.newInstance().newXPath();
-        	String expression = "//Directory[@name='"+strFileName+"']";
         	
         	// Try and grab the dirNode corresponding to this session -
         	try {
@@ -101,41 +155,13 @@ public class XPathRemoteFileSystemSelectionListener implements ListSelectionList
                     // what is the value of the path attribute?
                     String strPath = dirNodeAttributes.getNamedItem("path").getNodeValue();
                     
-                    //jComboBox.removeAllItems();
-                    //getPathString(strPath);
-                 
-                    // I need to check to see of the item is already in the combobox -
-                    Vector<String> tmpVector = new Vector<String>();
-                    int NUMBER_OF_ITEMS = jComboBox.getItemCount();
-                    for (int index=0;index<NUMBER_OF_ITEMS;index++)
-                    {
-                    	tmpVector.addElement(((File)jComboBox.getItemAt(index)).getAbsolutePath());
-                    }
-                    
-                    // Ok, so I've put the items into the vector - let's use the contains option
-                    String strFilePath = file.getAbsolutePath();
-                    if (!tmpVector.contains(strFilePath))
-                    {
-                    	// Add the dir to drop down -
-                        jComboBox.addItem(file);
-                        jComboBox.setSelectedItem(file);
-                    }
-                    else
-                    {
-                    	// Ok, so we already have this item just set the selected item -
-                    	jComboBox.setSelectedItem(file);
-                    }                    
-                    
-                    //File selFile = new File(strDirNodeTmp);
-                    //jComboBox.addItem(selFile);
-                    //jComboBox.setSelectedItem(selFile);
-                    
                     // Ok, so we need to set the current selected node in the session -
                     session.setProperty("SELECTED_REMOTE_PATH", strPath);
                     SystemwideEventService.fireNetworkUpdateEvent();
 					
 					// Ok, so I have a directory node - get the kids which are directories -
-					NodeList children = (NodeList) xpath.evaluate(expression+"/Directory", dirNode, XPathConstants.NODESET);
+                    String strDirXPath = expression+"/Directory";
+					NodeList children = (NodeList) xpath.evaluate(strDirXPath, dirNode, XPathConstants.NODESET);
 					int NUMBER_OF_KIDS = children.getLength();
 					for (int index = 0;index<NUMBER_OF_KIDS;index++)
 					{
