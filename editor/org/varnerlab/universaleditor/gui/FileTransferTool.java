@@ -442,6 +442,7 @@ public class FileTransferTool extends javax.swing.JInternalFrame implements Acti
     private void getFileFromServer(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getFileFromServer
         // Method attributes -
         GetFileFromServerAction getFile = new GetFileFromServerAction();
+        
         Vector<File> vecFile = new Vector();
 
         // Configure -
@@ -525,12 +526,15 @@ public class FileTransferTool extends javax.swing.JInternalFrame implements Acti
     	File fileOnServer = null;
     	String strTmp = "";
     	
+    	// Get the selected username -
+    	String strUserName = (String)_session.getProperty("VALIDATED_USERNAME");
+    	
     	if (blnUpdateComboBox)
     	{
     		// update the combox box -
     		jComboBox2.removeAllItems();
-    		File mainFile = new File("jdv27");
-    		remoteRender.setDirectoryFlag("jdv27","DIRECTORY");
+    		File mainFile = new File(strUserName);
+    		remoteRender.setDirectoryFlag(strUserName,"DIRECTORY");
     		jComboBox2.addItem(mainFile);
     	}
 
@@ -540,16 +544,17 @@ public class FileTransferTool extends javax.swing.JInternalFrame implements Acti
     	// Ok, let's get the directories that are children of the current node -
     	
     	// where am I?
-    	System.out.println("Starting XPath Query...");
+    	// System.out.println("Starting XPath Query...");
     	
     	// Formulate the XPath string for directories under the current node -
-    	strXPathDir = "/jdv27/Directory/@name";
+    	strXPathDir = "/"+strUserName+"/Directory/@name";
     	
     	XPathExpression expr = _xpath.compile(strXPathDir);
   	  	NodeList dirNodes = (NodeList)expr.evaluate(node, XPathConstants.NODESET);
   	  	
     	// Ok, so we have the dir nodes -
   	  	int NUMBER_OF_DIRS = dirNodes.getLength();
+  	  	System.out.println("How many dirs - ? "+NUMBER_OF_DIRS);
   	  	for (int index = 0;index<NUMBER_OF_DIRS;index++)
   	  	{
   	  		// Get the node -
@@ -573,7 +578,7 @@ public class FileTransferTool extends javax.swing.JInternalFrame implements Acti
   	  	}
   	  	
   	  	// Formulate the XPath string for directories under the current node -
-    	strXPathDir = "/jdv27/File/@name";
+    	strXPathDir = "/"+strUserName+"/File/@name";
     	
     	XPathExpression file_expr = _xpath.compile(strXPathDir);
   	  	NodeList fileNodes = (NodeList)file_expr.evaluate(node, XPathConstants.NODESET);
@@ -839,10 +844,13 @@ public class FileTransferTool extends javax.swing.JInternalFrame implements Acti
     	
     	if (blnUpdate)
     	{
+    		
+    		String strUserName = (String)_session.getProperty("VALIDATED_USERNAME");
+    		
     		// update the combox box -
     		jComboBox2.removeAllItems();
-    		File mainFile = new File("jdv27");
-    		remoteRender.setDirectoryFlag("jdv27","DIRECTORY");
+    		File mainFile = new File(strUserName);
+    		remoteRender.setDirectoryFlag(strUserName,"DIRECTORY");
     		jComboBox2.addItem(mainFile);
     	}
 
@@ -855,7 +863,8 @@ public class FileTransferTool extends javax.swing.JInternalFrame implements Acti
 	        if (document!=null)
 	        {
 	        	
-	        	strXPathDir = "//Directory[@name='"+strPath+"']/@name";
+	        	//strXPathDir = "//Directory[@name='"+strPath+"']/@name";
+	        	strXPathDir = strPath+"/child::Directory/@name";
 	        	XPathExpression expr = _xpath.compile(strXPathDir);
 	      	  	NodeList dirNodes = (NodeList)expr.evaluate(document, XPathConstants.NODESET);
 	      	  	
@@ -869,17 +878,24 @@ public class FileTransferTool extends javax.swing.JInternalFrame implements Acti
 	      	  		// Get the name of this dir - (we'll update it in the renderer)
 	      	  		strTmp = tmpNode.getNodeValue();
 	      	  		
-	      	  		// Get the name -
-	      	  		fileOnServer = new File(strTmp);
-	      	  		remoteRender.setDirectoryFlag(fileOnServer.getName(), "DIRECTORY");
-	      	  		model.addElement(fileOnServer);
+	      	  		// Don't display hidden dirs -
+	      	  		int INT_TO_DOT = strTmp.indexOf(".");
+	      	  		if (INT_TO_DOT==-1)
+	      	  		{
 	      	  		
-	      	  		// Grab the string -
-	      	  		PublishService.submitData(tmpNode.getNodeValue());
+	      	  			// Get the name -
+	      	  			fileOnServer = new File(strTmp);
+	      	  			remoteRender.setDirectoryFlag(fileOnServer.getName(), "DIRECTORY");
+	      	  			model.addElement(fileOnServer);
+	      	  		
+	      	  			// Grab the string -
+	      	  			PublishService.submitData(tmpNode.getNodeValue());
+	      	  		}
 	      	  	}
 	      	  	
 	      	  	// Formulate the XPath string for directories under the current node -
-	        	strXPathDir = "//File[@name='"+strPath+"']/@name";
+	        	//strXPathDir = "//File[@name='"+strPath+"']/@name";
+	      	  	strXPathDir = strPath+"/child::File/@name";
 	        	
 	        	XPathExpression file_expr = _xpath.compile(strXPathDir);
 	      	  	NodeList fileNodes = (NodeList)file_expr.evaluate(document, XPathConstants.NODESET);
