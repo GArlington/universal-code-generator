@@ -9,6 +9,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.Hashtable;
+import java.util.Vector;
+
 import javax.swing.DefaultListModel;
 import javax.swing.JComboBox;
 import javax.swing.JList;
@@ -61,27 +63,9 @@ public class VLRemoteComboBoxSelectionListener implements ActionListener {
 
             // Get the name of the selected file -
             String strFileName = file.getName();
-
-            if (strFileName.equalsIgnoreCase("jdv27"))
+            String strUserName = (String)session.getProperty("VALIDATED_USERNAME");
+            if (strFileName.equalsIgnoreCase(strUserName))
             {
-                /*
-            	// Get the dom tree -
-                //Document doc = (Document)session.getProperty("REMOTE_FILESYSTEM_TREE");
-
-                if (strFileSystemName!=null)
-                {
-                    doc = (Document)session.getProperty(strFileSystemName);
-                }
-                else
-                {
-                    doc = (Document)session.getProperty("REMOTE_FILESYSTEM_TREE");
-                }
-
-                if (doc!=null)
-                {
-                    listModel.clear();
-                    tool.processNodes(doc, listModel,true);
-                }*/
                 
                 // So if I get here I have dir that is not the root -
             	// Ok, so let's fire up the xpath -
@@ -146,7 +130,46 @@ public class VLRemoteComboBoxSelectionListener implements ActionListener {
                 		SystemwideEventService.fireSessionUpdateEvent();
                 	}
                 	
-                	String expression = "//Directory[@name='"+strFileName+"']/child::*";
+                	Vector<String> tmpVector = new Vector<String>();
+                    int NUMBER_OF_ITEMS = jComboBox.getItemCount();
+                    for (int index=0;index<NUMBER_OF_ITEMS;index++)
+                    {
+                    	tmpVector.addElement(((File)jComboBox.getItemAt(index)).getAbsolutePath());
+                    }
+                	
+                	// Generate the xpath string -
+                    StringBuffer tmpBuffer = new StringBuffer();
+                    tmpBuffer.append("//");
+                    int INT_SELECTED_INDEX = jComboBox.getSelectedIndex();
+                	for (int index=1;index<INT_SELECTED_INDEX;index++)
+                	{
+                		// Get the raw path -
+                		String strTmpRaw = tmpVector.get(index);
+                	
+                		// Get the name of the selected item -
+                		int INT_LAST_SLASH = strTmpRaw.lastIndexOf("/");
+                    	String strTmpNew = strTmpRaw.substring(INT_LAST_SLASH+1, strTmpRaw.length());
+                    	
+                    	// Ok, add a Dir call to the xpath string -
+                    	tmpBuffer.append("Directory[@name='");
+                    	tmpBuffer.append(strTmpNew);
+                    	tmpBuffer.append("']");
+                    	
+                    	if (index<=NUMBER_OF_ITEMS-1)
+                    	{
+                    		tmpBuffer.append("/");
+                    	}
+                    }
+                
+                    // Ok, so always add the currently selected dir to the xpath string (the jcombo box lags)
+                	tmpBuffer.append("Directory[@name='");
+                	tmpBuffer.append(strFileName);
+                	tmpBuffer.append("']");
+                    
+                    // Ok, so we need to formulate the correct xpath string -
+                    String expression = tmpBuffer.toString();
+                    
+                	//String expression = "//Directory[@name='"+strFileName+"']/*";
                 	
                 	// What is the xpath?
                 	PublishService.submitData("What is the xpath expression [leaf node] - "+expression);
@@ -157,9 +180,7 @@ public class VLRemoteComboBoxSelectionListener implements ActionListener {
         				if (dirNode!=null)
         				{
         					listModel.clear();
-                            //tool.updateViewWithXPath(expression, listModel, false);
-        					// tool.processNodes(dirNode, listModel, true);
-        					tool.processChildNodes(strFileName, listModel, false);
+        					tool.processChildNodes(expression, listModel, false);
         				}
         				else
         				{
