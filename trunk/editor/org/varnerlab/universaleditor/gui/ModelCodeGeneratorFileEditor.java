@@ -134,16 +134,15 @@ public class ModelCodeGeneratorFileEditor extends javax.swing.JInternalFrame imp
         this.updateUserObjectTree();
 
         // Set -
-        _tableCellEditor.setDocumentTree((Document)_session.getProperty("PROPERTY_TABLE_TREE"));
+        //_tableCellEditor.setDocumentTree((Document)_session.getProperty("PROPERTY_TABLE_TREE"));
         _propTable.setVLTableCellEditor(_tableCellEditor);
         
         // configure the container list -
-        configureContainerList();
+        // configureContainerList();
     }
 
-    private void configureContainerList()
+    private void configureContainerList(Document doc)
     {
-    	Document doc = (Document)_session.getProperty("PROPERTY_TABLE_TREE");
         String strXPath="//ContainerTags/tag/text()";
         
         try {
@@ -219,7 +218,6 @@ public class ModelCodeGeneratorFileEditor extends javax.swing.JInternalFrame imp
     	*/
     	
     	
-    	
 	}
 
 	public JTree getTree()
@@ -273,7 +271,6 @@ public class ModelCodeGeneratorFileEditor extends javax.swing.JInternalFrame imp
             jTree1.putClientProperty("Quaqua.Tree.style", "striped");
         }
 
-
         // Clear out the tree -
         jTree1.removeAll();
         
@@ -282,7 +279,7 @@ public class ModelCodeGeneratorFileEditor extends javax.swing.JInternalFrame imp
         
         // OK, set lets grab the rootNode from the dom tree -
         XPath xpath = XPathFactory.newInstance().newXPath();
-    	String expression = "/Model";
+    	String expression = "/Template/Model";
     	Node rootNode = (Node) xpath.evaluate(expression, doc, XPathConstants.NODE);
         this._vlRootTreeNode = rootNode;
         _guiRoot = populateJTree(_vlRootTreeNode);
@@ -630,11 +627,6 @@ public class ModelCodeGeneratorFileEditor extends javax.swing.JInternalFrame imp
     	String strSelectedItem = (String)jComboBox1.getSelectedItem();
     	String strPath = "";
     	
-    	
-    	
-    	// Ok, let's figure out what template to load - for now hard-code
-		// strPath = "/Users/jeffreyvarner/dev/UniversalWeb/UniversalEditor/conf/C-Octave.xml";
-		
 		try {
 			// Get the template DOM tree -
 	    	Document template_tree = (Document)_session.getProperty("TEMPLATE_DOM_TREE");
@@ -664,6 +656,13 @@ public class ModelCodeGeneratorFileEditor extends javax.swing.JInternalFrame imp
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
   	  		Document doc = dBuilder.parse(configFile);
   	  		doc.getDocumentElement().normalize();
+  	  		
+  	  		// Ok, so we have the correct file loaded - let's populate some stuff that we'll need later.
+  	  		// First, let's do _aList
+  	  		configureContainerList(doc);
+  	  		
+  	  		// Second, we need to populate the options list for the drop downs -
+  	  		_tableCellEditor.setDocumentTree(doc);
   	  		
   	  		// Ok, so now we the doc, try to create a tree -
   	  		setRootNode(doc);

@@ -56,7 +56,7 @@ public class ModelPropertiesFileTableCellEditor implements IVLTableCellEditor {
  	   	JComboBox comboBox = new JComboBox();
  	   	
  	   	// Get the type
- 	   	String strXPath = "//JComboBox/case[@tag='"+type+"']/type[@tag='"+current_row+"']/item/text()";  	
+ 	   	String strXPath = "//options/case[@tag='"+type+"']/type[@tag='"+current_row+"']/item/text()";  	
  	   	System.out.println("Query the tree with "+strXPath);
  	   		   	
  	   	try {

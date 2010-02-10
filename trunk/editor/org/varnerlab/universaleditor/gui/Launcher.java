@@ -141,6 +141,7 @@ public class Launcher extends JFrame implements IVLPublishClient, IVLSystemwideE
 
                 try {
                     // We'll need to persist that state -
+                	// put some data here about session and current open projects?
                 }
                 catch (Exception error){
                     error.printStackTrace();

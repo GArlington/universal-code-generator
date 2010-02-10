@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<BCX>
+<BCXSystem NetworkFile="Test.xml" Username="jdv">
+	<BCXExperiment ID="RA_01" SteadyState="true" Time="100">
+		<BCXDataGroup ID="A-GRp" Species="A" Group="self" Cite="Yen2006">
+			<BCXValue Time="5" Concentration="2.53" Error="1.25"/>
+			<BCXValue Time="10" Concentration="3.53" Error="1.25"/>
+			<BCXValue Time="15" Concentration="4.53" Error="1.25"/>
+		</BCXDataGroup>
+	</BCXExperiment>
+</BCXSystem>
+</BCX>
