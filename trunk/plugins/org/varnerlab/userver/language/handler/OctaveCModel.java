@@ -168,7 +168,7 @@ public class OctaveCModel {
                     // Ok, I need to check to see if there is a stoichiometric coefficient
                     // that is not 1
                     double dblTmp = srTmp.getStoichiometry();
-                    System.out.println("What the f*ck - Species "+strTmp+" has a coeff of "+dblTmp+" in rxn "+reactant_index);
+                    //System.out.println("What the f*ck - Species "+strTmp+" has a coeff of "+dblTmp+" in rxn "+reactant_index);
                     
                     if (dblTmp!=1.0)
                     {
