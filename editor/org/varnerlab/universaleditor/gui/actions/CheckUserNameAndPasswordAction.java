@@ -71,7 +71,7 @@ public class CheckUserNameAndPasswordAction implements ActionListener {
 
            // Get username and password -
            String strUserName = (String)this.getProperty("USERNAME");
-           String strPassword = (String)this.getProperty("PASSWORD");
+           String strPassword = (String)this.getProperty("USER_PASSWORD");
            DatabaseAPI dbAPI = (DatabaseAPI)this.getProperty("DATABASE_CONNECTION");
 
            // Ok, when I get here I need to check the database -

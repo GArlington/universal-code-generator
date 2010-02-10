@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<widget>
+	<AMenuBar>
+		<AMenu widgetText="File">
+		</AMenu>
+		<AMenu widgetText="Edit">
+		</AMenu>
+		<AMenu widgetText="Tools">
+		</AMenu>
+                <AMenu widgetText="Window">
+                </AMenu>
+                <AMenu widgetText="Help">
+                </AMenu>
+	</AMenuBar>
+</widget>

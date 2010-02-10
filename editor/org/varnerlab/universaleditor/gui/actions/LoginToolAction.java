@@ -34,7 +34,7 @@ public class LoginToolAction implements ActionListener {
         
         // Get some session info -
         String strUserName = (String)session.getProperty("VALIDATED_USERNAME");
-        String strUserPassword = (String)session.getProperty("PASSWORD");
+        String strUserPassword = (String)session.getProperty("USER_PASSWORD");
         
         if (strUserName!=null)
         {

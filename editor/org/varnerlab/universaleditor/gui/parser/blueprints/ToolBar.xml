@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<widget>
+	<VLToolBar>
+                <VLButton widgetText="Login" widgetIconOff="Buddy-17-Grey.png" widgetIconOn="Buddy-17.png" actionListener="LoginToolAction"/>
+				
+	        	<VLButton widgetText="Properties file editor" widgetIconOff="Property-15-Grey.png" widgetIconOn="Property-15.png" actionListener="OpenToolAction"/>
+                <VLButton widgetText="BioChemExp file editor" widgetIconOff="Beaker-18-Grey.png" widgetIconOn="Beaker-18.png" actionListener="OpenBioChemExpToolAction"/>
+				<VLButton widgetText="Network file editor" widgetIconOff="Cat-Helmet-16-Grey.png" widgetIconOn="Cat-Helmet-16.png"  actionListener="OpenNetworkEditorToolAction"/>
+				<VLButton widgetText="Project tool" widgetIconOff="Transmit-18-Grey.png" widgetIconOn="Transmit-18.png" actionListener="OpenProjectViewAction"/>
+				<VLButton widgetText="Generate code tool" widgetIconOff="Robot-15-Grey.png" widgetIconOn="Robot-15.png" actionListener="GenerateCodeAction"/>
+				
+				<VLButton widgetText="Console tool" widgetIconOff="iMac-16-Grey.png" widgetIconOn="iMac-16.png" actionListener="OpenConsoleAction"/>
+				
+				<VLButton widgetText="Exit" widgetIconOff="exit-32-Grey.png" widgetIconOn="exit-32.png" actionListener="ExitAction"/>
+	</VLToolBar>
+</widget>

@@ -13,16 +13,26 @@ package org.varnerlab.universaleditor.gui;
 
 import java.awt.Color;
 import javax.swing.ImageIcon;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathFactory;
+
 import org.varnerlab.universaleditor.service.PublishService;
 import org.varnerlab.universaleditor.service.ServerJobTypes;
 import org.varnerlab.universaleditor.service.SocketService;
 import org.varnerlab.universaleditor.service.SystemwideEventService;
 import org.varnerlab.universaleditor.database.DatabaseAPI;
+import org.varnerlab.universaleditor.database.GConnectionFactory;
+import org.varnerlab.universaleditor.database.IGFactory;
 import org.varnerlab.universaleditor.domain.*;
 import org.varnerlab.universaleditor.gui.actions.CheckUserNameAndPasswordAction;
 import org.varnerlab.universaleditor.gui.widgets.LoginToolFocusListener;
 import org.varnerlab.universaleditor.gui.widgets.VLDesktopPane;
 import org.varnerlab.universaleditor.gui.widgets.VLDialogGlassPane;
+import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 
 /**
@@ -41,8 +51,37 @@ public class LoginTool extends javax.swing.JInternalFrame {
     private DatabaseAPI dbAPI = null;
     private UEditorSession _session = null;
     private VLDialogGlassPane _glassPane = null;
+    private XPathFactory  _xpFactory = XPathFactory.newInstance();
+	private XPath _xpath = _xpFactory.newXPath();
 
    
+	private void processPropertyAttributes(String strXPath,Document doc,IGFactory session) throws Exception
+    {
+    	NodeList propNodeList = (NodeList)_xpath.evaluate(strXPath, doc, XPathConstants.NODESET);
+    	int NUMBER_PATH_NODES = propNodeList.getLength();
+    	for (int index=0;index<NUMBER_PATH_NODES;index++)
+    	{
+    		// Get the current node -
+    		Node tmpNode = propNodeList.item(index);
+    		
+    		// Process the attributes of this node ..
+    		NamedNodeMap map = tmpNode.getAttributes();
+    		int NUMBER_OF_ATTRIBUTES = map.getLength();
+    		for (int att_index=0;att_index<NUMBER_OF_ATTRIBUTES;att_index++)
+    		{
+    			// Ok bitches, so I should get the attribute name (capitalize it) and key the value 
+    			Node attNode = map.item(att_index);
+    			String keyName = ((String)attNode.getNodeName()).toUpperCase();
+    			String strValue = attNode.getNodeValue();
+    			
+    			// store the key,value pair in the session object -
+    			
+
+    			
+    			session.setProperty(keyName, strValue);
+    		}
+    	}
+    }
     
     public void setUserName(String name)
     {
@@ -100,14 +139,21 @@ public class LoginTool extends javax.swing.JInternalFrame {
 
                 PublishService.submitData("No current db connection. Let's try to create a new database connection -");
 
-                // If I get here, then I don't have a db component. Load one -
+                // Ok, create a connection factory object -
+                IGFactory tmpFactory = new GConnectionFactory();
+                
+                // Configure the connection factory -
+                
+                // Get the prop_tree out of memory -
+                Document doc = (Document)_session.getProperty("UNIVERSAL_DOM_TREE");
+                
+                // Database information -
+            	String strXPDatabase = "//database_information/property";
+            	processPropertyAttributes(strXPDatabase,doc,tmpFactory);
+            	
+            	 // If I get here, then I don't have a db component. Load one -
                 dbAPI = new DatabaseAPI();
-
-                // Load the config file -
-                String strXML = (String)_session.getProperty("DATABASE_CONFIG_FILE");
-
-                // Set the props
-                dbAPI.setProperty("DATABASE_CONFIG_FILE", strXML);
+                dbAPI.setProperty("CONNECTION_FACTORY", tmpFactory);
 
                 // Load the config and establish the connection -
                 dbAPI.loadConnection();
@@ -300,7 +346,7 @@ public class LoginTool extends javax.swing.JInternalFrame {
         String strPassword = new String(pwdTxtField.getPassword());
 
         newLoginAction.setProperty("USERNAME", strUserName);
-        newLoginAction.setProperty("PASSWORD", strPassword);
+        newLoginAction.setProperty("USER_PASSWORD", strPassword);
 
         // Check the username -
         newLoginAction.actionPerformed(evt);
@@ -325,7 +371,7 @@ public class LoginTool extends javax.swing.JInternalFrame {
             // How should I do this??
             UEditorSession session = (Launcher.getInstance()).getSession();
             session.setProperty("VALIDATED_USERNAME",strUserName);
-            session.setProperty("PASSWORD", strPassword);
+            session.setProperty("USER_PASSWORD", strPassword);
 
             VLDesktopPane desktop = (VLDesktopPane)(Launcher.getInstance()).getContentPane();
             desktop.setUserName(strUserName);

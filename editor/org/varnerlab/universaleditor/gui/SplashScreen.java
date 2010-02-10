@@ -2,6 +2,8 @@ package org.varnerlab.universaleditor.gui;
 
 import java.awt.*;
 
+import java.awt.geom.RoundRectangle2D;
+import java.awt.geom.RoundRectangle2D.Double;
 import javax.swing.*;
 import com.sun.awt.AWTUtilities;
 
@@ -36,14 +38,24 @@ public class SplashScreen extends JWindow {
 		progressBar.setPreferredSize(prefSize);
 		progressBar.setBorderPainted(true);
 		
-		// set the opacity of the window -
-		AWTUtilities.setWindowOpacity(this, (float) 0.85);
 		
 		// Set the location of the splash screen -
 		int inset_X=700;
 		int inset_Y=400;
         Dimension screenSize=Toolkit.getDefaultToolkit().getScreenSize();
         setBounds(inset_X,inset_Y,screenSize.width-inset_X*2,screenSize.height-inset_Y*2);
+        
+        // We need to wrap this in some kind of try catch ot do a check to make sure we can support the transluent window -
+        if (AWTUtilities.isTranslucencySupported(AWTUtilities.Translucency.TRANSLUCENT))
+        {
+        	AWTUtilities.setWindowOpacity(this, (float) 0.85);
+        }
+        
+        
+        // set the opacity and shape of the window -	
+		//RoundRectangle2D shape = new RoundRectangle2D.Double((double)inset_X,(double)inset_Y,(double)screenSize.width-inset_X*2,(double)screenSize.height-inset_Y*2,10.0,10.0);
+		//AWTUtilities.setWindowShape(this,shape);
+		
 		
         // Set the icon and blah blah about the panel -
 		imageLabel.setIcon(imageIcon);

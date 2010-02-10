@@ -73,8 +73,8 @@ public class Builder extends Object {
     
     
     public String getPath(){
-        //String path=instance().getClass().getPackage().getName().replace('.','/')+"/blueprint/";
-        String path = "/Users/jeffreyvarner/dev/UniversalWeb/UniversalEditor/blueprints/";
+        //String path=instance().getClass().getPackage().getName().replace('.','/')+"/blueprints/";
+        String path = "./conf/";
         return(path);
     }
     
