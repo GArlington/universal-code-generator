@@ -115,9 +115,7 @@ public class LogServerThread extends Thread {
                 // Ok, when I get here I have rcvd a packet (the socket.receive(..) blocks). Need to get some data from the incoming packet -
                 String strClientMessage = new String(packet.getData(),0,packet.getLength());
                 
-                System.out.println("We have rcvd the following request - "+strClientMessage);
-                
-                
+                System.out.println("We have rcvd the following request - "+strClientMessage);        
                 
                 // The client message should contain the working directory that we need to look at -
                 if (!strClientMessage.isEmpty())
@@ -125,7 +123,8 @@ public class LogServerThread extends Thread {
                 	// Get the path -
                 	String strPath = _strWorkingDir+strClientMessage+"/"+".tmp/job.log";
                 	
-                	tmpBuffer.append("START ********************************************************************************************** START \n");
+            
+                	tmpBuffer.append("START ==********************************************************************************************* START \n");
                 	
                 	// Ok, we need to put some logic here to see if I can load the file -
                 	File fileTmp = new File(strPath);
