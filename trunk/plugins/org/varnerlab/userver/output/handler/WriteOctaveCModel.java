@@ -36,6 +36,7 @@ public class WriteOctaveCModel implements IOutputHandler {
         StringBuffer data_buffer = new StringBuffer();
         StringBuffer adj_driver_buffer = new StringBuffer();
         StringBuffer adj_buffer = new StringBuffer();
+        StringBuffer debug_buffer = new StringBuffer();
         Vector<Reaction> vecReactions = new Vector<Reaction>();
         
         double[][] dblSTMatrix = null;
@@ -55,11 +56,11 @@ public class WriteOctaveCModel implements IOutputHandler {
         // Get the resource type (sbml model) -
         Model model_wrapper = (Model)object;
         
-        // Set the reference to the model wrapper -
-        octave.setModel(model_wrapper);
-        
         // Check to make sure all the reversible rates are 0,inf
         SBMLModelUtilities.convertReversibleRates(model_wrapper,vecReactions);
+        
+        // Set the reference to the model wrapper -
+        octave.setModel(model_wrapper);
         
         // Ok, lets build the stoichiometric matrix -
         NUMBER_OF_SPECIES = (int)model_wrapper.getNumSpecies(); 
@@ -76,6 +77,9 @@ public class WriteOctaveCModel implements IOutputHandler {
         octave.buildMassBalanceEquations(massbalances_buffer);
         octave.buildKineticsBuffer(massbalances_buffer,model_wrapper,vecReactions);
         octave.buildDriverBuffer(driver_buffer,_xmlPropTree);
+        
+        SBMLModelUtilities.buildDebugReactionListBuffer(debug_buffer, model_wrapper, vecReactions);
+        SBMLModelUtilities.dumpDebugFileToDisk(debug_buffer, _xmlPropTree);
         
         // Ok, build adj buffer -
         octave.buildSolveAdjBalBuffer(adj_driver_buffer, _xmlPropTree);
