@@ -7,6 +7,9 @@ package universaleditor;
 
 // import statements -
 import java.awt.image.BufferedImage;
+
+import com.sun.awt.AWTUtilities;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -27,7 +30,9 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+
 import org.varnerlab.universaleditor.gui.*;
+import org.varnerlab.universaleditor.gui.widgets.WaitThread;
 import org.varnerlab.universaleditor.domain.*;
 import org.varnerlab.universaleditor.service.VLIconManagerService;
 import org.w3c.dom.Document;
@@ -46,11 +51,16 @@ public class Main {
     public static void main(String[] args) {
         // TODO code application logic here
     	
-    	//SplashScreen splash = new SplashScreen(10000);
+    	SplashScreen splashScreen = new SplashScreen(new ImageIcon(VLImageLoader.getPNGImage("UniversalLogo-256.png")));
+    	splashScreen.setProgressMax(100);
+    	splashScreen.setVisible(true);
+    	splashScreen.setAlwaysOnTop(true);
+    	
     	//splash.showSplashAndExit();
     	
         Main editor = new Main();
         launcher = Launcher.getInstance();
+        splashScreen.setProgress(20);
 
         // Update the session object from the editor -
         // Get the prop file path -
@@ -61,7 +71,9 @@ public class Main {
         
         try {
             editor.doInitializeSession(strPropPath,session);
+            splashScreen.setProgress(40);      
             (Launcher.getInstance()).loadIcons();
+            splashScreen.setProgress(50);
 
             // Get the launcher and set its icon -
             //(Launcher.getInstance()).setIconImage(VLIconManagerService.getIcon("VLUNIVERSAL-ICON"));
@@ -93,9 +105,32 @@ public class Main {
             }
 
 
+            // Update the progress and wait for a second -or- so -
+            splashScreen.setProgress(60);
+            WaitThread.manySec(1);
+            
+            String strPluginDir = "./lib";
+            File filePlugin = new File(strPluginDir);
+            File[] jarFileArray = filePlugin.listFiles();
+            int NUMBER_OF_FILES = jarFileArray.length;
+            for (int index=0;index<NUMBER_OF_FILES;index++)
+            {
+            	File tmpFile = jarFileArray[index];
+            	LoadPluginJarFiles.addFile(tmpFile);
+            }
+            
+            splashScreen.setProgress(80);
+            WaitThread.manySec(1);
+            splashScreen.setProgress(90);
+            WaitThread.manySec(1);
+            splashScreen.setProgress(100);
+            WaitThread.manySec(1);
+  
+            // shut down the splash screen -
+            splashScreen.setVisible(false);
+            
             // Make visible -
             editor.launchTheEditor();
-
         }
         catch (Exception error)
         {
