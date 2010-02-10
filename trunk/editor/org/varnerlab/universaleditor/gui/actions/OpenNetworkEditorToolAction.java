@@ -27,8 +27,11 @@ public class OpenNetworkEditorToolAction implements ActionListener {
 
 
         // Create process explorer
-        NetworkEditorTool _tool= new NetworkEditorTool();
+        NetworkEditorTool _tool= NetworkEditorTool.getInstance();
         _tool.setVisible(true);
+        
+        // register with main -
+        _main.setNetworkFileEditor(_tool);
         
         // Set the frameIcon
         _tool.setFrameIcon(VLIconManagerService.getIcon("NETWORKFILEEDITOR-GREY-ICON"));

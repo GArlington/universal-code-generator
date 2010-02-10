@@ -8,10 +8,11 @@ package org.varnerlab.universaleditor.gui;
 // import statements -
 import javax.swing.*;
 import java.awt.*;
-import java.awt.Container;
 import java.awt.event.*;
 
 import java.util.Enumeration;
+import java.util.Vector;
+
 import org.varnerlab.universaleditor.service.IVLPublishClient;
 import org.varnerlab.universaleditor.service.PublishService;
 import org.varnerlab.universaleditor.gui.widgets.*;
@@ -35,6 +36,11 @@ public class Launcher extends JFrame implements IVLPublishClient, IVLSystemwideE
     private ConsoleWindow console = null;
     private SplashScreen _splash = null;
     
+    // set references to tools -
+    private ModelCodeGeneratorFileEditor _modelCodeGeneratorFileEditor = null;
+    private NetworkEditorTool _networkEditorTool = null;
+    private FileTransferTool _fileTransferTool = null;
+    
     // Session object -
     private UEditorSession _sessionObj = null;
 
@@ -45,6 +51,36 @@ public class Launcher extends JFrame implements IVLPublishClient, IVLSystemwideE
     public static final String builderPath=Builder.instance().getPath();
 
 
+    public void setFileTransferToolRef(FileTransferTool tool)
+    {
+    	_fileTransferTool = tool;
+    }
+    
+    public FileTransferTool getFileTransferToolRef()
+    {
+    	return(_fileTransferTool);
+    }
+    
+    public void setModelCodeGeneratorFileEditor(ModelCodeGeneratorFileEditor ref)
+    {
+    	_modelCodeGeneratorFileEditor = ref;
+    }
+      
+    public ModelCodeGeneratorFileEditor getModelCodeGeneratorFileEditorRef()
+    {
+    	return(_modelCodeGeneratorFileEditor);
+    }
+    
+    public void setNetworkFileEditor(NetworkEditorTool ref)
+    {
+    	_networkEditorTool = ref;
+    }
+      
+    public NetworkEditorTool getNetworkEditorToolRef()
+    {
+    	return(_networkEditorTool);
+    }
+    
     // static accessor method
     public static Launcher getInstance(){
         if (_this==null){
@@ -80,12 +116,6 @@ public class Launcher extends JFrame implements IVLPublishClient, IVLSystemwideE
     {
         super("Universal Code Generator Suite v1.0 - Varnerlab Cornell University");
         
-        // Throw a nice little title page up on the screen first
-        // _splash = new SplashScreen(10000);
-
-        // Normally, we'd call splash.showSplash() and get on 
-        // with the program. But, since this is only a test...
-        // _splash.showSplashAndExit();
 
         try {
             //UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");

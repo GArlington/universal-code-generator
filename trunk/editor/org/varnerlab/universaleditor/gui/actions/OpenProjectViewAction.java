@@ -27,7 +27,7 @@ public class OpenProjectViewAction implements ActionListener {
 
 
        // Create process explorer
-       FileTransferTool _tool= new FileTransferTool();
+       FileTransferTool _tool= FileTransferTool.getInstance();
         _tool.setVisible(true);
         
        // Set the frameIcon

@@ -12,7 +12,7 @@ import java.io.*;
 
 public class VLImageLoader extends Object {
    private static String m_strDIRECTORY
-      = "/Users/jeffreyvarner/dev/UniversalWeb/UniversalEditor/images/";
+      = "./images/";
    private static VLImageLoader _instance = null;
 
    public static VLImageLoader instance()
@@ -59,7 +59,7 @@ public class VLImageLoader extends Object {
    // Quick hack to load png files from disk -
    public static ImageIcon getPNGImageIcon(String strFileBaseName)
    {
-       Image img = getPNGImage(strFileBaseName);
+	   Image img = getPNGImage(strFileBaseName);
        ImageIcon icon = new ImageIcon(img);
        return(icon);
 

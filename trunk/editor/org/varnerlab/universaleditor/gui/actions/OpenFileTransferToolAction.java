@@ -26,7 +26,7 @@ public class OpenFileTransferToolAction implements ActionListener {
         Launcher _main=Launcher.getInstance();
 
        // Create process explorer
-       FileTransferTool _tool= new FileTransferTool();
+       FileTransferTool _tool= FileTransferTool.getInstance();
         _tool.setVisible(true);
         
        // Set the frameIcon

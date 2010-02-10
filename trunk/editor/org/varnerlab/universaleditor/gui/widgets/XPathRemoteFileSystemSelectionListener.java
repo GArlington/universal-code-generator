@@ -69,6 +69,11 @@ public class XPathRemoteFileSystemSelectionListener implements ListSelectionList
             // Check to see if this is a dir or a file -
         	String strFileName = file.getName();
             String strDirFlag = renderer.getDirectoryFlag(strFileName);
+            
+            if (!strDirFlag.equalsIgnoreCase("DIRECTORY"))
+            {
+            	return;
+            }
 
             // Ok, let's get the remote filesystem tree from the session object -
             if (strFileSystemName!=null)
