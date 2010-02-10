@@ -52,7 +52,8 @@ import org.w3c.dom.NodeList;
  */
 public class ModelCodeGeneratorFileEditor extends javax.swing.JInternalFrame implements IVLTreeGUI,IVLSystemwideEventListener,TableModelListener {
     // Class/instance attributes -
-    static int openFrameCount=1;
+    private static ModelCodeGeneratorFileEditor _this = null;
+	static int openFrameCount=1;
     static final int xOffset=50;
     static final int yOffset=50;
 
@@ -77,9 +78,17 @@ public class ModelCodeGeneratorFileEditor extends javax.swing.JInternalFrame imp
 	private XPath _xpath = _xpFactory.newXPath();
 	private ArrayList<String> _aList = new ArrayList<String>();
 
+	// static accessor method
+    public static ModelCodeGeneratorFileEditor getInstance(){
+        if (_this==null){
+            _this=new ModelCodeGeneratorFileEditor();
+        }
+        return(_this);
+    }
+	
 
     /** Creates new form ModelCodeGeneratorFileEditor */
-    public ModelCodeGeneratorFileEditor() {
+    private ModelCodeGeneratorFileEditor() {
         //super("Property File Editor Tool v1.0");
 
         // Call to super

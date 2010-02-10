@@ -3,8 +3,11 @@ package org.varnerlab.universaleditor.gui.actions;
 // Import statements
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
+import javax.swing.SwingUtilities;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.beans.PropertyVetoException;
 
 import org.varnerlab.universaleditor.gui.*;
 import org.varnerlab.universaleditor.service.VLIconManagerService;
@@ -25,9 +28,19 @@ public class OpenToolAction implements ActionListener {
         // Grab Launcher instance
         Launcher _main=Launcher.getInstance();
 
-
        // Create process explorer
-        ModelCodeGeneratorFileEditor _tool= new ModelCodeGeneratorFileEditor();
+       ModelCodeGeneratorFileEditor _tool= ModelCodeGeneratorFileEditor.getInstance();
+       _main.setModelCodeGeneratorFileEditor(_tool);
+        
+        try {
+			_tool.setSelected(true);
+		} catch (PropertyVetoException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+        _tool.moveToFront();
+        
+        //_tool.requestFocus();
         _tool.setVisible(true);
         
         // Set the frameIcon

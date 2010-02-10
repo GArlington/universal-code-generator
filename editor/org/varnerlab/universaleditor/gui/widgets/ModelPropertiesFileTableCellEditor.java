@@ -56,7 +56,8 @@ public class ModelPropertiesFileTableCellEditor implements IVLTableCellEditor {
  	   	JComboBox comboBox = new JComboBox();
  	   	
  	   	// Get the type
- 	   	String strXPath = "//JComboBox/case[@tag='"+type+"']/type[@tag='"+current_row+"']/item/text()";
+ 	   	String strXPath = "//JComboBox/case[@tag='"+type+"']/type[@tag='"+current_row+"']/item/text()";  	
+ 	   	System.out.println("Query the tree with "+strXPath);
  	   		   	
  	   	try {
 			// Get the item of this type and tag -
@@ -113,11 +114,17 @@ public class ModelPropertiesFileTableCellEditor implements IVLTableCellEditor {
     		String type="OCTAVE-C";
     		return(XPathCellEditor(row,col,_vecListItems,table,type));
     	}
-    	else if (_strSelectedItem.equalsIgnoreCase("File type translation (flatfile to flatfile conversion)"))
+    	else if (_strSelectedItem.equalsIgnoreCase("File type translation (flatfile to SBML conversion)"))
     	{
     		String type="SBML";
     		return(XPathCellEditor(row,col,_vecListItems,table,type));
     	}
+    	else if (_strSelectedItem.equalsIgnoreCase("File type translation (SBML to flatfile conversion)"))
+    	{
+    		String type="VFF";
+    		return(XPathCellEditor(row,col,_vecListItems,table,type));
+    	}
+    	
     	else if (_strSelectedItem.equalsIgnoreCase("Sundials model (*.c)"))
     	{
     		String type="SUNDIALS";

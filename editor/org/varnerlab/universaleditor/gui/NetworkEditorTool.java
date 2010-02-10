@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Vector;
 import javax.swing.ImageIcon;
+import javax.swing.JTree;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -56,6 +57,7 @@ import org.varnerlab.universaleditor.gui.actions.SaveSBMLFileAction;
 import org.varnerlab.universaleditor.gui.widgets.IVLTableCellEditor;
 import org.varnerlab.universaleditor.gui.widgets.NetworkTableCellEditor;
 import org.varnerlab.universaleditor.gui.widgets.NetworkToolFocusListener;
+import org.varnerlab.universaleditor.gui.widgets.NewSBMLTreeLeafKeyAdaptor;
 import org.varnerlab.universaleditor.gui.widgets.VLDialogGlassPane;
 import org.varnerlab.universaleditor.gui.widgets.VLJPropTreeCellRenderer;
 import org.varnerlab.universaleditor.gui.widgets.VLJTable;
@@ -79,7 +81,8 @@ import org.w3c.dom.NodeList;
  */
 public class NetworkEditorTool extends javax.swing.JInternalFrame implements TableModelListener {
 	// Class/instance attributes -
-    private ImageIcon _imgIconOff = null;
+    private static NetworkEditorTool _this = null;
+	private ImageIcon _imgIconOff = null;
     private ImageIcon _imgIconOn = null;
     private ImageIcon _imgIconCurrent = null;
     private VLDialogGlassPane _glassPane = null;
@@ -101,8 +104,17 @@ public class NetworkEditorTool extends javax.swing.JInternalFrame implements Tab
 	private XPathFactory  _xpFactory = XPathFactory.newInstance();
 	private XPath _xpath = _xpFactory.newXPath();
 
+	// static accessor method
+    public static NetworkEditorTool getInstance(){
+        if (_this==null){
+            _this=new NetworkEditorTool();
+        }
+        return(_this);
+    }
+	
+
     /** Creates new form NetworkEditorTool */
-    public NetworkEditorTool() {
+    private NetworkEditorTool() {
          // Call to super
         super("SBML Network Editor Tool v1.0",false,true);
         
@@ -118,8 +130,10 @@ public class NetworkEditorTool extends javax.swing.JInternalFrame implements Tab
         aList.add("listOfCompartments");
         aList.add("listOfUnits");
         aList.add("listOfUnitDefinitions");
+        aList.add("listOfParameters");
         aList.add("unitDefinition");
         aList.add("listOfReactions");
+        aList.add("listOfRules");
         aList.add("notes");
         aList.add("listOfReactants");
         aList.add("listOfProducts");
@@ -191,12 +205,49 @@ public class NetworkEditorTool extends javax.swing.JInternalFrame implements Tab
 
         // We need the table model to update when I clisk a node -
         jTree1.addTreeSelectionListener(_tableModel);
+        jTree1.addKeyListener(new NewSBMLTreeLeafKeyAdaptor());
 
         // I need to see if
         _tableModel.fireTableDataChanged();
         
         // Add the tree to the scroll pane -
         jScrollPane1.setViewportView(jTree1);
+    }
+    
+    // Set the root node of the XML tree -
+    public void setRootNode(Document doc, int level) throws Exception
+    {
+        // Clear out the tree -
+        jTree1.removeAll();
+
+        // Get the model node and its attributes -
+        String expression = "/sbml:sbml";
+        
+    	Node rootNode = (Node)_xpath.evaluate(expression, doc, XPathConstants.NODE);
+        this._vlRootTreeNode = rootNode;
+        _guiRoot = populateJTree(_vlRootTreeNode);
+        
+        // add to the tree -
+        DefaultTreeModel mod = new DefaultTreeModel (_guiRoot);
+        jTree1.setModel (mod);
+
+        // We need the table model to update when I clisk a node -
+        jTree1.addTreeSelectionListener(_tableModel);
+        jTree1.addKeyListener(new NewSBMLTreeLeafKeyAdaptor());
+        
+        // I need to see if
+        _tableModel.fireTableDataChanged();
+        
+        // Add the tree to the scroll pane -
+        jScrollPane1.setViewportView(jTree1);
+        jTree1.expandRow(0);  
+        jTree1.expandRow(level-1);
+        jTree1.setSelectionRow(level);
+    }
+    
+    public JTree getTree()
+    {
+    	return(jTree1);
     }
     
     
@@ -461,6 +512,9 @@ public class NetworkEditorTool extends javax.swing.JInternalFrame implements Tab
     {
     	NewSBMLTreeAction action = new NewSBMLTreeAction();
     	action.actionPerformed(evt);
+    	
+    	// Enable the save as button -
+        jButton1.setEnabled(true);
     }
 
     private void saveSBMLFileToDisk(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveSBMLFileToDisk
@@ -513,6 +567,9 @@ public class NetworkEditorTool extends javax.swing.JInternalFrame implements Tab
             Object val = _tableModel.getValueAt(ROW_INDEX, 1);
             String tmp = val.toString();
 
+            System.out.println("Looking at key = "+key+" val="+tmp);
+            
+            
             if (key!=null || !tmp.equalsIgnoreCase(" "))
             {
 
@@ -545,16 +602,16 @@ public class NetworkEditorTool extends javax.swing.JInternalFrame implements Tab
                 	{
                 		// Ok, if I'm here then I have a match -- update the xml node and break out of the loop-
                 		attributeNode.setNodeValue(tmp);
+                		System.out.println("UPDATE key = "+key+" VALUE="+tmp);                		
                 		break;
                 	}
                 }
 
-                System.out.println("UPDATE key = "+key+" VALUE="+val);
-
+                
                 // Let's overright the old node -
-                // selectedNode.setUserObject(vltnNode);
+                //selectedNode.setUserObject(vltnNode);
                 DefaultTreeModel treeModel = (DefaultTreeModel)jTree1.getModel();
-                treeModel.nodeChanged(selectedNode);
+                treeModel.nodeChanged(selectedNode); 
             }
         }
 

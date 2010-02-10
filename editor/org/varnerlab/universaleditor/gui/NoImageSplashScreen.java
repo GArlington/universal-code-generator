@@ -5,19 +5,18 @@ import java.awt.*;
 import javax.swing.*;
 import com.sun.awt.AWTUtilities;
 
-public class SplashScreen extends JWindow {
+public class NoImageSplashScreen extends JWindow {
 
 	// class/instance variables -
 	BorderLayout borderLayout1 = new BorderLayout();
-	JLabel imageLabel = new JLabel();
+	JLabel messageLabel = new JLabel();
 	JPanel southPanel = new JPanel();
 	FlowLayout southPanelFlowLayout = new FlowLayout();
 	JProgressBar progressBar = new JProgressBar();
 	ImageIcon imageIcon;
 
 
-	public SplashScreen(ImageIcon imageIcon) {
-		this.imageIcon = imageIcon;
+	public NoImageSplashScreen() {
 		try {
 			jbInit();
 		}
@@ -46,16 +45,16 @@ public class SplashScreen extends JWindow {
         setBounds(inset_X,inset_Y,screenSize.width-inset_X*2,screenSize.height-inset_Y*2);
 		
         // Set the icon and blah blah about the panel -
-		imageLabel.setIcon(imageIcon);
-		imageLabel.setBackground(Color.DARK_GRAY);
-		imageLabel.setForeground(Color.DARK_GRAY);
+		messageLabel.setText("Message will go here ...");
+		messageLabel.setBackground(Color.DARK_GRAY);
+		messageLabel.setForeground(Color.white);
 		setBackground(new Color(100,100,100));
 		
 		this.getContentPane().setLayout(borderLayout1);
 		southPanel.setLayout(southPanelFlowLayout);
 		//southPanel.setBackground(new Color(100,100,100));
 		southPanel.setBackground(Color.DARK_GRAY);
-		this.getContentPane().add(imageLabel, BorderLayout.CENTER);
+		this.getContentPane().add(messageLabel, BorderLayout.CENTER);
 		this.getContentPane().add(southPanel, BorderLayout.SOUTH);
 		southPanel.add(progressBar, null);
 		setFont((new Font("Dialog",Font.PLAIN,12)));
