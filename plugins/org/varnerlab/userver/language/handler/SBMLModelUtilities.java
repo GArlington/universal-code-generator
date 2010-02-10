@@ -19,6 +19,113 @@ public class SBMLModelUtilities {
 		GIOL.write(strPath,buffer);
     }
 	
+	// Generate a vector of reacrions -
+	public static void buildReactionStringVector(Model model, Vector vecReactions,Vector vecOut) throws Exception
+	{
+		StringBuffer buffer = new StringBuffer();
+		int NUMBER_OF_RATES = (int)vecReactions.size();
+		for (int index=0;index<NUMBER_OF_RATES;index++)
+		{
+			// Get the reaction -
+			Reaction rxn = (Reaction)vecReactions.get(index);
+			
+			// Formulate the reaction string -
+			ListOf reactant_list = rxn.getListOfReactants();
+			int NUMBER_REACTANTS = (int)reactant_list.size();
+			
+			ListOf product_list = rxn.getListOfProducts();
+			int NUMBER_PRODUCTS = (int)product_list.size();
+			
+			// buffer.append("// ");
+			// buffer.append(index);
+			// buffer.append("\t");
+			for (int reactant_index=0;reactant_index<NUMBER_REACTANTS;reactant_index++)
+			{
+				SpeciesReference species_ref = (SpeciesReference)reactant_list.get(reactant_index);
+                String strReactant = species_ref.getSpecies();
+                buffer.append(strReactant);
+                
+                if (reactant_index<NUMBER_REACTANTS-1)
+                {
+                	buffer.append("+");
+                }
+                else
+                {
+                	buffer.append(" = ");
+                }
+			}
+			
+			for (int reactant_index=0;reactant_index<NUMBER_PRODUCTS;reactant_index++)
+			{
+				SpeciesReference species_ref = (SpeciesReference)product_list.get(reactant_index);
+                String strReactant = species_ref.getSpecies();
+                buffer.append(strReactant);
+                
+                if (reactant_index<NUMBER_PRODUCTS-1)
+                {
+                	buffer.append("+");
+                }
+			}
+			
+			//buffer.append("\n");
+			vecOut.addElement(buffer.toString());
+			buffer.delete(0, buffer.length());
+		}
+	}
+	
+	// write a reaction list to disk for debug -
+	public static void buildDebugReactionListBuffer(StringBuffer buffer,Model model, Vector vecReactions) throws Exception
+	{
+		int NUMBER_OF_RATES = (int)vecReactions.size();
+		for (int index=0;index<NUMBER_OF_RATES;index++)
+		{
+			// Get the reaction -
+			Reaction rxn = (Reaction)vecReactions.get(index);
+			
+			// Formulate the reaction string -
+			ListOf reactant_list = rxn.getListOfReactants();
+			int NUMBER_REACTANTS = (int)reactant_list.size();
+			
+			ListOf product_list = rxn.getListOfProducts();
+			int NUMBER_PRODUCTS = (int)product_list.size();
+			
+			buffer.append("// ");
+			buffer.append(index);
+			buffer.append("\t");
+			for (int reactant_index=0;reactant_index<NUMBER_REACTANTS;reactant_index++)
+			{
+				SpeciesReference species_ref = (SpeciesReference)reactant_list.get(reactant_index);
+                String strReactant = species_ref.getSpecies();
+                buffer.append(strReactant);
+                
+                if (reactant_index<NUMBER_REACTANTS-1)
+                {
+                	buffer.append("+");
+                }
+                else
+                {
+                	buffer.append(" = ");
+                }
+			}
+			
+			for (int reactant_index=0;reactant_index<NUMBER_PRODUCTS;reactant_index++)
+			{
+				SpeciesReference species_ref = (SpeciesReference)product_list.get(reactant_index);
+                String strReactant = species_ref.getSpecies();
+                buffer.append(strReactant);
+                
+                if (reactant_index<NUMBER_PRODUCTS-1)
+                {
+                	buffer.append("+");
+                }
+			}
+			
+			buffer.append("\n");
+			
+		}
+	}
+	
+	
 	// Build the data file for the case when the reactions were expanded (and we are assming mass action kinetics)
 	public static void buildDataFileBuffer(StringBuffer datafile,Model model,LoadXMLPropFile propTree,Vector<Reaction> vecReactions) throws Exception
 	{
@@ -63,6 +170,8 @@ public class SBMLModelUtilities {
         datafile.append("\n");
         
         // Put the initial values of parameters -
+        Vector vecOut = new Vector();
+        SBMLModelUtilities.buildReactionStringVector(model, vecReactions, vecOut);
         datafile.append("k=[\n");
         ListOf parameter_list = model.getListOfParameters();
         int NUMBER_OF_PARAMETERS = (int)model.getNumParameters();
@@ -78,6 +187,8 @@ public class SBMLModelUtilities {
             datafile.append(pindex+1);
             datafile.append("\t");
             datafile.append(rate.getName());
+            datafile.append("\t");
+            datafile.append(vecOut.get(pindex));
             datafile.append("\n");
         }
         datafile.append("];\n");
@@ -280,7 +391,47 @@ public class SBMLModelUtilities {
         
         GIOL.write(strSBMLFile,data_buffer);
     }
+    
+    public static void dumpGeneralBufferToDisk(StringBuffer data_buffer,LoadXMLPropFile _xmlPropTree) throws Exception
+    {
+    	// I have populated the string buffer, dump that mofo
+    	String strWorkingDir = _xmlPropTree.getProperty("//working_directory/text()");
+        String strDotFileName = _xmlPropTree.getProperty("//OutputFileName/output_filename/text()");
+        String strDotFilePath = _xmlPropTree.getProperty("//OutputFileName/output_file_path/text()");
+        
+        String strSBMLFile = "";
+        if (strDotFilePath.isEmpty())
+        {
+        	strSBMLFile = strWorkingDir+"/"+strDotFileName;
+        }
+        else
+        {
+        	strSBMLFile = strWorkingDir+"/"+strDotFilePath+"/"+strDotFileName;
+        }
+        
+        GIOL.write(strSBMLFile,data_buffer);
+    }
 
+    public static void dumpDebugFileToDisk(StringBuffer data_buffer,LoadXMLPropFile _xmlPropTree) throws Exception 
+    {
+    	// I have populated the string buffer, dump that mofo
+        String strWorkingDir = _xmlPropTree.getProperty("//working_directory/text()");
+        String strFileName = "Debug.txt";
+        String strFilePath = _xmlPropTree.getProperty("//DataFile/datafile_path/text()");
+        
+        String strSBMLFile = "";
+        if (strFilePath.isEmpty())
+        {
+        	strSBMLFile = strWorkingDir+"/"+strFileName;
+        }
+        else
+        {
+        	strSBMLFile = strWorkingDir+"/"+strFilePath+"/"+strFileName;
+        }
+        
+        GIOL.write(strSBMLFile,data_buffer);
+    }
+    
     public static void dumpStoichiometricMatrixToDisk(double[][] dblSTMatrix,LoadXMLPropFile _xmlPropTree,Model model_wrapper,Vector<Reaction> vecReactions) throws Exception
     {
         // Method attributes -
@@ -511,28 +662,7 @@ public class SBMLModelUtilities {
         GIOL.write(strSBMLFile,driver);
     }
     
-	public static void dumpStoichiometricMatrixToDisk(Properties _propTable,int NR,int NC,double[][] dblSTMatrix) throws Exception
-    {
-        // Method attributes -
-        String strPath = "";
-        StringBuffer buffer = new StringBuffer();
-        
-        for (int scounter=0;scounter<NR;scounter++)
-        {
-            for (int rcounter=0;rcounter<NC;rcounter++)
-            {
-                buffer.append(dblSTMatrix[scounter][rcounter]);
-                buffer.append("\t");
-            }
-            
-            buffer.append("\n");
-        }
-              
-        // Get the path and dump -2- disk 
-        // Create the path string -
-		strPath = "./"+_propTable.getProperty("PATH_NETWORK_DIRECTORY")+"/"+_propTable.getProperty("OUTPUT_STM_FILENAME");
-        GIOL.write(strPath,buffer);
-    }
+
 	
 	public static void organizeSpeciesByCompartment(Properties _propTable,Model model_wrapper,Vector<Species> vecSpecies) throws Exception
 	{
@@ -644,11 +774,12 @@ public class SBMLModelUtilities {
         // Get the dimension of the system -
         int NUMBER_OF_SPECIES = 0; 
         int NUMBER_OF_RATES = 0;
-        Vector<Species> vecSpecies = new Vector<Species>();
         
         // Get the system dimension -
         NUMBER_OF_SPECIES = (int)model_wrapper.getNumSpecies(); 
         NUMBER_OF_RATES = (int)listRates.size(); 
+        
+        System.out.println("Dimension "+NUMBER_OF_SPECIES+" by "+NUMBER_OF_RATES);
         
         // Go through and put everything as zeros by default -
         for (int scounter=0;scounter<NUMBER_OF_SPECIES;scounter++)
@@ -658,72 +789,39 @@ public class SBMLModelUtilities {
                 dblSTMatrix[scounter][rcounter]=0.0;
             }
         }
-         
-        // When I get here, I have a st. matrix w/all zeros - 
-        // put in the correct values - 
-        //ListOfReactions listRates = model_wrapper.getListOfReactions();
-        ListOfSpecies listSpecies = model_wrapper.getListOfSpecies();
-       
-        // Get the list of compartments -
-		ListOfCompartments compartments = model_wrapper.getListOfCompartments();
-		long NUMBER_OF_COMPARTMENTS = model_wrapper.getNumCompartments();
-		for (long compartment_index=0;compartment_index<NUMBER_OF_COMPARTMENTS;compartment_index++)
-		{
-			// Get the current compartment -
-			Compartment current_compartment = compartments.get(compartment_index);
-			String strCompartmentID = current_compartment.getId();
-			
-			// Collect the species in this compartment -
-			for (long species_index=0;species_index<NUMBER_OF_SPECIES;species_index++)
-			{
-				// Get the species -
-				Species tmp = listSpecies.get(species_index);
-				
-				// Check the compartment -
-				String strCompartment = tmp.getCompartment();
-				if (strCompartment.equalsIgnoreCase(strCompartmentID))
-				{
-					vecSpecies.addElement(tmp);
-				}
-			}
-		}
-			
-		// Go through the species list and build st matrix for elements in this compartment -
-		int NUM_SPECIES_COMPARTMENT = vecSpecies.size();		
-		for (int scounter=0;scounter<NUM_SPECIES_COMPARTMENT;scounter++)
+        
+        ListOf listSpecies = model_wrapper.getListOfSpecies();
+        for (int scounter=0;scounter<NUMBER_OF_SPECIES;scounter++)
         {
             // Get the species reference -
-            Species species = (Species)vecSpecies.get(scounter);
+            Species species = (Species)listSpecies.get(scounter);
             String strSpecies = species.getId();
-   
             
-            System.out.println("\t Processing "+strSpecies+" counter="+scounter+" of "+NUMBER_OF_SPECIES);
-            	
-        	// Ok, I need to go through the rates and determine if this species is involved -
+            // Ok, I need to go through the rates and determine if this species is involved -
             for (int rcounter=0;rcounter<NUMBER_OF_RATES;rcounter++)
-            {          		
-            	// Get the Reaction object -
+            {
+                // Get the Reaction object -
                 Reaction rxn_obj = (Reaction)listRates.get(rcounter);
                 
                 // Get the 'radius' of this rate -
                 int NUMBER_OF_REACTANTS = (int)rxn_obj.getNumReactants();
                 int NUMBER_OF_PRODUCTS = (int)rxn_obj.getNumProducts();
                 
-                // Get the list of reactants and products -
-                ListOf reactant_list = rxn_obj.getListOfReactants();
-                ListOf product_list = rxn_obj.getListOfProducts();
-                
                 // go through the reactants of this reaction -
                 for (int reactant_index=0;reactant_index<NUMBER_OF_REACTANTS;reactant_index++)
                 {
                     // Get the species reference -
-                    SpeciesReference species_ref = (SpeciesReference)reactant_list.get(reactant_index);
+                    SpeciesReference species_ref = rxn_obj.getReactant(reactant_index);
                     String strReactant = species_ref.getSpecies();
                     
+                    System.out.println("Checking - "+strReactant+" against "+strSpecies);
+                    
+                    
                     if (strReactant.equalsIgnoreCase(strSpecies))
-                    {
-                       
-                        double tmp = species_ref.getStoichiometry();
+                    {       
+                    	             	
+                    	double tmp = species_ref.getStoichiometry();
+                    	System.out.println("Reactant "+strReactant+" has a st.coeff of "+tmp+" in reaction "+rcounter);
                         if (tmp>=0.0)
                         {
                             dblSTMatrix[scounter][rcounter]=-1.0*tmp;
@@ -740,14 +838,14 @@ public class SBMLModelUtilities {
                 for (int product_index=0;product_index<NUMBER_OF_PRODUCTS;product_index++)
                 {
                     // Get the species reference -
-                    SpeciesReference species_ref = (SpeciesReference)product_list.get(product_index);
+                    SpeciesReference species_ref = rxn_obj.getProduct(product_index);
                     String strProduct = species_ref.getSpecies();
                     
                     //System.out.println("Comparing NP="+NUMBER_OF_PRODUCTS+" to "+strProduct+"="+strSpecies+"?");
                     
                     if (strProduct.equalsIgnoreCase(strSpecies))
                     {
-                    	dblSTMatrix[scounter][rcounter]=species_ref.getStoichiometry();
+                        dblSTMatrix[scounter][rcounter]=species_ref.getStoichiometry();
                     }
                 }
             }
