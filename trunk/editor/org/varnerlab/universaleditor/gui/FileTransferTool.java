@@ -330,7 +330,7 @@ public class FileTransferTool extends javax.swing.JInternalFrame implements Acti
 
 		setClosable(true);
 		setIconifiable(true);
-		setTitle("Universal file transfer tool");
+		setTitle("Universal project tool v1.0");
 
 		jScrollPane1.setViewportView(jList1);
 
