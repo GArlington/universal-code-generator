@@ -33,7 +33,7 @@ public class LoadModelPropFileFromDiskAction implements ActionListener {
 	        	// Get the currently focused component -
 	        	Launcher launcherObj = Launcher.getInstance();
 	        	ModelCodeGeneratorFileEditor windowFrame = launcherObj.getModelCodeGeneratorFileEditorRef();
-
+	        	
 	        	// Get the source of this event (a file)
 	        	File file=(File)e.getSource();
 
@@ -46,6 +46,7 @@ public class LoadModelPropFileFromDiskAction implements ActionListener {
 
 	        	// Ok, so now we the doc, try to create a tree -
 	        	windowFrame.setRootNode(doc);
+	        	windowFrame.setSaveAsButtonEnabled();
 
 	        	// Put the filename in session -
 	        	UEditorSession session = (Launcher.getInstance()).getSession();

@@ -315,13 +315,13 @@ public class FileTransferTool extends javax.swing.JInternalFrame implements Acti
 
 		jScrollPane1.setViewportView(jList1);
 
-		jButton1.setIcon(new javax.swing.ImageIcon("/Users/jeffreyvarner/dev/UniversalWeb/UniversalEditor/images/TransferFile-20-Grey.png")); // NOI18N
+		jButton1.setIcon(new javax.swing.ImageIcon("./images/TransferFile-20-Grey.png")); // NOI18N
 		jButton1.setToolTipText("Transfer files to the server");
 		jButton1.setBorderPainted(false);
 		jButton1.setDoubleBuffered(true);
 		jButton1.setEnabled(false);
 		jButton1.setRolloverEnabled(true);
-		jButton1.setRolloverIcon(new javax.swing.ImageIcon("/Users/jeffreyvarner/dev/UniversalWeb/UniversalEditor/images/TransferFile-20.png")); // NOI18N
+		jButton1.setRolloverIcon(new javax.swing.ImageIcon("./images/TransferFile-20.png")); // NOI18N
 		jButton1.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				sendFileToServer(evt);
@@ -331,12 +331,12 @@ public class FileTransferTool extends javax.swing.JInternalFrame implements Acti
 		jList2.setDoubleBuffered(true);
 		jScrollPane2.setViewportView(jList2);
 
-		jButton2.setIcon(new javax.swing.ImageIcon("/Users/jeffreyvarner/dev/UniversalWeb/UniversalEditor/images/TransferFileBack-20-Grey.png")); // NOI18N
+		jButton2.setIcon(new javax.swing.ImageIcon("./images/TransferFileBack-20-Grey.png")); // NOI18N
 		jButton2.setToolTipText("Transfer files to the server");
 		jButton2.setBorderPainted(false);
 		jButton2.setEnabled(false);
 		jButton2.setRolloverEnabled(true);
-		jButton2.setRolloverIcon(new javax.swing.ImageIcon("/Users/jeffreyvarner/dev/UniversalWeb/UniversalEditor/images/TransferFileBack-20.png")); // NOI18N
+		jButton2.setRolloverIcon(new javax.swing.ImageIcon("./images/TransferFileBack-20.png")); // NOI18N
 		jButton2.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				getFileFromServer(evt);
@@ -989,6 +989,28 @@ public class FileTransferTool extends javax.swing.JInternalFrame implements Acti
 		{
 			error.printStackTrace();
 		}
+	}
+	
+	public JComponent showCustomPinnedDialog(NewDirectoryDialog dialog)
+	{
+		glass = (JPanel)this.getGlassPane();
+
+		sheet = (JComponent) dialog.getContentPane();
+		//sheet.setOpaque(false);
+		//sheet.setBackground (new Color(0,0,0,0));
+
+		glass.setLayout (new GridBagLayout());
+		sheet.setBorder (new LineBorder(Color.GRAY, 1));
+
+		glass.removeAll();
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.anchor = GridBagConstraints.NORTH;
+		glass.add (sheet, gbc);
+		gbc.gridy=1;
+		gbc.weighty = Integer.MAX_VALUE;
+		glass.add (Box.createGlue(), gbc);
+		glass.setVisible(true);
+		return sheet;
 	}
 
 	public JComponent showJDialogAsSheet (JDialog dialog) {

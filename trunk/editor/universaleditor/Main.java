@@ -30,12 +30,18 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathFactory;
 
 import org.varnerlab.universaleditor.gui.*;
 import org.varnerlab.universaleditor.gui.widgets.WaitThread;
 import org.varnerlab.universaleditor.domain.*;
 import org.varnerlab.universaleditor.service.VLIconManagerService;
 import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 
 /**
@@ -44,6 +50,8 @@ import org.w3c.dom.Document;
  */
 public class Main {
     private static Launcher launcher =  null;
+    private XPathFactory  _xpFactory = XPathFactory.newInstance();
+	private XPath _xpath = _xpFactory.newXPath();
 
     /**
      * @param args the command line arguments
@@ -102,6 +110,8 @@ public class Main {
                 System.setProperty("apple.awt.brushMetalLook", "true");
                 System.setProperty("apple.awt.textantialiasing","on");
                 System.setProperty("apple.awt.graphics.UseQuartz","true");
+                System.setProperty("apple.laf.useScreenMenuBar", "true");
+                System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Universal");
             }
 
 
@@ -143,6 +153,7 @@ public class Main {
     public void doInitializeSession(String strPath,UEditorSession session) throws Exception
     {
         
+    	/*
         // Fire up the SAX parser -
         SAXParserFactory factorySAX = SAXParserFactory.newInstance();
         SAXParser saxParser = factorySAX.newSAXParser();
@@ -153,19 +164,35 @@ public class Main {
 
         // Ok, smack my bithch up...
         saxParser.parse(new File(strPath), handler);
-        
-        // Ok, so now we need to load the templates that we can do -
-        String strTemplateFile = (String)session.getProperty("TEMPLATE_MAP_FILE");
-        File configFile = new File(strTemplateFile);
+        */
+    	
+    	// The properties file is now parsed using a DOM parser -
+    	File mainPropFile = new File(strPath);
     	DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
     	dbFactory.setNamespaceAware(true);
     	DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-  	  	Document doc = dBuilder.parse(configFile);
+  	  	Document doc = dBuilder.parse(mainPropFile);
   	  	doc.getDocumentElement().normalize();	
+  	  	session.setProperty("UNIVERSAL_DOM_TREE",doc);
+  	  	
+  	  	System.out.println("Loaded the UNIVERSAL DOM tree ... loading templates.");
+  	  	
+  	  	// Ok, so we need to set the options in session that we used to when we used the DOM parser -
+  	  	populateSessionObject(doc,session);
+  	  	
+        // Ok, so now we need to load the templates that we can do -
+        String strTemplateFile = (String)session.getProperty("TEMPLATE_MAP_FILE");
+        File configFile = new File(strTemplateFile);
+    	dbFactory = DocumentBuilderFactory.newInstance();
+    	dbFactory.setNamespaceAware(true);
+    	dBuilder = dbFactory.newDocumentBuilder();
+  	  	Document template_doc = dBuilder.parse(configFile);
+  	  	template_doc.getDocumentElement().normalize();	
         
   	  	// Ok, so now let's cach the DOM tree so I can use it later -
-  	  	session.setProperty("TEMPLATE_DOM_TREE", doc);
+  	  	session.setProperty("TEMPLATE_DOM_TREE", template_doc);
   	  	
+  	  	/*
   	  	// Ok, so now we need to load the templates that we can do -
         String strPropertyFile = (String)session.getProperty("PROPERTY_MAP_FILE");
         configFile = new File(strPropertyFile);
@@ -177,6 +204,7 @@ public class Main {
         
   	  	// Ok, so now let's cach the DOM tree so I can use it later -
   	  	session.setProperty("PROPERTY_TABLE_TREE", docJComboBoxProp);
+  	  	*/
     }
 
 
@@ -186,5 +214,55 @@ public class Main {
         //Create and set up the window.
         launcher.setVisible(true);
     }
+    
+    private void processPropertyAttributes(String strXPath,Document doc,UEditorSession session) throws Exception
+    {
+    	NodeList propNodeList = (NodeList)_xpath.evaluate(strXPath, doc, XPathConstants.NODESET);
+    	int NUMBER_PATH_NODES = propNodeList.getLength();
+    	for (int index=0;index<NUMBER_PATH_NODES;index++)
+    	{
+    		// Get the current node -
+    		Node tmpNode = propNodeList.item(index);
+    		
+    		// Process the attributes of this node ..
+    		NamedNodeMap map = tmpNode.getAttributes();
+    		int NUMBER_OF_ATTRIBUTES = map.getLength();
+    		for (int att_index=0;att_index<NUMBER_OF_ATTRIBUTES;att_index++)
+    		{
+    			// Ok bitches, so I should get the attribute name (capitalize it) and key the value 
+    			Node attNode = map.item(att_index);
+    			String keyName = ((String)attNode.getNodeName()).toUpperCase();
+    			String strValue = attNode.getNodeValue();
+    			
+    			// store the key,value pair in the session object -
+    			session.setProperty(keyName, strValue);
+    		}
+    	}
+    }
 
+    private void populateSessionObject(Document doc,UEditorSession session) throws Exception
+    {
+    	// Ok, so let's get some stuff - we'll process in the order of the blocks in the file -
+    	
+    	// Architecture -
+    	String strXPArchitecture = "//architecture/property/@platform";
+    	Node architectureNode = (Node)_xpath.evaluate(strXPArchitecture, doc, XPathConstants.NODE);
+    	session.setProperty("PLATFORM",architectureNode.getNodeValue());
+    	
+    	// Paths -
+    	String strXPPaths = "//universal_paths/property";
+    	processPropertyAttributes(strXPPaths,doc,session);
+    	
+    	// Server options
+    	String strXPServerOptions = "//server_options/property";
+    	processPropertyAttributes(strXPServerOptions,doc,session);
+    	
+    	// Database information -
+    	String strXPDatabase = "//database_information/property";
+    	processPropertyAttributes(strXPDatabase,doc,session);
+    	
+    	// Icons -
+    	String strXPIcons = "//universal_icons/property";
+    	processPropertyAttributes(strXPIcons,doc,session);	
+    }
 }
