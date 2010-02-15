@@ -9,6 +9,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import org.varnerlab.universaleditor.domain.UEditorSession;
+import org.varnerlab.universaleditor.gui.FileTransferTool;
 import org.varnerlab.universaleditor.gui.Launcher;
 import org.varnerlab.universaleditor.gui.NewDirectoryDialog;
 import org.varnerlab.universaleditor.service.SystemwideEventService;
@@ -28,6 +29,7 @@ public class SetLocalDirectoryAction implements ActionListener {
 	{
 		// Method attributes -
 		Launcher launcher = Launcher.getInstance();
+		FileTransferTool _tool = launcher.getFileTransferToolRef();
 		
 		// Get the session -
 		UEditorSession session = launcher.getSession();
@@ -54,7 +56,9 @@ public class SetLocalDirectoryAction implements ActionListener {
 		
 		// Ok, I created the directory bitches, so let's put the new directory name in session and then  launch a session update event -
 		session.setProperty("NEW_LOCAL_DIRECTORY_PATH",strNewDirName);
-		SystemwideEventService.fireSessionUpdateEvent();
+		_tool.updateLocalDirectoryPath();
+		
+		//SystemwideEventService.fireSessionUpdateEvent();
 	}
 		
 	public void actionPerformed(ActionEvent e) {

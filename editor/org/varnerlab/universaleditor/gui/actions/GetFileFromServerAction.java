@@ -30,6 +30,7 @@ import javax.xml.xpath.XPathFactory;
 
 import org.varnerlab.universaleditor.domain.UEditorSession;
 import org.varnerlab.universaleditor.gui.FileTransferTool;
+import org.varnerlab.universaleditor.gui.Launcher;
 import org.varnerlab.universaleditor.gui.NetworkEditorTool;
 import org.varnerlab.universaleditor.gui.widgets.InfiniteProgressPanel;
 import org.varnerlab.universaleditor.service.FileSystemService;
@@ -52,7 +53,7 @@ public class GetFileFromServerAction implements ActionListener {
     private Hashtable _propTable = new Hashtable();
     private Component focusedComponent = null;
     private KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
-    final InfiniteProgressPanel glassPane = new InfiniteProgressPanel("Transfering files from server...");
+    final InfiniteProgressPanel glassPane = new InfiniteProgressPanel();
  
     // Create a xpFactory/xpath obj (we'll use this a zillion times -)
 	private XPathFactory  _xpFactory = XPathFactory.newInstance();
@@ -107,6 +108,9 @@ public class GetFileFromServerAction implements ActionListener {
     	UEditorSession session = (UEditorSession)_propTable.get("SESSION");
     	JList jList = (JList)_propTable.get("JLIST");
     	JComboBox jComboBox = (JComboBox)_propTable.get("LOCAL_COMBOBOX");
+    	
+    	// Get a ref to file transfer tool -
+    	FileTransferTool _tool = (Launcher.getInstance()).getFileTransferToolRef();
 
     	// Get the selected file from the jList -
     	Object[] objArr = jList.getSelectedValues();
@@ -217,8 +221,14 @@ public class GetFileFromServerAction implements ActionListener {
     		vecFile.clear();
     	}
     	
+    	
+    	
+    	
     	// ok, so when I get here I need to close down the glassPane -
     	glassPane.stop();
+    	
+    	// update the view -
+    	_tool.updateSelectedDirectory();
     }
     
     public void actionPerformed(ActionEvent e) {

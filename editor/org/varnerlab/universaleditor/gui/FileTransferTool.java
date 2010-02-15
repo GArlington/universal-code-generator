@@ -119,6 +119,25 @@ public class FileTransferTool extends javax.swing.JInternalFrame implements Acti
 	private XPathFactory  _xpFactory = XPathFactory.newInstance();
 	private XPath _xpath = _xpFactory.newXPath();
 
+	public void updateSelectedDirectory()
+	{
+		// Get the combo box -
+		File selected_file = (File)jComboBox1.getSelectedItem();
+
+		// Populate the JList w/the current directory -
+		Vector<File> _vecDir = new Vector();
+
+		// Get the list model -
+		_listModelJList1.clear();
+
+		FileSystemService.getFileFromDir(selected_file, _vecDir);
+		int NUMBER_OF_ELEMENTS = _vecDir.size();
+		for (int pindex=0;pindex<NUMBER_OF_ELEMENTS;pindex++)
+		{
+			_listModelJList1.addElement(_vecDir.get(pindex));
+		}
+	}
+
 	public void setOffIcon(ImageIcon imgIcon)
 	{
 		_imgIconOff = imgIcon;
@@ -482,7 +501,7 @@ public class FileTransferTool extends javax.swing.JInternalFrame implements Acti
 	private void getFileFromServer(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getFileFromServer
 		// Method attributes -
 		GetFileFromServerAction getFile = new GetFileFromServerAction();
-	
+
 		// Configure -
 		getFile.setReferences("SESSION",_session);
 		getFile.setReferences("LOCAL_COMBOBOX",jComboBox1);
@@ -503,27 +522,27 @@ public class FileTransferTool extends javax.swing.JInternalFrame implements Acti
 			}
 		});
 
-		
+
 
 	}//GEN-LAST:event_getFileFromServer
-	
-	
-	public static void centerOnScreen(Component component) {
-        Dimension paneSize = component.getSize();
-        Dimension screenSize = component.getToolkit().getScreenSize();
-        component.setLocation(
-            (screenSize.width - paneSize.width) / 2,
-            (screenSize.height - paneSize.height) / 2);
-    }
 
-	
+
+	public static void centerOnScreen(Component component) {
+		Dimension paneSize = component.getSize();
+		Dimension screenSize = component.getToolkit().getScreenSize();
+		component.setLocation(
+				(screenSize.width - paneSize.width) / 2,
+				(screenSize.height - paneSize.height) / 2);
+	}
+
+
 	private void updateLocalJList()
 	{
 		// Ok, this should update the local dir -
 		String strSelectedFileLocal = ((File)jComboBox1.getSelectedItem()).getPath();
 		PublishService.submitData("What the heck - local file = "+strSelectedFileLocal);
 		Vector<File> vecFile = new Vector<File>();
-		
+
 		// Clear out the list model -
 		_listModelJList1.clear();
 		File userHome = new File(strSelectedFileLocal);
@@ -888,7 +907,11 @@ public class FileTransferTool extends javax.swing.JInternalFrame implements Acti
 			_listModelJList2.clear();
 			this.processNodes(document.getFirstChild(), _listModelJList2,false);
 		}
+	}
 
+
+	public void updateLocalDirectoryPath()
+	{
 		// Ok, so I need to update the local directory structure -
 		String strNewLocalDirName = (String)_session.getProperty("NEW_LOCAL_DIRECTORY_PATH");
 		if (strNewLocalDirName!=null)
@@ -990,7 +1013,7 @@ public class FileTransferTool extends javax.swing.JInternalFrame implements Acti
 			error.printStackTrace();
 		}
 	}
-	
+
 	public JComponent showCustomPinnedDialog(NewDirectoryDialog dialog)
 	{
 		glass = (JPanel)this.getGlassPane();
