@@ -100,7 +100,7 @@ public class LocalJListDoubleClickAdapter extends MouseAdapter {
 			}
 			catch (Exception error)
 			{
-				
+				error.printStackTrace();
 			}
 		}
 	}

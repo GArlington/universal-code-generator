@@ -16,6 +16,11 @@ import java.awt.event.ActionEvent;
 import javax.swing.JFileChooser;
 import javax.swing.JTable;
 import javax.swing.tree.*;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
+
 import java.util.*;
 import java.io.*;
 
@@ -24,6 +29,10 @@ import org.varnerlab.universaleditor.gui.*;
 import org.varnerlab.universaleditor.gui.widgets.*;
 import org.varnerlab.universaleditor.domain.*;
 import org.varnerlab.universaleditor.service.SystemwideEventService;
+import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 
 
@@ -35,7 +44,20 @@ public class SaveXMLPropFileAction implements ActionListener {
     // class/instance attributes
     Component focusedComponent = null;
     KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+    private XPathFactory  _xpFactory = XPathFactory.newInstance();
+	private XPath _xpath = _xpFactory.newXPath();
+	private UEditorSession _session = (Launcher.getInstance()).getSession();
+	ArrayList<String> _aList = new ArrayList<String>();
 
+	public SaveXMLPropFileAction()
+    {
+    	// These are container labels - 
+        _aList.add("Model");
+        _aList.add("options");
+        _aList.add("case");
+        _aList.add("type");
+    }
+	
     public void actionPerformed(ActionEvent e) {
 
         // First, you'll need to load the file chooser - hey by the way, I'm Rick Jamessss Bit*h!
@@ -44,30 +66,56 @@ public class SaveXMLPropFileAction implements ActionListener {
            // Get the currently focused component -
            focusedComponent = manager.getFocusOwner();
            ModelCodeGeneratorFileEditor windowFrame = (ModelCodeGeneratorFileEditor)focusedComponent.getFocusCycleRootAncestor();
+           
+           // Get the template tree from session -
+           Document doc = (Document)_session.getProperty("MODEL_TEMPLATE_FILE_TREE");
 
            // Open new file chooser
            JFileChooser fc=new JFileChooser();
            int rVal=fc.showSaveDialog(focusedComponent);
 
-           System.out.println("Hey now -");
+           //System.out.println("Hey now -");
            
            // Get the windowFrame -
            DefaultMutableTreeNode rootNode = windowFrame.getTreeRoot();
 
            // Create buffer for the file on disk -
            StringBuffer buffer = new StringBuffer();
-
-           buffer.append("<?xml version=\"1.0\"?>\n");
-           //buffer.append("<Model>\n");
-
-           processPropNodes(rootNode,buffer);
            
-           //buffer.append("</Model>\n");
+           // Setup the XML file -
+           buffer.append("<?xml version=\"1.0\"?>\n");
+           buffer.append("<Template editable=\"false\">\n");
+
+           // Ok, so I need to put in the options and ContainerTags
+           String strXPContainer = "/Template/ContainerTags/*";
+           buffer.append("\t\t<ContainerTags>\n");
+           processNonModelBlocks(doc,strXPContainer,buffer);
+           buffer.append("\t\t</ContainerTags>\n");
+           buffer.append("\n");
+                   
+           // Get the options block -
+           String strXPOptions = "//options";
+           Node optionsNodes = (Node)_xpath.evaluate(strXPOptions, doc,XPathConstants.NODE);
+           processMyKids(optionsNodes,buffer);
+           buffer.append("\n");
+           
+           // Model sections -
+           VLTreeNode userGUIRoot = (VLTreeNode)rootNode.getUserObject();
+           
+           // Process me -
+           // Ok, get the xmlNode that is attached to the userRoot -
+           populateContainerList(doc);
+           Node xmlNode = (Node)userGUIRoot.getProperty("XML_TREE_NODE");
+           processMyModelKids(xmlNode,buffer);
+           
+           // close tag 
+           buffer.append("</Template>\n");
            
            // Dump to disk -
            File file=fc.getSelectedFile();
            String tmp = file.getPath();
-               
+           
+           // dump the file to disk -
            VLIOLib.write(file.getPath(), buffer);
 
            // Put the filename in session -
@@ -83,128 +131,336 @@ public class SaveXMLPropFileAction implements ActionListener {
 
     }
     
-    private void processPropNodes(DefaultMutableTreeNode rootNode,StringBuffer buffer) throws Exception
+    private void populateContainerList(Document doc) throws Exception
     {
-    	// Ok, when I get here I need to process the node -
-    	VLTreeNode vlNode = (VLTreeNode)rootNode.getUserObject();
-    	
-        // Get the stuff from the node -
-        String strNodeName_outer = (String)vlNode.getProperty("KEYNAME");
-        
-        // Get the number of kids -
-        int NUMBER_OF_KIDS = rootNode.getChildCount();
-        
-    	// Open tag -
-        if (NUMBER_OF_KIDS!=0)
-        {
-        	buffer.append("<");
-        	buffer.append(strNodeName_outer);
-        	buffer.append(" editable=\"");
-        	
-        	// Get the ediatble flag -
-        	String strTmpInner = (String)vlNode.getProperty("EDITABLE");
-        	buffer.append(strTmpInner);
-        	buffer.append("\"");
-        	buffer.append(">\n");
-        }
-        else
-        {
-        	buffer.append("\t<");
-        	buffer.append(strNodeName_outer);
-        	buffer.append(" editable=\"");
-        	
-        	// Get the ediatble flag -
-        	String strTmpInner = (String)vlNode.getProperty("EDITABLE");
-        	buffer.append(strTmpInner);
-        	buffer.append("\"");
-        	
-        	buffer.append(">");
-        }
-    	
+    	String strXPath="//ContainerTags/tag/text()";
 
-        // get the number of kids that I have -
-        for (int kid_index=0;kid_index<NUMBER_OF_KIDS;kid_index++)
-        {
-             // Get the kid -
-             DefaultMutableTreeNode node = (DefaultMutableTreeNode)rootNode.getChildAt(kid_index);
+		try {
+			// Get the item of this type and tag -
+			NodeList propNodeList = (NodeList) _xpath.evaluate(strXPath, doc, XPathConstants.NODESET);
 
-             //buffer.append("\t");
+			// How many?
+			int NUMBER_OF_ITEMS = propNodeList.getLength();
+			//System.out.println("Searching tree with xpath = "+strXPath+" returned "+NUMBER_OF_ITEMS+" items");
 
-             // Call this method on my kids -
-             processPropNodes(node,buffer);
+			for (int index=0;index<NUMBER_OF_ITEMS;index++)
+			{
+				Node tmpNode = propNodeList.item(index);
+				String strName = tmpNode.getNodeValue();
 
-        }
-
-        if (NUMBER_OF_KIDS==0)
-        {
-
-            // If I gete here I'm a leaf - let's remove the last char and replace w/the proper ending -
-        	// Get the userName =
-        	String strNodeName = (String)vlNode.getProperty("KEYNAME");
-        	String strNodeValue = (String)vlNode.getProperty(strNodeName);
-        	
-        	// Add a tab -
-            //buffer.append("\t");
-        	
-        	//buffer.append("<");
-        	//buffer.append(strNodeName);
-        	//buffer.append(">");
-        	buffer.append(strNodeValue);
-        	buffer.append("</");
-        	buffer.append(strNodeName);
-        	buffer.append(">\n");
-        	//buffer.append("\n");
-        }
-        else
-        {
-        
-        	// close -
-        	buffer.append("</");
-        	buffer.append(strNodeName_outer);
-        	buffer.append(">\n");
-        	buffer.append("\n");
-        }
+				// Add to combobox -
+				_aList.add(strName);
+			}
+		}
+		catch (Exception error)
+		{
+			error.printStackTrace();
+			System.out.println("ERROR: Property lookup failed. The following XPath "+strXPath+" resuled in an error - "+error.toString());
+		}
     }
     
-    private void processMyKids(DefaultMutableTreeNode rootNode,StringBuffer buffer) throws Exception
+    private void processMyKids(Node xmlNode,StringBuffer buffer) throws Exception
+    { 
+           // Ok, we to get the node name -
+           String strNodeName = xmlNode.getNodeName();
+           if (!strNodeName.contains("#"))
+           {
+        	   // Ok, process my kids -
+        	   if (!_aList.contains(strNodeName))
+        	   {
+	        	   // process me -
+	        	   buffer.append("\t\t\t<");
+	        	   buffer.append(strNodeName);
+	        	   //buffer.append(" ");
+	           
+	        	   int NUMBER_OF_ATTR = xmlNode.getAttributes().getLength();
+	        	   NamedNodeMap attList = xmlNode.getAttributes();
+	        	   if (NUMBER_OF_ATTR>0)
+	        	   {
+	        	   		// Ok, process my attributes -
+	        	   		for (int index=0;index<NUMBER_OF_ATTR;index++)
+	        	   		{
+	        	   			Node attributeNode = attList.item(index);
+	           	
+	        	   			// Set the value in the table -
+	        	   			String strName = attributeNode.getNodeName();
+	        	   			String strAtt = attributeNode.getNodeValue();
+	           			
+	        	   			// Add to buffer -
+	        	   			buffer.append(" ");
+	        	   			buffer.append(strName);
+	        	   			buffer.append("=\"");
+	        	   			buffer.append(strAtt);
+	        	   			buffer.append("\"");			
+	        	   		}
+	        	   		
+	        	   		buffer.append("/>\n");
+	        	   }
+	        	   else
+	        	   {
+	        		   // Ok, so if I get here then I have no attributes, but I can have data in elements -
+	        	   		// If I get here, then my node has no attributes (oh yea, that's what she said...). Maybe I have data has a value
+	           			String strName = xmlNode.getNodeName();
+	           			String strNodeValue = xmlNode.getTextContent();
+	           	
+	           			System.out.println("Hey now - I'm looking at "+strName+" has "+strNodeValue);
+	           			
+	           			if (strNodeValue!=null)
+	           			{
+	           				// Ok, if I'm here then I have text content -
+	           				buffer.append(">");
+	           				buffer.append(strNodeValue);
+	           				buffer.append("</");
+	           				buffer.append(strName);
+	           				buffer.append(">\n");
+	           			}
+	        	   }
+	           }
+	           else
+	           {
+	        	   buffer.append("\t\t<");
+	        	   buffer.append(strNodeName);
+	        	   //buffer.append(" ");
+	        	   
+	        	   // process my attributes -
+	        	   processMyAttributes(xmlNode,buffer);
+	        	   
+	        	   int NUMBER_OF_KIDS = xmlNode.getChildNodes().getLength();
+	        	   if (NUMBER_OF_KIDS>0)
+	        	   {
+	        		   //buffer.append("\t");
+	        		   NodeList kidsList = xmlNode.getChildNodes();
+	        		   for (int index=0;index<NUMBER_OF_KIDS;index++)
+	        		   {
+	        			   processMyKids(kidsList.item(index),buffer);
+	        		   }
+	        	   }
+	        	   
+	        	   buffer.append("\t\t</");
+	        	   buffer.append(strNodeName);
+	        	   buffer.append(">\n");
+	           }           
+           }
+    }
+    
+    private void processMyAttributes(Node xmlNode,StringBuffer buffer) throws Exception
     {
-           // Populate the string buffer -
-           VLTreeNode userRoot = (VLTreeNode)rootNode.getUserObject();
-           int NUMBER_OF_KIDS = rootNode.getChildCount();
-           
-           // userRoot.writeTree(buffer,NUMBER_OF_KIDS);
-
-           // Add a tab -
-           buffer.append("\t");
-
-            // get the number of kids that I have -
-           
-           for (int kid_index=0;kid_index<NUMBER_OF_KIDS;kid_index++)
+    	int NUMBER_OF_ATTR = xmlNode.getAttributes().getLength();
+ 	   	NamedNodeMap attList = xmlNode.getAttributes();
+ 	   	if (NUMBER_OF_ATTR>0)
+ 	   	{
+ 	   		// Ok, process my attributes -
+ 	   		for (int index=0;index<NUMBER_OF_ATTR;index++)
+ 	   		{
+ 	   			Node attributeNode = attList.item(index);
+    	
+ 	   			// Set the value in the table -
+ 	   			String strName = attributeNode.getNodeName();
+ 	   			String strAtt = attributeNode.getNodeValue();
+    			
+ 	   			// Add to buffer -
+ 	   			buffer.append(" ");
+ 	   			buffer.append(strName);
+ 	   			buffer.append("=\"");
+ 	   			buffer.append(strAtt);
+ 	   			buffer.append("\"");			
+ 	   		}
+ 	   		
+ 	   		buffer.append(">\n");
+ 	   	}
+ 	   	else
+ 	   	{
+ 	   		buffer.append(">\n");
+ 	   	}
+ 	   
+    }
+    
+    private void processNonModelBlocks(Document doc,String strXPath,StringBuffer buffer)
+    {
+    	// Need to process those blocks from the template tree that have nothing to do with the Model
+    	ArrayList<String> aList = new ArrayList<String>();
+    	aList.add("case");
+    	aList.add("type");
+    
+    	
+    	NodeList propNodeList = null;
+		try {
+			propNodeList = (NodeList)_xpath.evaluate(strXPath, doc, XPathConstants.NODESET);
+		} catch (XPathExpressionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+    	int NUMBER_PATH_NODES = propNodeList.getLength();
+    	for (int index=0;index<NUMBER_PATH_NODES;index++)
+    	{
+    		// Get the current node -
+    		Node tmpNode = propNodeList.item(index);
+    		buffer.append("\t\t\t<");
+    		buffer.append(tmpNode.getNodeName());
+    		  		
+    		// Process the attributes of this node ..
+    		NamedNodeMap map = tmpNode.getAttributes();
+    		int NUMBER_OF_ATTRIBUTES = map.getLength();
+    		
+    		if (NUMBER_OF_ATTRIBUTES==0)
+    		{
+    			// Ok, bitches, so I have no attributes. I do the best with what god gave me ....
+    			buffer.append(">");
+    			buffer.append(tmpNode.getTextContent());
+    			buffer.append("</");
+    			buffer.append(tmpNode.getNodeName());
+    			buffer.append(">\n");
+    		}
+    		else
+    		{
+    			// Ok, so I have attributes to deal with ... 
+	    		for (int att_index=0;att_index<NUMBER_OF_ATTRIBUTES;att_index++)
+	    		{
+	    			// Ok, so I should get the attribute name (capitalize it) and key the value 
+	    			Node attNode = map.item(att_index);
+	    			String keyName = ((String)attNode.getNodeName());
+	    			String strValue = attNode.getNodeValue();
+	    			
+	    			// dump the name=value in the attributes into the buffer 
+	    			buffer.append(" ");
+	    			buffer.append(keyName);
+	    			buffer.append("=\"");
+	    			buffer.append(strValue);
+	    			buffer.append("\" ");
+	    		}
+    		}
+    	}
+    }
+    
+    private void processMyModelKids(Node xmlNode,StringBuffer buffer) throws Exception
+    { 
+           // Ok, we to get the node name -
+           String strNodeName = xmlNode.getNodeName();
+           if (!strNodeName.contains("#"))
            {
-                // Get the kid -
-                DefaultMutableTreeNode node = (DefaultMutableTreeNode)rootNode.getChildAt(kid_index);
-
-                buffer.append("\t");
-
-                // Call this method on my kids -
-                processMyKids(node,buffer);
-
+        	   // Ok, process my kids -
+        	   if (!_aList.contains(strNodeName))
+        	   {
+	        	   // process me - I'm not a container nor am I a #text node -
+	        	   buffer.append("\t<");
+	        	   buffer.append(strNodeName);
+	           
+	        	   int NUMBER_OF_ATTR = xmlNode.getAttributes().getLength();
+	        	   NamedNodeMap attList = xmlNode.getAttributes();
+	        	   if (NUMBER_OF_ATTR>0)
+	        	   {
+	        	   		// Ok, process my attributes -
+	        	   		for (int index=0;index<NUMBER_OF_ATTR;index++)
+	        	   		{
+	        	   			Node attributeNode = attList.item(index);
+	           	
+	        	   			// Set the value in the table -
+	        	   			String strName = attributeNode.getNodeName();
+	        	   			String strAtt = attributeNode.getNodeValue();
+	           			
+	        	   			// Add to buffer -
+	        	   			buffer.append(" ");
+	        	   			buffer.append(strName);
+	        	   			buffer.append("=\"");
+	        	   			buffer.append(strAtt);
+	        	   			buffer.append("\"");			
+	        	   		}
+	        	   		
+	        	   		// Ok, so I just processed my attributes - do I have data?
+	           			String strNodeValue = xmlNode.getTextContent();
+	           	
+	           			System.out.println("Hey now - I'm looking at "+strNodeName+" has "+strNodeValue);
+	           			
+	           			if (strNodeValue!=null)
+	           			{
+	           				// Ok, if I'm here then I have text content -
+	           				buffer.append(">");
+	           				buffer.append(strNodeValue);
+	           				buffer.append("</");
+	           				buffer.append(strNodeName);
+	           				buffer.append(">\n");
+	           			}
+	           			else
+	           			{
+	           				// No data - close this motha..
+	           				buffer.append("/>\n");
+	           			}
+	        	   }
+	        	   else
+	        	   {
+	        		   // Ok, so if I get here then I have no attributes, but I can have data in elements -
+	        	   		// If I get here, then my node has no attributes (oh yea, that's what she said...). Maybe I have data has a value
+	           			String strName = xmlNode.getNodeName();
+	           			String strNodeValue = xmlNode.getTextContent();
+	           	
+	           			System.out.println("Hey now - I'm looking at "+strName+" has "+strNodeValue);
+	           			
+	           			if (strNodeValue!=null)
+	           			{
+	           				// Ok, if I'm here then I have text content -
+	           				buffer.append(">");
+	           				buffer.append(strNodeValue);
+	           				buffer.append("</");
+	           				buffer.append(strName);
+	           				buffer.append(">\n");
+	           			}
+	        	   }
+	           }
+	           else
+	           {
+	        	   buffer.append("<");
+	        	   buffer.append(strNodeName);
+	        	   //buffer.append(" ");
+	        	   
+	        	   // process my attributes -
+	        	   processMyModelAttributes(xmlNode,buffer);
+	        	   
+	        	   int NUMBER_OF_KIDS = xmlNode.getChildNodes().getLength();
+	        	   NodeList kidsList = xmlNode.getChildNodes();
+	        	   for (int index=0;index<NUMBER_OF_KIDS;index++)
+	        	   {
+	        		   processMyModelKids(kidsList.item(index),buffer);
+	        	   }
+	        	   
+	        	   buffer.append("</");
+	        	   buffer.append(strNodeName);
+	        	   buffer.append(">\n");
+	           }           
            }
-
-           if (NUMBER_OF_KIDS==0)
-           {
-
-               // If I gete here I'm a leaf - let's remove the last char and replace w/the proper ending -
-               int LENGTH = buffer.length();
-               //buffer = buffer.replace(LENGTH-1, LENGTH,"/>\n");
-           }
-           else
-           {
-                String strClassName = "BCX"+userRoot.getProperty("DISPLAY_LABEL").toString();
-                buffer.append("</");
-                buffer.append(strClassName);
-                buffer.append(">\n");
-           }
+    }
+    
+    
+    private void processMyModelAttributes(Node xmlNode,StringBuffer buffer) throws Exception
+    {
+    	int NUMBER_OF_ATTR = xmlNode.getAttributes().getLength();
+ 	   	NamedNodeMap attList = xmlNode.getAttributes();
+ 	   	if (NUMBER_OF_ATTR>0)
+ 	   	{
+ 	   		// Ok, process my attributes -
+ 	   		for (int index=0;index<NUMBER_OF_ATTR;index++)
+ 	   		{
+ 	   			Node attributeNode = attList.item(index);
+    	
+ 	   			// Set the value in the table -
+ 	   			String strName = attributeNode.getNodeName();
+ 	   			String strAtt = attributeNode.getNodeValue();
+    			
+ 	   			// Add to buffer -
+ 	   			buffer.append(" ");
+ 	   			buffer.append(strName);
+ 	   			buffer.append("=\"");
+ 	   			buffer.append(strAtt);
+ 	   			buffer.append("\"");			
+ 	   		}
+ 	   		
+ 	   		buffer.append(">\n");
+ 	   	}
+ 	   	else
+ 	   	{
+ 	   		buffer.append(">\n");
+ 	   	}
+ 	   
     }
 
 }

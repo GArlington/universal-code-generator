@@ -47,7 +47,7 @@ public class LoadSBMLTreeFromDiskAction implements ActionListener {
 		}
 		catch (Exception error)
 		{
-			
+			error.printStackTrace();
 		}
 	}
 

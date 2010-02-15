@@ -30,7 +30,9 @@ public class ModelCodeGeneratorFileToolFocusListener implements InternalFrameLis
     }
 
     public void internalFrameClosed(InternalFrameEvent e) {
-        
+    	// Ok, so If I get here I want to remove the reference that we had to the tool -
+    	// Launcher _main = Launcher.getInstance();
+    	//_main.remove(_main.getModelCodeGeneratorFileEditorRef());
     }
 
     public void internalFrameIconified(InternalFrameEvent e) {

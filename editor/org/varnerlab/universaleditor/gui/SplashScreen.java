@@ -73,7 +73,8 @@ public class SplashScreen extends JWindow {
 		setFont((new Font("Dialog",Font.PLAIN,12)));
 		this.pack();
 		
-		
+		// Trick that I found on devdaily.com -
+		this.setLocationRelativeTo(null);	
 	}
 
 	public void setProgressMax(int maxProgress)

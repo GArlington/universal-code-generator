@@ -86,7 +86,6 @@ public class TransferToolFocusListener implements InternalFrameListener {
         {
             _listModelJList1.addElement(_vecDir.get(pindex));
         }
-
     }
 
     public void internalFrameDeactivated(InternalFrameEvent e) {
@@ -98,7 +97,8 @@ public class TransferToolFocusListener implements InternalFrameListener {
 
         // Set the on-icon -
         intFrame.setFrameIcon(icon);
-
+        
+        
         intFrame.repaint();
     }
 

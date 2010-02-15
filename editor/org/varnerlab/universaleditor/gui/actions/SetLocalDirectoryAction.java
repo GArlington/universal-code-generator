@@ -6,6 +6,7 @@ import java.beans.PropertyVetoException;
 import java.io.File;
 
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 import org.varnerlab.universaleditor.domain.UEditorSession;
 import org.varnerlab.universaleditor.gui.Launcher;
@@ -22,8 +23,9 @@ public class SetLocalDirectoryAction implements ActionListener {
 	{
 		_dialog = txtBox;
 	}
-		
-	public void actionPerformed(ActionEvent e) {
+	
+	private void doExecute()
+	{
 		// Method attributes -
 		Launcher launcher = Launcher.getInstance();
 		
@@ -52,16 +54,21 @@ public class SetLocalDirectoryAction implements ActionListener {
 		
 		// Ok, I created the directory bitches, so let's put the new directory name in session and then  launch a session update event -
 		session.setProperty("NEW_LOCAL_DIRECTORY_PATH",strNewDirName);
-		SystemwideEventService.fireUsernameUpdateEvent();
+		SystemwideEventService.fireSessionUpdateEvent();
+	}
 		
-        // close the dialog?
-        /*
-        try {
-			_dialog.setClosed(true);
-		} catch (PropertyVetoException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}*/
+	public void actionPerformed(ActionEvent e) {
+		
+		SwingUtilities.invokeLater(new Runnable() {
+	  		  public void run() {
+	  			  Thread performer = new Thread(new Runnable() {
+	  				  public void run() {
+	  					doExecute();
+	  				  }
+	  			  }, "Performer");
+	  			  performer.start();
+	  		  }
+	  	  });
 	}
 
 }

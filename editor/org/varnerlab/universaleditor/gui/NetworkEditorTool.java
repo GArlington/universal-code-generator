@@ -566,10 +566,7 @@ public class NetworkEditorTool extends javax.swing.JInternalFrame implements Tab
             Object key = _tableModel.getValueAt(ROW_INDEX, 0);
             Object val = _tableModel.getValueAt(ROW_INDEX, 1);
             String tmp = val.toString();
-
-            System.out.println("Looking at key = "+key+" val="+tmp);
-            
-            
+   
             if (key!=null || !tmp.equalsIgnoreCase(" "))
             {
 

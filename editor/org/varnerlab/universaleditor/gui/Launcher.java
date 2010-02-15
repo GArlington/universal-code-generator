@@ -36,6 +36,8 @@ public class Launcher extends JFrame implements IVLPublishClient, IVLSystemwideE
     private ConsoleWindow console = null;
     private SplashScreen _splash = null;
     
+   
+    
     // set references to tools -
     private ModelCodeGeneratorFileEditor _modelCodeGeneratorFileEditor = null;
     private NetworkEditorTool _networkEditorTool = null;
@@ -58,6 +60,11 @@ public class Launcher extends JFrame implements IVLPublishClient, IVLSystemwideE
     
     public FileTransferTool getFileTransferToolRef()
     {
+    	if (_fileTransferTool==null)
+    	{
+    		_fileTransferTool = FileTransferTool.getInstance();
+    	}
+    	
     	return(_fileTransferTool);
     }
     
@@ -68,6 +75,11 @@ public class Launcher extends JFrame implements IVLPublishClient, IVLSystemwideE
       
     public ModelCodeGeneratorFileEditor getModelCodeGeneratorFileEditorRef()
     {
+    	if (_modelCodeGeneratorFileEditor==null)
+    	{
+    		_modelCodeGeneratorFileEditor = ModelCodeGeneratorFileEditor.getInstance();
+    	}
+    	
     	return(_modelCodeGeneratorFileEditor);
     }
     
@@ -78,6 +90,11 @@ public class Launcher extends JFrame implements IVLPublishClient, IVLSystemwideE
       
     public NetworkEditorTool getNetworkEditorToolRef()
     {
+    	if (_networkEditorTool==null)
+    	{
+    		_networkEditorTool = NetworkEditorTool.getInstance();
+    	}
+    	
     	return(_networkEditorTool);
     }
     
@@ -103,8 +120,8 @@ public class Launcher extends JFrame implements IVLPublishClient, IVLSystemwideE
     }
 
     public ConsoleWindow getConsoleWindow()
-    {
-        return(console);
+    { 	
+    	return(console);
     }
 
     public void setConsoleWindow(JInternalFrame consoleWindow)
@@ -209,6 +226,7 @@ public class Launcher extends JFrame implements IVLPublishClient, IVLSystemwideE
         VLIconManagerService.registerIcon("TRANSFER-32", (new ImageIcon(VLImageLoader.getPNGImage("Transfer-32.png"))));
          */
       
+        this.setLocationRelativeTo(null);
     }
 
     public void loadIcons()
