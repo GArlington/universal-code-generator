@@ -14,6 +14,7 @@ import javax.swing.event.*;
 import javax.swing.text.*;
 
 import org.varnerlab.universaleditor.gui.*;
+import org.varnerlab.universaleditor.service.SystemwideEventService;
 
 /**
  *
@@ -53,7 +54,10 @@ public class ModelCodeGeneratorFileToolFocusListener implements InternalFrameLis
 
         // Set the on-icon -
         intFrame.setFrameIcon(icon);
-
+        
+        // Fire a SessionUpdate event and have the GUI redo the tree - this is a hack
+        // if I fire a session update the project tool updates all the windows. Annoying...
+        intFrame.updateSession();
     }
 
     public void internalFrameDeactivated(InternalFrameEvent e) {

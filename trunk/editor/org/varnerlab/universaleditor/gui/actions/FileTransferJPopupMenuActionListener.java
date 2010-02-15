@@ -44,8 +44,8 @@ public class FileTransferJPopupMenuActionListener implements ActionListener {
 		try 
 		{
 			// Get the currently focused component - file transfer tool -
-	        focusedComponent = manager.getFocusOwner();
-	        windowFrame = (FileTransferTool)focusedComponent.getFocusCycleRootAncestor();
+	        Launcher _main = Launcher.getInstance();
+	        windowFrame = _main.getFileTransferToolRef();
 	        
 	        NewDirectoryDialog dialog = new NewDirectoryDialog();
 	        dialog.setWorkingDirectory(selectedDir.getAbsolutePath());

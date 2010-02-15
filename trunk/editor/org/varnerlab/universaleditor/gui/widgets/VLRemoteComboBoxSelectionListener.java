@@ -67,17 +67,14 @@ public class VLRemoteComboBoxSelectionListener implements ActionListener {
             if (strFileName.equalsIgnoreCase(strUserName))
             {
                 
-                // So if I get here I have dir that is not the root -
+                // So if I get here I have dir that is the root -
             	// Ok, so let's fire up the xpath -
             	doc = (Document)session.getProperty("REMOTE_FILESYSTEM_TREE");
             	XPath xpath = XPathFactory.newInstance().newXPath();
             	String expression = "*";
-            	
-            	// What is the xapth?
-            	PublishService.submitData("What is the xpath expression [clicked on jdv27] - "+expression);
-            	
+            	           	
             	try {
-    				Node dirNode = (Node) xpath.evaluate("*", doc, XPathConstants.NODE);
+    				Node dirNode = (Node) xpath.evaluate("//*", doc, XPathConstants.NODE);
     				
     				if (dirNode!=null)
     				{
@@ -91,9 +88,8 @@ public class VLRemoteComboBoxSelectionListener implements ActionListener {
             	}
             	catch (Exception error)
             	{
-            		
+            		error.printStackTrace();
             	}
-
             }
             else
             {
@@ -102,9 +98,6 @@ public class VLRemoteComboBoxSelectionListener implements ActionListener {
 
                 // Check to see if this is a dir or a file -
                 String strDirFlag = renderer.getDirectoryFlag(strFileName);
-
-                // Get the dom tree -
-                //Document doc = (Document)session.getProperty("REMOTE_FILESYSTEM_TREE");
 
                 if (strFileSystemName!=null)
                 {
@@ -172,7 +165,8 @@ public class VLRemoteComboBoxSelectionListener implements ActionListener {
                 	//String expression = "//Directory[@name='"+strFileName+"']/*";
                 	
                 	// What is the xpath?
-                	PublishService.submitData("What is the xpath expression [leaf node] - "+expression);
+                	//PublishService.submitData("What is the xpath expression [leaf node] - "+expression);
+                	System.out.println("What is the xpath expression [leaf node] - "+expression);
                 	
                 	try {
         				Node dirNode = (Node) xpath.evaluate(expression, doc, XPathConstants.NODE);

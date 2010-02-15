@@ -49,6 +49,24 @@ public class XPathRemoteFileSystemSelectionListener implements ListSelectionList
     	
     	return(strTmp);
     }
+     
+    private void checkPaths(Document doc, String strPath)
+    {
+    	// Method attibutes -
+    	JComboBox jComboBox = (JComboBox)_propTable.get("REMOTE_COMBOBOX");
+    	
+    	// Get the selected item -
+    	int INT_N_ITEMS = jComboBox.getItemCount();
+    	for (int index=0;index<INT_N_ITEMS;index++)
+    	{
+    		String strSelectedItemName = ((File)jComboBox.getItemAt(index)).getName();
+        	System.out.println("item["+index+"] = "+strSelectedItemName);
+    	}
+    	
+    	
+    	System.out.println("Pathstring = "+strPath);
+    	
+    }
     
 	public void valueChanged(ListSelectionEvent e) {
 		 // Get the stuff from the hashtable -
@@ -98,6 +116,10 @@ public class XPathRemoteFileSystemSelectionListener implements ListSelectionList
             String strFilePath = file.getAbsolutePath();
             if (!tmpVector.contains(strFilePath))
             {
+            	// We need one extra bit of logic - 
+            	// We are having a problem with peer dirs - we don't have both peers in the list?
+            	checkPaths(doc,strFilePath);
+            	
             	// Add the dir to drop down -
                 jComboBox.addItem(file);
                 jComboBox.setSelectedItem(file);
@@ -109,11 +131,13 @@ public class XPathRemoteFileSystemSelectionListener implements ListSelectionList
             }      
             // ------------------------------------------------------------------- //
             
+            
+            
             // Generate the xpath string -
             StringBuffer tmpBuffer = new StringBuffer();
             tmpBuffer.append("//");
             int INT_SELECTED_INDEX = jComboBox.getSelectedIndex();
-        	for (int index=1;index<INT_SELECTED_INDEX;index++)
+        	for (int index=0;index<INT_SELECTED_INDEX;index++)
         	{
         		// Get the raw path -
         		String strTmpRaw = tmpVector.get(index);
