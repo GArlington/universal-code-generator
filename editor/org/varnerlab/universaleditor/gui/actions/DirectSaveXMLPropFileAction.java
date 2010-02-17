@@ -84,7 +84,8 @@ public class DirectSaveXMLPropFileAction implements ActionListener,PropertyChang
 				
 				// Get the tmp file -
 				String tmp = file.getPath();
-				String strMessage = "Overwrite "+file.getName()+" ?";
+				String strMessage = "\""+file.getName()+"\" already exists.\nDo you want to replace it?\n" +
+						"Replacing it will overwrite its current contents.";
 				optionPane = new JOptionPane(strMessage,JOptionPane.QUESTION_MESSAGE,JOptionPane.YES_NO_OPTION);
 				optionPane.addPropertyChangeListener(this);
 				JDialog jDialog = optionPane.createDialog(_frame,"Spank");
@@ -309,6 +310,9 @@ public class DirectSaveXMLPropFileAction implements ActionListener,PropertyChang
 			propNodeList = (NodeList)_xpath.evaluate(strXPath, doc, XPathConstants.NODESET);
 		} catch (XPathExpressionException e) {
 			// TODO Auto-generated catch block
+			
+			System.out.println(" XPATH = "+strXPath+" blows ...");
+			
 			e.printStackTrace();
 		}
 
