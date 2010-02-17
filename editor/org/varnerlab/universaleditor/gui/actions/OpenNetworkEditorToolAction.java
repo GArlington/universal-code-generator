@@ -76,6 +76,7 @@ public class OpenNetworkEditorToolAction implements ActionListener {
 
 
 		// Add the tool to the workspace -
+		_main.getContentPane().remove(_tool);
 		_main.getContentPane().add(_tool);
 		
 		// Shutdown the spinning 

@@ -51,6 +51,9 @@ public class LoadModelPropFileFromDiskAction implements ActionListener {
 	        	// Put the filename in session -
 	        	UEditorSession session = (Launcher.getInstance()).getSession();
 	        	session.setProperty("CURRENT_MODEL_PROP_FILENAME",file.getName());
+	        	
+	        	// Load the model tree into memory -
+	        	session.setProperty("MODEL_TEMPLATE_FILE_TREE", doc);
 
 	        	// Fire the update -
 	        	SystemwideEventService.fireSessionUpdateEvent();
