@@ -369,6 +369,7 @@ public class LoadVarnerFlatFile implements IInputHandler {
             //naming the parameter the rxn string means I cannot refer to it later
             //parameterObj.setName(ffRxnObj.getReactionString());
             parameterObj.setName("k_"+counter);
+            parameterObj.setId("k_"+counter);
             
             // check to see if this is a forward or a reverse -
             // Get the underlying record -
@@ -473,6 +474,7 @@ public class LoadVarnerFlatFile implements IInputHandler {
             
             rxnSBML.setKineticLaw(rateLaw); // add this rateLaw to the current rxn
             rxnSBML.setName(ffRxnObj.getReactionString());
+            rxnSBML.setId("R_"+counter);
             
             // add the reaction to the model -
             _modelWrapper.addReaction(rxnSBML);
