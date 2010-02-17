@@ -18,7 +18,10 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
 
+import org.varnerlab.universaleditor.domain.UEditorSession;
 import org.varnerlab.universaleditor.gui.FileTransferTool;
+import org.varnerlab.universaleditor.gui.Launcher;
+import org.varnerlab.universaleditor.gui.NetworkEditorTool;
 import org.varnerlab.universaleditor.gui.actions.LoadSBMLTreeFromDiskAction;
 import org.varnerlab.universaleditor.gui.actions.OpenNetworkEditorToolAction;
 import org.w3c.dom.Document;
@@ -57,6 +60,12 @@ public class LocalJListDoubleClickAdapter extends MouseAdapter {
 				{
 					// Get the name of the selectedFile -- if it is an xml file then load from disk -
 					String strFileName = selectedFile.getName();
+					
+					// Set the file reference -
+					UEditorSession session = (Launcher.getInstance()).getSession();
+					session.setProperty("LOCAL_SELECTED_FILE", selectedFile);
+					
+					
 					int INT_2_DOT = strFileName.lastIndexOf(".");
 					String strExtension = strFileName.substring(INT_2_DOT+1,strFileName.length());
 					
@@ -95,6 +104,10 @@ public class LocalJListDoubleClickAdapter extends MouseAdapter {
 						// Load the sbml file from disk -
 						LoadSBMLTreeFromDiskAction loadSBMLFileAction = new LoadSBMLTreeFromDiskAction();
 						loadSBMLFileAction.actionPerformed(evt);
+						
+						// ok, so I need to activate the save as button -
+						NetworkEditorTool _tool = (Launcher.getInstance()).getNetworkEditorToolRef();
+						_tool.activateSaveAsButton();
 					}				
 				}
 			}

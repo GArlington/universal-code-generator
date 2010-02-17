@@ -11,7 +11,10 @@
 
 package org.varnerlab.universaleditor.gui;
 
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Rectangle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,9 +25,14 @@ import org.varnerlab.universaleditor.gui.actions.*;
 import java.io.*;
 
 
+import javax.swing.Box;
 import javax.swing.ComboBoxModel;
 import javax.swing.ImageIcon;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import javax.swing.border.LineBorder;
 import javax.swing.event.*;
 import javax.swing.table.*;
 import java.awt.event.*;
@@ -66,6 +74,10 @@ public class ModelCodeGeneratorFileEditor extends javax.swing.JInternalFrame imp
 
 	private File _propFile = null;
 	private String _strWorkingDir = "";
+	
+	// Objects for the dialog -
+	private JComponent sheet;
+	private JPanel glass;
 
 	// Stuff associated with the properties tree -
 	private Node _vlRootTreeNode = null;
@@ -80,7 +92,7 @@ public class ModelCodeGeneratorFileEditor extends javax.swing.JInternalFrame imp
 	private XPathFactory  _xpFactory = XPathFactory.newInstance();
 	private XPath _xpath = _xpFactory.newXPath();
 	private ArrayList<String> _aList = new ArrayList<String>();
-	private final InfiniteProgressPanel glassPane = new InfiniteProgressPanel("Universal is busy. Please wait ... ");
+	private final InfiniteProgressPanel glassPane = new InfiniteProgressPanel();
 
 	// static accessor method
 	public static ModelCodeGeneratorFileEditor getInstance(){
@@ -553,14 +565,14 @@ public class ModelCodeGeneratorFileEditor extends javax.swing.JInternalFrame imp
 
 		jPanel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
-		jButton4.setIcon(new javax.swing.ImageIcon("./images/Control-panel-12-Grey.png")); // NOI18N
-		jButton4.setToolTipText("Test this properties file...");
+		jButton4.setIcon(new javax.swing.ImageIcon("./images/Generate-18-Grey.png")); // NOI18N
+		jButton4.setToolTipText("Test this properties file ...");
 		jButton4.setBorderPainted(false);
 		jButton4.setDoubleBuffered(true);
 		jButton4.setEnabled(false);
 		//jButton4.setVisible(false);
 		jButton4.setRolloverEnabled(true);
-		jButton4.setRolloverIcon(new javax.swing.ImageIcon("./images/Control-panel-12.png")); // NOI18N
+		jButton4.setRolloverIcon(new javax.swing.ImageIcon("./images/Generate-18.png")); // NOI18N
 		jButton4.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				testThisPropertiesFile(evt);
@@ -568,8 +580,8 @@ public class ModelCodeGeneratorFileEditor extends javax.swing.JInternalFrame imp
 		});
 
 
-		jButton5.setIcon(new javax.swing.ImageIcon("./images/Control-panel-12-Grey.png")); // NOI18N
-		jButton5.setToolTipText("Delete current property");
+		jButton5.setIcon(new javax.swing.ImageIcon("./images/ShoppingCart-18-Grey.png")); // NOI18N
+		jButton5.setToolTipText("Save this properties file ... ");
 		jButton5.setBorderPainted(false);
 		jButton5.setEnabled(false);
 		//jButton5.setVisible(false);
@@ -577,10 +589,10 @@ public class ModelCodeGeneratorFileEditor extends javax.swing.JInternalFrame imp
 		jButton5.setMinimumSize(new java.awt.Dimension(49, 45));
 		jButton5.setPreferredSize(new java.awt.Dimension(49, 45));
 		jButton5.setRolloverEnabled(true);
-		jButton5.setRolloverIcon(new javax.swing.ImageIcon("./images/Delete-12.png")); // NOI18N
+		jButton5.setRolloverIcon(new javax.swing.ImageIcon("./images/ShoppingCart-18.png")); // NOI18N
 		jButton5.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				deletePropertyNode(evt);
+				saveThisFile(evt);
 			}
 		});
 
@@ -668,6 +680,18 @@ public class ModelCodeGeneratorFileEditor extends javax.swing.JInternalFrame imp
 	}// </editor-fold>
 
 
+	// Dump this file to disk (overwrite) -
+	private void saveThisFile(ActionEvent evt) {
+		// Create a new action instance -
+		DirectSaveXMLPropFileAction saveXMLProp = new DirectSaveXMLPropFileAction();
+		
+		// Ok, so I need to get the file has been selected -
+		File selectedFile = (File)_session.getProperty("LOCAL_SELECTED_FILE");
+		evt.setSource(selectedFile);
+		saveXMLProp.actionPerformed(evt);
+	}
+
+
 	private void formFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_formFocusGained
 		System.out.println("Focus gained");
 	}//GEN-LAST:event_formFocusGained
@@ -732,7 +756,7 @@ public class ModelCodeGeneratorFileEditor extends javax.swing.JInternalFrame imp
 			jButton1.setEnabled(true);
 
 			// Delay the thread so we can watch the show...
-			WaitThread.manySec(2);
+			WaitThread.manySec(1);
 
 			// Shutdown the glass pane -
 			glassPane.stop();
@@ -763,6 +787,8 @@ public class ModelCodeGeneratorFileEditor extends javax.swing.JInternalFrame imp
 	public void setSaveAsButtonEnabled()
 	{
 		jButton1.setEnabled(true);
+		jButton4.setEnabled(true);
+		jButton5.setEnabled(true);
 	}
 	
 	public void setPropFileRef(File fileName)
@@ -788,13 +814,8 @@ public class ModelCodeGeneratorFileEditor extends javax.swing.JInternalFrame imp
 	}//GEN-LAST:event_loadNewPropFileAction
 
 	private void testThisPropertiesFile(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createNewProperty
-		// TODO add your handling code here:
-		// AddNewPropertyLeafAction action = new AddNewPropertyLeafAction();
-		// action.actionPerformed(evt);
-
-		// need an action to check to see if all the required fields have been filled -
+		// Need an action to check to see if all the required fields have been filled -
 		CheckPropertiesFileAction action = new CheckPropertiesFileAction();
-		action.setToolReference(this);
 		action.actionPerformed(evt);	
 
 	}//GEN-LAST:event_createNewProperty
@@ -954,6 +975,33 @@ public class ModelCodeGeneratorFileEditor extends javax.swing.JInternalFrame imp
 
 		// Set the working dir -
 		this.updateUserObjectTree();
+	}
+	
+	
+	public JComponent showJDialogAsSheet (JDialog dialog) {
+
+		glass = (JPanel)this.getGlassPane();
+
+		sheet = (JComponent) dialog.getContentPane();
+		sheet.setOpaque(false);
+		sheet.setBackground (new Color(0,0,0,225));
+
+		glass.setLayout (new GridBagLayout());
+		sheet.setBorder (new LineBorder(Color.GRAY, 1));
+
+		glass.removeAll();
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.anchor = GridBagConstraints.NORTH;
+		glass.add (sheet, gbc);
+		gbc.gridy=1;
+		gbc.weighty = Integer.MAX_VALUE;
+		glass.add (Box.createGlue(), gbc);
+		glass.setVisible(true);
+		return sheet;
+	}
+	
+	public void hideSheet() {
+		glass.setVisible(false);
 	}
 
 	/*

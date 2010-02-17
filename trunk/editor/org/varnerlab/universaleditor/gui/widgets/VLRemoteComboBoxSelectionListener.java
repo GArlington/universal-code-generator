@@ -60,8 +60,8 @@ public class VLRemoteComboBoxSelectionListener implements ActionListener {
         
         if (file!=null)
         {
-
-            // Get the name of the selected file -
+        	
+        	// Get the name of the selected file -
             String strFileName = file.getName();
             String strUserName = (String)session.getProperty("VALIDATED_USERNAME");
             if (strFileName.equalsIgnoreCase(strUserName))
@@ -71,10 +71,10 @@ public class VLRemoteComboBoxSelectionListener implements ActionListener {
             	// Ok, so let's fire up the xpath -
             	doc = (Document)session.getProperty("REMOTE_FILESYSTEM_TREE");
             	XPath xpath = XPathFactory.newInstance().newXPath();
-            	String expression = "*";
+            	String expression = "//"+strUserName+"/*";
             	           	
             	try {
-    				Node dirNode = (Node) xpath.evaluate("//*", doc, XPathConstants.NODE);
+    				Node dirNode = (Node) xpath.evaluate(expression, doc, XPathConstants.NODE);
     				
     				if (dirNode!=null)
     				{
@@ -88,7 +88,7 @@ public class VLRemoteComboBoxSelectionListener implements ActionListener {
             	}
             	catch (Exception error)
             	{
-            		error.printStackTrace();
+            		//error.printStackTrace();
             	}
             }
             else
@@ -183,7 +183,7 @@ public class VLRemoteComboBoxSelectionListener implements ActionListener {
                 	}
                 	catch (Exception error)
                 	{
-                		
+                		error.printStackTrace();
                 	}
                 	
                 	/*

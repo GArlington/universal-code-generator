@@ -112,6 +112,11 @@ public class NetworkEditorTool extends javax.swing.JInternalFrame implements Tab
         return(_this);
     }
 	
+    
+    public void activateSaveAsButton()
+    {
+    	jButton1.setEnabled(true);
+    }
 
     /** Creates new form NetworkEditorTool */
     private NetworkEditorTool() {

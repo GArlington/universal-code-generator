@@ -414,9 +414,6 @@ public class FileTransferTool extends javax.swing.JInternalFrame implements Acti
 		// Get the file -
 		Object[] objArr = jList1.getSelectedValues();
 
-		// Let everyone else know that I have updated session -
-		SystemwideEventService.fireSessionUpdateEvent();
-
 		// Get the number of selected files -
 		int NUMBER_OF_FILES = objArr.length;
 		for (int index=0;index<NUMBER_OF_FILES;index++)
@@ -494,7 +491,10 @@ public class FileTransferTool extends javax.swing.JInternalFrame implements Acti
 			}
 
 			// clear out the buffer and go around again -
-			buffer.delete(0, buffer.length());         
+			buffer.delete(0, buffer.length());  
+			
+			// Let everyone else know that I have updated session -
+			SystemwideEventService.fireSessionUpdateEvent();
 		}
 	}//GEN-LAST:event_sendFileToServer
 
