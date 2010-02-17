@@ -215,27 +215,46 @@ public class NetworkEditorTool extends javax.swing.JInternalFrame implements Tab
 	{
 		// Clear out the tree -
 		jTree1.removeAll();
+		Node rootNode = null;
 
 		// Get the model node and its attributes -
-		String expression = "/sbml:sbml";
+		// Ok, sometimes this node is null because the namespace is incorrect - super hack...need to think about this
+		Vector<String> vecNameSpaces = new Vector<String>();
+		vecNameSpaces.add("/sbml:sbml");
+		vecNameSpaces.add("/sbml21:sbml");
+		vecNameSpaces.add("/sbml22:sbml");
+		vecNameSpaces.add("/sbml23:sbml");
+		vecNameSpaces.add("/sbml24:sbml");
+		vecNameSpaces.add("/sbml25:sbml");
+		
+		int NOFNAMES = vecNameSpaces.size();
+		for (int index=0;index<NOFNAMES;index++)
+		{
+			String expression = vecNameSpaces.get(index);
+			rootNode = (Node)_xpath.evaluate(expression, doc, XPathConstants.NODE);
+			
+			if (rootNode!=null)
+			{
+				this._vlRootTreeNode = rootNode;
+				_guiRoot = populateJTree(_vlRootTreeNode);
 
-		Node rootNode = (Node)_xpath.evaluate(expression, doc, XPathConstants.NODE);
-		this._vlRootTreeNode = rootNode;
-		_guiRoot = populateJTree(_vlRootTreeNode);
+				// add to the tree -
+				DefaultTreeModel mod = new DefaultTreeModel (_guiRoot);
+				jTree1.setModel (mod);
 
-		// add to the tree -
-		DefaultTreeModel mod = new DefaultTreeModel (_guiRoot);
-		jTree1.setModel (mod);
+				// We need the table model to update when I clisk a node -
+				jTree1.addTreeSelectionListener(_tableModel);
+				jTree1.addKeyListener(new NewSBMLTreeLeafKeyAdaptor());
 
-		// We need the table model to update when I clisk a node -
-		jTree1.addTreeSelectionListener(_tableModel);
-		jTree1.addKeyListener(new NewSBMLTreeLeafKeyAdaptor());
+				// I need to see if
+				_tableModel.fireTableDataChanged();
 
-		// I need to see if
-		_tableModel.fireTableDataChanged();
-
-		// Add the tree to the scroll pane -
-		jScrollPane1.setViewportView(jTree1);
+				// Add the tree to the scroll pane -
+				jScrollPane1.setViewportView(jTree1);
+				
+				break;
+			}
+		}
 	}
 
 	// Set the root node of the XML tree -
