@@ -1,5 +1,6 @@
 package org.varnerlab.universaleditor.gui.actions;
 
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
@@ -54,7 +55,7 @@ public class CheckPropertiesFileAction implements ActionListener,PropertyChangeL
         	// Get the list of issues -
         	int NUMBER_OF_PROBLEMS = aList.size();
         	StringBuffer buffer = new StringBuffer();
-        	buffer.append("Missing items \n");
+        	buffer.append("There are missing items in this file: \n");
         	for (int index=0;index<NUMBER_OF_PROBLEMS;index++)
         	{
         		buffer.append(aList.get(index));
@@ -62,9 +63,13 @@ public class CheckPropertiesFileAction implements ActionListener,PropertyChangeL
         	}
         	
         	//System.out.println("This file is ok ...");
+        	
         	optionPane = new JOptionPane(buffer.toString(),JOptionPane.WARNING_MESSAGE,JOptionPane.PLAIN_MESSAGE);
-			optionPane.addPropertyChangeListener(this);
+        	optionPane.addPropertyChangeListener(this);
+        	Font font = new Font("Serif", Font.BOLD, 12);
+			optionPane.setFont(font);
 			JDialog jDialog = optionPane.createDialog(_frame,"Spank");
+			jDialog.setFont(font);
 			_tool.showJDialogAsSheet(jDialog);
         }
         else

@@ -12,6 +12,7 @@
 package org.varnerlab.universaleditor.gui;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -756,10 +757,16 @@ public class ModelCodeGeneratorFileEditor extends javax.swing.JInternalFrame imp
 			jButton1.setEnabled(true);
 
 			// Delay the thread so we can watch the show...
-			WaitThread.manySec(1);
+			//WaitThread.manySec(1);
 
 			// Shutdown the glass pane -
 			glassPane.stop();
+			glassPane.removeAll();
+			
+			// enable the other buttons -
+			jButton1.setEnabled(true);	
+			jButton4.setEnabled(true);	
+			jButton5.setEnabled(true);	
 		}
 		catch (Exception error)
 		{
@@ -977,9 +984,19 @@ public class ModelCodeGeneratorFileEditor extends javax.swing.JInternalFrame imp
 		this.updateUserObjectTree();
 	}
 	
+
 	
 	public JComponent showJDialogAsSheet (JDialog dialog) {
-
+		
+		// need to cjeck to see if I have already addded something to the glass pane -
+		if (getGlassPane() instanceof InfiniteProgressPanel)
+		{
+			glass = new JPanel();
+			glass.setOpaque(false);
+			setGlassPane(glass);
+		}
+		
+				
 		glass = (JPanel)this.getGlassPane();
 
 		sheet = (JComponent) dialog.getContentPane();
@@ -1001,7 +1018,10 @@ public class ModelCodeGeneratorFileEditor extends javax.swing.JInternalFrame imp
 	}
 	
 	public void hideSheet() {
-		glass.setVisible(false);
+		if (glass!=null)
+		{
+			glass.setVisible(false);
+		}
 	}
 
 	/*

@@ -47,7 +47,7 @@ public class LoadXMLTreeAction implements ActionListener {
     ModelCodeGeneratorFileEditor windowFrame = null;
     Document doc = null;
     File file = null;
-    final InfiniteProgressPanel glassPane = new InfiniteProgressPanel("Loading model properties template file ...");
+    final InfiniteProgressPanel glassPane = new InfiniteProgressPanel();
     
 
     public void actionPerformed(ActionEvent e) {
@@ -68,6 +68,9 @@ public class LoadXMLTreeAction implements ActionListener {
            {
               // Get the fc -
               file = fc.getSelectedFile();
+              
+              // Ok, let's cache the file so I can get it later -
+              ((UEditorSession)(Launcher.getInstance()).getSession()).setProperty("LOCAL_SELECTED_FILE", file);
               
               // Load and parse the file -
               File configFile = new File(file.getAbsolutePath());
@@ -129,15 +132,19 @@ public class LoadXMLTreeAction implements ActionListener {
     	// Ok, so now we the doc, try to create a tree -
 	  	  try {
 			windowFrame.setRootNode(doc);
+			windowFrame.setSaveAsButtonEnabled();
 			
 			// Put the filename in session -
             UEditorSession session = (Launcher.getInstance()).getSession();
             session.setProperty("CURRENT_MODEL_PROP_FILENAME",file.getName());
             
+            // Load the model tree into memory -
+        	session.setProperty("MODEL_TEMPLATE_FILE_TREE", doc);
+            
             // Fire the update -
             SystemwideEventService.fireSessionUpdateEvent();
        
-            WaitThread.manySec(1);
+            // stop the insainity -
             glassPane.stop();
 			
 		} catch (Exception e) {
