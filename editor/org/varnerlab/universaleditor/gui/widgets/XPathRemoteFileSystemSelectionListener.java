@@ -112,24 +112,9 @@ public class XPathRemoteFileSystemSelectionListener implements ListSelectionList
 				tmpVector.addElement(((File)jComboBox.getItemAt(index)).getAbsolutePath());
 			}
 
-			// Ok, so I've put the items into the vector - let's use the contains option
-			String strFilePath = file.getAbsolutePath();
-			if (!tmpVector.contains(strFilePath))
-			{
-				// We need one extra bit of logic - 
-				// We are having a problem with peer dirs - we don't have both peers in the list?
-				// checkPaths(doc,strFilePath);
-
-				// Add the dir to drop down -
-				jComboBox.addItem(file);
-				jComboBox.setSelectedItem(file);
-			}
-			else
-			{
-				// Ok, so we already have this item just set the selected item -
-				jComboBox.setSelectedItem(file);
-			}      
+			
 			// ------------------------------------------------------------------- //
+			
 
 			// first thing is we need to delete items on the combo box that are below me -
 			// trim the list -
@@ -140,7 +125,7 @@ public class XPathRemoteFileSystemSelectionListener implements ListSelectionList
 			StringBuffer tmpBuffer = new StringBuffer();
 			tmpBuffer.append("//");
 			int INT_SELECTED_INDEX = jComboBox.getSelectedIndex();
-			for (int index=1;index<INT_SELECTED_INDEX;index++)
+			for (int index=0;index<ITEM_COUNT;index++)
 			{
 				// Get the raw path -
 				String strTmpRaw = tmpVector.get(index);
@@ -149,10 +134,22 @@ public class XPathRemoteFileSystemSelectionListener implements ListSelectionList
 				int INT_LAST_SLASH = strTmpRaw.lastIndexOf("/");
 				String strTmpNew = strTmpRaw.substring(INT_LAST_SLASH+1, strTmpRaw.length());
 
-				// Ok, add a Dir call to the xpath string -
-				tmpBuffer.append("Directory[@name='");
-				tmpBuffer.append(strTmpNew);
-				tmpBuffer.append("']");
+				
+				if (index==0)
+            	{
+            		// Ok, add a Dir call to the xpath string -
+                	tmpBuffer.append("jdv27[@name='");
+                	tmpBuffer.append(strTmpNew);
+                	tmpBuffer.append("']");
+            	}
+				else
+				{
+				
+					// Ok, add a Dir call to the xpath string -
+					tmpBuffer.append("Directory[@name='");
+					tmpBuffer.append(strTmpNew);
+					tmpBuffer.append("']");
+				}
 
 				if (index<=NUMBER_OF_ITEMS-1)
 				{
@@ -173,6 +170,8 @@ public class XPathRemoteFileSystemSelectionListener implements ListSelectionList
 
 			// Try and grab the dirNode corresponding to this session -
 			try {
+				
+				System.out.println("Evaluating "+expression+" in "+this.getClass().getName());
 				Node dirNode = (Node) xpath.evaluate(expression, doc, XPathConstants.NODE);
 
 				if (dirNode!=null)
@@ -190,6 +189,7 @@ public class XPathRemoteFileSystemSelectionListener implements ListSelectionList
 					// Ok, so we need to set the current selected node in the session -
 					session.setProperty("SELECTED_REMOTE_PATH", strPath);
 					SystemwideEventService.fireNetworkUpdateEvent();
+					SystemwideEventService.fireSessionUpdateEvent();
 
 					// Ok, so I have a directory node - get the kids which are directories -
 					String strDirXPath = expression+"/Directory";
@@ -206,16 +206,11 @@ public class XPathRemoteFileSystemSelectionListener implements ListSelectionList
 						if (INT_DOT!=0)
 						{
 
-							//System.out.println("Name of child = "+strChildTmp);
-
-							// put in the model -
-
 							// Reset the dir flag just in case it has not been set -
 							renderer.setDirectoryFlag(strChildTmp,"DIRECTORY");
 							renderer.setBackground(Color.BLUE);
 
 							// Create a file -
-							PublishService.submitData("I'm looking at what node - "+childNode);
 							File tmpFile = new File(strChildTmp);
 							listModel.addElement(tmpFile);
 						}
@@ -244,11 +239,31 @@ public class XPathRemoteFileSystemSelectionListener implements ListSelectionList
 							renderer.setBackground(Color.BLUE);                   
 
 							// Create a file -
-							PublishService.submitData("I'm looking at what node - "+childNode);
 							File tmpFile = new File(strChildTmp);
 							listModel.addElement(tmpFile);
 						}
-					}			
+					}
+					
+					// Ok, so I've put the items into the vector - let's use the contains option
+					String strFilePath = file.getAbsolutePath();
+					System.out.println("Inside the "+this.getClass().toString()+" class just above the combox box update - "+strFilePath+" is not yet visible.");
+					if (!tmpVector.contains(strFilePath))
+					{
+						// We need one extra bit of logic - 
+						// We are having a problem with peer dirs - we don't have both peers in the list?
+						// checkPaths(doc,strFilePath);
+
+						// Add the dir to drop down -
+						jComboBox.addItem(file);
+						jComboBox.setSelectedItem(file);
+					}
+					else
+					{
+						// Ok, so we already have this item just set the selected item -
+						jComboBox.setSelectedItem(file);
+					}
+					
+					System.out.println("Inside the "+this.getClass().toString()+" class just below the combox box update - "+strFilePath+" should be visible.");
 				}
 				else
 				{
@@ -256,15 +271,14 @@ public class XPathRemoteFileSystemSelectionListener implements ListSelectionList
 
 					// One issue is the I have a problem w/the combo box .. it doens't handle peer dirs correctly. We can assume that when we get here 
 					// we have that issue and try and fix - 
-					StringBuffer hackBuffer = new StringBuffer();
+					//StringBuffer hackBuffer = new StringBuffer();
 
 					// Generate a hack -
-					generateHackXPath(hackBuffer,jComboBox,tmpVector,strFileName);
-
-					String strHackExpression = hackBuffer.toString();
-					//System.out.println("I'm realy lost... hack "+strHackExpression+" gave me spank!");
+					//generateHackXPath(hackBuffer,jComboBox,tmpVector,strFileName);
 					
-					populateList(strHackExpression,doc,listModel,session,renderer);
+					//String strHackExpression = hackBuffer.toString();
+					//System.out.println("I'm realy lost... running hack "+strHackExpression);
+					//populateList(strHackExpression,doc,listModel,session,renderer);
 					
 				}
 			} 

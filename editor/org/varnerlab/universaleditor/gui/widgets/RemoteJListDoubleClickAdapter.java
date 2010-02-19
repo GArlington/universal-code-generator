@@ -64,7 +64,7 @@ public class RemoteJListDoubleClickAdapter extends MouseAdapter implements Prope
 			}
 			catch (Exception error)
 			{
-				
+				error.printStackTrace();
 			}
 		}
 	}

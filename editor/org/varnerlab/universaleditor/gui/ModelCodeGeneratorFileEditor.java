@@ -104,13 +104,18 @@ public class ModelCodeGeneratorFileEditor extends javax.swing.JInternalFrame imp
 		return(_this);
 	}
 
+	
+	public void setSelectedJComboItem(String selectedItem)
+	{
+		jComboBox1.setSelectedItem(selectedItem);
+	}
 
 	/** Creates new form ModelCodeGeneratorFileEditor */
 	private ModelCodeGeneratorFileEditor() {
 		//super("Property File Editor Tool v1.0");
 
 		// Call to super
-		super("Model properties file editor tool v1.0",false,true);
+		super("Universal properties file editor v1.0",false,true);
 
 		// iterate window count
 		++openFrameCount;
