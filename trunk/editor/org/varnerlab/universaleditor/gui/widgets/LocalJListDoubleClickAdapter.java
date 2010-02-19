@@ -12,6 +12,7 @@ import java.beans.PropertyChangeListener;
 import java.io.File;
 
 import javax.swing.JList;
+import javax.swing.SwingUtilities;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.xpath.XPath;
@@ -108,7 +109,72 @@ public class LocalJListDoubleClickAdapter extends MouseAdapter {
 						// ok, so I need to activate the save as button -
 						NetworkEditorTool _tool = (Launcher.getInstance()).getNetworkEditorToolRef();
 						_tool.activateSaveAsButton();
-					}				
+						
+						// Update the title bar to hold the filename -
+						String strTitleName = "SBML Network Editor v1.0"+" ["+selectedFile.getName()+"]";
+						_tool.setTitle(strTitleName);
+					}
+					else if (strExtension.equalsIgnoreCase("dot"))
+					{
+						// Get the path of the selected file and then try and open using a system edtior -
+						String strFilePath = selectedFile.getAbsolutePath();
+						
+						// Ok, we need to get the name of the editor from the preference tree -
+						String strGraphviz = (String)session.getProperty("GRAPHVIZ_INSTALLED");
+						if (strGraphviz.equalsIgnoreCase("true"))
+						{
+							final String strCommand = "open -a GraphViz "+strFilePath;
+							SwingUtilities.invokeLater(new Runnable() {
+								public void run() {
+									Thread performer = new Thread(new Runnable() {
+										public void run() {
+											try {
+												Runtime.getRuntime().exec(strCommand);
+											}
+											catch (Exception error)
+											{
+												System.out.println("ERROR executing "+strCommand+" exception = "+error.toString());		
+											}
+										}
+									}, "Performer");
+									performer.start();
+								}
+							});
+						}
+					}
+					else
+					{
+						// Ok, so if I get here then I have a file type that universal doesn't know how to handle -
+						
+						// check to see if this is word doc -
+						if (!strExtension.equalsIgnoreCase("doc") || !strExtension.equalsIgnoreCase("docx"))
+						{
+							// Get the path of the selected file and then try and open using a system edtior -
+							String strFilePath = selectedFile.getAbsolutePath();
+							
+							// Ok, we need to get the name of the editor from the preference tree -
+							String strEditor = (String)session.getProperty("EDITOR");
+							
+							
+							final String strCommand = "open -a "+strEditor+" "+strFilePath;
+							SwingUtilities.invokeLater(new Runnable() {
+								public void run() {
+									Thread performer = new Thread(new Runnable() {
+										public void run() {
+											try {
+												Runtime.getRuntime().exec(strCommand);
+											}
+											catch (Exception error)
+											{
+												System.out.println("ERROR executing "+strCommand+" exception = "+error.toString());		
+											}
+										}
+									}, "Performer");
+									performer.start();
+								}
+							});
+						}
+					}
 				}
 			}
 			catch (Exception error)

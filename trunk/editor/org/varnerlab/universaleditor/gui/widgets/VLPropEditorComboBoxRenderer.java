@@ -43,8 +43,6 @@ public class VLPropEditorComboBoxRenderer extends DefaultListCellRenderer {
 		// Get the code extension -
         String strFExt = node.getNodeValue();
 		
-        System.out.println("Extension - "+strFExt);
-        
 		// Check -
 		if (strFExt.equalsIgnoreCase("OCTAVE-C"))
 		{

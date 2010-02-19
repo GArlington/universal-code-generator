@@ -53,7 +53,7 @@ public class ConsoleToolFocusListener implements InternalFrameListener {
         intFrame.setFrameIcon(icon);
 
         // Update -
-        intFrame.sendUpdateRequestToServer();
+        intFrame.testSSHStandardOut();
     }
 
     public void internalFrameDeactivated(InternalFrameEvent e) {

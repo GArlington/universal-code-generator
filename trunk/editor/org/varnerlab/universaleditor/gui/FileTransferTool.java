@@ -64,6 +64,7 @@ import org.varnerlab.universaleditor.gui.actions.LoginToolAction;
 import org.varnerlab.universaleditor.gui.widgets.BioChemExpToolFocusListener;
 import org.varnerlab.universaleditor.gui.widgets.FileTransferJPopupMenuMouseAdapter;
 import org.varnerlab.universaleditor.gui.widgets.IVLProcessTreeNode;
+import org.varnerlab.universaleditor.gui.widgets.InfiniteProgressPanel;
 import org.varnerlab.universaleditor.gui.widgets.LocalJListDoubleClickAdapter;
 import org.varnerlab.universaleditor.gui.widgets.RemoteJListDoubleClickAdapter;
 import org.varnerlab.universaleditor.gui.widgets.TransferToolFocusListener;
@@ -638,7 +639,7 @@ public class FileTransferTool extends javax.swing.JInternalFrame implements Acti
 
 		// Ok, so we have the dir nodes -
 		int NUMBER_OF_DIRS = dirNodes.getLength();
-		System.out.println("How many dirs - ? "+NUMBER_OF_DIRS);
+		System.out.println("How many dirs - ? "+NUMBER_OF_DIRS+" inside "+this.getClass().toString()+" class and processNodesWithXPath method");
 		for (int index = 0;index<NUMBER_OF_DIRS;index++)
 		{
 			// Get the node -
@@ -830,6 +831,10 @@ public class FileTransferTool extends javax.swing.JInternalFrame implements Acti
 		{
 			// Send that mofo -
 			String strReturnString = SocketService.sendMessage(strBuffer.toString(), strIPAddress, strPort, _session,ServerJobTypes.PROJECT_DIRECTORY_LOOKUP);
+			
+			// for debug -
+			VLIOLib.write("/Users/jeffreyvarner/Desktop/REMOTEFS.xml",strReturnString);
+			
 			PublishService.submitData("Rcvd - "+strReturnString);
 
 			// Ok, check to see if return string is null -
@@ -844,7 +849,7 @@ public class FileTransferTool extends javax.swing.JInternalFrame implements Acti
 
 				// Ok, so we have a document -
 				document = builder.parse(new InputSource(new StringReader(strReturnString)));
-				processNodes(document.getFirstChild(),_listModelJList2,true);
+				processNodes(document,_listModelJList2,true);
 
 				// Add model to jList2 -
 				jList2.setModel(_listModelJList2);
@@ -1016,6 +1021,14 @@ public class FileTransferTool extends javax.swing.JInternalFrame implements Acti
 
 	public JComponent showCustomPinnedDialog(NewDirectoryDialog dialog)
 	{
+		// need to cjeck to see if I have already addded something to the glass pane -
+		if (getGlassPane() instanceof InfiniteProgressPanel)
+		{
+			glass = new JPanel();
+			glass.setOpaque(false);
+			setGlassPane(glass);
+		}
+		
 		glass = (JPanel)this.getGlassPane();
 
 		sheet = (JComponent) dialog.getContentPane();
@@ -1038,6 +1051,15 @@ public class FileTransferTool extends javax.swing.JInternalFrame implements Acti
 
 	public JComponent showJDialogAsSheet (JDialog dialog) {
 
+		// need to cjeck to see if I have already addded something to the glass pane -
+		if (getGlassPane() instanceof InfiniteProgressPanel)
+		{
+			glass = new JPanel();
+			glass.setOpaque(false);
+			setGlassPane(glass);
+		}
+		
+		
 		glass = (JPanel)this.getGlassPane();
 
 		sheet = (JComponent) dialog.getContentPane();

@@ -140,7 +140,7 @@ public class NetworkEditorTool extends javax.swing.JInternalFrame implements Tab
 	/** Creates new form NetworkEditorTool */
 	private NetworkEditorTool() {
 		// Call to super
-		super("SBML Network Editor Tool v1.0",false,true);
+		super("SBML Network Editor v1.0",false,true);
 
 		// set the namespace on the xpath -
 		_xpath.setNamespaceContext(new SBMLNamespaceContext());
@@ -445,7 +445,7 @@ public class NetworkEditorTool extends javax.swing.JInternalFrame implements Tab
 
 		setClosable(true);
 		setIconifiable(true);
-		setResizable(false);
+		setResizable(true);
 
 
 		// setup the quick save button -

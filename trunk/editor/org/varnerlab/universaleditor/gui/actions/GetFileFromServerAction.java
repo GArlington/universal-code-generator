@@ -125,24 +125,10 @@ public class GetFileFromServerAction implements ActionListener {
     		File file = (File)objArr[file_index];
     		String strFile = file.getName();
 
-    		// Get the string of which tree I need to be operating on?
-    		Document remoteTree = (Document)session.getProperty("REMOTE_FILESYSTEM_TREE");
-
-    		try {
-
-    			// Formulate the XPath string -
-    			strXPath = "//File[@name=\""+strFile+"\"]/@path";
-    			XPathExpression expr = _xpath.compile(strXPath);
-    			Node fileNode = (Node)expr.evaluate(remoteTree, XPathConstants.NODE);
-
-    			// Grab the path from this node (in the tree)
-    			strPath = fileNode.getNodeValue();
-    		}
-    		catch (Exception error)
-    		{
-    			System.out.println("Something happend in XPath call when trying to get files from serevr "+error.toString());
-    		}
-
+    		// Ok, so let's create the path string -
+    		String strSelectedRemotePath = (String)session.getProperty("SELECTED_REMOTE_PATH");
+    		strPath = strSelectedRemotePath+"/"+strFile;
+    		
     		// Formulate the message buffer -
     		StringBuffer buffer = new StringBuffer();
     		buffer.append("<universal>\n");

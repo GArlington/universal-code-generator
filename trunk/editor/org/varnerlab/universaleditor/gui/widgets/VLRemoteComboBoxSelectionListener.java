@@ -71,19 +71,22 @@ public class VLRemoteComboBoxSelectionListener implements ActionListener {
             	// Ok, so let's fire up the xpath -
             	doc = (Document)session.getProperty("REMOTE_FILESYSTEM_TREE");
             	XPath xpath = XPathFactory.newInstance().newXPath();
-            	String expression = "//"+strUserName+"/*";
+            	String expression = "//"+strUserName+"[@name='"+strUserName+"']";
             	           	
             	try {
-    				Node dirNode = (Node) xpath.evaluate(expression, doc, XPathConstants.NODE);
     				
+            		
+            		Node dirNode = (Node) xpath.evaluate(expression, doc, XPathConstants.NODE);
+            		System.out.println("Evaluating "+expression+" in "+this.getClass().getName()+" returned what = "+dirNode+" from document "+doc);
+            		
     				if (dirNode!=null)
     				{
-    					listModel.clear();
+    					listModel.clear();    					
                         tool.processNodes((Node)dirNode, listModel,true);
     				}
     				else
     				{
-    					PublishService.submitData("The dirNode is null? WTF?");
+    					System.out.println("The dirNode in "+this.getClass().toString()+" is null? WTF?");
     				}
             	}
             	catch (Exception error)
@@ -121,7 +124,35 @@ public class VLRemoteComboBoxSelectionListener implements ActionListener {
                 	{
                 		session.setProperty("SELECTED_SESSION_ID",strFileName);
                 		SystemwideEventService.fireSessionUpdateEvent();
+                		
+                		// if I get here then I've selected a project. Delete all trailing elements from the combo box -
+                		// Get the number of elements currently in the combo box -
+                		int NUMBER_OF_CURRENT_ELEMENTS = jComboBox.getItemCount();
+                		int SELECTED_INDEX = jComboBox.getSelectedIndex();
+                		
+                		// Get the selected file -
+                		Vector<File> tmpVector = new Vector<File>();
+                		for (int index=0;index<2;index++)
+                        {
+                        	
+                			tmpVector.addElement(((File)jComboBox.getItemAt(index)));
+                        }
+                		
+                		// remove all items and then add back the correct stuff -
+                		jComboBox.removeAllItems();
+                		
+                		for (int index=0;index<2;index++)
+                		{
+                			jComboBox.addItem(tmpVector.get(index));
+                		}
+                		
+                		// set the selected item -
+                		jComboBox.setSelectedItem(file);
+                		
                 	}
+                	
+                	System.out.println("I'm in the leaf section of "+this.getClass().toString()+" getting ready to read the freakin combo box...");
+                	
                 	
                 	Vector<String> tmpVector = new Vector<String>();
                     int NUMBER_OF_ITEMS = jComboBox.getItemCount();
@@ -134,7 +165,7 @@ public class VLRemoteComboBoxSelectionListener implements ActionListener {
                     StringBuffer tmpBuffer = new StringBuffer();
                     tmpBuffer.append("//");
                     int INT_SELECTED_INDEX = jComboBox.getSelectedIndex();
-                	for (int index=1;index<INT_SELECTED_INDEX;index++)
+                	for (int index=0;index<INT_SELECTED_INDEX;index++)
                 	{
                 		// Get the raw path -
                 		String strTmpRaw = tmpVector.get(index);
@@ -143,10 +174,22 @@ public class VLRemoteComboBoxSelectionListener implements ActionListener {
                 		int INT_LAST_SLASH = strTmpRaw.lastIndexOf("/");
                     	String strTmpNew = strTmpRaw.substring(INT_LAST_SLASH+1, strTmpRaw.length());
                     	
-                    	// Ok, add a Dir call to the xpath string -
-                    	tmpBuffer.append("Directory[@name='");
-                    	tmpBuffer.append(strTmpNew);
-                    	tmpBuffer.append("']");
+                    	if (index==0)
+                    	{
+                    		// Ok, add a Dir call to the xpath string -
+                        	tmpBuffer.append("jdv27[@name='");
+                        	tmpBuffer.append(strTmpNew);
+                        	tmpBuffer.append("']");
+                    	}
+                    	else
+                    	{
+                    		// Ok, add a Dir call to the xpath string -
+                        	tmpBuffer.append("Directory[@name='");
+                        	tmpBuffer.append(strTmpNew);
+                        	tmpBuffer.append("']");
+                    	}
+                    	
+                    	
                     	
                     	if (index<=NUMBER_OF_ITEMS-1)
                     	{
@@ -154,6 +197,8 @@ public class VLRemoteComboBoxSelectionListener implements ActionListener {
                     	}
                     }
                 
+                	System.out.println("Expression in "+this.getClass().getName()+" line 200 before I add the selected dir - "+tmpBuffer.toString());
+                	
                     // Ok, so always add the currently selected dir to the xpath string (the jcombo box lags)
                 	tmpBuffer.append("Directory[@name='");
                 	tmpBuffer.append(strFileName);
@@ -162,14 +207,17 @@ public class VLRemoteComboBoxSelectionListener implements ActionListener {
                     // Ok, so we need to formulate the correct xpath string -
                     String expression = tmpBuffer.toString();
                     
+                    
+                    
                 	//String expression = "//Directory[@name='"+strFileName+"']/*";
                 	
                 	// What is the xpath?
                 	//PublishService.submitData("What is the xpath expression [leaf node] - "+expression);
-                	System.out.println("What is the xpath expression [leaf node] - "+expression);
+                	
                 	
                 	try {
         				Node dirNode = (Node) xpath.evaluate(expression, doc, XPathConstants.NODE);
+        				System.out.println("Xpath expression "+expression+" returned "+dirNode+" in "+this.getClass().toString()+" class actionPerformed method.");
         				
         				if (dirNode!=null)
         				{

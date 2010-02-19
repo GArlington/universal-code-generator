@@ -20,10 +20,21 @@ import java.net.InetAddress;
 import java.net.MulticastSocket;
 
 import javax.swing.ImageIcon;
+import javax.swing.SwingUtilities;
 
 import org.varnerlab.universaleditor.domain.UEditorSession;
 import org.varnerlab.universaleditor.gui.widgets.ConsoleToolFocusListener;
 import org.varnerlab.universaleditor.service.PublishService;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
+import ch.ethz.ssh2.Connection;
+import ch.ethz.ssh2.Session;
+import ch.ethz.ssh2.StreamGobbler;
+
 
 /**
  *
@@ -311,7 +322,109 @@ public class ConsoleWindow extends javax.swing.JInternalFrame {
     private javax.swing.JTextArea jTextArea2;
     // End of variables declaration
 
+    
+    public void testSSHStandardOut()
+    {
+    	
 
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				Thread performer = new Thread(new Runnable() {
+					public void run() {
+						doSSHConnection();
+					}
+				}, "Performer");
+				performer.start();
+			}
+		});
+		
+		
+		
+	}
+    
+    
+    private void doSSHConnection()
+    {
+    	String hostname = "192.168.2.21";
+		String username = "jdv27";
+		String password = "password";
+		
+		try
+		{
+			/* Create a connection instance */
+			this.clearWindow(null);
+
+			Connection conn = new Connection(hostname);
+
+			/* Now connect */
+
+			conn.connect();
+
+			/* Authenticate */
+
+			boolean isAuthenticated = conn.authenticateWithPassword(username, password);
+
+			if (isAuthenticated == false)
+				throw new IOException("Authentication failed.");
+
+			/* Create a session */
+
+			Session sess = conn.openSession();
+			
+			// Ok, so we need to get the session object and construct the look-up command - to avoid crazy ass issues, uSession is RO
+			UEditorSession uSession = (Launcher.getInstance()).getSession();
+			
+			// Get the server home directory -
+			String strCodeGen = (String)uSession.getProperty("CODEGEN_WORKING_DIR");
+			String strSessionID = (String)uSession.getProperty("SELECTED_SESSION_ID");
+			String strLogFilePath = strCodeGen+strSessionID+"/.tmp/job.log";
+			
+			String strCommand = "tail -20 "+strLogFilePath;
+			sess.execCommand(strCommand);
+
+			//sess.execCommand("echo \"SpankMaster superblaster...\"; echo \"Text on STDERR\" >&2");
+
+			InputStream stdout = new StreamGobbler(sess.getStdout());
+			InputStream stderr = new StreamGobbler(sess.getStderr());
 	
+			BufferedReader stdoutReader = new BufferedReader(new InputStreamReader(stdout));
+			BufferedReader stderrReader = new BufferedReader(new InputStreamReader(stderr));
+			
+			
+			//System.out.println("Here is the output from stdout:");
+	
+			while (true)
+			{
+				String line = stdoutReader.readLine();
+				if (line == null)
+					break;
+				
+				this.postToServerConsole(line);
+			}
+			
+			//System.out.println("Here is the output from stderr:");
+			
+			while (true)
+			{
+				String line = stderrReader.readLine();
+				if (line == null)
+					break;
+				System.out.println(line);
+			}
+			
+			/* Close this session */
+			
+			sess.close();
 
+			/* Close the connection */
+
+			conn.close();
+
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace(System.err);
+			System.exit(2);
+		}
+    }
 }

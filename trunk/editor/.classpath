@@ -9,5 +9,6 @@
 	<classpathentry kind="lib" path="/Users/jeffreyvarner/dev/UniversalWeb/UniversalEditor/lib/jeexplorer-1.15.jar"/>
 	<classpathentry kind="lib" path="/Users/jeffreyvarner/dev/UniversalWeb/UniversalEditor/lib/mysql-connector-java-3.1.14-bin.jar"/>
 	<classpathentry kind="lib" path="/Users/jeffreyvarner/dev/UniversalWeb/UniversalEditor/lib/swing-layout-1.0.3.jar"/>
+	<classpathentry kind="lib" path="/Users/jeffreyvarner/Downloads/ganymed-ssh2-build210/ganymed-ssh2-build210.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

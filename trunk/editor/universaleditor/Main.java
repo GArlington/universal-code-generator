@@ -249,6 +249,11 @@ public class Main {
     	Node architectureNode = (Node)_xpath.evaluate(strXPArchitecture, doc, XPathConstants.NODE);
     	session.setProperty("PLATFORM",architectureNode.getNodeValue());
     	
+    	String strXPArchitectureEditor = "//architecture/property/@editor";
+    	Node editorNode = (Node)_xpath.evaluate(strXPArchitectureEditor, doc, XPathConstants.NODE);
+    	session.setProperty("EDITOR",editorNode.getNodeValue());
+    	
+    	
     	// Paths -
     	String strXPPaths = "//universal_paths/property";
     	processPropertyAttributes(strXPPaths,doc,session);
