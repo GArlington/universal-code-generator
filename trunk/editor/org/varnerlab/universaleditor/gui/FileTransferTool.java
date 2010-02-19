@@ -61,6 +61,7 @@ import org.varnerlab.universaleditor.domain.UEditorSession;
 import org.varnerlab.universaleditor.gui.actions.FileTransferJPopupMenuActionListener;
 import org.varnerlab.universaleditor.gui.actions.GetFileFromServerAction;
 import org.varnerlab.universaleditor.gui.actions.LoginToolAction;
+import org.varnerlab.universaleditor.gui.actions.RefreshProjectViewJPopupMenuActionListener;
 import org.varnerlab.universaleditor.gui.widgets.BioChemExpToolFocusListener;
 import org.varnerlab.universaleditor.gui.widgets.FileTransferJPopupMenuMouseAdapter;
 import org.varnerlab.universaleditor.gui.widgets.IVLProcessTreeNode;
@@ -103,6 +104,7 @@ public class FileTransferTool extends javax.swing.JInternalFrame implements Acti
 	private JPopupMenu popup = null;
 	private FileTransferJPopupMenuActionListener popupMenuListener = null;
 	private FileTransferJPopupMenuMouseAdapter popupMouseAdapter = null;
+	private RefreshProjectViewJPopupMenuActionListener refreshMenuListner = null;
 	private LoginToolAction _loginTool = null;
 
 	private ImageIcon _imgIconOff = null;
@@ -160,6 +162,12 @@ public class FileTransferTool extends javax.swing.JInternalFrame implements Acti
 	}
 
 
+	public void refershProjectView()
+	{
+		this.populateProjectList();
+	}
+	
+	
 	private void configureJPopupMenu() 
 	{
 		try
@@ -171,6 +179,7 @@ public class FileTransferTool extends javax.swing.JInternalFrame implements Acti
 			// Setup the menu listener -
 			popupMenuListener = new FileTransferJPopupMenuActionListener();
 			popupMouseAdapter = new FileTransferJPopupMenuMouseAdapter();
+			refreshMenuListner = new RefreshProjectViewJPopupMenuActionListener();
 			_loginTool = new LoginToolAction();
 
 			// Set the reference to the combo box -
@@ -189,7 +198,13 @@ public class FileTransferTool extends javax.swing.JInternalFrame implements Acti
 			popup.add(item_new_project);
 			popup.addSeparator();
 
-
+			// Add the refresh action if the file transfer gets hosed up -
+			JMenuItem refresh_project_view = new JMenuItem("Refresh project view ... ",VLIconManagerService.getIcon("PROJECT-ICON"));
+			refresh_project_view.setHorizontalTextPosition(JMenuItem.RIGHT);
+			refresh_project_view.addActionListener(refreshMenuListner);
+			popup.add(refresh_project_view);
+			
+			
 			// Ok, configure the mouse adapter -
 			popupMouseAdapter.setJPopupReference(popup);
 			popupMouseAdapter.setToolReference(this);
@@ -833,7 +848,7 @@ public class FileTransferTool extends javax.swing.JInternalFrame implements Acti
 			String strReturnString = SocketService.sendMessage(strBuffer.toString(), strIPAddress, strPort, _session,ServerJobTypes.PROJECT_DIRECTORY_LOOKUP);
 			
 			// for debug -
-			VLIOLib.write("/Users/jeffreyvarner/Desktop/REMOTEFS.xml",strReturnString);
+			// VLIOLib.write("/Users/jeffreyvarner/Desktop/REMOTEFS.xml",strReturnString);
 			
 			PublishService.submitData("Rcvd - "+strReturnString);
 
@@ -910,7 +925,7 @@ public class FileTransferTool extends javax.swing.JInternalFrame implements Acti
 		if (document!=null)
 		{
 			_listModelJList2.clear();
-			this.processNodes(document.getFirstChild(), _listModelJList2,false);
+			this.processNodes(document, _listModelJList2,false);
 		}
 	}
 
