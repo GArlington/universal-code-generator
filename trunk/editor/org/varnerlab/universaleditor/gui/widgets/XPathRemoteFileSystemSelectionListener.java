@@ -120,6 +120,7 @@ public class XPathRemoteFileSystemSelectionListener implements ListSelectionList
 			// trim the list -
 			int INT_SELECTED_ITEM = jComboBox.getSelectedIndex();
 			int ITEM_COUNT = jComboBox.getItemCount();
+			String strUserName = (String)session.getProperty("VALIDATED_USERNAME");
 
 			// Generate the xpath string -
 			StringBuffer tmpBuffer = new StringBuffer();
@@ -138,7 +139,8 @@ public class XPathRemoteFileSystemSelectionListener implements ListSelectionList
 				if (index==0)
             	{
             		// Ok, add a Dir call to the xpath string -
-                	tmpBuffer.append("jdv27[@name='");
+                	tmpBuffer.append(strUserName);
+					tmpBuffer.append("[@name='");
                 	tmpBuffer.append(strTmpNew);
                 	tmpBuffer.append("']");
             	}

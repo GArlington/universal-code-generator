@@ -164,6 +164,7 @@ public class VLRemoteComboBoxSelectionListener implements ActionListener {
                 	// Generate the xpath string -
                     StringBuffer tmpBuffer = new StringBuffer();
                     tmpBuffer.append("//");
+                  
                     int INT_SELECTED_INDEX = jComboBox.getSelectedIndex();
                 	for (int index=0;index<INT_SELECTED_INDEX;index++)
                 	{
@@ -177,7 +178,8 @@ public class VLRemoteComboBoxSelectionListener implements ActionListener {
                     	if (index==0)
                     	{
                     		// Ok, add a Dir call to the xpath string -
-                        	tmpBuffer.append("jdv27[@name='");
+                        	tmpBuffer.append(strUserName);
+                    		tmpBuffer.append("[@name='");
                         	tmpBuffer.append(strTmpNew);
                         	tmpBuffer.append("']");
                     	}
