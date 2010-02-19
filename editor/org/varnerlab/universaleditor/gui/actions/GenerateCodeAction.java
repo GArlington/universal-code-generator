@@ -116,13 +116,17 @@ public class GenerateCodeAction implements ActionListener {
 
 				// Ok, so we have a document -
 				session = (Launcher.getInstance()).getSession();
-				session.setProperty("REMOTE_FILESYSTEM_TREE", builder.parse(new InputSource(new StringReader(strReturnString))));
-
+				Document docTree = builder.parse(new InputSource(new StringReader(strReturnString)));
+				session.setProperty("REMOTE_FILESYSTEM_TREE",docTree);
+				
 				// Update the session -
 				SystemwideEventService.fireSessionUpdateEvent();
+				
+				// Refresh the view -
+				FileTransferTool tool = (Launcher.getInstance()).getFileTransferToolRef();
+				tool.refershProjectView();
 
-				// Ok, so let's spank it for one second and then stop the spin -
-				WaitThread.manySec(1);
+				// Ok, so shutdown the glassPane -
 				glassPane.stop();
 			}
 			catch (Exception error)

@@ -81,7 +81,9 @@ public class RemoteJListDoubleClickAdapter extends MouseAdapter implements Prope
 				String strFileName = selectedFile.getName();
 				UEditorSession session = (Launcher.getInstance()).getSession();
 				session.setProperty("CURRENT_MODEL_PROP_FILENAME",strFileName);
-				SystemwideEventService.fireSessionUpdateEvent();
+				
+				// Update the reference to the model.prop in the GUI -
+				(Launcher.getInstance()).updateModelPropFile();
 			}
 	        
 			// close the frame -

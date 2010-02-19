@@ -269,6 +269,19 @@ public class Launcher extends JFrame implements IVLPublishClient, IVLSystemwideE
 
     }
 
+    public void updateModelPropFile()
+    {
+    	// Get the model prop file name -
+        String strModelPropName = (String)_sessionObj.getProperty("CURRENT_MODEL_PROP_FILENAME");
+        if (strModelPropName!=null)
+        {
+            // Set the file name on the desktop -
+            VLDesktopPane desktop = (VLDesktopPane)(Launcher.getInstance()).getContentPane();
+            desktop.setModelPropName(strModelPropName);
+        }
+    }
+    
+    
     public void updateSession() {
 
         // If I get here then I may have a new model prop name -
