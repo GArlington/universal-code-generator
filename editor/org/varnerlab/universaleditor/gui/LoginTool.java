@@ -102,6 +102,9 @@ public class LoginTool extends javax.swing.JInternalFrame {
 
         // Set the windows location
         setLocation(xOffset*openFrameCount,yOffset*openFrameCount);
+        
+        // Super-awesome
+        //getRootPane().putClientProperty("Window.alpha", new Float(0.8f));
 
         // Set TitleBar color when active/inactive
         setDoubleBuffered(true);
@@ -120,11 +123,14 @@ public class LoginTool extends javax.swing.JInternalFrame {
         // Build this mofo -
         initComponents();
 
-        this.setOpaque(false);
-        this.getContentPane().setBackground(new Color(0,0,0,225));
+        //this.setOpaque(false);
+        this.getContentPane().setBackground(new Color(0,0,0));
 
-        jPanel1.setOpaque(false);
-        jPanel1.setBackground(new Color(0,0,0,225));
+        //jPanel1.setOpaque(false);
+        jPanel1.setBackground(new Color(0,0,0));
+        
+        // Have the login button have the focus -
+        jButton1.requestFocusInWindow();
     }
 
     private void connectToDatabase() {

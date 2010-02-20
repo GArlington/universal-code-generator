@@ -112,6 +112,10 @@ public class Main {
                 System.setProperty("apple.awt.graphics.UseQuartz","true");
                 System.setProperty("apple.laf.useScreenMenuBar", "true");
                 System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Universal");
+                System.setProperty("apple.awt.graphics.EnableQ2DX","true");
+                
+                // use smoother fonts (same as above?)
+                System.setProperty("apple.awt.textantialiasing", "true");
             }
 
 

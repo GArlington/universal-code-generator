@@ -150,6 +150,9 @@ public class Launcher extends JFrame implements IVLPublishClient, IVLSystemwideE
         Dimension screenSize=Toolkit.getDefaultToolkit().getScreenSize();
         setBounds(inset,inset,screenSize.width-inset*2,screenSize.height-inset*2);
         
+        // Super-awesome ... 
+        getRootPane().putClientProperty("Window.alpha", new Float(0.97f));
+        
         // Quit this app
         addWindowListener(new WindowAdapter() {
             @Override
