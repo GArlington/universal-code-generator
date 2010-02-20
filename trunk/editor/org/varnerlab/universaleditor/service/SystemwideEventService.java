@@ -8,6 +8,8 @@ package org.varnerlab.universaleditor.service;
 // import statements -
 import java.util.*;
 
+import javax.swing.SwingUtilities;
+
 /**
  *
  * @author jeffreyvarner
@@ -62,7 +64,14 @@ public class SystemwideEventService {
     // Fire a Username event update -
     public static void fireSessionUpdateEvent()
     {
-        int NUMBER_OF_ITEMS = _vecSessionListener.size();
+        
+    	// Have the textfield pop-up with focus - not sure why this works...never understood the invokeLater call
+		doExecuteUpdateSession();
+    }
+    
+    private static void doExecuteUpdateSession()
+    {
+    	int NUMBER_OF_ITEMS = _vecSessionListener.size();
         for (int index=0;index<NUMBER_OF_ITEMS;index++)
         {
             IVLSystemwideEventListener item = (IVLSystemwideEventListener)_vecSessionListener.get(index);

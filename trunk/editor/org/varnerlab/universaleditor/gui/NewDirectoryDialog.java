@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.beans.PropertyVetoException;
 
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 import org.varnerlab.universaleditor.gui.actions.SetLocalDirectoryAction;
 
@@ -40,7 +41,7 @@ public class NewDirectoryDialog extends javax.swing.JInternalFrame {
 		this.setClosable(true);
 		this.setTitle("New directory dialog ...");
 	}
-	
+
 	public void setParentFrame(FileTransferTool tool)
 	{
 		_tool = tool;
@@ -90,6 +91,17 @@ public class NewDirectoryDialog extends javax.swing.JInternalFrame {
 		jLabel1.setText("Name:");
 
 		jTextField1.setText("");
+
+		// Have the textfield pop-up with focus - not sure why this works...never understood the invokeLater call
+		SwingUtilities.invokeLater(new Runnable() 
+		{  
+			public void run() {  
+				jTextField1.requestFocusInWindow();
+			}
+		});
+
+
+		jTextField1.requestFocusInWindow();
 
 		jButton1.setText("Ok");
 

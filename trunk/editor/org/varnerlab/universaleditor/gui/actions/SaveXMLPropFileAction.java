@@ -67,11 +67,16 @@ public class SaveXMLPropFileAction implements ActionListener {
            focusedComponent = manager.getFocusOwner();
            ModelCodeGeneratorFileEditor windowFrame = (ModelCodeGeneratorFileEditor)focusedComponent.getFocusCycleRootAncestor();
            
+           
            // Get the template tree from session -
            Document doc = (Document)_session.getProperty("MODEL_TEMPLATE_FILE_TREE");
 
            // Open new file chooser
            JFileChooser fc=new JFileChooser();
+           
+           // Need to get the selected component from the prop tool window (local selected item in the combo box) -
+           //File selectedFile = windowFrame.getLocalSelectedItem();
+           fc.setCurrentDirectory(new File(Launcher._CURRENT));
            int rVal=fc.showSaveDialog(focusedComponent);
 
            //System.out.println("Hey now -");

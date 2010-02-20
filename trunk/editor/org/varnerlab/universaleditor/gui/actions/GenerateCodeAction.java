@@ -124,7 +124,7 @@ public class GenerateCodeAction implements ActionListener {
 				
 				// Refresh the view -
 				FileTransferTool tool = (Launcher.getInstance()).getFileTransferToolRef();
-				tool.refershProjectView();
+				tool.updateRemoteDirectoryPath();
 
 				// Ok, so shutdown the glassPane -
 				glassPane.stop();

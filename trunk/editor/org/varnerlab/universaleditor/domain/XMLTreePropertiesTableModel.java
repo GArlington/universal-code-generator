@@ -14,6 +14,8 @@ import javax.swing.*;
 import java.util.*;
 
 import org.varnerlab.universaleditor.gui.widgets.*;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
 
 
 /**
@@ -164,46 +166,25 @@ public class XMLTreePropertiesTableModel extends AbstractTableModel implements T
             // Ok, so I need to get the userobject from this mofo and then pull all the properties out -
             _vltnNode = (VLTreeNode)selectedNode.getUserObject();
             
+            // Need to get the data from the xml tree node -
+            Node xmlTreeNode = (Node)_vltnNode.getProperty("XML_TREE_NODE");
+            
+            // If I get here, then my node has no attributes (oh yea, that's what she said...). Maybe I have data has a value
+            String strNodeName = xmlTreeNode.getNodeName();
+            String strNodeValue = xmlTreeNode.getTextContent();
 
-            // Ok, get the keyName -
-            String strKeyName = (String)_vltnNode.getProperty("KEYNAME");
-            String strValue = (String)_vltnNode.getProperty(strKeyName);
-            
-            // Set the value in the table -
-            setValueAt(strKeyName,0,0);
-            setValueAt(strValue,0,1);
-            
-            /*
-            // Get the keys and go through the properties -
-            Enumeration keys = vltnNode.getKeys();
-            int counter = 0;
-            while (keys.hasMoreElements())
+            if (strNodeValue!=null)
             {
-                // Get the stuff from the obj -
-                Object objKey = keys.nextElement();
-                Object val = vltnNode.getProperty(objKey);
-
-                String tmp = (String)objKey;
-
-                // Ok, we need to 
-                int intClassName = tmp.indexOf("CLASS");
-                int intVLPrefix = tmp.indexOf("VLPREFIX");
-                int intKeyname = tmp.indexOf("KEYNAME");
-                int intIcon = tmp.indexOf("ICON");
-                int intLabel = tmp.indexOf("LABEL");
-
-                if (intIcon==-1 && intClassName==-1 && intKeyname==-1 && intVLPrefix==-1 && intLabel==-1)
-                {
-                    // put into the table -
-                    setValueAt(objKey,counter,0);
-                    setValueAt(val,counter,1);
-
-                    // Update the row count -
-                    counter++;
-                }
-            }*/
+            	// Set the value in the table -
+            	setValueAt(strNodeName,0,0);
+            	setValueAt(strNodeValue,0,1);
+            }
+            else
+            {
+            	setValueAt(strNodeName,0,0);
+            	setValueAt("Missing ... WTF Kenneth?",0,1);
+            }
         }
-
     }
 
     public void toggleEditFlag()

@@ -128,7 +128,7 @@ public class FileTransferTool extends javax.swing.JInternalFrame implements Acti
 		File selected_file = (File)jComboBox1.getSelectedItem();
 
 		// Populate the JList w/the current directory -
-		Vector<File> _vecDir = new Vector();
+		Vector<File> _vecDir = new Vector<File>();
 
 		// Get the list model -
 		_listModelJList1.clear();
@@ -247,8 +247,19 @@ public class FileTransferTool extends javax.swing.JInternalFrame implements Acti
 		// load the components -
 		initComponents();
 
-		// Get the parents of my home directory -
-		File userHome = new File(Launcher._CURRENT);
+		// Get the parents of my home directory (lookup in prop tree -or- user current dir) -
+		String strDefaultProjectDir = (String)_session.getProperty("DEFAULT_PROJECT_DIR");
+		File userHome = null;
+		if (!strDefaultProjectDir.isEmpty())
+		{
+			userHome = new File(strDefaultProjectDir);
+		}
+		else
+		{
+			userHome = new File(Launcher._CURRENT);
+		}
+		
+		// Launch this bitch ... 
 		FileSystemService.traverseUp(userHome, _vecParents);
 
 		// Populate the ComboBox -
@@ -347,6 +358,7 @@ public class FileTransferTool extends javax.swing.JInternalFrame implements Acti
 		setClosable(true);
 		setIconifiable(true);
 		setTitle("Universal project tool v1.0");
+		//getRootPane().putClientProperty("Window.alpha", new Float(1.0f));
 
 		jScrollPane1.setViewportView(jList1);
 
@@ -422,6 +434,11 @@ public class FileTransferTool extends javax.swing.JInternalFrame implements Acti
 		pack();
 	}// </editor-fold>                  
 
+	public File getLocalSelectedItem()
+	{
+		return((File)jComboBox1.getSelectedItem());
+	}
+	
 	private void sendFileToServer(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendFileToServer
 		// When I get here I have a file that I want to send to the server -
 		Document document = null;
@@ -614,7 +631,7 @@ public class FileTransferTool extends javax.swing.JInternalFrame implements Acti
 				model.addElement(fileOnServer);
 
 				// Grab the string -
-				System.out.println(tmpNode.getNodeValue());
+				// System.out.println(tmpNode.getNodeValue());
 			}
 		}
 	}
@@ -654,7 +671,7 @@ public class FileTransferTool extends javax.swing.JInternalFrame implements Acti
 
 		// Ok, so we have the dir nodes -
 		int NUMBER_OF_DIRS = dirNodes.getLength();
-		System.out.println("How many dirs - ? "+NUMBER_OF_DIRS+" inside "+this.getClass().toString()+" class and processNodesWithXPath method");
+		//System.out.println("How many dirs - ? "+NUMBER_OF_DIRS+" inside "+this.getClass().toString()+" class and processNodesWithXPath method");
 		for (int index = 0;index<NUMBER_OF_DIRS;index++)
 		{
 			// Get the node -
@@ -807,6 +824,64 @@ public class FileTransferTool extends javax.swing.JInternalFrame implements Acti
 
 	}
 
+	
+	private void updateRemoteProjectTree() throws Exception
+	{
+		// When I get here I have the buffer all ready to go -
+		// Get the address and the port name of the server -
+		String strIPAddress = (String)_session.getProperty("SERVER_ADDRESS");
+		String strPort = (String)_session.getProperty("SERVER_PORT");
+		Vector<String> vecTmp = new Vector<String>();
+		Document document = null;
+		File tmpFile = null;
+
+
+		// Formulate a dumb message --
+		StringBuffer strBuffer = new StringBuffer();
+
+		// Get the working dir -
+		String strUserName = (String)_session.getProperty("USERNAME");
+		//String strSessionID = (String)_session.getProperty("SESSIONID");
+
+		// Start the buffer -
+		strBuffer.append("<?xml version=\"1.0\"?>\n");
+		strBuffer.append("<universal>\n");
+
+		// Set the username -
+		strBuffer.append("\t<property username=\"");
+		strBuffer.append(strUserName);
+		strBuffer.append("\"/>\n");
+
+		// Set the sessionid -
+		//strBuffer.append("\t<property sessionid=\"");
+		//strBuffer.append(strSessionID);
+		//strBuffer.append("\"/>\n");
+
+		strBuffer.append("</universal>\n");
+
+		// Send that mofo -
+		String strReturnString = SocketService.sendMessage(strBuffer.toString(), strIPAddress, strPort, _session,ServerJobTypes.PROJECT_DIRECTORY_LOOKUP);
+		
+		// Ok, check to see if return string is null -
+		if (strReturnString!=null && !strReturnString.isEmpty())
+		{
+			// Clear out the list model -
+			_listModelJList2.clear();
+
+			// If I get here that I should have a list of the files on the server -
+			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder builder = factory.newDocumentBuilder();
+
+			// Ok, so we have a document -
+			document = builder.parse(new InputSource(new StringReader(strReturnString)));
+
+			// Set the tree in session -
+			_session.setProperty("REMOTE_FILESYSTEM_TREE", document);
+			SystemwideEventService.fireSessionUpdateEvent();
+		}
+	}
+	
+	
 	// Load the projects tree from the server -
 	private void populateProjectList()
 	{
@@ -918,17 +993,149 @@ public class FileTransferTool extends javax.swing.JInternalFrame implements Acti
 			// Enable components -
 			jButton1.setEnabled(true);
 			jButton2.setEnabled(true);
-		}
-
-		// Ok, so let's get the doc out of session -
-		Document document = (Document)_session.getProperty("REMOTE_FILESYSTEM_TREE");
-		if (document!=null)
-		{
-			_listModelJList2.clear();
-			this.processNodes(document, _listModelJList2,false);
-		}
+		}	
 	}
 
+	public void updateRemoteDirectoryPath()
+	{
+		
+		try {
+			// First, let's make sure we are dealing with the latest remote project tree -
+			updateRemoteProjectTree();
+			
+			// clear out the old list model -
+			this._listModelJList2.clear();
+			
+			// Get the remote file system -
+			Document doc = (Document)_session.getProperty("REMOTE_FILESYSTEM_TREE");
+			
+			// Ok, so I need to create the xpath string -
+			int NUM_ITEMS = jComboBox2.getItemCount();
+			StringBuffer tmpBuffer = new StringBuffer();
+			tmpBuffer.append("//");
+			for (int index=0;index<NUM_ITEMS;index++)
+			{
+				File tmpFile = (File)jComboBox2.getItemAt(index);
+				
+				if (index==0)
+				{
+					String strUserName = (String)_session.getProperty("VALIDATED_USERNAME");
+					tmpBuffer.append(strUserName);	
+					tmpBuffer.append("[@name='");
+					tmpBuffer.append(strUserName);
+					tmpBuffer.append("']");
+				}
+				else
+				{
+					tmpBuffer.append("Directory[@name='");
+					tmpBuffer.append(tmpFile.getName());
+					tmpBuffer.append("']");
+				}
+				
+				if (index<NUM_ITEMS-1)
+				{
+					tmpBuffer.append("/");
+				}
+				else
+				{
+					tmpBuffer.append("/Directory/@name");
+				}
+			}
+			
+			// Query the tree with the xp for the dirs -
+			String strXPDirSearch = tmpBuffer.toString();
+			NodeList dirNodes = (NodeList)_xpath.evaluate(strXPDirSearch,doc,XPathConstants.NODESET);
+
+			// Ok, so we have the dir nodes -
+			int NUMBER_OF_DIRS = dirNodes.getLength();
+			for (int index = 0;index<NUMBER_OF_DIRS;index++)
+			{
+				// Get the node -
+				Node tmpNode = (Node)dirNodes.item(index);
+
+				// Get the name of this dir - (we'll update it in the renderer)
+				String strTmp = tmpNode.getNodeValue();
+
+				int INT_DOT = strTmp.indexOf(".");
+				if (INT_DOT!=0)
+				{
+
+					// Get the name -
+					File fileOnServer = new File(strTmp);
+					remoteRender.setDirectoryFlag(fileOnServer.getName(), "DIRECTORY");
+					this._listModelJList2.addElement(fileOnServer);
+
+					// Grab the string -
+					PublishService.submitData(tmpNode.getNodeValue());
+				}
+			}
+			
+			
+			// clear out the tmp buffer and probe for files -
+			tmpBuffer.delete(0, tmpBuffer.length());
+			tmpBuffer.append("//");
+			for (int index=0;index<NUM_ITEMS;index++)
+			{
+				File tmpFile = (File)jComboBox2.getItemAt(index);
+				
+				if (index==0)
+				{
+					String strUserName = (String)_session.getProperty("VALIDATED_USERNAME");
+					tmpBuffer.append(strUserName);	
+					tmpBuffer.append("[@name='");
+					tmpBuffer.append(strUserName);
+					tmpBuffer.append("']");
+				}
+				else
+				{
+					tmpBuffer.append("Directory[@name='");
+					tmpBuffer.append(tmpFile.getName());
+					tmpBuffer.append("']");
+				}
+				
+				if (index<NUM_ITEMS-1)
+				{
+					tmpBuffer.append("/");
+				}
+				else
+				{
+					tmpBuffer.append("/File/@name");
+				}
+			}
+			
+			// Query the tree with the xp for the dirs -
+			String strXPFileSearch = tmpBuffer.toString();
+			NodeList fileNodes = (NodeList)_xpath.evaluate(strXPFileSearch,doc,XPathConstants.NODESET);
+
+			// Ok, so we have the dir nodes -
+			int NUMBER_OF_FILES = fileNodes.getLength();
+			for (int index = 0;index<NUMBER_OF_FILES;index++)
+			{
+				// Get the node -
+				Node tmpNode = (Node)fileNodes.item(index);
+
+				// Get the name of this dir - (we'll update it in the renderer)
+				String strTmp = tmpNode.getNodeValue();
+
+				int INT_DOT = strTmp.indexOf(".");
+				if (INT_DOT!=0)
+				{
+
+					// Get the name -
+					File fileOnServer = new File(strTmp);
+					remoteRender.setDirectoryFlag(fileOnServer.getName(), "FILE");
+					this._listModelJList2.addElement(fileOnServer);
+
+					// Grab the string -
+					PublishService.submitData(tmpNode.getNodeValue());
+				}
+			}	
+		}
+		catch (Exception error)
+		{
+			error.printStackTrace();
+		}
+	}
 
 	public void updateLocalDirectoryPath()
 	{
@@ -1059,7 +1266,7 @@ public class FileTransferTool extends javax.swing.JInternalFrame implements Acti
 		glass.add (sheet, gbc);
 		gbc.gridy=1;
 		gbc.weighty = Integer.MAX_VALUE;
-		glass.add (Box.createGlue(), gbc);
+		glass.add (Box.createGlue(), gbc);	
 		glass.setVisible(true);
 		return sheet;
 	}

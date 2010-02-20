@@ -268,7 +268,6 @@ public class ModelCodeGeneratorFileEditor extends javax.swing.JInternalFrame imp
 
 		// Add to the scroll panel -
 		jScrollPane2.setViewportView(_propTable);
-		System.out.print("Hey now - "+_propTable.getCellEditor());
 	}
 
 	public void clearTree()
@@ -1070,6 +1069,7 @@ public class ModelCodeGeneratorFileEditor extends javax.swing.JInternalFrame imp
 	}*/
 
 	
+	
 	public void tableChanged(TableModelEvent e) {
 	    
         // Ok, when I get here the table model has changed - I need to update the values in the tree -
@@ -1124,7 +1124,7 @@ public class ModelCodeGeneratorFileEditor extends javax.swing.JInternalFrame imp
                 }*/
                 
                 // Let's overright the old node -
-                //selectedNode.setUserObject(vltnNode);
+                selectedNode.setUserObject(vltnNode);
                 DefaultTreeModel treeModel = (DefaultTreeModel)jTree1.getModel();
                 treeModel.nodeChanged(selectedNode); 
             }
