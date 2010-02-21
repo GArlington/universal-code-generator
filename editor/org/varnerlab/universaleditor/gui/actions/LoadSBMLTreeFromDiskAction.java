@@ -41,6 +41,9 @@ public class LoadSBMLTreeFromDiskAction implements ActionListener {
 			// Ok, when I get here I have a reference to the rootNode - hand this to BioChemExpTool -
 			windowFrame.setRootNode(doc,file.getName());
 			
+			// set the quick save button -
+			windowFrame.enableQuickSaveButton();
+			
 			// Lastly, we need set the network filename so I can get to it later -
 			session.setProperty("CURRENT_NETWORK", file.getAbsolutePath());
 			SystemwideEventService.fireNetworkUpdateEvent();

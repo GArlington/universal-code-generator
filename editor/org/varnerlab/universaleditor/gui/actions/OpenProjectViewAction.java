@@ -9,6 +9,7 @@ import java.awt.Rectangle;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+import org.varnerlab.universaleditor.domain.UEditorSession;
 import org.varnerlab.universaleditor.gui.*;
 import org.varnerlab.universaleditor.gui.widgets.InfiniteProgressPanel;
 import org.varnerlab.universaleditor.gui.widgets.WaitThread;
@@ -70,6 +71,23 @@ public class OpenProjectViewAction implements ActionListener {
 		_tool.setOffIcon(VLIconManagerService.getIcon("PROJECT-GREY-ICON"));
 		_tool.setOnIcon(VLIconManagerService.getIcon("PROJECT-ICON"));
 
+		// Set the title w/the username -
+		UEditorSession session = (Launcher.getInstance()).getSession();
+		String strUserName = (String)session.getProperty("VALIDATED_USERNAME");
+		
+		
+		String strTitleName = "";
+		if (strUserName!=null && strUserName.isEmpty())
+		{
+			strTitleName = "Universal project tool v1.0 ["+strUserName+" is logged in]";
+		}
+		else
+		{
+			strTitleName = "Universal project tool v1.0 [no user is logged in]";
+		}
+		
+		_tool.setTitle(strTitleName);
+		
 		// load the window -
 		_tool.launchProjectTool();
 

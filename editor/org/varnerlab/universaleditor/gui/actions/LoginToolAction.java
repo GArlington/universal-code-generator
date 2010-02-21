@@ -47,6 +47,7 @@ public class LoginToolAction implements ActionListener {
         }
         
         _tool.setVisible(true);
+            
 
         // Set the frameIcon
         _tool.setFrameIcon((new ImageIcon(VLImageLoader.getPNGImage("Buddy-20-Grey.png"))));
