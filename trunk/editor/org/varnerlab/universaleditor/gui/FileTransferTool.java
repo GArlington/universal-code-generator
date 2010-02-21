@@ -186,7 +186,7 @@ public class FileTransferTool extends javax.swing.JInternalFrame implements Acti
 			popupMenuListener.setJComboBoxReference(jComboBox1);
 
 			// Setup the new folder -
-			JMenuItem item = new JMenuItem("New local folder ... ",VLIconManagerService.getIcon("VLFOLDERSBML-32-ICON"));
+			JMenuItem item = new JMenuItem("New local folder ... ",VLIconManagerService.getIcon("FOLDER-8-ICON"));
 			item.setHorizontalTextPosition(JMenuItem.RIGHT);
 			item.addActionListener(popupMenuListener);
 			popup.add(item);
@@ -332,8 +332,6 @@ public class FileTransferTool extends javax.swing.JInternalFrame implements Acti
 
 		// configure the popup menu -
 		configureJPopupMenu();
-
-
 	}
 
 

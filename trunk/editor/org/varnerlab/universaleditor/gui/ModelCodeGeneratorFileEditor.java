@@ -770,7 +770,7 @@ public class ModelCodeGeneratorFileEditor extends javax.swing.JInternalFrame imp
 			// enable the other buttons -
 			jButton1.setEnabled(true);	
 			jButton4.setEnabled(true);	
-			jButton5.setEnabled(true);	
+			//jButton5.setEnabled(true);	
 		}
 		catch (Exception error)
 		{
@@ -789,7 +789,6 @@ public class ModelCodeGeneratorFileEditor extends javax.swing.JInternalFrame imp
 
 		// set the button enabled -
 		jButton4.setEnabled(true);
-		jButton5.setEnabled(true);
 		jButton1.setEnabled(true);
 
 	}//GEN-LAST:event_LoadModelPropFileAction

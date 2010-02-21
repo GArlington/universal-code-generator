@@ -164,6 +164,7 @@ public class NetworkEditorTool extends javax.swing.JInternalFrame implements Tab
 		aList.add("reaction");
 		aList.add("math");
 		aList.add("kineticLaw");
+		aList.add("apply");
 
 		// iterate window count
 		++openFrameCount;
@@ -342,12 +343,12 @@ public class NetworkEditorTool extends javax.swing.JInternalFrame implements Tab
 				if (leafNode!=null)
 				{
 					strAttributeID = leafNode.getNodeValue();
-					System.out.println("not null leadNode named "+strNodeName+" has id = "+strAttributeID);
+					//System.out.println("not null leadNode named "+strNodeName+" has id = "+strAttributeID);
 
 				}
 				else
 				{
-					System.out.println("leadNode named "+strNodeName+" has id = null");
+					//System.out.println("leadNode named "+strNodeName+" has id = null");
 				}
 
 				if (!strAttributeID.isEmpty())
@@ -444,15 +445,19 @@ public class NetworkEditorTool extends javax.swing.JInternalFrame implements Tab
 		jTextField1 = new javax.swing.JTextField();
 
 		setClosable(true);
-		setIconifiable(true);
-		setResizable(true);
+        setIconifiable(true);
+        setResizable(true);
+        setDoubleBuffered(true);
+        
+        // Set the min size for this tool -
+        setMinimumSize(new java.awt.Dimension(500, 300));
 
 
 		// setup the quick save button -
 		quickSaveButton.setIcon(new javax.swing.ImageIcon("./images/ShoppingCart-18-Grey.png")); // NOI18N
 		quickSaveButton.setToolTipText("Save this properties file ... ");
 		quickSaveButton.setBorderPainted(false);
-		quickSaveButton.setEnabled(true);
+		quickSaveButton.setEnabled(false);
 		//jButton5.setVisible(false);
 		quickSaveButton.setMaximumSize(new java.awt.Dimension(49, 45));
 		quickSaveButton.setMinimumSize(new java.awt.Dimension(49, 45));
@@ -504,48 +509,64 @@ public class NetworkEditorTool extends javax.swing.JInternalFrame implements Tab
 
 		jTextField1.setText("Search ...");
 
-		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-		getContentPane().setLayout(layout);
-		layout.setHorizontalGroup(
-				layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGroup(layout.createSequentialGroup()
-						.addGap(24, 24, 24)
-						.addComponent(quickSaveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-						.addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 404, Short.MAX_VALUE)
-						.addGap(12, 12, 12))
-						.addGroup(layout.createSequentialGroup()
-								.addGap(176, 176, 176)
-								.addComponent(jButton3)
-								.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-								.addComponent(jButton2)
-								.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-								.addComponent(jButton1)
-								.addContainerGap(16, Short.MAX_VALUE))
-								.addGroup(layout.createSequentialGroup()
-										.addGap(16, 16, 16)
-										.addComponent(jSplitPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addContainerGap(21, Short.MAX_VALUE))
-		);
-		layout.setVerticalGroup(
-				layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGroup(layout.createSequentialGroup()
-						.addGap(9, 9, 9)
-						.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-								.addComponent(quickSaveButton)
-								.addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-								.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-								.addComponent(jSplitPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 376, javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addGap(18, 18, 18)
-								.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-										.addComponent(jButton3)
-										.addComponent(jButton2)
-										.addComponent(jButton1))
-										.addContainerGap(33, Short.MAX_VALUE))
-		);
+		org.jdesktop.layout.GroupLayout jPanel1Layout = new org.jdesktop.layout.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
+                .add(265, 265, 265)
+                .add(jButton3)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                .add(jButton2)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jButton1)
+                .add(11, 11, 11))
+            .add(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .add(quickSaveButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 58, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jTextField1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 535, Short.MAX_VALUE)
+                .addContainerGap())
+            .add(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .add(jSplitPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 599, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(jTextField1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(quickSaveButton))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jSplitPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 401, Short.MAX_VALUE)
+                .add(18, 18, 18)
+                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(jButton1)
+                    .add(jButton2)
+                    .add(jButton3))
+                .addContainerGap())
+        );
 
-		pack();
+        org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(layout.createSequentialGroup()
+                .addContainerGap()
+                .add(jPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(layout.createSequentialGroup()
+                .addContainerGap()
+                .add(jPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 511, Short.MAX_VALUE)
+                .add(20, 20, 20))
+        );
 
+        pack();
 		/*
         org.jdesktop.layout.GroupLayout jPanel1Layout = new org.jdesktop.layout.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -616,6 +637,12 @@ public class NetworkEditorTool extends javax.swing.JInternalFrame implements Tab
 		saveSBMLFile.actionPerformed(evt);
 	}
 
+	
+	public void enableQuickSaveButton()
+	{
+		quickSaveButton.setEnabled(true);
+	}
+	
 	public JComponent showJDialogAsSheet (JDialog dialog) {
 
 		// need to cjeck to see if I have already addded something to the glass pane -

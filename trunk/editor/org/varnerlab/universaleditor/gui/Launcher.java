@@ -201,7 +201,7 @@ public class Launcher extends JFrame implements IVLPublishClient, IVLSystemwideE
 
         // Make dragging faster
         _desktop.putClientProperty("JDesktopPane.dragMode","outline");
-        _desktop.setBackground(new Color(100,100,100));
+        _desktop.setBackground(new Color(125,125,125));
 
         // Set the content pane -
         _desktop.add(_mainToolBar,javax.swing.JLayeredPane.DEFAULT_LAYER);
