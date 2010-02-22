@@ -27,543 +27,433 @@ import javax.swing.ImageIcon;
 import javax.swing.event.*;
 import javax.swing.table.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import javax.swing.ButtonGroup;
 import javax.swing.JTree;
 import javax.swing.TransferHandler;
 import javax.swing.tree.*;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathFactory;
+
 import org.varnerlab.universaleditor.service.IVLSystemwideEventListener;
 import org.varnerlab.universaleditor.service.PublishService;
 import org.varnerlab.universaleditor.service.SystemwideEventService;
 import org.varnerlab.universaleditor.service.VLIconManagerService;
 import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 /**
  *
  * @author jeffreyvarner
  */
-public class BioChemExpTool extends javax.swing.JInternalFrame implements IVLTreeGUI, TableModelListener, IVLSystemwideEventListener {
-    // Class/instance attributes -
-     // Class/instance attributes -
-    static int openFrameCount=1;
-    static final int xOffset=50;
-    static final int yOffset=50;
+public class BioChemExpTool extends javax.swing.JInternalFrame implements TableModelListener, IVLSystemwideEventListener {
+	// Class/instance attributes -
+	// Class/instance attributes -
+	static int openFrameCount=1;
+	static final int xOffset=50;
+	static final int yOffset=50;
+
+	private ImageIcon _imgIconOff = null;
+	private ImageIcon _imgIconOn = null;
+	private ImageIcon _imgIconCurrent = null;
 
-    private ImageIcon _imgIconOff = null;
-    private ImageIcon _imgIconOn = null;
-    private ImageIcon _imgIconCurrent = null;
+	private JTree jtreeXMLTree = null;
+	private VLJTable _propTable = null;
+	private IVLTableCellEditor _tblCellEditor = null;
 
-    private JTree jtreeXMLTree = null;
-    private VLJTable _propTable = null;
-    private IVLTableCellEditor _tblCellEditor = null;
+	private BCXJTreePropertiesTableModel _tableModel = new BCXJTreePropertiesTableModel();
+	private DefaultMutableTreeNode _guiRoot = null;
+	private VLDialogGlassPane _glassPane = null;
 
-    private XMLTreePropertiesTableModel _tableModel = new XMLTreePropertiesTableModel();
-    private VLDomainComposite _vlRootTreeNode = null;
-    private DefaultMutableTreeNode _guiRoot = null;
-    private VLDialogGlassPane _glassPane = null;
+	private UEditorSession _session = null;
+	private ButtonGroup buttonGrp = null;
 
-    private UEditorSession _session = null;
-    private ButtonGroup buttonGrp = null;
+	// Create a xpFactory/xpath obj (we'll use this a zillion times -)
+	private XPathFactory  _xpFactory = XPathFactory.newInstance();
+	private XPath _xpath = _xpFactory.newXPath();
+	private static BioChemExpTool _this = null;
+	private Node _vlRootTreeNode = null;
+	private ArrayList<String> aList = new ArrayList<String>();
 
-    /** Creates new form BioChemExpTool */
-    public BioChemExpTool() {
-         // Call to super
-        super("Biochemical Experiment Tool v1.0",false,true);
 
-        // iterate window count
-        ++openFrameCount;
+	// static accessor method
+	public static BioChemExpTool getInstance(){
+		if (_this==null){
+			_this=new BioChemExpTool();
+		}
+		return(_this);
+	}
+
 
-        // Set window size
-        setSize(300,300);
+	public void loadDefaultTree() throws Exception 
+	{
+
+		// Ok - load the tmplate file -
+		String strTemplate = "./templates/BCXTemplate.xml";
 
-        // Set the windows location
-        setLocation(xOffset*openFrameCount,yOffset*openFrameCount);
-
-        // Set TitleBar color when active/inactive
-        setDoubleBuffered(true);
-
-        // Get a reference to session -
-        _session = (Launcher.getInstance()).getSession();
-
-
-        // Initialize this mofo -
-        initComponents();
-
-        // Add a focus/click listerner -
-        this.addInternalFrameListener(new BioChemExpToolFocusListener());
-
-        // Add a drag gesture listener to the palette labels -
-        VLResizeGlassPane.registerFrame(this);
-        VLMoveGlassPane.registerFrame(this);
-
-        // Glass pane for dialog messages -
-        _glassPane = new VLDialogGlassPane(this);
-
-        // configure the default xml tree -
-        configureXMLTree();
-
-        // Configure the proptable -
-        configurePropertiesTable();
-
-
-        // Add some system level action -
-        SystemwideEventService.registerSessionListener(this);
-        SystemwideEventService.registerUsernameListener(this);
-
-        // Register the TableCellEditor -
-        _tblCellEditor = (IVLTableCellEditor) new BCXTableCellEditor();
-        _propTable.setVLTableCellEditor(_tblCellEditor);
-
-        // Set some properties on the text label -
-        jTextField1.putClientProperty("JTextField.variant", "search");
-
-        buttonGrp = new ButtonGroup();
-        
-        int intWidth = 50;
-        int intHeight = 50;
-        Dimension sizeButton = new Dimension();
-        sizeButton.setSize(intWidth, intHeight);
-        
-        /*
-        jButton4.putClientProperty("JButton.buttonType", "segmentedCapsule");
-        jButton4.putClientProperty("JButton.segmentPosition", "first");
-        jButton4.setPreferredSize(sizeButton);
-        jButton4.setMinimumSize(sizeButton);
-        
-
-        jButton4.setIcon(VLIconManagerService.getIcon("VLBEAKER-ICON"));
-        jButton4.putClientProperty( "JComponent.sizeVariant", "regular" );
-        buttonGrp.add(jButton4);
-
-        jButton5.putClientProperty("JButton.buttonType", "segmentedCapsule");
-        jButton5.putClientProperty("JButton.segmentPosition", "middle");
-        jButton5.setPreferredSize(sizeButton);
-        buttonGrp.add(jButton5);
-
-
-        jButton7.putClientProperty("JButton.buttonType", "segmentedCapsule");
-        jButton7.putClientProperty("JButton.segmentPosition", "middle");
-        jButton7.setPreferredSize(sizeButton);
-        buttonGrp.add(jButton7);
-
-
-        jButton6.putClientProperty("JButton.buttonType", "segmentedCapsule");
-        jButton6.putClientProperty("JButton.segmentPosition", "last");
-        jButton6.setPreferredSize(sizeButton);
-        buttonGrp.add(jButton6);
-
-
-
-
-        /*
-        VLGlassPanel glass = new VLGlassPanel();
-        glass.setOpaque(false);
-        this.setGlassPane(glass);
-        glass.setVisible(true);
-        glass.setEnabled(false);
-         */
-
-        /*
-        this.setOpaque(false);
-        this.getContentPane().setBackground(new Color(0,0,0,100));
-
-        jPanel1.setOpaque(false);
-        jPanel1.setBackground(new Color(0,0,0,100));
-
-        jPanel2.setOpaque(false);
-        jPanel2.setBackground(new Color(0,0,0,100));
-
-        jPanel3.setOpaque(false);
-        jPanel3.setBackground(new Color(0,0,0,100));
-
-        jScrollPane1.setOpaque(false);
-        jScrollPane1.setBackground(new Color(0,0,0,100));
-
-        jScrollPane2.setOpaque(false);
-        jScrollPane2.setBackground(new Color(0,0,0,100));
-
-        jSplitPane1.setOpaque(false);
-        jSplitPane1.setBackground(new Color(0,0,0,100));
-
-        jSplitPane2.setOpaque(false);
-        jSplitPane2.setBackground(new Color(0,0,0,100));
-
-        jtreeXMLTree.setOpaque(false);
-        jtreeXMLTree.setBackground(new Color(0,0,0,100));
-         */
-    }
-
-    public void clearTree()
-    {
-        // Clear out the tree -
-        jtreeXMLTree.removeAll();
-    }
-
-    public void setRootNode(VLDomainComposite rootNode) throws Exception
-    {
-        
-        // Clear out the tree -
-        jtreeXMLTree.removeAll();
-
-        this._vlRootTreeNode = rootNode;
-        _guiRoot = populateJTree(rootNode);
-
-        // add to the tree -
-        DefaultTreeModel mod = new DefaultTreeModel (_guiRoot);
-        jtreeXMLTree.setModel (mod);
-        jtreeXMLTree.setCellRenderer(new VLJTreeCellRenderer());
-
-        // We need the table model to update when I clisk a node -
-        jtreeXMLTree.addTreeSelectionListener(_tableModel);
-
-        // Add the tree to the scroll pane -
-        jScrollPane2.setViewportView(jtreeXMLTree);
-    }
-
-    private DefaultMutableTreeNode populateJTree(VLDomainComponent node) throws Exception
-    {
-
-        // OK, statrting w/the root node I need to populate the JTree -
-        DefaultMutableTreeNode guiNode = new DefaultMutableTreeNode();
-
-        // Create a VarnerLab node warpper -
-        VLTreeNode vlNode = new VLTreeNode();
-
-        // Create a VLNode w/this nodes props -
-        Enumeration keys = node.getKeys();
-        while (keys.hasMoreElements())
-        {
-            // Get properties -
-            Object key =keys.nextElement();
-            Object val = node.getProperty(key);
-
-            // Add them to the current vlNode -
-            vlNode.setProperty(key, val);
-        }
-
-        // We need to set the VLPREFIX -
-        vlNode.setProperty("VLPREFIX", "BCX");
-
-
-        // Ok, I need to check the type of system -
-        if (node instanceof BCXSystem)
-        {
-            vlNode.setProperty("DISPLAY_LABEL","System");
-            vlNode.setProperty("CLASSNAME", node.getClass().getName());
-            vlNode.setProperty("CLOSED_ICON", VLImageLoader.getPNGImageIcon("JarBundler-10-Grey.png"));
-            vlNode.setProperty("OPENED_ICON", VLImageLoader.getPNGImageIcon("JarBundler-10.png"));
-        }
-
-        if (node instanceof BCXExperiment)
-        {
-            vlNode.setProperty("DISPLAY_LABEL","Experiment");
-            vlNode.setProperty("CLASSNAME", node.getClass().getName());
-            vlNode.setProperty("CLOSED_ICON", VLImageLoader.getPNGImageIcon("Flask-10-Grey.png"));
-            vlNode.setProperty("OPENED_ICON", VLImageLoader.getPNGImageIcon("Flask-10.png"));
-        }
-
-        if (node instanceof BCXDataGroup)
-        {
-            vlNode.setProperty("DISPLAY_LABEL","DataGroup");
-            vlNode.setProperty("CLASSNAME", node.getClass().getName());
-            vlNode.setProperty("CLOSED_ICON", VLImageLoader.getPNGImageIcon("ExpFolderBrown-10-Grey.png"));
-            vlNode.setProperty("OPENED_ICON", VLImageLoader.getPNGImageIcon("ExpFolderBrown-10.png"));
-        }
-
-        if (node instanceof BCXValue)
-        {
-            vlNode.setProperty("DISPLAY_LABEL","Value");
-            vlNode.setProperty("CLASSNAME", node.getClass().getName());
-            vlNode.setProperty("CLOSED_ICON", VLImageLoader.getPNGImageIcon("Value-10-Grey.png"));
-            vlNode.setProperty("OPENED_ICON", VLImageLoader.getPNGImageIcon("Value-10.png"));
-        }
-        if (node instanceof BCXStimulus)
-        {
-            vlNode.setProperty("DISPLAY_LABEL","Stimulus");
-            vlNode.setProperty("CLASSNAME", node.getClass().getName());
-            vlNode.setProperty("CLOSED_ICON", VLImageLoader.getPNGImageIcon("Signal-10-Grey.png"));
-            vlNode.setProperty("OPENED_ICON", VLImageLoader.getPNGImageIcon("Signal-10.png"));
-        }
-
-        // OK, when I get here I have a configured vlNode - add it to the GUI node -
-        guiNode.setUserObject(vlNode);
-
-        // Ok, we need to handle the kids -
-        int NUMBER_OF_KIDS = node.getNumberOfChildren();
-        for (int index = 0;index<NUMBER_OF_KIDS;index++)
-        {
-            // Ok, when I get here I need to get a child and then configure that mofo -
-            VLDomainComponent childNode = (VLDomainComponent)node.getChildAt(index);
-
-            // Configure that bee....atch ...
-            DefaultMutableTreeNode myFingKid = populateJTree(childNode);
-
-            // Add my kids to the current parent node -
-            guiNode.add(myFingKid);
-        }
-
-        // return the configured GUI node -
-        return(guiNode);
-
-    }
-
-    private void configurePropertiesTable()
-    {
-        // Instantiate the table -
-        _propTable = new VLJTable();
-        SystemwideEventService.registerSessionListener(_propTable);
-
-        // Add the table model -
-        _propTable.setModel(_tableModel);
-
-        _tableModel.addTableModelListener(this);
-        
-        // Add to the scroll panel -
-        jScrollPane1.setViewportView(_propTable);
-    }
-
-    private void configureXMLTree()
-    {
-        // Instantiate the the tree -
-        jtreeXMLTree = new JTree();
-        jtreeXMLTree.addKeyListener(new DeleteNodeKeyListener());
-        jtreeXMLTree.setShowsRootHandles(true);
-
-
-        /*
-        VLTreeNode vltnRootNode = new VLTreeNode();
-        vltnRootNode.setProperty("DISPLAY_LABEL", "System");
-
-        // Create the root node icon -
-        vltnRootNode.setProperty("CLOSED_ICON", VLImageLoader.getPNGImageIcon("FolderExperiments-10-Grey.png"));
-        vltnRootNode.setProperty("OPENED_ICON", VLImageLoader.getPNGImageIcon("FolderExperiments-10.png"));
-        
-        DefaultMutableTreeNode root = new DefaultMutableTreeNode(vltnRootNode);
-        DefaultTreeModel mod = new DefaultTreeModel (root);
-        jtreeXMLTree.setModel (mod);
-        jtreeXMLTree.setCellRenderer(new VLJTreeCellRenderer());
-         */
-
-        // We need the table model to update when I clisk a node -
-        //jtreeXMLTree.addTreeSelectionListener(_tableModel);
-
-        // Add the tree to the scroll pane -
-        //jScrollPane2.setViewportView(jtreeXMLTree);
-    }
-
-    public void setOffIcon(ImageIcon imgIcon)
-    {
-        _imgIconOff = imgIcon;
-    }
-
-    public void setOnIcon(ImageIcon imgIcon)
-    {
-        _imgIconOn = imgIcon;
-    }
-
-    public ImageIcon getOffIcon()
-    {
-        return(_imgIconOff);
-    }
-
-    public ImageIcon getOnIcon()
-    {
-        return(_imgIconOn);
-    }
-
-
-    public DefaultMutableTreeNode getTreeRoot()
-    {
-        return(_guiRoot);
-    }
-
-    public JTree getTree()
-    {
-        return(jtreeXMLTree);
-    }
-
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
-     */
-    @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
-
-        jPanel1 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jPanel2 = new javax.swing.JPanel();
-        jSplitPane1 = new javax.swing.JSplitPane();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jPanel3 = new javax.swing.JPanel();
-        jButton7 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
-
-        setIconifiable(true);
-        setResizable(true);
-        setPreferredSize(new java.awt.Dimension(651, 662));
-
-        jButton1.setText("Save As ...");
-        jButton1.setToolTipText("Save BCX file");
-        jButton1.setEnabled(false);
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                saveXMLFileToDisk(evt);
-            }
-        });
-
-        jButton2.setText("Load ...");
-        jButton2.setEnabled(false);
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                loadXMLTree(evt);
-            }
-        });
-
-        jButton3.setText("New");
-        jButton3.setEnabled(false);
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                createNewXMLTree(evt);
-            }
-        });
-
-        org.jdesktop.layout.GroupLayout jPanel1Layout = new org.jdesktop.layout.GroupLayout(jPanel1);
+		// details..
+		File configFile = new File(strTemplate);
+		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+		dbFactory.setNamespaceAware(true);
+		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+		Document doc = dBuilder.parse(configFile);
+		doc.getDocumentElement().normalize();
+
+		// Set the template in session -
+		_session.setProperty("BCX_TEMPLATE_TREE", doc);		
+		
+		// Ok, so now we the doc, try to create a tree -
+		setRootNode(doc);
+	}
+
+	/** Creates new form BioChemExpTool */
+	private BioChemExpTool() {
+		// Call to super
+		super("Biochemical Experiment Tool v1.0",false,true);
+
+		// setup the list of containers -
+		// These are container labels - 
+		aList.add("BCXModel");
+		aList.add("server_options");
+		aList.add("listOfExperiments");
+		aList.add("experiment");
+
+		// iterate window count
+		++openFrameCount;
+
+		// Set window size
+		setSize(300,300);
+
+		// Set the windows location
+		setLocation(xOffset*openFrameCount,yOffset*openFrameCount);
+
+		// Set TitleBar color when active/inactive
+		setDoubleBuffered(true);
+
+		// Get a reference to session -
+		_session = (Launcher.getInstance()).getSession();
+
+
+		// Initialize this mofo -
+		initComponents();
+
+		// Add a focus/click listerner -
+		this.addInternalFrameListener(new BioChemExpToolFocusListener());
+
+		// Add a drag gesture listener to the palette labels -
+		VLResizeGlassPane.registerFrame(this);
+		VLMoveGlassPane.registerFrame(this);
+
+		// Glass pane for dialog messages -
+		_glassPane = new VLDialogGlassPane(this);
+
+		// configure the default xml tree -
+		configureXMLTree();
+
+		// Configure the proptable -
+		configurePropertiesTable();
+
+
+		// Add some system level action -
+		SystemwideEventService.registerSessionListener(this);
+		SystemwideEventService.registerUsernameListener(this);
+
+		// Register the TableCellEditor -
+		_tblCellEditor = (IVLTableCellEditor) new BCXTableCellEditor();
+		_propTable.setVLTableCellEditor(_tblCellEditor);
+
+		// Set some properties on the text label -
+		jTextField1.putClientProperty("JTextField.variant", "search");
+
+		buttonGrp = new ButtonGroup();
+
+		int intWidth = 50;
+		int intHeight = 50;
+		Dimension sizeButton = new Dimension();
+		sizeButton.setSize(intWidth, intHeight);
+	}
+
+	public void clearTree()
+	{
+		// Clear out the tree -
+		jtreeXMLTree.removeAll();
+	}
+
+	private void configurePropertiesTable()
+	{
+		// Instantiate the table -
+		_propTable = new VLJTable();
+
+		// Add the table model -
+		_propTable.setModel(_tableModel);
+		_tableModel.addTableModelListener(this);
+
+		// Add to the scroll panel -
+		jScrollPane1.setViewportView(_propTable);
+	}
+
+	private void configureXMLTree()
+	{
+		// Instantiate the the tree -
+		jtreeXMLTree = new JTree();
+		jtreeXMLTree.setCellRenderer(new BCXJTreeCellRenderer());
+		jtreeXMLTree.addKeyListener(new DeleteNodeKeyListener());
+		jtreeXMLTree.setShowsRootHandles(true);
+	}
+
+	public void setOffIcon(ImageIcon imgIcon)
+	{
+		_imgIconOff = imgIcon;
+	}
+
+	public void setOnIcon(ImageIcon imgIcon)
+	{
+		_imgIconOn = imgIcon;
+	}
+
+	public ImageIcon getOffIcon()
+	{
+		return(_imgIconOff);
+	}
+
+	public ImageIcon getOnIcon()
+	{
+		return(_imgIconOn);
+	}
+
+
+	public DefaultMutableTreeNode getTreeRoot()
+	{
+		return(_guiRoot);
+	}
+
+	public JTree getTree()
+	{
+		return(jtreeXMLTree);
+	}
+
+	/** This method is called from within the constructor to
+	 * initialize the form.
+	 * WARNING: Do NOT modify this code. The content of this method is
+	 * always regenerated by the Form Editor.
+	 */
+	@SuppressWarnings("unchecked")
+	// <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+	private void initComponents() {
+
+		jPanel1 = new javax.swing.JPanel();
+		jButton1 = new javax.swing.JButton();
+		jButton2 = new javax.swing.JButton();
+		jButton3 = new javax.swing.JButton();
+		jPanel2 = new javax.swing.JPanel();
+		jSplitPane1 = new javax.swing.JSplitPane();
+		jScrollPane1 = new javax.swing.JScrollPane();
+		jScrollPane2 = new javax.swing.JScrollPane();
+		jPanel3 = new javax.swing.JPanel();
+		jButton7 = new javax.swing.JButton();
+		jButton6 = new javax.swing.JButton();
+		jButton4 = new javax.swing.JButton();
+		jButton5 = new javax.swing.JButton();
+		jTextField1 = new javax.swing.JTextField();
+		jButton8 = new javax.swing.JButton();
+		jButton9 = new javax.swing.JButton();
+
+		setIconifiable(true);
+		setResizable(true);
+		setPreferredSize(new java.awt.Dimension(645, 660));
+
+		jButton1.setText("Save As ...");
+		jButton1.setToolTipText("Save BCX file");
+		jButton1.setEnabled(false);
+		jButton1.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				saveXMLFileToDisk(evt);
+			}
+		});
+
+		jButton2.setText("Load ...");
+		jButton2.setEnabled(false);
+		jButton2.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				loadXMLTree(evt);
+			}
+		});
+
+		jButton3.setText("New");
+		jButton3.setEnabled(false);
+		jButton3.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				createNewXMLTree(evt);
+			}
+		});
+		
+		org.jdesktop.layout.GroupLayout jPanel1Layout = new org.jdesktop.layout.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(314, Short.MAX_VALUE)
+                .addContainerGap(300, Short.MAX_VALUE)
                 .add(jButton3)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                 .add(jButton2)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                .add(jButton1))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jButton1)
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(17, Short.MAX_VALUE)
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jButton1)
                     .add(jButton2)
-                    .add(jButton3))
+                    .add(jButton3)
+                    .add(jButton1))
                 .addContainerGap())
         );
+        
+		jSplitPane1.setDividerLocation(250);
+		jSplitPane1.setDividerSize(3);
+		jSplitPane1.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
+		jSplitPane1.setBottomComponent(jScrollPane1);
 
-        jSplitPane1.setDividerLocation(250);
-        jSplitPane1.setDividerSize(3);
-        jSplitPane1.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
-        jSplitPane1.setBottomComponent(jScrollPane1);
+		jScrollPane2.setMinimumSize(new java.awt.Dimension(100, 100));
+		jSplitPane1.setLeftComponent(jScrollPane2);
+		
 
-        jScrollPane2.setMinimumSize(new java.awt.Dimension(100, 100));
-        jSplitPane1.setLeftComponent(jScrollPane2);
-
-        org.jdesktop.layout.GroupLayout jPanel2Layout = new org.jdesktop.layout.GroupLayout(jPanel2);
+		org.jdesktop.layout.GroupLayout jPanel2Layout = new org.jdesktop.layout.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jSplitPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 587, Short.MAX_VALUE)
+            .add(jSplitPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 582, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(org.jdesktop.layout.GroupLayout.TRAILING, jSplitPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 462, Short.MAX_VALUE)
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, jSplitPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 494, Short.MAX_VALUE)
         );
 
-        jButton7.setIcon(new javax.swing.ImageIcon("/Users/jeffreyvarner/dev/UniversalWeb/UniversalEditor/images/Signal-12-Grey.png")); // NOI18N
-        jButton7.setToolTipText("Add a stimulus ");
-        jButton7.setBorderPainted(false);
-        jButton7.setDoubleBuffered(true);
-        jButton7.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jButton7.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        jButton7.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        jButton7.setPreferredSize(new java.awt.Dimension(148, 79));
-        jButton7.setRolloverEnabled(true);
-        jButton7.setRolloverIcon(new javax.swing.ImageIcon("/Users/jeffreyvarner/dev/UniversalWeb/UniversalEditor/images/Signal-12.png")); // NOI18N
-        jButton7.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addStimulusNode(evt);
-            }
-        });
+		jButton7.setToolTipText("Add a stimulus to the current experiment");
+		jButton7.setIcon(VLIconManagerService.getIcon("PURPLE-16-GREY-ICON"));
+		jButton7.setRolloverIcon(VLIconManagerService.getIcon("PURPLE-16-ICON"));
+		jButton7.setBorderPainted(false);
+		jButton7.setDoubleBuffered(true);
+		jButton7.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+		jButton7.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+		jButton7.setMargin(new java.awt.Insets(0, 0, 0, 0));
+		jButton7.setPreferredSize(new java.awt.Dimension(148, 79));
+		jButton7.setRolloverEnabled(true);
+		jButton7.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				addStimulusNode(evt);
+			}
+		});
 
-        jButton6.setIcon(new javax.swing.ImageIcon("/Users/jeffreyvarner/dev/UniversalWeb/UniversalEditor/images/Value-12-Grey.png")); // NOI18N
-        jButton6.setToolTipText("Add a Value to the current experiment");
-        jButton6.setBorderPainted(false);
-        jButton6.setDoubleBuffered(true);
-        jButton6.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jButton6.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        jButton6.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        jButton6.setPreferredSize(new java.awt.Dimension(148, 79));
-        jButton6.setRolloverEnabled(true);
-        jButton6.setRolloverIcon(new javax.swing.ImageIcon("/Users/jeffreyvarner/dev/UniversalWeb/UniversalEditor/images/Value-12.png")); // NOI18N
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addNewValueNode(evt);
-            }
-        });
+		jButton6.setToolTipText("Add a value to the current experiment");
+		jButton6.setIcon(VLIconManagerService.getIcon("EVALUE-16-GREY-ICON"));
+		jButton6.setRolloverIcon(VLIconManagerService.getIcon("EVALUE-16-ICON"));
+		jButton6.setBorderPainted(false);
+		jButton6.setDoubleBuffered(true);
+		jButton6.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+		jButton6.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+		jButton6.setMargin(new java.awt.Insets(0, 0, 0, 0));
+		jButton6.setPreferredSize(new java.awt.Dimension(148, 79));
+		jButton6.setRolloverEnabled(true);
+		jButton6.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				addNewValueNode(evt);
+			}
+		});
 
-        jButton4.setIcon(new javax.swing.ImageIcon("/Users/jeffreyvarner/dev/UniversalWeb/UniversalEditor/images/Beaker-12-Grey.png")); // NOI18N
-        jButton4.setToolTipText("Add a new experiment");
-        jButton4.setBorderPainted(false);
-        jButton4.setDoubleBuffered(true);
-        jButton4.setMaximumSize(new java.awt.Dimension(100, 29));
-        jButton4.setMinimumSize(new java.awt.Dimension(100, 29));
-        jButton4.setPreferredSize(new java.awt.Dimension(100, 29));
-        jButton4.setRolloverEnabled(true);
-        jButton4.setRolloverIcon(new javax.swing.ImageIcon("/Users/jeffreyvarner/dev/UniversalWeb/UniversalEditor/images/Beaker-12.png")); // NOI18N
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addNewExperiment(evt);
-            }
-        });
+		jButton4.setToolTipText("Add a new experiment");
+		jButton4.setIcon(VLIconManagerService.getIcon("BEAKER-18-GREY-ICON"));
+		jButton4.setRolloverIcon(VLIconManagerService.getIcon("BEAKER-18-ICON"));
+		jButton4.setBorderPainted(false);
+		jButton4.setDoubleBuffered(true);
+		jButton4.setMaximumSize(new java.awt.Dimension(100, 29));
+		jButton4.setMinimumSize(new java.awt.Dimension(100, 29));
+		jButton4.setPreferredSize(new java.awt.Dimension(148, 79));
+		jButton4.setRolloverEnabled(true);
+		jButton4.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				addNewExperiment(evt);
+			}
+		});
 
-        jButton5.setIcon(new javax.swing.ImageIcon("/Users/jeffreyvarner/dev/UniversalWeb/UniversalEditor/images/ExpFolderBrown-12-Grey.png")); // NOI18N
-        jButton5.setToolTipText("Add a new DataGroup to the selected experiment");
-        jButton5.setBorderPainted(false);
-        jButton5.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jButton5.setPreferredSize(new java.awt.Dimension(148, 79));
-        jButton5.setRolloverEnabled(true);
-        jButton5.setRolloverIcon(new javax.swing.ImageIcon("/Users/jeffreyvarner/dev/UniversalWeb/UniversalEditor/images/ExpFolderBrown-12.png")); // NOI18N
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addDataGroupNode(evt);
-            }
-        });
+		jButton5.setToolTipText("Add a results file to the selected experiment");
+		jButton5.setIcon(VLIconManagerService.getIcon("EGROUP-16-GREY-ICON"));
+		jButton5.setRolloverIcon(VLIconManagerService.getIcon("EGROUP-16-ICON"));
+		jButton5.setBorderPainted(false);
+		jButton5.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+		jButton5.setPreferredSize(new java.awt.Dimension(148, 79));
+		jButton5.setRolloverEnabled(true);
+		jButton5.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				addDataGroupNode(evt);
+			}
+		});
+		
+		jButton9.setToolTipText("Add a data file description ...");
+		jButton9.setIcon(VLIconManagerService.getIcon("FLASH-16-GREY-ICON"));
+		jButton9.setRolloverIcon(VLIconManagerService.getIcon("FLASH-16-ICON"));
+		jButton9.setBorderPainted(false);
+		jButton9.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+		jButton9.setPreferredSize(new java.awt.Dimension(148, 79));
+		jButton9.setRolloverEnabled(true);
+		jButton9.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				addDataFileReferenceNode(evt);
+			}
+		});
 
-        jTextField1.setText("Search ...");
+		jTextField1.setText("Search ...");
 
-        org.jdesktop.layout.GroupLayout jPanel3Layout = new org.jdesktop.layout.GroupLayout(jPanel3);
+		jButton8.setToolTipText("Save this BCX file ... ");
+		jButton8.setIcon(new javax.swing.ImageIcon("./images/ShoppingCart-18-Grey.png"));
+		jButton8.setRolloverIcon(new javax.swing.ImageIcon("./images/ShoppingCart-18.png")); // NOI18N
+		jButton8.setBorderPainted(false);
+		jButton8.setDoubleBuffered(true);
+		jButton8.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+		jButton8.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+		jButton8.setMargin(new java.awt.Insets(0, 0, 0, 0));
+		jButton8.setPreferredSize(new java.awt.Dimension(148, 79));
+		jButton8.setRolloverEnabled(true);
+
+		org.jdesktop.layout.GroupLayout jPanel3Layout = new org.jdesktop.layout.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(jPanel3Layout.createSequentialGroup()
-                .add(7, 7, 7)
-                .add(jButton4, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 31, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                .addContainerGap()
+                .add(jButton4, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 39, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jButton5, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 37, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jButton7, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 37, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jButton6, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 39, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 60, Short.MAX_VALUE)
-                .add(jTextField1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 376, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jButton9, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 39, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(18, 18, 18)
+                .add(jButton8, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 72, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jTextField1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 259, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.CENTER)
+                .add(jButton4, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE)
+                .add(jButton5, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE)
+                .add(jButton7, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE)
+                .add(jButton6, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE)
                 .add(jTextField1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(jButton4, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
-                .add(jButton5, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
-                .add(jButton7, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
-                .add(jButton6, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE))
+                .add(jButton8)
+                .add(jButton9, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE))
         );
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
@@ -573,10 +463,13 @@ public class BioChemExpTool extends javax.swing.JInternalFrame implements IVLTre
             .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                    .add(org.jdesktop.layout.GroupLayout.LEADING, jPanel2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .add(jPanel3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .add(org.jdesktop.layout.GroupLayout.LEADING, jPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                    .add(org.jdesktop.layout.GroupLayout.LEADING, jPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .add(layout.createSequentialGroup()
+                        .add(15, 15, 15)
+                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .add(24, 24, 24))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -586,180 +479,329 @@ public class BioChemExpTool extends javax.swing.JInternalFrame implements IVLTre
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                 .add(jPanel2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 55, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .add(jPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(20, 20, 20))
         );
 
         pack();
-    }// </editor-fold>//GEN-END:initComponents
+	}// </editor-fold>//GEN-END:initComponents
 
-    private void loadXMLTree(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadXMLTree
-        LoadXMLTreeAction xmlLoader = new LoadXMLTreeAction();
-        xmlLoader.actionPerformed(evt);
-    }//GEN-LAST:event_loadXMLTree
-
-    private void createNewXMLTree(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createNewXMLTree
-
-        // Ok, so I need to check to see if a user is logged on -
-        UEditorSession session = (Launcher.getInstance()).getSession();
-        String strUserName = (String)session.getProperty("VALIDATED_USERNAME");
-
-        if (strUserName==null)
-        {
-            _glassPane.setMessage("No user is associated with this session.");
-            _glassPane.blowMe();
-        }
-        else
-        {
-
-            // Fire the session update event to make sure I have the latest version of session -
-            SystemwideEventService.fireSessionUpdateEvent();
-
-            // Create the new tree -
-            CreateNewXMLTreeAction newTree = new CreateNewXMLTreeAction();
-            newTree.actionPerformed(evt);
-        }
-    }//GEN-LAST:event_createNewXMLTree
-
-    private void saveXMLFileToDisk(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveXMLFileToDisk
-
-        SaveXMLFileAction saveFile = new SaveXMLFileAction();
-        saveFile.actionPerformed(evt);
-
-    }//GEN-LAST:event_saveXMLFileToDisk
-
-    private void addNewExperiment(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addNewExperiment
-        // TODO add your handling code here:
-        AddNewExperimentNodeAction addNode = new AddNewExperimentNodeAction();
-        addNode.actionPerformed(evt);
-
-    }//GEN-LAST:event_addNewExperiment
-
-    private void addDataGroupNode(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addDataGroupNode
-        // TODO add your handling code here:
-        AddNewDataGroupNodeAction addNode = new AddNewDataGroupNodeAction();
-        addNode.actionPerformed(evt);
-    }//GEN-LAST:event_addDataGroupNode
-
-    private void addNewValueNode(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addNewValueNode
-        AddValueNodeAction addNode = new AddValueNodeAction();
-        addNode.actionPerformed(evt);
-    }//GEN-LAST:event_addNewValueNode
-
-    private void addStimulusNode(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addStimulusNode
-        AddNewStimulusNodeAction addNode = new AddNewStimulusNodeAction();
-        addNode.actionPerformed(evt);
-    }//GEN-LAST:event_addStimulusNode
+	private void addDataFileReferenceNode(ActionEvent evt) {	
+		AddDataColumnNodeAction action = new AddDataColumnNodeAction();
+		action.actionPerformed(evt);
+	}
 
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JSplitPane jSplitPane1;
-    private javax.swing.JTextField jTextField1;
-    // End of variables declaration//GEN-END:variables
+	private void loadXMLTree(java.awt.event.ActionEvent evt) 
+	{//GEN-FIRST:event_loadXMLTree
+		LoadXMLTreeAction xmlLoader = new LoadXMLTreeAction();
+		xmlLoader.actionPerformed(evt);
+	}//GEN-LAST:event_loadXMLTree
+
+	private void createNewXMLTree(java.awt.event.ActionEvent evt) 
+	{//GEN-FIRST:event_createNewXMLTree
+
+		// Ok, so I need to check to see if a user is logged on -
+		UEditorSession session = (Launcher.getInstance()).getSession();
+		String strUserName = (String)session.getProperty("VALIDATED_USERNAME");
+
+		if (strUserName==null)
+		{
+			_glassPane.setMessage("No user is associated with this session.");
+			_glassPane.blowMe();
+		}
+		else
+		{
+
+			// Fire the session update event to make sure I have the latest version of session -
+			SystemwideEventService.fireSessionUpdateEvent();
+
+			// Create the new tree -
+			CreateNewXMLTreeAction newTree = new CreateNewXMLTreeAction();
+			newTree.actionPerformed(evt);
+		}
+
+	}//GEN-LAST:event_createNewXMLTree
+
+	private void saveXMLFileToDisk(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveXMLFileToDisk
+
+		SaveXMLFileAction saveFile = new SaveXMLFileAction();
+		saveFile.actionPerformed(evt);
+
+	}//GEN-LAST:event_saveXMLFileToDisk
+
+	private void addNewExperiment(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addNewExperiment
+		// TODO add your handling code here:
+		AddNewExperimentNodeAction addNode = new AddNewExperimentNodeAction();
+		addNode.actionPerformed(evt);
+
+	}//GEN-LAST:event_addNewExperiment
+
+	private void addDataGroupNode(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addDataGroupNode
+		// TODO add your handling code here:
+		AddNewDataGroupNodeAction addNode = new AddNewDataGroupNodeAction();
+		addNode.actionPerformed(evt);
+	}//GEN-LAST:event_addDataGroupNode
+
+	private void addNewValueNode(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addNewValueNode
+		AddValueNodeAction addNode = new AddValueNodeAction();
+		addNode.actionPerformed(evt);
+	}//GEN-LAST:event_addNewValueNode
+
+	private void addStimulusNode(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addStimulusNode
+		AddNewStimulusNodeAction addNode = new AddNewStimulusNodeAction();
+		addNode.actionPerformed(evt);
+	}//GEN-LAST:event_addStimulusNode
 
 
-    /*
-    @Override
-    protected void paintComponent(Graphics g)
-    {
-        // set transparent color
-        g.setColor(new Color(255,255,255,64));
-
-        g.fillRect(0, 0, getWidth(), getHeight());
-    }
-     */
-
-    public void tableChanged(TableModelEvent e) {
-        // Ok, when I get here the table model has changed - I need to update the values in the tree -
-
-        int ROW_INDEX = _propTable.getSelectedRow();
-        
-        if (ROW_INDEX!=-1)
-        {
-            // Get the data from the table model -
-            Object key = _tableModel.getValueAt(ROW_INDEX, 0);
-            Object val = _tableModel.getValueAt(ROW_INDEX, 1);
-            String tmp = val.toString();
-
-            if (key!=null || !tmp.equalsIgnoreCase(" "))
-            {
-
-                // Get the current node -
-                DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode)jtreeXMLTree.getLastSelectedPathComponent();
-
-                // Get the index of the selected node
-
-                // Ok, so I need to get the userobject from this mofo and then pull all the properties out -
-                VLTreeNode vltnNode = (VLTreeNode)selectedNode.getUserObject();
-
-                // Set the properties of the object -
-                vltnNode.setProperty(key.toString(), val.toString());
-
-                System.out.println("UPDATE key = "+key+" VALUE="+val);
-
-                // Let's overright the old node -
-                // selectedNode.setUserObject(vltnNode);
-                DefaultTreeModel treeModel = (DefaultTreeModel)jtreeXMLTree.getModel();
-                treeModel.nodeChanged(selectedNode);
-            }
-        }
-            
-        
-
-    }
-
-    public void updateComponent() {
-
-        // See if there is a validated username -
-        String strUserName = (String)_session.getProperty("VALIDATED_USERNAME");
-
-        PublishService.submitData("Checking for a username - squishy monkey love...username is "+strUserName);
+	// Variables declaration - do not modify//GEN-BEGIN:variables
+	private javax.swing.JButton jButton1;
+	private javax.swing.JButton jButton2;
+	private javax.swing.JButton jButton3;
+	private javax.swing.JButton jButton4;
+	private javax.swing.JButton jButton5;
+	private javax.swing.JButton jButton6;
+	private javax.swing.JButton jButton7;
+	private javax.swing.JButton jButton8;
+	private javax.swing.JButton jButton9;
+	private javax.swing.JPanel jPanel1;
+	private javax.swing.JPanel jPanel2;
+	private javax.swing.JPanel jPanel3;
+	private javax.swing.JScrollPane jScrollPane1;
+	private javax.swing.JScrollPane jScrollPane2;
+	private javax.swing.JSplitPane jSplitPane1;
+	private javax.swing.JTextField jTextField1;
+	// End of variables declaration//GEN-END:variables
 
 
-        // Check to see if his bitch is null -
-        if (strUserName!=null)
-        {
-            jButton1.setEnabled(true);
-            jButton2.setEnabled(true);
-            jButton3.setEnabled(true);
-        }
-        else
-        {
-            //_glassPane.setMessage("No user is associated with this session.");
-            //_glassPane.blowMe();
-        }
+	public void tableChanged(TableModelEvent e) {
+
+		// Ok, when I get here the table model has changed - I need to update the values in the tree -
+
+		// Get the selected row -
+		int ROW_INDEX = _propTable.getSelectedRow();
+		if (ROW_INDEX!=-1)
+		{
+			// Get the data from the table model -
+			Object key = _tableModel.getValueAt(ROW_INDEX, 0);
+			Object val = _tableModel.getValueAt(ROW_INDEX, 1);
+			String tmp = val.toString();
+
+			if (key!=null || !tmp.equalsIgnoreCase(" "))
+			{
+
+				// Get the current node -
+				DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode)jtreeXMLTree.getLastSelectedPathComponent();
+
+				// Get the index of the selected node
+
+				// Ok, so I need to get the userobject from this mofo and then pull all the properties out -
+				VLTreeNode vltnNode = (VLTreeNode)selectedNode.getUserObject();
+
+				// Ok, so here is the trick bit -
+				Node xmlTreeNode = (Node)vltnNode.getProperty("XML_TREE_NODE");
+
+				// Set the properties of the object -
+				//vltnNode.setProperty(key.toString(), val.toString());
+				NamedNodeMap attList = xmlTreeNode.getAttributes();
+				int NUM_OF_ATTRIBUTES = attList.getLength(); 
+				for (int index=0;index<NUM_OF_ATTRIBUTES;index++)
+				{
+					// Get the attribute node -
+					Node attributeNode = attList.item(index);
+
+					// Get the name of this attribute -
+					String strArrtributeName = attributeNode.getNodeName();
+
+					// Compare with the currently selected key -
+					String tmpKeyName = key.toString();
+					if (tmpKeyName.equalsIgnoreCase(strArrtributeName))
+					{
+						// Ok, if I'm here then I have a match -- update the xml node and break out of the loop-
+						attributeNode.setNodeValue(tmp);
+						System.out.println("UPDATE key = "+key+" VALUE="+tmp);                		
+						break;
+					}
+				}
 
 
-    }
+				// Let's overright the old node -
+				//selectedNode.setUserObject(vltnNode);
+				DefaultTreeModel treeModel = (DefaultTreeModel)jtreeXMLTree.getModel();
+				treeModel.nodeChanged(selectedNode); 
+			}
+		}
+	}
 
-    public void updateSession() {
-        _session = (Launcher.getInstance()).getSession();
-    }
+	public void updateComponent() {
 
-    public void updateNetwork() {
-        
-    }
+		// See if there is a validated username -
+		String strUserName = (String)_session.getProperty("VALIDATED_USERNAME");
 
-	public void setRootNode(Node rootNode) throws Exception {
-		// TODO Auto-generated method stub
-		
+		PublishService.submitData("Checking for a username - squishy monkey love...username is "+strUserName);
+
+
+		// Check to see if his bitch is null -
+		if (strUserName!=null)
+		{
+			jButton1.setEnabled(true);
+			jButton2.setEnabled(true);
+			jButton3.setEnabled(true);
+		}
+		else
+		{
+			//_glassPane.setMessage("No user is associated with this session.");
+			//_glassPane.blowMe();
+		}
+
+
+	}
+
+	public void updateSession() {
+		_session = (Launcher.getInstance()).getSession();
+	}
+
+	public void updateNetwork() {
+
 	}
 
 	public void setRootNode(Document doc) throws Exception {
-		// TODO Auto-generated method stub
+		// Clear out the tree -
+		jtreeXMLTree.removeAll();
+		Node rootNode = null;
+
+		// Get the root node and its attributes -
+		String expression = "/BCXModel";
+
+		// Grab the root node -
+		rootNode = (Node)_xpath.evaluate(expression, doc, XPathConstants.NODE);
+		this._vlRootTreeNode = rootNode;
+
+		// Populate the jTree w/the Node -
+		_guiRoot = populateJTree(_vlRootTreeNode);
+
+		// add to the tree -
+		DefaultTreeModel mod = new DefaultTreeModel (_guiRoot);
+		jtreeXMLTree.setModel (mod);
+		jtreeXMLTree.addTreeSelectionListener(_tableModel);
 		
+		// I need to see if
+		_tableModel.fireTableDataChanged();
+
+		// Add the tree to the scroll pane -
+		jScrollPane2.setViewportView(jtreeXMLTree);
+	}
+
+	// Populate the jtree -
+	private DefaultMutableTreeNode populateJTree(Node xmlNode) throws Exception
+	{
+
+		// OK, starting w/the root node I need to populate the JTree -
+		DefaultMutableTreeNode guiNode = new DefaultMutableTreeNode();
+
+		// Create a VarnerLab node wrapper -
+		VLTreeNode vlNode = new VLTreeNode();
+
+		// Get some info from the xmlNode -
+		String strNodeName = (String)xmlNode.getNodeName();
+		String strNodeValue = (String)xmlNode.getTextContent();
+
+		int COMMENT = strNodeName.indexOf("#");
+		if (COMMENT==-1)
+		{
+			if (strNodeValue==null)
+			{
+				strNodeValue = "";
+			}
+
+			// Ok, so when I get here I have the name and value -
+			// Configure the node -
+
+
+			if (aList.contains(strNodeName))
+			{
+				vlNode.setProperty("DISPLAY_LABEL",strNodeName);
+				vlNode.setProperty("CLOSED_ICON", VLIconManagerService.getIcon("VLFOLDERSBML-32-GREY-ICON"));
+				vlNode.setProperty("OPENED_ICON", VLIconManagerService.getIcon("VLFOLDERSBML-32-ICON"));
+				vlNode.setProperty("KEYNAME",strNodeName);
+				vlNode.setProperty("XML_TREE_NODE", xmlNode);
+				
+				// Get the editable attribute -
+				Node leafNode = xmlNode.getAttributes().getNamedItem("editable");
+				vlNode.setProperty("EDITABLE",leafNode.getNodeValue());
+			}
+			else
+			{
+				// Ok, so If I get here then I have a leaf node -
+
+				// Set the display label -
+				String strDisplayLabel = "";
+				String strAttributeID = "";
+
+				// Check to see if we have an id attribute -
+				Node leafNode = xmlNode.getAttributes().getNamedItem("id");
+
+				if (leafNode!=null)
+				{
+					strAttributeID = leafNode.getNodeValue();
+				}
+				else
+				{
+					//System.out.println("leadNode named "+strNodeName+" has id = null");
+				}
+
+				if (!strAttributeID.isEmpty())
+				{
+					strDisplayLabel = strAttributeID;
+				}
+				else
+				{
+					strDisplayLabel = strNodeName;
+				}
+
+				vlNode.setProperty("DISPLAY_LABEL",strDisplayLabel);
+				vlNode.setProperty("CLOSED_ICON", VLIconManagerService.getIcon("VLPROPERTY-32-GREY-ICON"));
+				vlNode.setProperty("OPENED_ICON", VLIconManagerService.getIcon("VLPROPERTY-32-ICON"));
+				vlNode.setProperty("XML_TREE_NODE", xmlNode);
+
+				// Get editable flag -
+				// Node leafNode = xmlNode.getAttributes().getNamedItem("editable");        	
+
+				// Set the editable flag -
+				vlNode.setProperty("EDITABLE","TRUE");
+
+				// System.out.println("Leaf node = "+strNodeName+" is editable? "+leafNode.getNodeValue());
+
+				// ok -- hard code some properties -
+				vlNode.setProperty("KEYNAME",strNodeName);
+				vlNode.setProperty(strNodeName,strNodeValue);
+			}
+
+			// set the node linkage -
+			guiNode.setUserObject(vlNode);
+
+			// ok, let's process this guys kids -
+			NodeList kids = xmlNode.getChildNodes();
+			int NUMBER_OF_KIDS = kids.getLength();
+			for (int index = 0;index<NUMBER_OF_KIDS;index++)
+			{
+				Node tmpNode = kids.item(index);
+
+				DefaultMutableTreeNode guiKidNode = populateJTree(tmpNode);
+				if (guiKidNode!=null)
+				{
+					guiNode.add(guiKidNode);
+				}
+			}
+
+			// return the guiNode -
+			return(guiNode);
+		}
+		else
+		{
+			// if I get here i havea comment -
+			return(null);
+		}
 	}
 
 }

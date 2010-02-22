@@ -294,7 +294,6 @@ public class NetworkEditorTool extends javax.swing.JInternalFrame implements Tab
 		return(jTree1);
 	}
 
-
 	private DefaultMutableTreeNode populateJTree(Node xmlNode) throws Exception
 	{
 
@@ -408,9 +407,6 @@ public class NetworkEditorTool extends javax.swing.JInternalFrame implements Tab
 			return(null);
 		}
 	}
-
-
-
 
 	private void configurePropertiesTable()
 	{

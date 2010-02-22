@@ -24,12 +24,20 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathFactory;
+
+import org.varnerlab.universaleditor.gui.BioChemExpTool;
+import org.varnerlab.universaleditor.gui.Launcher;
 import org.varnerlab.universaleditor.gui.ModelCodeGeneratorFileEditor;
 import org.varnerlab.universaleditor.domain.*;
 import org.varnerlab.universaleditor.gui.parser.*;
 import org.varnerlab.universaleditor.gui.*;
-import org.varnerlab.universaleditor.gui.BioChemExpTool;
 import org.varnerlab.universaleditor.gui.widgets.VLTreeNode;
+import org.varnerlab.universaleditor.service.VLIconManagerService;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 
 
 /**
@@ -38,75 +46,75 @@ import org.varnerlab.universaleditor.gui.widgets.VLTreeNode;
  */
 public class AddNewDataGroupNodeAction implements ActionListener {
 
-    // class/instance attributes
-    Component focusedComponent = null;
-    KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+	// class/instance attributes
+	Component focusedComponent = null;
+	KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
 
-    public void actionPerformed(ActionEvent e) {
-       // Ok, so when I get here - I'm trying to load a properties file from disk -
+	private XPathFactory  _xpFactory = XPathFactory.newInstance();
+	private XPath _xpath = _xpFactory.newXPath();
 
-        System.out.println("Hey now - why is this not working? Riddle me that looser...");
+	public void actionPerformed(ActionEvent e) {
+		// Ok, so when I get here - I'm trying to load a properties file from disk -
 
-        // First, you'll need to load the file chooser - hey by the way, I'm Rick Jamessss Bit*h!
-        try {
-           // Get the currently focused component -
-           focusedComponent = manager.getFocusOwner();
-           BioChemExpTool windowFrame = (BioChemExpTool)focusedComponent.getFocusCycleRootAncestor();
+		System.out.println("Hey now - why is this not working? Riddle me that looser...");
 
-           // ok, so now I need to add a node -
+		// First, you'll need to load the file chooser - hey by the way, I'm Rick Jamessss Bit*h!
+		try {
+			// Get the currently focused component -
+			BioChemExpTool windowFrame = (BioChemExpTool)(Launcher.getInstance()).getBioChemExpToolRef();
 
-           // Get the tree and find the current selected node -
-           JTree jTree = windowFrame.getTree();
+			// ok, so now I need to add a node - grab the session =
+			UEditorSession session = (Launcher.getInstance()).getSession();
 
-           // Get the current node -
-           DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode)jTree.getLastSelectedPathComponent();
+			// Get the tree and find the current selected node -
+			JTree jTree = windowFrame.getTree();
 
-           // Ok, so I need to get the userobject from this mofo and then pull all the properties out -
-           VLTreeNode vltnNode = (VLTreeNode)selectedNode.getUserObject();
+			// Get the current node -
+			DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode)jTree.getLastSelectedPathComponent();
 
-           // Ok, so can I add an Experiment node to this node?
-           String strClassName = (String)vltnNode.getProperty("CLASSNAME");
+			// Ok, so I need to get the userobject from this mofo and then pull all the properties out -
+			VLTreeNode vltnNode = (VLTreeNode)selectedNode.getUserObject();
 
-           System.out.println("What is the parent node - "+strClassName);
-           if (strClassName.equalsIgnoreCase("org.varnerlab.universaleditor.domain.BCXExperiment"))
-           {
-                // Ok, if I get here then I have the correct type -
+			// Ok, so can I add an Experiment node to this node?
+			String strClassName = (String)vltnNode.getProperty("KEYNAME");
 
-                // I've created a new user node ....
-                VLTreeNode newNode = new VLTreeNode();
-                newNode.setProperty("DISPLAY_LABEL","DataGroup");
-                newNode.setProperty("CLASSNAME", "org.varnerlab.universaleditor.domain.BCXDataGroup");
-                newNode.setProperty("CITE","");
-                newNode.setProperty("EXACT","True");
-                newNode.setProperty("SPECIES","");
-                newNode.setProperty("GROUP","");
-                newNode.setProperty("ID","A-Grp");
-                newNode.setProperty("CLOSED_ICON", VLImageLoader.getPNGImageIcon("ExpFolderBrown-10-Grey.png"));
-                newNode.setProperty("OPENED_ICON", VLImageLoader.getPNGImageIcon("ExpFolderBrown-10.png"));
+			System.out.println("What is the parent node - "+strClassName);
+			if (strClassName.equalsIgnoreCase("EXPERIMENT"))
+			{
+				// Ok, if I get here then I have the correct type -
 
-                // Create a new DefaultMutableTreeNode gui node -
-                DefaultMutableTreeNode newGUINode = new DefaultMutableTreeNode();
-                newGUINode.setUserObject(newNode);
-             
+				// I've created a new user node ....
+				VLTreeNode newNode = new VLTreeNode();
+				newNode.setProperty("CLOSED_ICON", VLIconManagerService.getIcon("EGROUP-12-GREY-ICON"));
+				newNode.setProperty("OPENED_ICON", VLIconManagerService.getIcon("EGROUP-12-ICON"));
+				newNode.setProperty("KEYNAME","measurement_file");
 
-                // Ok - update the tree model -
-                DefaultTreeModel model = (DefaultTreeModel)jTree.getModel();
-                model.insertNodeInto(newGUINode, selectedNode, selectedNode.getChildCount());
+				// I need to create the xmlNode -
+				String strXPStimulus = "//measurement_file";
+				Document bcxTmpDoc = (Document)session.getProperty("BCX_TEMPLATE_TREE");
+				Node tmpNode = (Node)_xpath.evaluate(strXPStimulus, bcxTmpDoc, XPathConstants.NODE);
 
-                // Make the new node visible -
-                jTree.scrollPathToVisible(new TreePath(newGUINode.getPath()));
+				// Clone the node -
+				newNode.setProperty("XML_TREE_NODE", tmpNode.cloneNode(true));
 
-                //((DefaultTreeModel)jTree.getModel()).reload(selectedNode);
-           }
+				// Create a new DefaultMutableTreeNode gui node -
+				DefaultMutableTreeNode newGUINode = new DefaultMutableTreeNode();
+				newGUINode.setUserObject(newNode);
 
-           
-           
-        }
-        catch (Exception error)
-        {
-            error.printStackTrace();
-            System.out.println("ERROR in LocalXMLTreeAction: "+error.toString());
-        }
-    }
+				// Ok - update the tree model -
+				DefaultTreeModel model = (DefaultTreeModel)jTree.getModel();
+				model.insertNodeInto(newGUINode, selectedNode, selectedNode.getChildCount());
 
+				// Make the new node visible -
+				jTree.scrollPathToVisible(new TreePath(newGUINode.getPath()));
+
+				//((DefaultTreeModel)jTree.getModel()).reload(selectedNode);
+			}           
+		}
+		catch (Exception error)
+		{
+			error.printStackTrace();
+			System.out.println("ERROR in LocalXMLTreeAction: "+error.toString());
+		}
+	}
 }
