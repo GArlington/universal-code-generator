@@ -24,12 +24,18 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathFactory;
+
 import org.varnerlab.universaleditor.gui.ModelCodeGeneratorFileEditor;
 import org.varnerlab.universaleditor.domain.*;
 import org.varnerlab.universaleditor.gui.parser.*;
 import org.varnerlab.universaleditor.gui.*;
-import org.varnerlab.universaleditor.gui.BioChemExpTool;
 import org.varnerlab.universaleditor.gui.widgets.VLTreeNode;
+import org.varnerlab.universaleditor.service.VLIconManagerService;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 
 
 /**
@@ -41,6 +47,8 @@ public class AddNewStimulusNodeAction implements ActionListener {
     // class/instance attributes
     Component focusedComponent = null;
     KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+    private XPathFactory  _xpFactory = XPathFactory.newInstance();
+	private XPath _xpath = _xpFactory.newXPath();
 
     public void actionPerformed(ActionEvent e) {
        // Ok, so when I get here - I'm trying to load a properties file from disk -
@@ -50,10 +58,10 @@ public class AddNewStimulusNodeAction implements ActionListener {
         // First, you'll need to load the file chooser - hey by the way, I'm Rick Jamessss Bit*h!
         try {
            // Get the currently focused component -
-           focusedComponent = manager.getFocusOwner();
-           BioChemExpTool windowFrame = (BioChemExpTool)focusedComponent.getFocusCycleRootAncestor();
+           BioChemExpTool windowFrame = (BioChemExpTool)(Launcher.getInstance()).getBioChemExpToolRef();
 
-           // ok, so now I need to add a node -
+           // ok, so now I need to add a node - grab the session =
+           UEditorSession session = (Launcher.getInstance()).getSession();
 
            // Get the tree and find the current selected node -
            JTree jTree = windowFrame.getTree();
@@ -65,25 +73,31 @@ public class AddNewStimulusNodeAction implements ActionListener {
            VLTreeNode vltnNode = (VLTreeNode)selectedNode.getUserObject();
 
            // Ok, so can I add an Experiment node to this node?
-           String strClassName = (String)vltnNode.getProperty("CLASSNAME");
+           String strClassName = (String)vltnNode.getProperty("KEYNAME");
 
            System.out.println("What is the parent node - "+strClassName);
-           if (strClassName.equalsIgnoreCase("org.varnerlab.universaleditor.domain.BCXExperiment"))
+           if (strClassName.equalsIgnoreCase("EXPERIMENT"))
            {
                 // Ok, if I get here then I have the correct type -
 
                 // I've created a new user node ....
                 VLTreeNode newNode = new VLTreeNode();
-                newNode.setProperty("DISPLAY_LABEL","Stimuls");
-                newNode.setProperty("CLASSNAME", "org.varnerlab.universaleditor.domain.BCXStimulus");
-                newNode.setProperty("CLOSED_ICON", VLImageLoader.getPNGImageIcon("Signal-10-Grey.png"));
-                newNode.setProperty("OPENED_ICON", VLImageLoader.getPNGImageIcon("Signal-10.png"));
-
+                newNode.setProperty("CLOSED_ICON", VLIconManagerService.getIcon("PURPLE-12-GREY-ICON"));
+                newNode.setProperty("OPENED_ICON", VLIconManagerService.getIcon("PURPLE-12-ICON"));
+                newNode.setProperty("KEYNAME","stimulus");
+                
+                // I need to create the xmlNode -
+                String strXPStimulus = "//stimulus";
+                Document bcxTmpDoc = (Document)session.getProperty("BCX_TEMPLATE_TREE");
+                Node tmpNode = (Node)_xpath.evaluate(strXPStimulus, bcxTmpDoc, XPathConstants.NODE);
+                
+                // Clone the node -
+                newNode.setProperty("XML_TREE_NODE", tmpNode.cloneNode(true));
+                
                 // Create a new DefaultMutableTreeNode gui node -
                 DefaultMutableTreeNode newGUINode = new DefaultMutableTreeNode();
                 newGUINode.setUserObject(newNode);
              
-
                 // Ok - update the tree model -
                 DefaultTreeModel model = (DefaultTreeModel)jTree.getModel();
                 model.insertNodeInto(newGUINode, selectedNode, selectedNode.getChildCount());
@@ -92,10 +106,7 @@ public class AddNewStimulusNodeAction implements ActionListener {
                 jTree.scrollPathToVisible(new TreePath(newGUINode.getPath()));
 
                 //((DefaultTreeModel)jTree.getModel()).reload(selectedNode);
-           }
-
-           
-           
+           }           
         }
         catch (Exception error)
         {

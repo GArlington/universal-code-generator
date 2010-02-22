@@ -66,7 +66,7 @@ public class CreateNewXMLTreeAction implements ActionListener {
            rootNode.setProperty("OPENED_ICON", VLImageLoader.getPNGImageIcon("JarBundler-10.png"));
 
            // Ok, when I get here I have a reference to the rootNode - hand this to BioChemExpTool -
-           windowFrame.setRootNode(rootNode);
+           //windowFrame.setRootNode(rootNode);
         }
         catch (Exception error)
         {

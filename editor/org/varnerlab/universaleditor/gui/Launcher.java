@@ -42,6 +42,7 @@ public class Launcher extends JFrame implements IVLPublishClient, IVLSystemwideE
     private ModelCodeGeneratorFileEditor _modelCodeGeneratorFileEditor = null;
     private NetworkEditorTool _networkEditorTool = null;
     private FileTransferTool _fileTransferTool = null;
+    private BioChemExpTool _bcxTool = null;
     
     // Session object -
     private UEditorSession _sessionObj = null;
@@ -81,6 +82,23 @@ public class Launcher extends JFrame implements IVLPublishClient, IVLSystemwideE
     	}
     	
     	return(_modelCodeGeneratorFileEditor);
+    }
+    
+    
+    
+    public void setBioChemExpTool(BioChemExpTool ref)
+    {
+    	_bcxTool = ref;
+    }
+      
+    public BioChemExpTool getBioChemExpToolRef()
+    {
+    	if (_bcxTool==null)
+    	{
+    		_bcxTool = BioChemExpTool.getInstance();
+    	}
+    	
+    	return(_bcxTool);
     }
     
     public void setNetworkFileEditor(NetworkEditorTool ref)

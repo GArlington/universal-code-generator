@@ -44,7 +44,7 @@ import org.w3c.dom.Node;
  *
  * @author jeffreyvarner
  */
-public class AddValueNodeAction implements ActionListener {
+public class AddDataColumnNodeAction implements ActionListener {
 
 	// class/instance attributes
 	Component focusedComponent = null;
@@ -80,7 +80,7 @@ public class AddValueNodeAction implements ActionListener {
 			String strClassName = (String)vltnNode.getProperty("KEYNAME");
 
 			System.out.println("What is the parent node - "+strClassName);
-			if (strClassName.equalsIgnoreCase("EXPERIMENT"))
+			if (strClassName.equalsIgnoreCase("measurement_file"))
 			{
 				// Ok, if I get here then I have the correct type -
 
@@ -88,10 +88,10 @@ public class AddValueNodeAction implements ActionListener {
 				VLTreeNode newNode = new VLTreeNode();
 				newNode.setProperty("CLOSED_ICON", VLIconManagerService.getIcon("EVALUE-12-GREY-ICON"));
 				newNode.setProperty("OPENED_ICON", VLIconManagerService.getIcon("EVALUE-12-ICON"));
-				newNode.setProperty("KEYNAME","data_point");
+				newNode.setProperty("KEYNAME","data_column");
 
 				// I need to create the xmlNode -
-				String strXPStimulus = "//data_point";
+				String strXPStimulus = "//data_column";
 				Document bcxTmpDoc = (Document)session.getProperty("BCX_TEMPLATE_TREE");
 				Node tmpNode = (Node)_xpath.evaluate(strXPStimulus, bcxTmpDoc, XPathConstants.NODE);
 

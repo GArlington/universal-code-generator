@@ -32,8 +32,7 @@ public class OpenConsoleAction implements ActionListener {
         
        // Set the frameIcon
        _tool.setFrameIcon(VLIconManagerService.getIcon("INFO-32-GREY"));
-        
-        
+             
         // Ok, we need to store the icons on the tool so I can switch w/out loading -
         _tool.setOffIcon(VLIconManagerService.getIcon("INFO-32-GREY"));
         _tool.setOnIcon(VLIconManagerService.getIcon("INFO-32"));
