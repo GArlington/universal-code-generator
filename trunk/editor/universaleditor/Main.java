@@ -257,6 +257,9 @@ public class Main {
     	Node editorNode = (Node)_xpath.evaluate(strXPArchitectureEditor, doc, XPathConstants.NODE);
     	session.setProperty("EDITOR",editorNode.getNodeValue());
     	
+    	String strXPArchitectureGraph = "//architecture/property/@graphviz_installed";
+    	Node graphvizNode = (Node)_xpath.evaluate(strXPArchitectureGraph, doc, XPathConstants.NODE);
+    	session.setProperty("GRAPHVIZ_INSTALLED",graphvizNode.getNodeValue());
     	
     	// Paths -
     	String strXPPaths = "//universal_paths/property";

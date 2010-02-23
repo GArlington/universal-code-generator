@@ -142,6 +142,7 @@ public class VLJTable extends JTable implements IVLSystemwideEventListener
      
   }
 
+   
   public DefaultCellEditor getNominalTableCellEdititor(int row,int col)
   {
       return (DefaultCellEditor) super.getCellEditor(row,col);
