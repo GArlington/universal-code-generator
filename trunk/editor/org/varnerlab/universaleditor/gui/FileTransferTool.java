@@ -250,7 +250,7 @@ public class FileTransferTool extends javax.swing.JInternalFrame implements Acti
 		// Get the parents of my home directory (lookup in prop tree -or- user current dir) -
 		String strDefaultProjectDir = (String)_session.getProperty("DEFAULT_PROJECT_DIR");
 		File userHome = null;
-		if (!strDefaultProjectDir.isEmpty())
+		if (!strDefaultProjectDir.isEmpty() || strDefaultProjectDir!=null)
 		{
 			userHome = new File(strDefaultProjectDir);
 		}
