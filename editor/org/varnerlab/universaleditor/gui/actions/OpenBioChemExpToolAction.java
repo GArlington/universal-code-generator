@@ -50,6 +50,7 @@ public class OpenBioChemExpToolAction implements ActionListener {
 		
 		// Add the tool to the workspace -
 		_tool.setVisible(true);
+		_main.getContentPane().remove(_tool);
 		_main.getContentPane().add(_tool);
 		
 		// need to check if the console windo is up - if so I need to add -

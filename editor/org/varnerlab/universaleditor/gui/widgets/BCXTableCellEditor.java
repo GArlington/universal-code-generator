@@ -83,11 +83,21 @@ public class BCXTableCellEditor implements IVLTableCellEditor {
 			DefaultCellEditor ed = new DefaultCellEditor(comboBox);
 			return(ed);
 		}
-		else if (current_row.equalsIgnoreCase("steady_state"))
+		else if (current_row.equalsIgnoreCase("steady_state") || current_row.equalsIgnoreCase("exact_name"))
 		{
 			// Add true/false to the drop down -
 			comboBox.addItem("TRUE");
 			comboBox.addItem("FALSE");
+
+			// Wrap and return -
+			DefaultCellEditor ed = new DefaultCellEditor(comboBox);
+			return(ed);
+		}
+		else if (current_row.equalsIgnoreCase("basis"))
+		{
+			// Add true/false to the drop down -
+			comboBox.addItem("ABSOLUTE");
+			comboBox.addItem("FRACTION");
 
 			// Wrap and return -
 			DefaultCellEditor ed = new DefaultCellEditor(comboBox);

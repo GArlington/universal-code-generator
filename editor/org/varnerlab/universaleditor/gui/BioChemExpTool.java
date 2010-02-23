@@ -14,6 +14,8 @@ package org.varnerlab.universaleditor.gui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.varnerlab.universaleditor.gui.widgets.*;
@@ -24,12 +26,18 @@ import java.io.*;
 
 
 import javax.swing.ImageIcon;
+import javax.swing.border.LineBorder;
 import javax.swing.event.*;
 import javax.swing.table.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Enumeration;
+
+import javax.swing.Box;
 import javax.swing.ButtonGroup;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JPanel;
 import javax.swing.JTree;
 import javax.swing.TransferHandler;
 import javax.swing.tree.*;
@@ -70,6 +78,10 @@ public class BioChemExpTool extends javax.swing.JInternalFrame implements TableM
 	private BCXJTreePropertiesTableModel _tableModel = new BCXJTreePropertiesTableModel();
 	private DefaultMutableTreeNode _guiRoot = null;
 	private VLDialogGlassPane _glassPane = null;
+	
+	// Objects for the dialog -
+	private JComponent sheet;
+	private JPanel glass;
 
 	private UEditorSession _session = null;
 	private ButtonGroup buttonGrp = null;
@@ -110,6 +122,11 @@ public class BioChemExpTool extends javax.swing.JInternalFrame implements TableM
 		
 		// Ok, so now we the doc, try to create a tree -
 		setRootNode(doc);
+		
+		// Fire up the save as and load buttons -
+		jButton1.setEnabled(true);
+		jButton2.setEnabled(true);
+		jButton3.setEnabled(true);
 	}
 
 	/** Creates new form BioChemExpTool */
@@ -119,7 +136,7 @@ public class BioChemExpTool extends javax.swing.JInternalFrame implements TableM
 
 		// setup the list of containers -
 		// These are container labels - 
-		aList.add("BCXModel");
+		aList.add("Model");
 		aList.add("server_options");
 		aList.add("listOfExperiments");
 		aList.add("experiment");
@@ -291,7 +308,15 @@ public class BioChemExpTool extends javax.swing.JInternalFrame implements TableM
 		jButton3.setEnabled(false);
 		jButton3.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				createNewXMLTree(evt);
+				
+				try {
+					clearTree();
+					loadDefaultTree();
+				}
+				catch (Exception error)
+				{
+					error.printStackTrace();
+				}
 			}
 		});
 		
@@ -419,11 +444,17 @@ public class BioChemExpTool extends javax.swing.JInternalFrame implements TableM
 		jButton8.setRolloverIcon(new javax.swing.ImageIcon("./images/ShoppingCart-18.png")); // NOI18N
 		jButton8.setBorderPainted(false);
 		jButton8.setDoubleBuffered(true);
+		jButton8.setEnabled(false);
 		jButton8.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
 		jButton8.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
 		jButton8.setMargin(new java.awt.Insets(0, 0, 0, 0));
 		jButton8.setPreferredSize(new java.awt.Dimension(148, 79));
 		jButton8.setRolloverEnabled(true);
+		jButton8.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				quickSaveBCXFile(evt);
+			}
+		});
 
 		org.jdesktop.layout.GroupLayout jPanel3Layout = new org.jdesktop.layout.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -488,15 +519,31 @@ public class BioChemExpTool extends javax.swing.JInternalFrame implements TableM
         pack();
 	}// </editor-fold>//GEN-END:initComponents
 
+	private void quickSaveBCXFile(ActionEvent evt) {
+		// Create a new action instance -
+		DirectSaveBCXFileAction saveBCXFile = new DirectSaveBCXFileAction();
+
+		// Ok, so I need to get the file has been selected -
+		File selectedFile = (File)_session.getProperty("LOCAL_SELECTED_FILE");
+		evt.setSource(selectedFile);
+		saveBCXFile.actionPerformed(evt);
+	}
+
+
 	private void addDataFileReferenceNode(ActionEvent evt) {	
 		AddDataColumnNodeAction action = new AddDataColumnNodeAction();
 		action.actionPerformed(evt);
 	}
 
 
+	public void enableQuickSaveButton()
+	{
+		jButton8.setEnabled(true);
+	}
+	
 	private void loadXMLTree(java.awt.event.ActionEvent evt) 
 	{//GEN-FIRST:event_loadXMLTree
-		LoadXMLTreeAction xmlLoader = new LoadXMLTreeAction();
+		LoadBCXFileTreeAction xmlLoader = new LoadBCXFileTreeAction();
 		xmlLoader.actionPerformed(evt);
 	}//GEN-LAST:event_loadXMLTree
 
@@ -527,7 +574,7 @@ public class BioChemExpTool extends javax.swing.JInternalFrame implements TableM
 
 	private void saveXMLFileToDisk(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveXMLFileToDisk
 
-		SaveXMLFileAction saveFile = new SaveXMLFileAction();
+		SaveBCXFileAction saveFile = new SaveBCXFileAction();
 		saveFile.actionPerformed(evt);
 
 	}//GEN-LAST:event_saveXMLFileToDisk
@@ -673,7 +720,7 @@ public class BioChemExpTool extends javax.swing.JInternalFrame implements TableM
 		Node rootNode = null;
 
 		// Get the root node and its attributes -
-		String expression = "/BCXModel";
+		String expression = "/Model";
 
 		// Grab the root node -
 		rootNode = (Node)_xpath.evaluate(expression, doc, XPathConstants.NODE);
@@ -804,6 +851,41 @@ public class BioChemExpTool extends javax.swing.JInternalFrame implements TableM
 			// if I get here i havea comment -
 			return(null);
 		}
+	}
+	
+	public JComponent showJDialogAsSheet (JDialog dialog) {
+
+		// need to cjeck to see if I have already addded something to the glass pane -
+		if (getGlassPane() instanceof InfiniteProgressPanel)
+		{
+			glass = new JPanel();
+			glass.setOpaque(false);
+			setGlassPane(glass);
+		}
+
+
+		glass = (JPanel)this.getGlassPane();
+
+		sheet = (JComponent) dialog.getContentPane();
+		sheet.setOpaque(false);
+		sheet.setBackground (new Color(0,0,0,225));
+
+		glass.setLayout (new GridBagLayout());
+		sheet.setBorder (new LineBorder(Color.GRAY, 1));
+
+		glass.removeAll();
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.anchor = GridBagConstraints.NORTH;
+		glass.add (sheet, gbc);
+		gbc.gridy=1;
+		gbc.weighty = Integer.MAX_VALUE;
+		glass.add (Box.createGlue(), gbc);
+		glass.setVisible(true);
+		return sheet;
+	}
+
+	public void hideSheet() {
+		glass.setVisible(false);
 	}
 
 }
