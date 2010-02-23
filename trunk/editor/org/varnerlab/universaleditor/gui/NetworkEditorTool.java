@@ -690,7 +690,10 @@ public class NetworkEditorTool extends javax.swing.JInternalFrame implements Tab
 	}
 
 	public void hideSheet() {
-		glass.setVisible(false);
+		if (glass!=null)
+		{
+			glass.setVisible(false);
+		}
 	}
 
 	private void loadNetworkFile(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadNetworkFile
