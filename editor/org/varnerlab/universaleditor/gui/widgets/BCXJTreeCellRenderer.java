@@ -74,7 +74,7 @@ public class BCXJTreeCellRenderer extends DefaultTreeCellRenderer {
 		        }
 	        	
 	        }
-	        if (strName.equalsIgnoreCase("data_point"))
+	        else if (strName.equalsIgnoreCase("data_point"))
 	        {
 	        	// Get the node -
 	        	Node xmlNode = (Node)vltnTreeNode.getProperty("XML_TREE_NODE");
@@ -94,7 +94,7 @@ public class BCXJTreeCellRenderer extends DefaultTreeCellRenderer {
 		        }
 	        	
 	        }
-	        if (strName.equalsIgnoreCase("measurement_file"))
+	        else if (strName.equalsIgnoreCase("measurement_file"))
 	        {
 	        	// Get the node -
 	        	Node xmlNode = (Node)vltnTreeNode.getProperty("XML_TREE_NODE");
@@ -114,7 +114,7 @@ public class BCXJTreeCellRenderer extends DefaultTreeCellRenderer {
 		        }
 	        	
 	        }
-	        if (strName.equalsIgnoreCase("data_column"))
+	        else if (strName.equalsIgnoreCase("data_column"))
 	        {
 	        	// Get the node -
 	        	Node xmlNode = (Node)vltnTreeNode.getProperty("XML_TREE_NODE");
@@ -134,7 +134,7 @@ public class BCXJTreeCellRenderer extends DefaultTreeCellRenderer {
 		        }
 	        	
 	        }
-	        if (strName.equalsIgnoreCase("stimulus"))
+	        else if (strName.equalsIgnoreCase("stimulus"))
 	        {
 	        	// Get the node -
 	        	Node xmlNode = (Node)vltnTreeNode.getProperty("XML_TREE_NODE");

@@ -123,6 +123,7 @@ public class BioChemExpTool extends javax.swing.JInternalFrame implements TableM
 		aList.add("server_options");
 		aList.add("listOfExperiments");
 		aList.add("experiment");
+		aList.add("measurement_file");
 
 		// iterate window count
 		++openFrameCount;
@@ -167,6 +168,7 @@ public class BioChemExpTool extends javax.swing.JInternalFrame implements TableM
 		// Register the TableCellEditor -
 		_tblCellEditor = (IVLTableCellEditor) new BCXTableCellEditor();
 		_propTable.setVLTableCellEditor(_tblCellEditor);
+		_propTable.setRowHeight(20);
 
 		// Set some properties on the text label -
 		jTextField1.putClientProperty("JTextField.variant", "search");
@@ -615,18 +617,18 @@ public class BioChemExpTool extends javax.swing.JInternalFrame implements TableM
 
 					// Compare with the currently selected key -
 					String tmpKeyName = key.toString();
+					System.out.println("UPDATE key = "+key+" VALUE="+tmp);    
 					if (tmpKeyName.equalsIgnoreCase(strArrtributeName))
 					{
 						// Ok, if I'm here then I have a match -- update the xml node and break out of the loop-
-						attributeNode.setNodeValue(tmp);
-						System.out.println("UPDATE key = "+key+" VALUE="+tmp);                		
+						attributeNode.setNodeValue(tmp);						            		
 						break;
 					}
 				}
 
 
 				// Let's overright the old node -
-				//selectedNode.setUserObject(vltnNode);
+				selectedNode.setUserObject(vltnNode);
 				DefaultTreeModel treeModel = (DefaultTreeModel)jtreeXMLTree.getModel();
 				treeModel.nodeChanged(selectedNode); 
 			}

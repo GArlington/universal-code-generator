@@ -108,7 +108,7 @@ public class NetworkEditorTool extends javax.swing.JInternalFrame implements Tab
 	private static final int xOffset=50;
 	private static final int yOffset=50;
 	private UEditorSession _session = (Launcher.getInstance()).getSession();
-
+	
 	// Objects for the dialog -
 	private JComponent sheet;
 	private JPanel glass;
@@ -237,6 +237,25 @@ public class NetworkEditorTool extends javax.swing.JInternalFrame implements Tab
 			if (rootNode!=null)
 			{
 				this._vlRootTreeNode = rootNode;
+				
+				// Get the correct prefix -
+				int INT_2_COLON = expression.indexOf(":");
+				String prefix = expression.substring(1,INT_2_COLON);
+				
+				// Get the list of species -
+				String strXPSpecies = "//"+prefix+":listOfSpecies/"+prefix+":species/@id";
+				NodeList speciesList = (NodeList)_xpath.evaluate(strXPSpecies,rootNode,XPathConstants.NODESET);
+				int SIZE = speciesList.getLength();
+				for (int sindex=0;sindex<SIZE;sindex++)
+				{
+					Node tmpNode = speciesList.item(sindex);
+					_vecSpecies.addElement(tmpNode.getNodeValue());
+				}
+				
+				// put the list of species in session -
+				_session.setProperty("LIST_OF_SPECIES", _vecSpecies.clone());
+				
+				// build the tree -
 				_guiRoot = populateJTree(_vlRootTreeNode);
 
 				// add to the tree -

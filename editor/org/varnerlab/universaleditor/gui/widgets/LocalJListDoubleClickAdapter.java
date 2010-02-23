@@ -121,7 +121,7 @@ public class LocalJListDoubleClickAdapter extends MouseAdapter {
 						
 						// Ok, we need to get the name of the editor from the preference tree -
 						String strGraphviz = (String)session.getProperty("GRAPHVIZ_INSTALLED");
-						if (strGraphviz.equalsIgnoreCase("true"))
+						if (strGraphviz!=null && strGraphviz.equalsIgnoreCase("true"))
 						{
 							final String strCommand = "open -a GraphViz "+strFilePath;
 							SwingUtilities.invokeLater(new Runnable() {

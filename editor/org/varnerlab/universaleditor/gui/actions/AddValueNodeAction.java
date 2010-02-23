@@ -88,6 +88,7 @@ public class AddValueNodeAction implements ActionListener {
 				VLTreeNode newNode = new VLTreeNode();
 				newNode.setProperty("CLOSED_ICON", VLIconManagerService.getIcon("EVALUE-12-GREY-ICON"));
 				newNode.setProperty("OPENED_ICON", VLIconManagerService.getIcon("EVALUE-12-ICON"));
+				newNode.setProperty("EDITABLE", "true");
 				newNode.setProperty("KEYNAME","data_point");
 
 				// I need to create the xmlNode -
