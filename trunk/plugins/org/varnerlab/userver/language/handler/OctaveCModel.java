@@ -83,7 +83,7 @@ public class OctaveCModel {
         }
         buffer.append("\n");
         
-        /*
+        buffer.append("\t// List of the parameters -- \n");
         // connect the parameter names to incoming parameter vector from datafile
         ListOf parameter_list_tmp = model_wrapper.getListOfParameters();
         long NUMBER_OF_PARAMETERS = model_wrapper.getNumParameters();
@@ -96,10 +96,9 @@ public class OctaveCModel {
             buffer.append("kV(");
             buffer.append(scounter);
             buffer.append(",0);\n");
-        }*/
+        }
                 
-        // buffer.append("\n");
-        
+        buffer.append("\n");
         buffer.append("\t// List of the rates -- \n");
         
         // Ok, so I need to see if the rates have kinietc laws, if so use those. Otherwise
@@ -139,9 +138,8 @@ public class OctaveCModel {
                 ListOf reactant_list = rxn_obj.getListOfReactants();
                   
                 // Ok, so if this rate is 
-                buffer.append("kV(");
+                buffer.append("k_");
                 buffer.append(rcounter);
-                buffer.append(",0)");
                 buffer.append("*");
                 
                 // Get the number of modifiers -
@@ -526,7 +524,7 @@ public class OctaveCModel {
             for (int state_counter_inner=0;state_counter_inner<NROWS;state_counter_inner++)
             {
                 // put jacobian logic here -
-                strJacobian[state_counter_outer][state_counter_inner]=formulateJacobianElement(matrix,state_counter_outer,state_counter_inner);
+                strJacobian[state_counter_outer][state_counter_inner]=formulateJacobianElement(matrix,state_counter_outer,state_counter_inner,vecReactions);
             }
         }
         
@@ -590,7 +588,7 @@ public class OctaveCModel {
         {
             for (int counter_inner=0;counter_inner<NCOLS;counter_inner++)
             {
-                strPMatrix[counter_outer][counter_inner]=formulatePMatrixElement(matrix,counter_outer,counter_inner);
+                strPMatrix[counter_outer][counter_inner]=formulatePMatrixElement(matrix,counter_outer,counter_inner,vecReactions);
             }
         }
         
@@ -628,14 +626,14 @@ public class OctaveCModel {
     }
     
     
-    private String formulatePMatrixElement(double[][] matrix,int massbalance,int parameter)
+    private String formulatePMatrixElement(double[][] matrix,int massbalance,int parameter,Vector vecReactions)
     {
         StringBuffer buffer = new StringBuffer();
         String rString = "0.0";
         
         // Get the size of the system -
         int NROWS = (int)model_wrapper.getNumSpecies();
-        int NCOLS = (int)model_wrapper.getNumReactions();
+        int NCOLS = (int)vecReactions.size();
 
         double dblStmElement = matrix[massbalance][parameter];
         if (dblStmElement!=0.0)
@@ -689,14 +687,14 @@ public class OctaveCModel {
     
     
     // This logic will need to be overriden -
-    private String formulateJacobianElement(double[][] matrix,int massbalance,int state)
+    private String formulateJacobianElement(double[][] matrix,int massbalance,int state,Vector vecReactions)
     {
         StringBuffer buffer = new StringBuffer();
         String rString = "";
                 
         // Get the dimension of the system -
         int NROWS = (int)model_wrapper.getNumSpecies();
-        int NCOLS = (int)model_wrapper.getNumReactions();
+        int NCOLS = (int)vecReactions.size();
 
         Vector<String> vecRates = new Vector<String>(); 
         for (int counter=0;counter<NCOLS;counter++)
