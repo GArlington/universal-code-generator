@@ -31,6 +31,7 @@ import javax.swing.event.*;
 import javax.swing.table.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Enumeration;
 
 import javax.swing.Box;
@@ -707,7 +708,73 @@ public class BioChemExpTool extends javax.swing.JInternalFrame implements TableM
 	}
 
 	public void updateSession() {
+		// Get a new session - 
 		_session = (Launcher.getInstance()).getSession();
+		
+		// Set the working dir, etc from session
+		this.updateUserObjectTree();
+	}
+	
+	private void updateUserObjectTree()
+	{
+		// Ok, we need to get the username and current session ID -
+		String strUserName = (String)_session.getProperty("VALIDATED_USERNAME");
+		String strSessionID = (String)_session.getProperty("SESSION_ID");
+		String strRemotePath = (String)_session.getProperty("SELECTED_REMOTE_PATH");
+
+		Date objDate = new Date();
+		String strObjDate = objDate.toString();
+		
+		// Ok, if we have both of these mofo's I can create a working DIR -
+		if (strUserName!=null && strRemotePath!=null)
+		{
+			// If I get here then I can set the working dir -
+
+			// Get the tree model -
+			if (jtreeXMLTree!=null)
+			{
+				DefaultTreeModel mod = (DefaultTreeModel) jtreeXMLTree.getModel();
+				DefaultMutableTreeNode root = (DefaultMutableTreeNode)mod.getRoot();
+				int NUMBER_OF_KIDS = root.getChildCount();
+				for (int kid_index=0;kid_index<NUMBER_OF_KIDS;kid_index++)
+				{
+					// Get the kid and his user obj -
+					DefaultMutableTreeNode kid = (DefaultMutableTreeNode) root.getChildAt(kid_index);
+					VLTreeNode userObj = (VLTreeNode)kid.getUserObject();
+					
+					// Get the keyname -
+					String keyName = (String)userObj.getProperty("KEYNAME");
+
+					System.out.println("Checking keyName - "+keyName);
+
+					// Ok - look for the options node -
+					if (keyName.equalsIgnoreCase("SERVER_OPTIONS"))
+					{
+						// Ok, so I have the server_options tag - get its child and spank it ... ooooh yea you know what I'm talkin about..tired
+						DefaultMutableTreeNode optionsSwingNode = (DefaultMutableTreeNode)kid.getChildAt(0);
+						VLTreeNode userObjOptions = (VLTreeNode)optionsSwingNode.getUserObject();
+						
+						// Get the underlying xmlNode and set the data -
+						Node xmlNode = (Node)userObjOptions.getProperty("XML_TREE_NODE");
+						
+						// Ok, so now I have the corresponding tree node - set some data
+						// Username
+						Node userName = xmlNode.getAttributes().getNamedItem("username");
+						userName.setNodeValue(strUserName);
+						
+						// Working dir -
+						Node workingDir = xmlNode.getAttributes().getNamedItem("working_dir");
+						workingDir.setNodeValue(strRemotePath);
+						
+						// Date updated -
+						Node lastUpdated = xmlNode.getAttributes().getNamedItem("last_updated");
+						lastUpdated.setNodeValue(strObjDate);
+						
+						break;
+					}
+				}
+			}
+		}
 	}
 
 	public void updateNetwork() {

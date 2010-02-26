@@ -192,9 +192,11 @@ public class Main {
     	dBuilder = dbFactory.newDocumentBuilder();
   	  	Document template_doc = dBuilder.parse(configFile);
   	  	template_doc.getDocumentElement().normalize();	
-        
+          	  	
   	  	// Ok, so now let's cach the DOM tree so I can use it later -
   	  	session.setProperty("TEMPLATE_DOM_TREE", template_doc);
+  	  	
+  	  	
   	  	
   	  	/*
   	  	// Ok, so now we need to load the templates that we can do -

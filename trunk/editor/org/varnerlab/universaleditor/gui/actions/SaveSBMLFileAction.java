@@ -68,10 +68,23 @@ public class SaveSBMLFileAction implements ActionListener {
            // Get the currently focused component -
            focusedComponent = manager.getFocusOwner();
            NetworkEditorTool windowFrame = (NetworkEditorTool)focusedComponent.getFocusCycleRootAncestor();
+           UEditorSession session = (Launcher.getInstance()).getSession();
 
            // Open new file chooser
            JFileChooser fc=new JFileChooser();
-           int rVal=fc.showSaveDialog(focusedComponent);
+           
+           String strLocalSelectPath = (String)session.getProperty("LOCAL_SELECTED_PATH");
+           if (strLocalSelectPath!=null && !strLocalSelectPath.isEmpty())
+           {
+        	   fc.setCurrentDirectory(new File(strLocalSelectPath));
+           }
+           else
+           {
+        	   fc.setCurrentDirectory(new File(Launcher._CURRENT));
+           }
+           
+           // Open up the dialog on the sbml window -
+           int rVal=fc.showSaveDialog(windowFrame);
 
            System.out.println("Hey now -");
 
@@ -107,9 +120,11 @@ public class SaveSBMLFileAction implements ActionListener {
                
                // Dump to disk -
                File file=fc.getSelectedFile();
-               String tmp = file.getPath();
-               //System.out.println("File path -"+tmp);
-               VLIOLib.write(file.getPath(),strFour);
+  
+               if (file!=null)
+               {
+            	   VLIOLib.write(file.getPath(),strFour);
+               }
 
            }
         }

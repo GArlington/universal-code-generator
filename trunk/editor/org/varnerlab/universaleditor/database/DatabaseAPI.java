@@ -142,8 +142,8 @@ public class DatabaseAPI {
 			strTmp = rs.getString("userid");
 		}
 
-		System.out.println("QUERY - "+buffer.toString());
-		System.out.println("UserID = "+strTmp);
+		//System.out.println("QUERY - "+buffer.toString());
+		//System.out.println("UserID = "+strTmp);
 
 
 		// Return to caller -
@@ -294,7 +294,7 @@ public class DatabaseAPI {
 			tmpString = rs.getString("password");
 		}
 
-		System.out.println("strPassword = "+strPassword+" db returned - "+tmpString);
+		//System.out.println("strPassword = "+strPassword+" db returned - "+tmpString);
 
 		// Do a comparison -
 		if (strPassword.equalsIgnoreCase(tmpString))
