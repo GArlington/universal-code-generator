@@ -52,6 +52,9 @@ public class BioChemExpToolFocusListener implements InternalFrameListener {
         // Set the on-icon -
         intFrame.setFrameIcon(icon);
 
+        // update the session -
+        intFrame.updateSession();
+        
         // Repaint it -
         intFrame.repaint();
     }

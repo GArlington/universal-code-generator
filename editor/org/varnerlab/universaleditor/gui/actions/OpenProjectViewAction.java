@@ -77,9 +77,9 @@ public class OpenProjectViewAction implements ActionListener {
 		
 		
 		String strTitleName = "";
-		if (strUserName!=null && strUserName.isEmpty())
+		if (strUserName!=null && !strUserName.isEmpty())
 		{
-			strTitleName = "Universal project tool v1.0 ["+strUserName+" is logged in]";
+			strTitleName = "Universal project tool v1.0 [user:"+strUserName+" is logged in]";
 		}
 		else
 		{
@@ -92,11 +92,11 @@ public class OpenProjectViewAction implements ActionListener {
 		_tool.launchProjectTool();
 
 		// Add the tool to the workspace -
+		_main.getContentPane().remove(_tool);
 		_main.getContentPane().add(_tool);
 		//_main.setConsoleWindow(_tool);
 
 		// Shutdown the spinning -
-		WaitThread.manySec(1);
 		glassPane.stop();
 		
 		// Make the tool visible -

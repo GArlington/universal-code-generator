@@ -76,8 +76,19 @@ public class SaveXMLPropFileAction implements ActionListener {
            
            // Need to get the selected component from the prop tool window (local selected item in the combo box) -
            //File selectedFile = windowFrame.getLocalSelectedItem();
-           fc.setCurrentDirectory(new File(Launcher._CURRENT));
-           int rVal=fc.showSaveDialog(focusedComponent);
+           
+           // Ok, so let's try and get the locally selected path from session - if we get it then open the file chooser there. If not, open on current
+           String strLocalSelectPath = (String)_session.getProperty("LOCAL_SELECTED_PATH");
+           if (strLocalSelectPath!=null && !strLocalSelectPath.isEmpty())
+           {
+        	   fc.setCurrentDirectory(new File(strLocalSelectPath));
+           }
+           else
+           {
+        	   fc.setCurrentDirectory(new File(Launcher._CURRENT));
+           }
+           
+           int rVal=fc.showSaveDialog(windowFrame);
 
            //System.out.println("Hey now -");
            
@@ -118,15 +129,19 @@ public class SaveXMLPropFileAction implements ActionListener {
            
            // Dump to disk -
            File file=fc.getSelectedFile();
-           String tmp = file.getPath();
+           if (file!=null)
+           {
            
-           // dump the file to disk -
-           VLIOLib.write(file.getPath(), buffer);
+        	   String tmp = file.getPath();
+           
+        	   // dump the file to disk -
+        	   VLIOLib.write(file.getPath(), buffer);
 
-           // Put the filename in session -
-           UEditorSession session = (Launcher.getInstance()).getSession();
-           session.setProperty("CURRENT_MODEL_PROP_FILENAME",file.getName());
-           SystemwideEventService.fireSessionUpdateEvent();
+        	   // Put the filename in session -
+        	   UEditorSession session = (Launcher.getInstance()).getSession();
+        	   session.setProperty("CURRENT_MODEL_PROP_FILENAME",file.getName());
+        	   SystemwideEventService.fireSessionUpdateEvent();
+           }
         }
         catch (Exception error)
         {

@@ -35,8 +35,8 @@ public class BCXTableCellEditor implements IVLTableCellEditor {
 	{
 		// Create a default cell editor -
 		JComboBox comboBox = new JComboBox();
-		
-		
+
+
 		// Get the table model -
 		AbstractTableModel _tableModel = (AbstractTableModel)table.getModel();
 		String current_row = (String)_tableModel.getValueAt(row, 0);
@@ -48,7 +48,7 @@ public class BCXTableCellEditor implements IVLTableCellEditor {
 		if (current_row.equalsIgnoreCase("SPECIES") && col==1)
 		{
 			Vector<String> _vecSpecies = (Vector)session.getProperty("LIST_OF_SPECIES");
-			
+
 			if (_vecSpecies!=null)
 			{
 				int SIZE = _vecSpecies.size();
@@ -67,6 +67,51 @@ public class BCXTableCellEditor implements IVLTableCellEditor {
 			else
 			{
 				comboBox.addItem("No species are loaded. ");
+			}
+
+			// Wrap and return -
+			DefaultCellEditor ed = new DefaultCellEditor(comboBox);
+			return(ed);
+		}
+		else if (current_row.equalsIgnoreCase("code_output_handler"))
+		{
+			// Get the list of supported output handlers -
+			String strXPathOutputHandler = "//listOfOutputHandlers/handler";
+
+			// Ok, so now let's get the template DOM tree
+			Document doc = (Document)session.getProperty("TEMPLATE_DOM_TREE");
+			try {
+				NodeList tmpList = (NodeList)_xpath.evaluate(strXPathOutputHandler, doc, XPathConstants.NODESET);
+				int N = tmpList.getLength();
+				if (N>0)
+				{
+					for (int index=0;index<N;index++)
+					{
+						Node item = tmpList.item(index);
+						if (item!=null)
+						{
+							String strValue = item.getTextContent();
+							if (strValue!=null && !strValue.isEmpty())
+							{
+								// Add true/false to the drop down -
+								comboBox.addItem(strValue);
+							}
+						}
+						else
+						{
+							comboBox.addItem("No output handlers?");
+						}
+					}
+				}
+				else
+				{
+					comboBox.addItem("No output handlers are registered...");
+				}
+
+			} catch (XPathExpressionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				comboBox.addItem("Error!...Run....");
 			}
 
 			// Wrap and return -

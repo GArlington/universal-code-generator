@@ -249,8 +249,11 @@ public class FileTransferTool extends javax.swing.JInternalFrame implements Acti
 
 		// Get the parents of my home directory (lookup in prop tree -or- user current dir) -
 		String strDefaultProjectDir = (String)_session.getProperty("DEFAULT_PROJECT_DIR");
+		
+		// Try to create the default-file and check to see if it exists?
+		File fileTmp = new File(strDefaultProjectDir);
 		File userHome = null;
-		if (!strDefaultProjectDir.isEmpty() || strDefaultProjectDir!=null)
+		if (!strDefaultProjectDir.isEmpty() && strDefaultProjectDir!=null && fileTmp.exists())
 		{
 			userHome = new File(strDefaultProjectDir);
 		}
@@ -766,8 +769,15 @@ public class FileTransferTool extends javax.swing.JInternalFrame implements Acti
 		// Get the index of the selected item -
 		File file = (File)jList1.getSelectedValue();
 
+		
+		
+		
 		if (file!=null && file.isDirectory())
 		{
+			
+			// Set the local selected path in the session object (need this when I open and close filechooser)
+			_session.setProperty("LOCAL_SELECTED_PATH", file.getAbsolutePath());
+			
 			// Clear out the dir -
 			_vecDir.clear();
 			_listModelJList1.clear();
