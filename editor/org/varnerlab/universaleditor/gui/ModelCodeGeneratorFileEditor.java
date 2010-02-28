@@ -950,7 +950,7 @@ public class ModelCodeGeneratorFileEditor extends javax.swing.JInternalFrame imp
 						xmlNode.setTextContent(strUserName);
 						
 					}
-					else if (keyName.equalsIgnoreCase("DATE_CREATED"))
+					else if (keyName.equalsIgnoreCase("LAST_UPDATED"))
 					{
 						userObj.setProperty(keyName,strObjDate);
 						

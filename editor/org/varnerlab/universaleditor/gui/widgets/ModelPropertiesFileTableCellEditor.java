@@ -130,6 +130,11 @@ public class ModelPropertiesFileTableCellEditor implements IVLTableCellEditor {
     		String type="SUNDIALS";
     		return(XPathCellEditor(row,col,_vecListItems,table,type));
     	}
+    	else if (_strSelectedItem.equalsIgnoreCase("Biochemical experiment specification file (*.xml)"))
+    	{
+    		String type="BCX";
+    		return(XPathCellEditor(row,col,_vecListItems,table,type));
+    	}
     	else
     	{
     		return (table.getNominalTableCellEdititor(row, col));
