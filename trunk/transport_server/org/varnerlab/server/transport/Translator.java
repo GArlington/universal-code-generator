@@ -62,6 +62,8 @@ public class Translator implements IVLProcessServerRequest {
         // On this input handler, we need to excute the load method -
         inputHandler.setProperties(xmlProp);
         outputHandler.setProperties(xmlProp);
+        
+        // load the input files -
         inputHandler.loadResource(null);
         
         // Ok, when I get here I've loaded the model source. I need to create
@@ -69,25 +71,25 @@ public class Translator implements IVLProcessServerRequest {
         
         // Before I call the output handler, I need to get the stuff from the resource 
         // and put it into our wrappers -
-        Model model = (Model)inputHandler.getResource(null);
+        Object model = inputHandler.getResource(null);
         
         // Ok, so we need to some checks on the model -
-        
+            
         // Ok, so we have the ModelContainer - dump it to the output handler
         outputHandler.writeResource(model);
         
         // Ok, last when I get here I'm going to zip the contents if requested -
         
         // Get the info for the zip file -
-        String strUserName = (String)xmlProp.getProperty("//username/text()");
-        String strVersion = (String)xmlProp.getProperty("//version/text()");
-        String strDate = (String)xmlProp.getProperty("//date_created/text()");
-        String strModelName = (String)xmlProp.getProperty("//model_name/text()");
-        String strWorkingDir = (String)xmlProp.getProperty("//working_directory/text()");
+        //String strUserName = (String)xmlProp.getProperty("//username/text()");
+        //String strVersion = (String)xmlProp.getProperty("//version/text()");
+        //String strDate = (String)xmlProp.getProperty("//last_updated/text()");
+        //String strModelName = (String)xmlProp.getProperty("//model_name/text()");
+        //String strWorkingDir = (String)xmlProp.getProperty("//working_directory/text()");
         
         // Create the filename -
-        String strZipName = strWorkingDir+"/"+strModelName+"_"+strUserName+"_"+strDate.replaceAll(" ","_")+"_"+strVersion+".zip";
-        ZipProjectFolder zipFolder = new ZipProjectFolder();
+        //String strZipName = strWorkingDir+"/"+strModelName+"_"+strUserName+"_"+strDate.replaceAll(" ","_")+"_"+strVersion+".zip";
+        //ZipProjectFolder zipFolder = new ZipProjectFolder();
         //zipFolder.zipProjectFolder(strWorkingDir,strZipName);
     }
 
