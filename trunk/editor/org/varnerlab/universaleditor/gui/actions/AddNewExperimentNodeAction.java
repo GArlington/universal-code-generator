@@ -74,14 +74,13 @@ public class AddNewExperimentNodeAction implements ActionListener {
 
 			// Ok, so I need to get the userobject from this mofo and then pull all the properties out -
 			VLTreeNode vltnNode = (VLTreeNode)selectedNode.getUserObject();
+			Node parentXMLNode = (Node)vltnNode.getProperty("XML_TREE_NODE");
 
 			// ok, so now I need to add a node - grab the session =
 			UEditorSession session = (Launcher.getInstance()).getSession();
 
 			// Ok, so can I add an Experiment node to this node?
 			String strClassName = (String)vltnNode.getProperty("KEYNAME");
-
-			System.out.println("What is the parent node - "+strClassName);
 			if (strClassName.equalsIgnoreCase("LISTOFEXPERIMENTS"))
 			{
 				// Ok, if I get here then I have the correct type -
@@ -98,7 +97,9 @@ public class AddNewExperimentNodeAction implements ActionListener {
 				Node tmpNode = (Node)_xpath.evaluate(strXPStimulus, bcxTmpDoc, XPathConstants.NODE);
 
 				// Clone the node -
-				newNode.setProperty("XML_TREE_NODE", tmpNode.cloneNode(true));
+				Node clonedXMLTreeNode = tmpNode.cloneNode(false);
+				parentXMLNode.appendChild(clonedXMLTreeNode);
+				newNode.setProperty("XML_TREE_NODE",clonedXMLTreeNode);
 
 				// Create a new DefaultMutableTreeNode gui node -
 				DefaultMutableTreeNode newGUINode = new DefaultMutableTreeNode();
