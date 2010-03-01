@@ -29,8 +29,8 @@ import org.varnerlab.universaleditor.gui.ModelCodeGeneratorFileEditor;
 import org.varnerlab.universaleditor.domain.*;
 import org.varnerlab.universaleditor.gui.parser.*;
 import org.varnerlab.universaleditor.gui.*;
-import org.varnerlab.universaleditor.gui.BioChemExpTool;
 import org.varnerlab.universaleditor.gui.widgets.VLTreeNode;
+import org.w3c.dom.Node;
 
 
 /**
@@ -66,6 +66,14 @@ public class DeleteTreeNodeAction {
                 DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode)jTree.getLastSelectedPathComponent();
                 MutableTreeNode parent = (MutableTreeNode)(selectedNode.getParent());
 
+                // Process the xml tree connections -
+                // Get the child xml node -
+                VLTreeNode vltnChildNode = (VLTreeNode)selectedNode.getUserObject();
+    			Node kidXMLNode = (Node)vltnChildNode.getProperty("XML_TREE_NODE");  
+    			Node parentXMLNode = kidXMLNode.getParentNode();
+    			parentXMLNode.removeChild(kidXMLNode);
+                
+                // Process the GUI tree -
                 if (parent != null)
                 {
                     treeModel.removeNodeFromParent(selectedNode);
