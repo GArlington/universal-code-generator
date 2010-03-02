@@ -58,7 +58,9 @@ import org.varnerlab.universaleditor.service.SocketService;
 import org.varnerlab.universaleditor.service.SystemwideEventService;
 import org.varnerlab.universaleditor.service.VLIconManagerService;
 import org.varnerlab.universaleditor.domain.UEditorSession;
+import org.varnerlab.universaleditor.gui.actions.DeleteLocalFileKeyListener;
 import org.varnerlab.universaleditor.gui.actions.FileTransferJPopupMenuActionListener;
+import org.varnerlab.universaleditor.gui.actions.FileTransferJPopupMenuDeleteLocalActionListener;
 import org.varnerlab.universaleditor.gui.actions.GetFileFromServerAction;
 import org.varnerlab.universaleditor.gui.actions.LoginToolAction;
 import org.varnerlab.universaleditor.gui.actions.RefreshProjectViewJPopupMenuActionListener;
@@ -105,6 +107,7 @@ public class FileTransferTool extends javax.swing.JInternalFrame implements Acti
 	private FileTransferJPopupMenuActionListener popupMenuListener = null;
 	private FileTransferJPopupMenuMouseAdapter popupMouseAdapter = null;
 	private RefreshProjectViewJPopupMenuActionListener refreshMenuListner = null;
+	private FileTransferJPopupMenuDeleteLocalActionListener deleleLocalFolder = null;
 	private LoginToolAction _loginTool = null;
 
 	private ImageIcon _imgIconOff = null;
@@ -116,6 +119,7 @@ public class FileTransferTool extends javax.swing.JInternalFrame implements Acti
 	private TransferToolFocusListener _focusListener =  new TransferToolFocusListener();
 	private RemoteJListDoubleClickAdapter _doubleClickAdapter = new RemoteJListDoubleClickAdapter();
 	private LocalJListDoubleClickAdapter _localDoubleClickAdapter = new LocalJListDoubleClickAdapter();
+	private DeleteLocalFileKeyListener _deleteLocalFileKey = new DeleteLocalFileKeyListener();
 
 
 	// Create a xpFactory/xpath obj (we'll use this a zillion times -)
@@ -180,10 +184,12 @@ public class FileTransferTool extends javax.swing.JInternalFrame implements Acti
 			popupMenuListener = new FileTransferJPopupMenuActionListener();
 			popupMouseAdapter = new FileTransferJPopupMenuMouseAdapter();
 			refreshMenuListner = new RefreshProjectViewJPopupMenuActionListener();
+			deleleLocalFolder = new FileTransferJPopupMenuDeleteLocalActionListener();
 			_loginTool = new LoginToolAction();
 
 			// Set the reference to the combo box -
 			popupMenuListener.setJComboBoxReference(jComboBox1);
+			deleleLocalFolder.setJComboBoxReference(jComboBox1);
 
 			// Setup the new folder -
 			JMenuItem item = new JMenuItem("New local folder ... ",VLIconManagerService.getIcon("FOLDER-8-ICON"));
@@ -198,6 +204,19 @@ public class FileTransferTool extends javax.swing.JInternalFrame implements Acti
 			popup.add(item_new_project);
 			popup.addSeparator();
 
+			// Setup the new project menu action -
+			JMenuItem delete_local_project = new JMenuItem("Delete local folder ... ",VLIconManagerService.getIcon("DELETE-8-ICON"));
+			delete_local_project.setHorizontalTextPosition(JMenuItem.RIGHT);
+			delete_local_project.addActionListener(deleleLocalFolder);
+			popup.add(delete_local_project);
+			
+			// Setup the new project menu action -
+			JMenuItem delete_remote_project = new JMenuItem("Delete folder on server ... ",VLIconManagerService.getIcon("DRIVE-8-ICON"));
+			delete_remote_project.setHorizontalTextPosition(JMenuItem.RIGHT);
+			delete_remote_project.addActionListener(_loginTool);
+			popup.add(delete_remote_project);
+			popup.addSeparator();			
+			
 			// Add the refresh action if the file transfer gets hosed up -
 			JMenuItem refresh_project_view = new JMenuItem("Refresh project view ... ",VLIconManagerService.getIcon("PROJECT-ICON"));
 			refresh_project_view.setHorizontalTextPosition(JMenuItem.RIGHT);
@@ -209,7 +228,11 @@ public class FileTransferTool extends javax.swing.JInternalFrame implements Acti
 			popupMouseAdapter.setJPopupReference(popup);
 			popupMouseAdapter.setToolReference(this);
 
-			this.addMouseListener(popupMouseAdapter);    
+			this.addMouseListener(popupMouseAdapter); 
+			
+			// rat44 wanted this feature - but it won't work...
+			//jList1.addMouseListener(popupMouseAdapter);
+			
 		}
 		catch (Exception error)
 		{
@@ -303,6 +326,7 @@ public class FileTransferTool extends javax.swing.JInternalFrame implements Acti
 		jComboBox2.setRenderer(remoteRender);
 		jList2.addMouseListener(_doubleClickAdapter);
 		jList1.addMouseListener(_localDoubleClickAdapter);
+		jList1.addKeyListener(_deleteLocalFileKey);
 
 		//jList1.putClientProperty(com.sun.java.swing.SwingUtilities2.AA_TEXT_PROPERTY_KEY,Boolean.TRUE );
 		//jList2.putClientProperty(com.sun.java.swing.SwingUtilities2.AA_TEXT_PROPERTY_KEY,Boolean.TRUE );
@@ -332,6 +356,8 @@ public class FileTransferTool extends javax.swing.JInternalFrame implements Acti
 		// Configure the mouse listener on the jList2 (remote file list)
 		_doubleClickAdapter.setListReference(jList2);
 		_localDoubleClickAdapter.setListReference(jList1);
+		_deleteLocalFileKey.setJListReference(jList1);
+		
 
 		// configure the popup menu -
 		configureJPopupMenu();
@@ -1281,6 +1307,7 @@ public class FileTransferTool extends javax.swing.JInternalFrame implements Acti
 
 	public JComponent showJDialogAsSheet (JDialog dialog) {
 
+		
 		// need to cjeck to see if I have already addded something to the glass pane -
 		if (getGlassPane() instanceof InfiniteProgressPanel)
 		{
