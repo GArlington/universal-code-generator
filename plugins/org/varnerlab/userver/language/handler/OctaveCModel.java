@@ -212,7 +212,7 @@ public class OctaveCModel {
         buffer.append("#include <math.h>\n");
         buffer.append("\n");
         buffer.append("// Function prototypes - \n");
-        buffer.append("void calculateKinetics(int,ColumnVector&,ColumnVector&,ColumnVector&);\n");
+        buffer.append("void calculateKinetics(ColumnVector&,ColumnVector&,ColumnVector&);\n");
         buffer.append("void calculateInputs();\n");
         buffer.append("void calculateMassBalances(int,int,Matrix&,ColumnVector&,ColumnVector&);\n");
         buffer.append("void calculateDSDT(int, int, ColumnVector&,ColumnVector&, ColumnVector&, ColumnVector&, int);\n");
@@ -242,7 +242,7 @@ public class OctaveCModel {
         buffer.append("\tColumnVector xV = ColumnVector(NSTATES);  // state vector \n");
         buffer.append("\tColumnVector DSDT = ColumnVector(NSTATES); // time derivative of sensitivity for current parameter index\n");
         buffer.append("\tColumnVector SC = ColumnVector(NSTATES); // the sensitivity coefficent vector for current parameter index\n");
-        buffer.append("\tColumnVector da = ColumnVector(NSTATES+NSTATES*NRATES); //time derivative of ajoined vector;\n");
+        buffer.append("\tColumnVector da = ColumnVector(NSTATES+NSTATES,1); //time derivative of ajoined vector;\n");
         buffer.append("\tint i;\n");
         buffer.append("\tint j;\n");
         buffer.append("\tint q;\n");
@@ -261,7 +261,7 @@ public class OctaveCModel {
         buffer.append("\t//Call the methods to calc the kinetic, massbalances and etc\n");
         buffer.append("\n");
         buffer.append("\t// Calculate the kinetics\n");
-        buffer.append("\tcalculateKinetics(NRATES,kV,xV,rV);\n");
+        buffer.append("\tcalculateKinetics(kV,xV,rV);\n");
         buffer.append("\n");
         buffer.append("\t// Calculate the input vector -\n");
         buffer.append("\tcalculateInputs();\n");
@@ -381,7 +381,7 @@ public class OctaveCModel {
     	String strFunctionName = strFunctionNameRaw.substring(0, INT_2_DOT);
     	
         // Go -
-        driver.append("function [TSIM,C,S,eT]=");
+        driver.append("function [eT]=");
         driver.append(strFunctionName);
         driver.append("(DataFile,TSTART,TSTOP,Ts,DFIN)\n");
         driver.append("% ========= Original template rat44@cornell.edu @ 20080103 ========= \n");
@@ -403,50 +403,61 @@ public class OctaveCModel {
         driver.append("STM = DF.STOICHIOMETRIC_MATRIX;\n");
         driver.append("kV = DF.PARAMETER_VECTOR;\n");
         driver.append("nParam = DF.NUMBER_PARAMETERS;\n");
-        driver.append("nStates = DF.NUMBER_OF_STATES;\n");
+        driver.append("NSTATES = DF.NUMBER_OF_STATES;\n");
         driver.append("nTime = length(TSIM);\n");
         driver.append("paramIndex = 0;\n");
-        driver.append("SIC = zeros(nStates,1);\n");
+        driver.append("SIC = zeros(NSTATES,1);\n");
         driver.append("S = [];\n");
         driver.append("% combine S and C inital conditions for IC\n");
         driver.append("IC = [CIC;SIC];\n");
-        driver.append("% prep the function to be solved\n");
        
         // Grab the function name -
     	String strAdjFunctionNameRaw = propTree.getProperty("//SensitivityAnalysis/adjoint_equations_filename/text()");
     	INT_2_DOT = strAdjFunctionNameRaw.indexOf(".");
     	String strAdjFunctionName = strAdjFunctionNameRaw.substring(0, INT_2_DOT);
         
-        driver.append("f = @(x,t)");
-        driver.append(strAdjFunctionName);
-        driver.append("(x,t,STM,kV,nParam,nStates,paramIndex);\n");
+        
         driver.append("% prep the ODE solver - the default is LSODE\n");
         driver.append("% lsode_options('integration method','adams');\n");
         driver.append("lsode_options('relative tolerance',1E-5);\n");
         driver.append("lsode_options('absolute tolerance',1E-5);\n");
         driver.append("\n");
-        driver.append("set up a loop to go through the parameter indices\n");
-        driver.append("for paramIndex = 1:nParam\n");
+        driver.append("tmp_time = startTime;\n");
+        driver.append("\n");
+        driver.append("% set up a loop to go through the parameter indices\n");
+        driver.append("for pindex = 1:nParam\n");
         driver.append("\t% Call the ODE solver -\n");
+        driver.append("\n");
+        driver.append("\tmsg = ['Starting parameter ',num2str(pindex),' of ',num2str(nParam)];\n");
+    	driver.append("\tdisp(msg);\n");
+    	driver.append("\n");
+        driver.append("\t% prep the function to be solved\n");
+        driver.append("\tf = @(x,t)");
+        driver.append(strAdjFunctionName);
+        driver.append("(x,t,STM,kV,nParam,NSTATES,pindex-1);\n");
         driver.append("\t[X]=lsode(f,IC,TSIM);\n");
-        driver.append("\t% put in right order:\n");
-        driver.append("\t% the concnetrations are first\n ");
-        driver.append("\tC = X(:,1:nStates);\n");
-        driver.append("\t% next is the sensitivity stuff\n");
-        driver.append("\t% go through the rows of the X \n");
-        driver.append("\t tempS = zeros(nTime*nStates);\n");
-        driver.append("\tfor z = 1:nTime\n");
-        driver.append("\t\t% Start at the column with first sensitivity value\n");
-        driver.append("\t\tq = nStates+1; \n");
-        driver.append("\t\t% book keeping\n");
-        driver.append("\t\tb = nStates*(z-1);\n");
-        driver.append("\t\tfor i = 1:nStates\n");
-        driver.append("\t\t\t% place the value of the DCi/DPj in proper spot adjusting for time \n ");
-        driver.append("\t\t\ttempS(i+b) = X(z,q);\n");
-        driver.append("\t\t\tq = q+1;\n");
-        driver.append("\t\tend\n");
-        driver.append("\tend\n");
-        driver.append("\tS = [S tempS];\n");
+        driver.append("\n");
+        driver.append("\ttmp_time = etime(clock(),tmp_time);\n");
+    	driver.append("\tmsg = ['Completed parameter ',num2str(pindex),' of ',num2str(nParam),' in ',num2str(tmp_time),' seconds'];\n");
+    	driver.append("\tdisp(msg);\n");
+        driver.append("\n");
+    	driver.append("\t% Grab the senstivity coeff -\n");
+    	driver.append("\tSU = X(:,(NSTATES+1):end);\n");
+    	driver.append("\n");
+    	driver.append("\t% Store the nominial state -\n");
+    	driver.append("\tif (pindex==1)\n");
+    	driver.append("\t\tNOMINAL_STATE = X(:,1:NSTATES);\n");
+    	driver.append("\t\tcmd = ['save -mat-binary X_NOMINAL.mat NOMINAL_STATE'];\n");
+    	driver.append("\t\teval(cmd);\n");
+    	driver.append("\tend;\n");
+    	driver.append("\n");
+    	driver.append("\n");
+    	driver.append("\t% Store the un-scaled sensitivity coefficients -\n");
+    	driver.append("\tSU = sparse(SU);\n");
+    	driver.append("\tcmd = ['save -mat-binary SU_P',num2str(pindex),'.mat SU'];\n");
+    	driver.append("\teval(cmd);\n");
+    	driver.append("\n");
+    	driver.append("\ttmp_time = clock();\n");
         driver.append("end\n");
         driver.append("eT = etime(clock(),startTime);\n");
         driver.append("return;\n");
@@ -484,17 +495,23 @@ public class OctaveCModel {
     {
 
         // Convert into string buffer -
-        buffer.append("void calculateDSDT(int NSTATES, int NRATES, ColumnVector& SC,ColumnVector& k, ColumnVector& x, ColumnVector& DSDT, int paramIndex)\n");
+        buffer.append("void calculateDSDT(int NSTATES, int NRATES, ColumnVector& SC,ColumnVector& k, ColumnVector& x, ColumnVector& DSDT, int ode_index)\n");
         buffer.append("{\n");
         buffer.append("\t// Machine generated matrix to solve for time\n");
         buffer.append("\t// derivative of the sensitivity matrix.\n");
         buffer.append("\tMatrix J = Matrix(NSTATES,NSTATES); // jacobian matrix df/dx\n");
         buffer.append("\tMatrix P = Matrix(NSTATES,NRATES); // pmatrix df/dp\n");
-        buffer.append("\tColumnVector Pj = ColumnVector(NSTATES); \n");
+        buffer.append("\tColumnVector P_ode_index = ColumnVector(NSTATES); \n");
         buffer.append("\tcalculateJacobian(NSTATES, k, x, J);\n");
         buffer.append("\tcalculatePMatrix(NSTATES, NRATES, k, x, P);\n");
-        buffer.append("\tPj = col(P,paramIndex)\n");
-        buffer.append("\tDSDT=J*SC+P;\n");
+    	buffer.append("\n");
+        buffer.append("\tint i;\n");
+    	buffer.append("\tfor (i=0;i<NSTATES;i++)\n");
+		buffer.append("\t{\n");
+        buffer.append("\t\tP_ode_index(i) = P(i,ode_index);\n");
+    	buffer.append("\t}\n");
+    	buffer.append("\n");
+        buffer.append("\tDSDT=J*SC+P_ode_index;\n");
         buffer.append("}\n");
     }
     
