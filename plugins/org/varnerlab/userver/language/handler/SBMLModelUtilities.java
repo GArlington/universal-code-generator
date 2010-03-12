@@ -779,7 +779,7 @@ public class SBMLModelUtilities {
         NUMBER_OF_SPECIES = (int)model_wrapper.getNumSpecies(); 
         NUMBER_OF_RATES = (int)listRates.size(); 
         
-        System.out.println("Dimension "+NUMBER_OF_SPECIES+" by "+NUMBER_OF_RATES);
+        // //System.out.println("Dimension "+NUMBER_OF_SPECIES+" by "+NUMBER_OF_RATES);
         
         // Go through and put everything as zeros by default -
         for (int scounter=0;scounter<NUMBER_OF_SPECIES;scounter++)
@@ -814,14 +814,14 @@ public class SBMLModelUtilities {
                     SpeciesReference species_ref = rxn_obj.getReactant(reactant_index);
                     String strReactant = species_ref.getSpecies();
                     
-                    System.out.println("Checking - "+strReactant+" against "+strSpecies);
+                    // //System.out.println("Checking - "+strReactant+" against "+strSpecies);
                     
                     
                     if (strReactant.equalsIgnoreCase(strSpecies))
                     {       
                     	             	
                     	double tmp = species_ref.getStoichiometry();
-                    	System.out.println("Reactant "+strReactant+" has a st.coeff of "+tmp+" in reaction "+rcounter);
+                    	//System.out.println("Reactant "+strReactant+" has a st.coeff of "+tmp+" in reaction "+rcounter);
                         if (tmp>=0.0)
                         {
                             dblSTMatrix[scounter][rcounter]=-1.0*tmp;
@@ -841,7 +841,7 @@ public class SBMLModelUtilities {
                     SpeciesReference species_ref = rxn_obj.getProduct(product_index);
                     String strProduct = species_ref.getSpecies();
                     
-                    //System.out.println("Comparing NP="+NUMBER_OF_PRODUCTS+" to "+strProduct+"="+strSpecies+"?");
+                    ////System.out.println("Comparing NP="+NUMBER_OF_PRODUCTS+" to "+strProduct+"="+strSpecies+"?");
                     
                     if (strProduct.equalsIgnoreCase(strSpecies))
                     {

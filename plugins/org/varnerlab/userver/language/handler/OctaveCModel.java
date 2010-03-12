@@ -561,6 +561,7 @@ public class OctaveCModel {
         buffer.append("\t\t\tJM(i,j) = 0.0;\n");
         buffer.append("\t\t}\n");
         buffer.append("\t}\n");
+        buffer.append("\n");
         for (int state_counter_outer=0;state_counter_outer<NROWS;state_counter_outer++)
         {
             for (int state_counter_inner=0;state_counter_inner<NROWS;state_counter_inner++)
@@ -755,6 +756,7 @@ public class OctaveCModel {
                     buffer.append(test_index);
                     buffer.append(")");
                 }
+                
                 // check to see if exponent is 1
                 else if((tempStmElement-1)>(1-1E-6)&&(tempStmElement-1)<(1+1E-6)){
                     // no need to raise to a power
@@ -768,6 +770,7 @@ public class OctaveCModel {
                     buffer.append(state);
                     buffer.append(")");
                 }
+                
                 // any thing else I need to raise to a power
                 else {
                     buffer.append(matrix[massbalance][test_index]);
@@ -797,8 +800,6 @@ public class OctaveCModel {
                     double tempStmElement2;
                     if ((tempStmElement2 = matrix[species_index][test_index])<0.0 && species_index!=state)
                     {
-                        
-                        
                         tempStmElement2 = Math.abs(tempStmElement2);
                         // check to see if exponent is 0
                         if((tempStmElement2)>-1E-6&&(tempStmElement2)<1E-6){
