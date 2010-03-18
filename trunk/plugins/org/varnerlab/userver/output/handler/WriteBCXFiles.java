@@ -4,6 +4,7 @@ package org.varnerlab.userver.output.handler;
 import java.util.Properties;
 import java.util.Hashtable;
 import java.util.Vector;
+import java.util.logging.Logger;
 
 import org.sbml.libsbml.*;
 import org.varnerlab.server.transport.*;
@@ -15,6 +16,7 @@ import org.varnerlab.userver.language.handler.bcx.Exp;
 
 public class WriteBCXFiles implements IOutputHandler {
     private LoadXMLPropFile _xmlPropTree = null;
+    private Logger _logger = null;
 
     public void setProperties(Hashtable prop) {
 		// TODO Auto-generated method stub
@@ -67,5 +69,9 @@ public class WriteBCXFiles implements IOutputHandler {
         else {
             System.out.println("Some how you ended up with the wrong BCX output handler");
         }
+	}
+
+	public void setLogger(Logger log) {
+		_logger = log;
 	}
 }

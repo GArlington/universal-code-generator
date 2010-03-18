@@ -544,7 +544,18 @@ public class BCXGeneralBuilder {
 		// create the buffer to hold the code for this set of experiments
 		StringBuffer buffer = new StringBuffer();
 		int[] addedExp = new int[0];
-		buffer.append("function [MSE] = optFnt(lnP,DF)\n");
+		
+		// Ok, we need to update the name of the optimization file -
+    	String strOptFileNameRaw = _xmlPropTree.getProperty("//Model/optimization_function_filename/text()");
+    	
+    	// Cut the extension off -
+    	int INT_2_DOT = strOptFileNameRaw.lastIndexOf(".");
+    	String strOptFileName = strOptFileNameRaw.substring(0, INT_2_DOT);
+		
+		buffer.append("function [MSE] = ");
+		buffer.append(strOptFileName);
+		buffer.append("(lnP,DF)\n");
+		buffer.append("\n");
 		buffer.append("% --Machine Made via BioChemExp on "+date+"--\n");
 		buffer.append("% This code was designed to calculate MSE\n");
 		buffer.append("% given the ln of parameters for optimization\n");

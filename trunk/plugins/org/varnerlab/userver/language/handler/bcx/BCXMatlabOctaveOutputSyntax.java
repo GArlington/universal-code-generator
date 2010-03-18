@@ -191,9 +191,19 @@ public class BCXMatlabOctaveOutputSyntax implements IBCXOutputSyntax {
     
     public StringBuffer getMSEGraphFntHeader(StringBuffer buffer,Date date){
         
-    	// update the name of the grapher file -
-    	buffer.append("function [MSE] = grapher(DF)\n");
+    	// ok, we need to set the grapher name -
+    	String strGrapherFileNameRaw = _xmlPropTree.getProperty("//Model/grapher_filename/text()");
     	
+    	// Cut the extension off -
+    	int INT_2_DOT = strGrapherFileNameRaw.lastIndexOf(".");
+    	String strGrapherFileName = strGrapherFileNameRaw.substring(0, INT_2_DOT);
+    	
+    	// update the name of the grapher file -
+    	buffer.append("function [MSE] = ");
+    	buffer.append(strGrapherFileName);
+    	buffer.append("(DF)\n");
+    	
+    	buffer.append("\n");
         buffer.append("% --Machine Made via BioChemExp on "+date.toString()+"--\n");
         buffer.append("% This code was designed to graph relative\n");
         buffer.append("% simulation and experimental results\n");

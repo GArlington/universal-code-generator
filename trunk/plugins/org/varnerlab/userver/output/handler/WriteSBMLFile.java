@@ -10,6 +10,8 @@ package org.varnerlab.userver.output.handler;
 
 // import statements -
 import java.util.Hashtable;
+import java.util.logging.Logger;
+
 import org.sbml.libsbml.*;
 
 import org.varnerlab.server.transport.*;
@@ -23,6 +25,7 @@ public class WriteSBMLFile implements IOutputHandler {
     // Class/instance attributes -
     private Hashtable _propTable = null;
     private LoadXMLPropFile _xmlPropTree = null;
+    private Logger _logger = null;
     
     /** Creates a new instance of WriteSBMLFile */
     public WriteSBMLFile() {
@@ -71,6 +74,10 @@ public class WriteSBMLFile implements IOutputHandler {
 
 	public void setProperties(LoadXMLPropFile prop) {
 		this._xmlPropTree = prop;
+	}
+
+	public void setLogger(Logger log) {
+		_logger = log;
 	}
     
 }
