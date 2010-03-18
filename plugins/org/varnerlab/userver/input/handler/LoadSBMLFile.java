@@ -11,6 +11,8 @@ package org.varnerlab.userver.input.handler;
 
 // import statements -
 import java.util.Hashtable;
+import java.util.logging.Logger;
+
 import org.sbml.libsbml.*;
 
 import org.varnerlab.server.transport.*;
@@ -25,6 +27,7 @@ public class LoadSBMLFile implements IInputHandler {
     private SBMLReader _sbmlReader = null;
     private SBMLDocument _sbmlDocument = null;
     private Model _model = null;
+    private Logger _logger = null;
     
     // ths is imported from the transport package -
     private LoadXMLPropFile _xmlPropTree = null;
@@ -97,6 +100,10 @@ public class LoadSBMLFile implements IInputHandler {
 
 	public void setProperties(LoadXMLPropFile prop) {
 		this._xmlPropTree = prop;
+	}
+
+	public void setLogger(Logger log) {
+		_logger = log;	
 	}
             
     

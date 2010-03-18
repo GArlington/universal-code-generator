@@ -2,6 +2,7 @@ package org.varnerlab.userver.output.handler;
 
 import java.util.Hashtable;
 import java.util.Vector;
+import java.util.logging.Logger;
 
 import org.sbml.libsbml.*;
 import org.varnerlab.server.transport.IOutputHandler;
@@ -13,6 +14,7 @@ import org.varnerlab.userver.language.handler.SUNDIALSModel;
 public class WriteSundialsModel implements IOutputHandler {
 	// Class/instance attributes -
 	private LoadXMLPropFile _xmlPropTree = null;
+	private Logger _logger = null;
 	
 	//Create string buffers
     private StringBuffer bufferModelC = new StringBuffer();
@@ -67,6 +69,10 @@ public class WriteSundialsModel implements IOutputHandler {
 		// Generate RunModel.sh
 		sundialsModel.buildShellCommand(bufferRunModel,_xmlPropTree);
 		SBMLModelUtilities.dumpShellCommandToDisk(bufferRunModel, _xmlPropTree);
+	}
+
+	public void setLogger(Logger log) {
+		_logger = log;
 	}
 
 }

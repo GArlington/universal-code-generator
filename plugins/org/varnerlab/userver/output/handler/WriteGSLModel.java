@@ -2,6 +2,7 @@ package org.varnerlab.userver.output.handler;
 
 import java.util.Hashtable;
 import java.util.Vector;
+import java.util.logging.Logger;
 
 import org.sbml.libsbml.*;
 import org.varnerlab.server.transport.IOutputHandler;
@@ -14,6 +15,7 @@ import org.varnerlab.userver.language.handler.SUNDIALSModel;
 public class WriteGSLModel implements IOutputHandler {
 	// Class/instance attributes -
 	private LoadXMLPropFile _xmlPropTree = null;
+	private Logger _logger = null;
 	
 	public void setProperties(Hashtable prop) {
 		// TODO Auto-generated method stub
@@ -67,6 +69,10 @@ public class WriteGSLModel implements IOutputHandler {
         SBMLModelUtilities.dumpMassBalancesToDisk(massbalances_buffer,_xmlPropTree);
         SBMLModelUtilities.dumpShellCommandToDisk(shell_buffer, _xmlPropTree);
         SBMLModelUtilities.dumpBuildFileToDisk(compile_buffer, _xmlPropTree);
+	}
+
+	public void setLogger(Logger log) {
+		_logger = log;
 	}
 
 }

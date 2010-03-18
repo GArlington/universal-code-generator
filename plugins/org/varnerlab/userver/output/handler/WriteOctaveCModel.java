@@ -2,6 +2,7 @@ package org.varnerlab.userver.output.handler;
 
 import java.util.Hashtable;
 import java.util.Vector;
+import java.util.logging.Logger;
 
 import org.sbml.libsbml.*;
 import org.varnerlab.server.transport.IOutputHandler;
@@ -17,6 +18,7 @@ public class WriteOctaveCModel implements IOutputHandler {
     private String mbfunctionName = null;
     private int last_slash = 0;
     private int last_dot = 0;
+    private Logger _logger = null;
 	
 	public void setProperties(Hashtable prop) {
 		// TODO Auto-generated method stub
@@ -103,5 +105,9 @@ public class WriteOctaveCModel implements IOutputHandler {
         // Dump the sensitivity analysis -
         SBMLModelUtilities.dumpAdjDriverFileToDisk(adj_driver_buffer,_xmlPropTree);
         SBMLModelUtilities.dumpAdjFunctionFileToDisk(adj_buffer, _xmlPropTree);
+	}
+
+	public void setLogger(Logger log) {
+		_logger = log;
 	}    
 }

@@ -2,6 +2,7 @@ package org.varnerlab.userver.output.handler;
 
 import java.util.Hashtable;
 import java.util.Vector;
+import java.util.logging.Logger;
 
 import org.sbml.libsbml.Model;
 import org.sbml.libsbml.Reaction;
@@ -16,6 +17,7 @@ public class WriteGraphvizDotFile implements IOutputHandler {
 	private LoadXMLPropFile _xmlPropTree = null;
 	private int NUMBER_OF_SPECIES = 0; 
     private int NUMBER_OF_RATES = 0;
+    private Logger _logger = null;
 
 	public void setProperties(Hashtable prop) {
 	// TODO Auto-generated method stub
@@ -63,5 +65,9 @@ public class WriteGraphvizDotFile implements IOutputHandler {
         
         // Get the filename that we are going to dump to -
         SBMLModelUtilities.dumpGeneralBufferToDisk(dot_buffer, _xmlPropTree);
+	}
+
+	public void setLogger(Logger log) {
+		_logger = log;
 	}
 }

@@ -11,6 +11,8 @@ package org.varnerlab.userver.output.handler;
 
 // import statements -
 import java.util.Hashtable;
+import java.util.logging.Logger;
+
 import org.sbml.libsbml.*;
 
 
@@ -27,7 +29,7 @@ public class WriteVarnerFlatFile implements IOutputHandler {
     private Hashtable _propTable = null;
     private StringBuffer _buffer = null;
     private LoadXMLPropFile _xmlPropTree = null;
-    
+    private Logger _logger = null;
     
     /** Creates a new instance of WriteVarnerFlatFile */
     public WriteVarnerFlatFile()
@@ -194,5 +196,9 @@ public class WriteVarnerFlatFile implements IOutputHandler {
 
 	public void setProperties(LoadXMLPropFile prop) {
 		_xmlPropTree = prop;
+	}
+
+	public void setLogger(Logger log) {
+		_logger = log;
 	}
 }

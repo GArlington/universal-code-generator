@@ -2,6 +2,7 @@ package org.varnerlab.userver.output.handler;
 
 import java.util.Hashtable;
 import java.util.Vector;
+import java.util.logging.Logger;
 
 import org.sbml.libsbml.*;
 import org.varnerlab.server.transport.IOutputHandler;
@@ -12,6 +13,7 @@ import org.varnerlab.userver.language.handler.ScilabModel;
 public class WriteScilabModel implements IOutputHandler {
 	// Class/instance attributes -
 	private LoadXMLPropFile _xmlPropTree = null;
+	private Logger _logger = null;
 
 	public void setProperties(Hashtable prop) {
 		// TODO Auto-generated method stub
@@ -74,6 +76,10 @@ public class WriteScilabModel implements IOutputHandler {
 		SBMLModelUtilities.dumpInputFunctionToDisk(inputs_buffer, _xmlPropTree);
 		SBMLModelUtilities.dumpJacobianToDisk(jacabian_buffer, _xmlPropTree);
 		SBMLModelUtilities.dumpBMatrixToDisk(bmatrix_buffer, _xmlPropTree);
+	}
+
+	public void setLogger(Logger log) {
+		_logger = log;
 	}
 
 }

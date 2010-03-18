@@ -13,6 +13,9 @@ package org.varnerlab.userver.input.handler;
 import java.util.Hashtable;
 import java.util.Vector;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.sbml.libsbml.*;
 import java.io.*;
 
@@ -34,7 +37,8 @@ public class LoadVarnerFlatFile implements IInputHandler {
 	// rate constants and initial conditions array -
 	private double[] _dblRateConstant = null;         						// Rate constants
 	private double[] _dblInitialCondition = null;           				// Initial conditions
-
+	private Logger _logger = null;
+	
 	// load the lib -
 
 
@@ -59,6 +63,7 @@ public class LoadVarnerFlatFile implements IInputHandler {
 		String strOrderFileName = (String)_propTable.get("SYMBOL_FILENAME");
 		String strOrderFileNamePath = (String)_propTable.get("SYMBOL_FILENAME_PATH");
 
+		
 		// Ok, load the order file if we have a pointer
 		if (!strOrderFileName.isEmpty())
 		{
@@ -75,12 +80,15 @@ public class LoadVarnerFlatFile implements IInputHandler {
 				strTmp = strWorkingDir+"/"+strOrderFileName;
 			}
 
+			// Log that we are going to load the order file -
+			_logger.log(Level.INFO,"Going to load the following order file: "+strTmp);
+			
 			// read the symbol file name -
 			orderReader.readFile(strTmp,this._vecSymbolOrder);
 		}
 
-
-		System.out.println("Looking in dir in LVF for FF - "+strWorkingDir);
+		// Log what we are going -
+		_logger.log(Level.INFO,"Looking in dir in LVF for FF - "+strWorkingDir);
 
 		// location of the rate constant, null if none:
 		String strInitialConditionFilename = (String)_propTable.get("INITAL_CONDITION_FILENAME");
@@ -99,6 +107,9 @@ public class LoadVarnerFlatFile implements IInputHandler {
 				strTmp = strWorkingDir+"/"+strInitialConditionFilename;
 			}
 
+			// Log that we are going to load the order file -
+			_logger.log(Level.INFO,"Going to load the following initial condition file: "+strTmp);
+			
 			// Load the initial condition array -
 			_dblInitialCondition = readSimpleFile(strTmp);
 		}
@@ -120,11 +131,11 @@ public class LoadVarnerFlatFile implements IInputHandler {
 				strTmp = strWorkingDir+"/"+strRateConstantFilename;
 			}
 
+			// Log that we are going to load the order file -
+			_logger.log(Level.INFO,"Going to load the following rate constant file: "+strTmp);
+			
 			// Load the initial condition array -
 			_dblRateConstant = readSimpleFile(strTmp);
-			
-			//System.out.println("What is the dimension of the rate constant vector  "+_dblRateConstant.length);
-			
 		}
 
 		// Get the Varner flat file -
@@ -144,6 +155,9 @@ public class LoadVarnerFlatFile implements IInputHandler {
 				strTmp = strWorkingDir+"/"+strPathNetworkFile;
 			}
 
+			// Log that we are going to load the order file -
+			_logger.log(Level.INFO,"Going to load the following flat-file: "+strTmp);
+			
 			// Read the varner flat file -
 			reader.readData(strTmp,_vecRecords);
 		}
@@ -159,8 +173,6 @@ public class LoadVarnerFlatFile implements IInputHandler {
 			// Ok, so here I need to check if I have a forward or reversable reaction
 			String strReverseFlag = (String)record.getData(IReactionFile.REVERSE);
 			String strRxnNameTest = (String)record.getData(IReactionFile.RXNNAME);
-
-			System.out.println("Processing - "+record.toString());
 
 			if (strReverseFlag.equalsIgnoreCase("-inf") && strRxnNameTest!="")
 			{
@@ -216,6 +228,9 @@ public class LoadVarnerFlatFile implements IInputHandler {
 
 		// At this point I could sort the alphabet (I won't do it now)'
 		sortAlphabet();
+		
+		// Log that we are going to load the order file -
+		_logger.log(Level.INFO,"Loaded the flat-file. We are now going to move to the output handler.");
 	}
 
 
@@ -540,6 +555,10 @@ public class LoadVarnerFlatFile implements IInputHandler {
 
 		// Grab the model name -
 		_propTable.put("MODEL_NAME",propTree.getProperty("//OutputFileName/output_model_name/text()"));		 
+	}
+
+	public void setLogger(Logger log) {
+		_logger = log;
 	} 
 
 }

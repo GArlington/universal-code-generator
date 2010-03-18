@@ -16,6 +16,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import java.util.Hashtable;
 import java.util.Vector;
+import java.util.logging.Logger;
 
 public class LoadBCXFile implements IInputHandler {
 
@@ -25,6 +26,7 @@ public class LoadBCXFile implements IInputHandler {
 	private Exp[] expObjList = new Exp[0];
 	private Document doc = null;
 	private Vector<Exp> _vecExperiments = new Vector<Exp>();
+	private Logger _logger = null;
 
 	public LoadBCXFile() {
 
@@ -359,5 +361,9 @@ public class LoadBCXFile implements IInputHandler {
     	
     	// go ...
     	loadResource(_bcxPropTree);
+	}
+
+	public void setLogger(Logger log) {
+		_logger = log;
 	}
 }

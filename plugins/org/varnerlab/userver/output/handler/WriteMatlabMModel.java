@@ -2,6 +2,7 @@ package org.varnerlab.userver.output.handler;
 
 import java.util.Hashtable;
 import java.util.Vector;
+import java.util.logging.Logger;
 
 import org.sbml.libsbml.*;
 import org.varnerlab.server.transport.IOutputHandler;
@@ -13,6 +14,7 @@ import org.varnerlab.userver.language.handler.SBMLModelUtilities;
 public class WriteMatlabMModel implements IOutputHandler {
 	// Class/instance attributes -
 	private LoadXMLPropFile _xmlPropTree = null;
+	private Logger _logger = null;
 	
 	// Get the dimension of the system -
     private int NUMBER_OF_SPECIES = 0; 
@@ -72,6 +74,10 @@ public class WriteMatlabMModel implements IOutputHandler {
         SBMLModelUtilities.dumpStoichiometricMatrixToDisk(dblSTMatrix,_xmlPropTree,model_wrapper,vecReactions);
         SBMLModelUtilities.dumpDataFileToDisk(data_buffer,_xmlPropTree);
         SBMLModelUtilities.dumpKineticsToDisk(kinetics_buffer, _xmlPropTree);
+	}
+
+	public void setLogger(Logger log) {
+		_logger = log;
 	}
 	
 
