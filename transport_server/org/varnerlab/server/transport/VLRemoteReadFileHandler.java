@@ -12,6 +12,8 @@ import java.io.PrintWriter;
 import java.io.StringReader;
 
 import java.util.*;
+import java.util.logging.Logger;
+
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.InputSource;
@@ -22,7 +24,7 @@ import org.xml.sax.InputSource;
  */
 public class VLRemoteReadFileHandler implements IVLProcessServerRequest {
 
-    public boolean processMessage(String buffer,VLServerSession session) throws Exception {
+    public boolean processMessage(String buffer,VLServerSession session,Logger log) throws Exception {
         // Class/instance attributes -
         boolean rFlag = true;
         String line;
@@ -55,7 +57,7 @@ public class VLRemoteReadFileHandler implements IVLProcessServerRequest {
         // String strNewDir = strCodePath+"/"+strUserName+"/"+strSessionID+"/"+strFileNamePath;
         // String strNewDir = strCodePath+"/"+strFileNamePath;
         
-        System.out.println("Going to load - "+strFileNamePath);
+        // System.out.println("Going to load - "+strFileNamePath);
         // String dataBuffer = (GIOL.readNewLine(strFileNamePath)).toString();
 
         File iFile=new File(strFileNamePath);

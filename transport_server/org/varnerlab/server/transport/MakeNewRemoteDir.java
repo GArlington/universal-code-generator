@@ -6,6 +6,7 @@
 package org.varnerlab.server.transport;
 
 import java.util.Hashtable;
+import java.util.logging.Logger;
 import java.io.*;
 
 /**
@@ -45,7 +46,7 @@ public class MakeNewRemoteDir implements IVLProcessServerRequest {
 		return null;
 	}
 
-	public boolean processMessage(String strMessage, VLServerSession session) throws Exception {
+	public boolean processMessage(String strMessage, VLServerSession session,Logger log) throws Exception {
 		
 		// ok - call the writeResource method -
 		writeResource(session);

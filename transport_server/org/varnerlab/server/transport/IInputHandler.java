@@ -12,6 +12,7 @@ package org.varnerlab.server.transport;
 // import statements -
 import java.util.Properties;
 import java.util.Hashtable;
+import java.util.logging.Logger;
 
 /**
  *
@@ -24,4 +25,5 @@ public interface IInputHandler {
     public Object getResource(Object object) throws Exception;
     public void setProperties(Hashtable prop);
     public void setProperties(LoadXMLPropFile prop);
+    public void setLogger(Logger log);
 }

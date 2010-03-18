@@ -56,23 +56,31 @@ public class MessageServerWorker extends Object {
         String strUserName = (String)_propTable.getProperty("USERNAME");
         String strSessionID = (String)_propTable.getProperty("SESSIONID");
         
-        String strNewHiddenDir = strDirName+"/"+strUserName+"/"+strSessionID+"/"+".tmp";
+        String strNewHiddenDir = strDirName+"/"+strUserName+"/"+strSessionID;
         
         // Ok, I need to check to see if the tmp dir exists -
         File testFile = new File(strNewHiddenDir);
         if (testFile.exists())
         {
-        	String fName = strNewHiddenDir+"/"+"job.log";
         	
-        	try {
-        		_fileHandlerLogger = new FileHandler(fName);
-        		_formatterTxt = new SimpleFormatter();
-        		_fileHandlerLogger.setFormatter(_formatterTxt);
-        		_logger.addHandler(_fileHandlerLogger);
-        	}
-        	catch (Exception error)
+        	// Check to see if the log file is already there ..
+        	String fName = strNewHiddenDir+"/"+"job.log";
+        	File logFile = new File(fName);
+        	if (!logFile.exists())
         	{
-        		// eat the exception ... for now
+        	
+        		// Ok, I I get here then the log file is *not* there. Create it.
+        		try {
+        			_fileHandlerLogger = new FileHandler(fName);
+        			_formatterTxt = new SimpleFormatter();
+        			_fileHandlerLogger.setFormatter(_formatterTxt);
+        			_logger.addHandler(_fileHandlerLogger);
+        		}
+        		catch (Exception error)
+        		{
+        			// eat the exception ... for now
+        			_logger.log(Level.INFO,"We have an issue with the creation of the job.log file. Error - "+error.getMessage());
+        		}
         	}
         }
         else
@@ -81,8 +89,6 @@ public class MessageServerWorker extends Object {
         	// Use the old logger -
         	_logger.log(Level.INFO, "Have not yet created *.tmp directory. Using main log file.");
         }
-        
-        
 	}
 	
 	public String getLogName()
@@ -134,7 +140,7 @@ public class MessageServerWorker extends Object {
                 _logger.log(Level.INFO,"Job starting. Created an instance of "+strClassName);
                            
                 // Class the processMessage method and get flag back 
-                boolean blnFlag = logicHandler.processMessage(_tmpBuffer.toString(),_propTable);
+                boolean blnFlag = logicHandler.processMessage(_tmpBuffer.toString(),_propTable,_logger);
 
             }
         	else

@@ -3,6 +3,7 @@ package org.varnerlab.server.transport;
 // import statements -
 import java.util.Hashtable;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -27,6 +28,7 @@ public class LoadXMLPropFile implements IInputHandler {
 	private XPathFactory  _xpFactory = XPathFactory.newInstance();
 	private XPath _xpath = _xpFactory.newXPath();
 	private Document _docPropTree = null;
+	private Logger _logger = null;
 	
 
 	public Object getResource(Object object) throws Exception {
@@ -96,6 +98,10 @@ public class LoadXMLPropFile implements IInputHandler {
 	public void setProperties(LoadXMLPropFile prop) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public void setLogger(Logger log) {
+		_logger = log;
 	}
 	
 }
