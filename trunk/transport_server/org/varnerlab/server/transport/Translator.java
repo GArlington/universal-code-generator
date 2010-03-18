@@ -13,6 +13,7 @@ package org.varnerlab.server.transport;
 import java.io.File;
 import java.util.Properties;
 import java.util.Hashtable;
+import java.util.logging.Logger;
 
 import org.sbml.libsbml.*;
 
@@ -24,6 +25,7 @@ public class Translator implements IVLProcessServerRequest {
     // Class/instance attributes -
     private Hashtable _propTable = null;
     private SBMLReader _sbmlReader = null;
+    private Logger _logger = null;
     
     /** Creates a new instance of Translator */
     public Translator() {
@@ -47,7 +49,7 @@ public class Translator implements IVLProcessServerRequest {
         LoadXMLPropFile xmlProp = (LoadXMLPropFile)object;
         
         // load the sbml?
-        System.out.println("New - "+System.getProperty("java.library.path"));
+        // System.out.println("New - "+System.getProperty("java.library.path"));
         System.loadLibrary("sbmlj");
         
         // Get the input and output handler class names -
@@ -61,7 +63,10 @@ public class Translator implements IVLProcessServerRequest {
         
         // On this input handler, we need to excute the load method -
         inputHandler.setProperties(xmlProp);
+        inputHandler.setLogger(_logger);
         outputHandler.setProperties(xmlProp);
+        outputHandler.setLogger(_logger);
+        
         
         // load the input files -
         inputHandler.loadResource(null);
@@ -102,17 +107,20 @@ public class Translator implements IVLProcessServerRequest {
 		return null;
 	}
 
-	public boolean processMessage(String strMessage, VLServerSession session) throws Exception {
+	public boolean processMessage(String strMessage, VLServerSession session,Logger logger) throws Exception {
 		
 		// Load the xml config files -
 		LoadXMLPropFile xmlProp = new LoadXMLPropFile();
+		
+		// Store the logger -
+		_logger = logger;
 		
 		// We need to get a couple of items from the session -
 		String strPath = (String)session.getProperty("SUBPATH");
 		String strFileName = (String)session.getProperty("FILENAME");
 		String strModelFilePath = strPath+"/"+strFileName;
 		
-		System.out.println("Loading file - "+strModelFilePath);
+		//System.out.println("Loading file - "+strModelFilePath);
 		
 		xmlProp.loadResource(strModelFilePath);
 
@@ -121,7 +129,7 @@ public class Translator implements IVLProcessServerRequest {
         String strNetDirName = (String)xmlProp.getProperty("//ProjectLayout/network_directory_name/text()");
         String strWorkingDirectoryName = (String)xmlProp.getProperty("//working_directory/text()");
         
-        if (!strSrcDirName.isEmpty())
+        if (strSrcDirName!=null && !strSrcDirName.isEmpty())
         {
         	 // Ok, so we are ready to create custom network and src directories -
             String strSrcDir = strWorkingDirectoryName+"/"+strSrcDirName;
@@ -131,7 +139,7 @@ public class Translator implements IVLProcessServerRequest {
             srcFile.mkdir();
         }
         
-        if (!strNetDirName.isEmpty())
+        if (strNetDirName!=null && !strNetDirName.isEmpty())
         {
         	String strNetDir = strWorkingDirectoryName+"/"+strNetDirName;
         	

@@ -8,6 +8,7 @@ package org.varnerlab.server.transport;
 // import statements -
 import java.io.*;
 import java.net.*;
+import java.util.logging.Logger;
 
 /**
  *
@@ -18,7 +19,7 @@ public interface IVLProcessServerRequest {
     
 
     // This method is implemented by logic written by the user to process the request -
-    public boolean processMessage(String strMessage,VLServerSession session) throws Exception;
+    public boolean processMessage(String strMessage,VLServerSession session,Logger log) throws Exception;
     public Object getResources();
 
 }

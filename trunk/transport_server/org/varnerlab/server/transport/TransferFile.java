@@ -6,6 +6,7 @@
 package org.varnerlab.server.transport;
 
 import java.util.Hashtable;
+import java.util.logging.Logger;
 import java.io.*;
 
 /**
@@ -54,7 +55,7 @@ public class TransferFile implements IVLProcessServerRequest {
 		return null;
 	}
 
-	public boolean processMessage(String strMessage, VLServerSession session)
+	public boolean processMessage(String strMessage, VLServerSession session,Logger log)
 			throws Exception {
 		
 		// ok, bitches - grab session and send the strMessage into the writeResources -

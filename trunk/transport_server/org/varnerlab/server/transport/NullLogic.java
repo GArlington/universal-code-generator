@@ -1,5 +1,7 @@
 package org.varnerlab.server.transport;
 
+import java.util.logging.Logger;
+
 public class NullLogic implements IVLProcessServerRequest,IVLValidateServerJob {
 
 	public Object getResources() {
@@ -7,7 +9,7 @@ public class NullLogic implements IVLProcessServerRequest,IVLValidateServerJob {
 		return null;
 	}
 
-	public boolean processMessage(String strMessage, VLServerSession session)
+	public boolean processMessage(String strMessage, VLServerSession session,Logger log)
 			throws Exception {
 		// TODO Auto-generated method stub
 		return true;
