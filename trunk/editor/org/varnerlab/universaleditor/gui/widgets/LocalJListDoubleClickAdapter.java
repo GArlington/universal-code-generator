@@ -142,6 +142,36 @@ public class LocalJListDoubleClickAdapter extends MouseAdapter {
 							});
 						}
 					}
+					else if (strExtension.equalsIgnoreCase("log"))
+					{
+						// Get the path of the selected file and then try and open using a system edtior -
+						String strFilePath = selectedFile.getAbsolutePath();
+						
+						// Ok, so if I get here then I have the log file -
+						// Get the path of the selected file and then try and open using a system edtior -
+						
+						// Ok, we need to get the name of the editor from the preference tree -
+						String strEditor = (String)session.getProperty("EDITOR");
+						
+						
+						final String strCommand = "open -a "+strEditor+" "+strFilePath;
+						SwingUtilities.invokeLater(new Runnable() {
+							public void run() {
+								Thread performer = new Thread(new Runnable() {
+									public void run() {
+										try {
+											Runtime.getRuntime().exec(strCommand);
+										}
+										catch (Exception error)
+										{
+											System.out.println("ERROR executing "+strCommand+" exception = "+error.toString());		
+										}
+									}
+								}, "Performer");
+								performer.start();
+							}
+						});
+					}
 					else
 					{
 						// Ok, so if I get here then I have a file type that universal doesn't know how to handle -
