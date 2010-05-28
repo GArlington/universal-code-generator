@@ -21,6 +21,9 @@ public class WriteSundialsModel implements IOutputHandler {
     private StringBuffer bufferSensitivtyC = new StringBuffer();
     private StringBuffer bufferBuilder = new StringBuffer();
     private StringBuffer bufferRunModel = new StringBuffer();
+    private StringBuffer bufferPlugin = new StringBuffer();
+    private StringBuffer bufferLSODEWrapper = new StringBuffer();
+    private StringBuffer bufferDataFile = new StringBuffer();
 
 	
 	public void setProperties(Hashtable prop) {
@@ -61,14 +64,22 @@ public class WriteSundialsModel implements IOutputHandler {
 		sundialsModel.buildJacobianBuffer(bufferModelC,model_wrapper,vecReactions);
 		SBMLModelUtilities.dumpMassBalancesToDisk(bufferModelC, _xmlPropTree);
 		
+		// Build a data file buffer -
+        SBMLModelUtilities.buildDataFileBuffer(bufferDataFile, model_wrapper, _xmlPropTree,vecReactions);
+        SBMLModelUtilities.dumpDataFileToDisk(bufferDataFile,_xmlPropTree);
+        
 		// Generate Build.sh
 		sundialsModel.buildBuildFileBuffer(bufferBuilder,_xmlPropTree);
 		SBMLModelUtilities.dumpBuildFileToDisk(bufferBuilder,_xmlPropTree);
 		SBMLModelUtilities.dumpStoichiometricMatrixToDisk(dblSTMatrix,_xmlPropTree,model_wrapper,vecReactions);
 		
-		// Generate RunModel.sh
+		// Generate RunModel.sh, and the code reqrd to run the model from Octave
 		sundialsModel.buildShellCommand(bufferRunModel,_xmlPropTree);
+		sundialsModel.buildOctavePlugin(bufferPlugin);
+		sundialsModel.buildLSODECallWrapper(bufferLSODEWrapper, _xmlPropTree);
 		SBMLModelUtilities.dumpShellCommandToDisk(bufferRunModel, _xmlPropTree);
+		SBMLModelUtilities.dumpSunsialsPluginToDisk(bufferPlugin, _xmlPropTree);
+		SBMLModelUtilities.dumpLSODECallWrapperSundialsToDisk(bufferLSODEWrapper, _xmlPropTree);
 	}
 
 	public void setLogger(Logger log) {
