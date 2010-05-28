@@ -204,7 +204,7 @@ public class SBMLModelUtilities {
             Species species = (Species)species_list.get(pindex);
             datafile.append("\t");
             datafile.append(species.getInitialAmount());
-            datafile.append("\t%\t");
+            datafile.append("\t;%\t");
             datafile.append(pindex+1);
             datafile.append("\t");
             datafile.append(species.getId());
@@ -316,7 +316,7 @@ public class SBMLModelUtilities {
             Species species = (Species)species_list.get(pindex);
             datafile.append("\t");
             datafile.append(species.getInitialAmount());
-            datafile.append("\t%\t");
+            datafile.append("\t;%\t");
             datafile.append(pindex+1);
             datafile.append("\t");
             datafile.append(species.getId());
@@ -648,6 +648,47 @@ public class SBMLModelUtilities {
         String strWorkingDir = _xmlPropTree.getProperty("//working_directory/text()");
         String strFileName = _xmlPropTree.getProperty("//DriverFile/driver_filename/text()");
         String strFilePath = _xmlPropTree.getProperty("//DriverFile/driver_path/text()");
+        
+        String strSBMLFile = "";
+        if (strFilePath.isEmpty())
+        {
+        	strSBMLFile = strWorkingDir+"/"+strFileName;
+        }
+        else
+        {
+        	strSBMLFile = strWorkingDir+"/"+strFilePath+"/"+strFileName;
+        }
+        
+        GIOL.write(strSBMLFile,driver);
+    }
+    
+    public static void dumpSunsialsPluginToDisk(StringBuffer driver,LoadXMLPropFile _xmlPropTree) throws Exception
+    {
+        // I have populated the string buffer, dump that mofo
+        String strWorkingDir = _xmlPropTree.getProperty("//working_directory/text()");
+        String strFilePath = _xmlPropTree.getProperty("//MassBalanceFunction/massbalance_path/text()");
+        String strFileName = "SolveSundialsModel.m";
+     
+        
+        String strSBMLFile = "";
+        if (strFilePath.isEmpty())
+        {
+        	strSBMLFile = strWorkingDir+"/"+strFileName;
+        }
+        else
+        {
+        	strSBMLFile = strWorkingDir+"/"+strFilePath+"/"+strFileName;
+        }
+        
+        GIOL.write(strSBMLFile,driver);
+    }
+    
+    public static void dumpLSODECallWrapperSundialsToDisk(StringBuffer driver,LoadXMLPropFile _xmlPropTree) throws Exception
+    {
+        // I have populated the string buffer, dump that mofo
+        String strWorkingDir = _xmlPropTree.getProperty("//working_directory/text()");
+        String strFilePath = _xmlPropTree.getProperty("//MassBalanceFunction/massbalance_path/text()");
+        String strFileName = "LSODECallWrapper.m";
         
         String strSBMLFile = "";
         if (strFilePath.isEmpty())
