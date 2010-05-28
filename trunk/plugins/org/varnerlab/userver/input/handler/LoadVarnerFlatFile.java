@@ -403,11 +403,11 @@ public class LoadVarnerFlatFile implements IInputHandler {
 			else{
 				if (rType.equals("ON-RATE"))
 				{
-					parameterObj.setValue(rValue);
+					parameterObj.setValue((10*rValue));
 				}
 				else if (rType.equals("OFF-RATE"))
 				{
-					parameterObj.setValue((10*rValue));
+					parameterObj.setValue(rValue);
 				}
 				else if (rType.equals("CAT-RATE"))
 				{
