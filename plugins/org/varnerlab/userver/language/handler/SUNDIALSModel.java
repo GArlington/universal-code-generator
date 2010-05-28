@@ -160,12 +160,15 @@ public class SUNDIALSModel {
 
     public void buildAdjBalFntBuffer(StringBuffer buffer,Model model_wrapper) throws Exception {
 
-        buffer.append("/*\n");
-		buffer.append(" * Template written by Robert Dromms\n");
-		buffer.append(" * Created 2009-07-10 13:37\n");
+    	// Populate the buffer -
+    	buffer.append("/*\n");
+		buffer.append(" * Template written by Robert Dromms. Edited by JV\n");
+		buffer.append(" * Created 2009-06-19 15:32\n");
 		buffer.append(" * Based off example code provided in SUNDIALS documentation: cvRoberts_dns.c\n");
 		buffer.append(" */\n\n");
 
+		// Include statements -
+		buffer.append("/** Include statements **/ \n");
 		buffer.append("#include <stdio.h>\n");
 		buffer.append("#include <stdarg.h>\n");
 		buffer.append("#include <stdlib.h>\n");
@@ -176,36 +179,47 @@ public class SUNDIALSModel {
 		buffer.append("#include <string.h>\n");
 		buffer.append("#include <cvode/cvode.h>\t\t// prototypes for CVODE fcts., consts.\n");
 		buffer.append("#include <nvector/nvector_serial.h>\t// serial N_Vector types, fcts., macros\n");
+		buffer.append("#include <cvode/cvode_spgmr.h>\t\t// prototype for CVSPGMR\n");
 		buffer.append("#include <sundials/sundials_direct.h>\t// definitions DlsMat DENSE_ELEM\n");
 		buffer.append("#include <sundials/sundials_types.h>\t// definition of type realtype\n\n");
-
-		buffer.append("//PROBLEM SPECIFIC VALUES\n");
+		buffer.append("\n");
+		
+		buffer.append("/** Define problem specific sizes, tolerances etc **/ \n");
 		buffer.append("#define TOLERANCE\t\t1e-10\t\t// global error tolerance\n");
-		buffer.append("#define NUMBER_OF_STATES\t"+(int)model_wrapper.getNumSpecies()+"\t\t// number of equations\n");
-		buffer.append("#define NUMBER_OF_RATES\t\t"+(int)model_wrapper.getNumReactions()+"\t\t// number of parameters\n");
-		buffer.append("#define TOTAL_ADJ_STATES\t"+((int)model_wrapper.getNumSpecies() * ((int)model_wrapper.getNumReactions()+1))+"\t\t// Number of Adjoined States\n\n");
+		buffer.append("#define NUMBER_OF_STATES\t"+(int)model_wrapper.getNumSpecies()+"\t\t /* number of equations */\n");
+		buffer.append("#define NUMBER_OF_RATES\t\t"+(int)model_wrapper.getNumReactions()+"\t\t/* number of parameters */\n");
+		buffer.append("\n");
 
-		buffer.append("// Functions to grab the kinetics rate constants and ic\'s from files\n");
+		buffer.append("/** Functions to grab the kinetics rate constants and ic\'s from files */\n");
 		buffer.append("static int getRateConstants(const char* filename, N_Vector RateConstantVector);\n");
 		buffer.append("static int getICs(const char* filename, N_Vector StateVector);\n");
 		buffer.append("static int getSTM(const char* filename, DlsMat STM);\n");
-		buffer.append("// Functions called by the solver\n");
+		buffer.append("\n");
+		
+		buffer.append("/** Functions called by the solver */\n");
 		buffer.append("static int AdjBalances(realtype t, N_Vector x, N_Vector dxdt, void *user_data);\n");
 		buffer.append("static void Kinetics(realtype t, N_Vector x, N_Vector rateConstVector, N_Vector rateVector);\n");
 		buffer.append("static void calculatePMatrix(N_Vector k, N_Vector x, DlsMat PM);\n");
 		buffer.append("static int Jac(int N, realtype t, N_Vector x, N_Vector fx, DlsMat J, void *user_data, N_Vector tmp1, N_Vector tmp2, N_Vector tmp3);\n");
 		buffer.append("static void calcDSDT(N_Vector x, N_Vector dxdt, DlsMat Jac, DlsMat PMat);\n");
-		buffer.append("// Function to dump data to files\n");
+		buffer.append("\n");
+		
+		buffer.append("/** Function to dump data to files */\n");
 		buffer.append("static int dumpData(char* pDataFileName, N_Vector x, int xSize, realtype t, int FileCount, int newFile);\n");
-		buffer.append("// Private function to check function return values\n");
+		buffer.append("\n");
+		
+		buffer.append("/** Private function to check function return values */\n");
 		buffer.append("static int check_flag(void *flagvalue, char *funcname, int opt);\n\n");
-
+		buffer.append("\n");
+		
+		buffer.append("/** Define the parameter struct */\n");
 		buffer.append("struct params\n");
 		buffer.append("{\n");
 		buffer.append("\tDlsMat pSTM;\n");
 		buffer.append("\tN_Vector pRateConstantVector;\n");
 		buffer.append("};\n\n");
-
+		
+		
 		buffer.append("int main(int argc, char* const argv[])\n");
 		buffer.append("{\n");
 		buffer.append("\t/*\n");
@@ -231,7 +245,7 @@ public class SUNDIALSModel {
 		buffer.append("\t// Prep some variables\n");
 		buffer.append("\tint i, nTimes, flag, fileCount = 1;\n");
 		buffer.append("\trealtype dblTime, dblTSTOP, dblTs;\n");
-		buffer.append("\tN_Vector adjStateVector;\n");
+		buffer.append("\tN_Vector StateVector;\n");
 		buffer.append("\tvoid *cvode_mem;\n");
 		buffer.append("\tstruct params Parameters;\n\n");
 
@@ -245,8 +259,8 @@ public class SUNDIALSModel {
 		buffer.append("\tsscanf(argv[7], \"%lf\", &dblTs);\t\t\t// Time step size\n\n");
 
 		buffer.append("\t//Allocate N_Vectors, DlsMats\n");
-		buffer.append("\tadjStateVector = N_VNew_Serial(TOTAL_ADJ_STATES);\n");
-		buffer.append("\t\tif (check_flag((void *)adjStateVector, \"N_VNew_Serial\", 0)) return(1);\n");
+		buffer.append("\tStateVector = N_VNew_Serial(NUMBER_OF_STATES);\n");
+		buffer.append("\t\tif (check_flag((void *)StateVector, \"N_VNew_Serial\", 0)) return(1);\n");
 		buffer.append("\tParameters.pRateConstantVector = N_VNew_Serial(NUMBER_OF_RATES);\n");
 		buffer.append("\t\tif (check_flag((void *)Parameters.pRateConstantVector, \"N_VNew_Serial\", 0)) return(1);\n");
 		buffer.append("\tParameters.pSTM = NewDenseMat(NUMBER_OF_STATES, NUMBER_OF_RATES);\n");
@@ -263,30 +277,30 @@ public class SUNDIALSModel {
 		buffer.append("\t// Load kinetics, IC\'s and STM\n");
 		buffer.append("\tflag = getRateConstants(pInputKineticsFile, Parameters.pRateConstantVector);\n");
 		buffer.append("\t\tif (flag != 0) return(1);\n");
-		buffer.append("\tflag = getICs(pInputICFile, adjStateVector);\n");
+		buffer.append("\tflag = getICs(pInputICFile, StateVector);\n");
 		buffer.append("\t\tif (flag != 0) return(1);\n");
 		buffer.append("\tflag = getSTM(pSTMFile, Parameters.pSTM);\n");
 		buffer.append("\t\tif (flag != 0) return(1);\n\n");
 
-		buffer.append("\t//Set Sensitivity Matrix to zero at t0\n");
-		buffer.append("\tfor (i=NUMBER_OF_STATES; i<TOTAL_ADJ_STATES; i++)\n");
-		buffer.append("\t{\n");
-		buffer.append("\t\tNV_Ith_S(adjStateVector, i) = 0;\n");
-		buffer.append("\t}\n\n");
-
 		buffer.append("\t/********************Set up the ODE solver*******************/\n\n");
 
 		buffer.append("\t// Create ODE solver memory block\n");
-		buffer.append("\tcvode_mem = CVodeCreate(CV_ADAMS, CV_FUNCTIONAL);\t// Adams Method, Functional iteration\n");
+		buffer.append("\tcvode_mem = CVodeCreate(CV_BDF, CV_NEWTON);\t// Backward Differentiation, Newton iteration\n");
 		buffer.append("\t\tif (check_flag((void *)cvode_mem, \"CVodeCreate\", 0)) return(1);\n");
 		buffer.append("\t// Initialize the ODE solver\n");
-		buffer.append("\tflag = CVodeInit(cvode_mem, AdjBalances, TSIM[0], adjStateVector);\n");
+		buffer.append("\tflag = CVodeInit(cvode_mem, MassBalances, TSIM[0], StateVector);\n");
 		buffer.append("\t\tif (check_flag(&flag, \"CVodeInit\", 1)) return(1);\n");
 		buffer.append("\t// Pass rate constants, STM to solver\n");
 		buffer.append("\tflag = CVodeSetUserData(cvode_mem, &Parameters);\n");
 		buffer.append("\t\tif (check_flag(&flag, \"CVodeSetUserData\", 1)) return(1);\n");
 		buffer.append("\t// Specifify absolute and relative tolerances\n");
 		buffer.append("\tflag = CVodeSStolerances(cvode_mem, TOLERANCE, TOLERANCE);\n");
+		buffer.append("\t\tif (check_flag(&flag, \"CVodeSStolerances\", 1)) return(1);\n");
+		buffer.append("\t// Call CVSPGMR to specify Krylov Method solver using NO preconditioning\n");
+		buffer.append("\tflag = CVSpgmr(cvode_mem, PREC_NONE, NUMBER_OF_STATES);\n");
+		buffer.append("\t\tif (check_flag(&flag, \"CVSpgmr\", 1)) return(1);\n");
+		buffer.append("\t// Set up Jacobian-times-vector function\n");
+		buffer.append("\tflag = CVSpilsSetJacTimesVecFn(cvode_mem, JacTimesVec);\n");
 		buffer.append("\t\tif (check_flag(&flag, \"CVodeSStolerances\", 1)) return(1);\n");
                 buffer.append("\t// Adjust max internal steps - 0 for default (=500), <0 for unlimited, or >0.\n");
                 buffer.append("\tflag = CVodeSetMaxNumSteps(cvode_mem, -1);\n");
@@ -295,7 +309,7 @@ public class SUNDIALSModel {
 		buffer.append("\t/*****************ODE Solver Setup Complete!*****************/\n\n");
 
 		buffer.append("\t// Dump intitial state to output\n");
-		buffer.append("\tfileCount = dumpData(pOutputDataFile, adjStateVector, TOTAL_ADJ_STATES, TSIM[0], fileCount, 1);\n");
+		buffer.append("\tfileCount = dumpData(pOutputDataFile, StateVector, NUMBER_OF_STATES, TSIM[0], fileCount, 1);\n");
 		buffer.append("\tif (fileCount <1)\n");
 		buffer.append("\t{\n");
 		buffer.append("\t\tprintf(\"Error dumping data at t = %g\\n\", TSIM[0]);\n");
@@ -306,7 +320,7 @@ public class SUNDIALSModel {
 		buffer.append("\tfor (i=0; i < nTimes-1; i++)\n");
 		buffer.append("\t{\n");
 		buffer.append("\t\t// Calculate one step of the ODE Solution\n");
-		buffer.append("\t\tflag = CVode(cvode_mem, TSIM[i+1], adjStateVector, TSIM+i, CV_NORMAL);\n\n");
+		buffer.append("\t\tflag = CVode(cvode_mem, TSIM[i+1], StateVector, TSIM+i, CV_NORMAL);\n\n");
 
 		buffer.append("\t\tif (check_flag(&flag, \"CVode\", 1))\n");
 		buffer.append("\t\t{\n");
@@ -317,7 +331,7 @@ public class SUNDIALSModel {
 		buffer.append("\t\tif (flag == CV_SUCCESS)\n");
 		buffer.append("\t\t{\n");
 		buffer.append("\t\t\t//Dump Current state to output files\n");
-		buffer.append("\t\t\tfileCount = dumpData(pOutputDataFile, adjStateVector, TOTAL_ADJ_STATES, TSIM[i], fileCount, 0);\n");
+		buffer.append("\t\t\tfileCount = dumpData(pOutputDataFile, StateVector, NUMBER_OF_STATES, TSIM[i], fileCount, 0);\n");
 		buffer.append("\t\t\tif (fileCount <1)\n");
 		buffer.append("\t\t\t{\n");
 		buffer.append("\t\t\t\tprintf(\"Error dumping data at t = %g\\n\", TSIM[i]);\n");
@@ -327,7 +341,7 @@ public class SUNDIALSModel {
 		buffer.append("\t}\n\n");
 
 		buffer.append("\t// Free N_Vectors\n");
-		buffer.append("\tN_VDestroy_Serial(adjStateVector);\n");
+		buffer.append("\tN_VDestroy_Serial(StateVector);\n");
 		buffer.append("\tN_VDestroy_Serial(Parameters.pRateConstantVector);\n");
 		buffer.append("\tDestroyMat(Parameters.pSTM);\n\n");
 
@@ -620,18 +634,14 @@ public class SUNDIALSModel {
 		buffer.append("\t\t}\n");
 		buffer.append("\t}\n");
 		buffer.append("}\n\n");
-
-		buffer.append("// Solver functions\n");
-		buffer.append("\n");
-
-
+    
     }
 
     public void buildMassBalanceBuffer(StringBuffer buffer,Model model_wrapper) throws Exception {
         //this contains the main part of the SUNDIALS code.
 
 		buffer.append("/*\n");
-		buffer.append(" * Template written by Robert Dromms\n");
+		buffer.append(" * Template written by Robert Dromms. Edited by JV\n");
 		buffer.append(" * Created 2009-06-19 15:32\n");
 		buffer.append(" * Based off example code provided in SUNDIALS documentation: cvRoberts_dns.c\n");
 		buffer.append(" */\n\n");
@@ -650,7 +660,7 @@ public class SUNDIALSModel {
 		buffer.append("#include <sundials/sundials_direct.h>\t// definitions DlsMat DENSE_ELEM\n");
 		buffer.append("#include <sundials/sundials_types.h>\t// definition of type realtype\n\n");
 
-		buffer.append("//PROBLEM SPECIFIC VALUES\n");
+		buffer.append("// PROBLEM SPECIFIC VALUES\n");
 		buffer.append("#define TOLERANCE\t\t1e-10\t\t// global error tolerance\n");
 		buffer.append("#define NUMBER_OF_STATES\t"+(int)model_wrapper.getNumSpecies()+"\t\t// number of equations\n");
 		buffer.append("#define NUMBER_OF_RATES\t\t"+(int)model_wrapper.getNumReactions()+"\t\t// number of parameters\n\n");
@@ -659,21 +669,29 @@ public class SUNDIALSModel {
 		buffer.append("static int getRateConstants(const char* filename, N_Vector RateConstantVector);\n");
 		buffer.append("static int getICs(const char* filename, N_Vector StateVector);\n");
 		buffer.append("static int getSTM(const char* filename, DlsMat STM);\n");
+		buffer.append("\n");
+		
 		buffer.append("// Functions called by the solver\n");
 		buffer.append("static int MassBalances(realtype t, N_Vector StateVector, N_Vector dxdt, void *user_data);\n");
 		buffer.append("static void Kinetics(realtype t, N_Vector x, N_Vector rateConstVector, N_Vector rateVector);\n");
 		buffer.append("static int JacTimesVec(N_Vector v, N_Vector Jv, realtype t, N_Vector x, N_Vector fx, void *user_data, N_Vector tmp);\n");
+		buffer.append("\n");
+		
 		buffer.append("// Function to dump data to files\n");
 		buffer.append("static int dumpData(char* pDataFileName, N_Vector x, int xSize, realtype t, int FileCount, int newFile);\n");
+		buffer.append("\n");
+		
 		buffer.append("// Private function to check function return values\n");
 		buffer.append("static int check_flag(void *flagvalue, char *funcname, int opt);\n\n");
-
+		
+		buffer.append("// Parameter struct \n");
 		buffer.append("struct params\n");
 		buffer.append("{\n");
 		buffer.append("\tDlsMat pSTM;\n");
 		buffer.append("\tN_Vector pRateConstantVector;\n");
 		buffer.append("};\n\n");
 
+		buffer.append("// Main - here we go ...\n");
 		buffer.append("int main(int argc, char* const argv[])\n");
 		buffer.append("{\n");
 		buffer.append("\t/*\n");
@@ -1111,70 +1129,86 @@ public class SUNDIALSModel {
         // driver.append("gcc -o sensitivityCode Sensitivity.c -L/usr/local/lib -I/usr/local/include -lsundials_cvode -lsundials_nvecserial -lm\n");
     }
     
-    public void buildSolveAdjBalBuffer(StringBuffer driver) throws Exception {
+    public void buildSolveAdjBalBuffer(StringBuffer driver) throws Exception 
+    {
+    	driver.append("// ODE RHS function\n");
+		driver.append("static int AdjBalances(realtype t, N_Vector x, N_Vector dxdt, void *user_data)\n");
+		driver.append("{\n");
+		driver.append("\t// Prep some stuff\n");
+		driver.append("\tint i, j;\n");
+		driver.append("\trealtype tmp;\n");
+		driver.append("\tstruct params* Parameters = user_data;\n");
+		driver.append("\tN_Vector rateVector, tempVector1, tempVector2;\n");
+		driver.append("\tDlsMat PMatrix;\n\n");
 
-        driver.append("// ODE RHS function\n");
-        driver.append("static int AdjBalances(realtype t, N_Vector x, N_Vector dxdt, void *user_data)\n");
-        driver.append("{\n");
-        driver.append("\t// Prep some stuff\n");
-        driver.append("\tint i, j, k;\n");
-        driver.append("\trealtype tmp;\n");
-        driver.append("\tstruct params* Parameters = user_data;\n");
-        driver.append("\tN_Vector rateVector;\n");
-        driver.append("\tDlsMat Jacobian, PMatrix;\n\n");
+		driver.append("\t// Allocate memory\n");
+		driver.append("\trateVector = N_VNew_Serial(NUMBER_OF_RATES);\n");
+		driver.append("\t\tif (check_flag((void *)rateVector, \"N_VNew_Serial\", 0)) return(1);\n");
+		driver.append("\ttempVector1 = N_VNew_Serial(NUMBER_OF_STATES);\n");
+		driver.append("\t\tif (check_flag((void *)tempVector1, \"N_VNew_Serial\", 0)) return(1);\n");
+		driver.append("\ttempVector2 = N_VNew_Serial(NUMBER_OF_STATES);\n");
+		driver.append("\t\tif (check_flag((void *)tempVector2, \"N_VNew_Serial\", 0)) return(1);\n");
+		driver.append("\tPMatrix = NewDenseMat(NUMBER_OF_STATES, NUMBER_OF_RATES);\n");
+		driver.append("\t\tif (check_flag((void *)PMatrix, \"NewDenseMat\", 0)) return(1);\n\n");
 
-        driver.append("\t// Allocate memory\n");
-        driver.append("\trateVector = N_VNew_Serial(NUMBER_OF_RATES);\n");
-        driver.append("\t\tif (check_flag((void *)rateVector, \"N_VNew_Serial\", 0)) return(1);\n");
-        driver.append("\tJacobian = NewDenseMat(NUMBER_OF_STATES, NUMBER_OF_STATES);\n");
-        driver.append("\t\tif (check_flag((void *)Jacobian, \"NewDenseMat\", 0)) return(1);\n");
-        driver.append("\tPMatrix = NewDenseMat(NUMBER_OF_STATES, NUMBER_OF_RATES);\n");
-        driver.append("\t\tif (check_flag((void *)PMatrix, \"NewDenseMat\", 0)) return(1);\n\n");
+		driver.append("\t// Grab the kinetics\n");
+		driver.append("\tKinetics(t, x, (Parameters->pRateConstantVector), rateVector);\n\n");
 
-        driver.append("\t// Grab the kinetics\n");
-        driver.append("\tKinetics(t, x, (Parameters->pRateConstantVector), rateVector);\n\n");
+		driver.append("\t// Calculate dx/dt\n");
+		driver.append("\tfor (i=0; i< NUMBER_OF_STATES; i++)\n");
+		driver.append("\t{\n");
+		driver.append("\t\ttmp = 0;\n");
+		driver.append("\t\tfor (j=0; j < NUMBER_OF_RATES; j++)\n");
+		driver.append("\t\t{\n");
+		driver.append("\t\t\ttmp += DENSE_ELEM(Parameters->pSTM,i,j) * NV_Ith_S(rateVector,j);\n");
+		driver.append("\t\t}\n");
+		driver.append("\t\tNV_Ith_S(dxdt, i) = tmp;\n");
+		driver.append("\t}\n");
+		driver.append("\t\n");
+		driver.append("\t// Find dS/dt matrix\n");
+		driver.append("\tcalculatePMatrix((Parameters->pRateConstantVector), x, PMatrix);\n");
+		driver.append("\t\n");
+		driver.append("\t// Check if we\'re running all the columns, or just one.\n");
+		driver.append("\tif (Parameters->parameterJ < 0 || Parameters->parameterJ > NUMBER_OF_RATES-1)\n");
+		driver.append("\t{\n");
+		driver.append("\t\tfor (j=0;j<NUMBER_OF_RATES;j++)\n");
+		driver.append("\t\t{\n");
+		driver.append("\t\t\tfor (i=0; i<NUMBER_OF_STATES;i++)\n");
+		driver.append("\t\t\t{\n");
+		driver.append("\t\t\t\tNV_Ith_S(tempVector1, i) = NV_Ith_S(x,NUMBER_OF_STATES*(j+1)+i);\n");
+		driver.append("\t\t\t}\n");
+		driver.append("\t\t\t\n");
+		driver.append("\t\t\tJacTimesVec(tempVector1, tempVector2, t, x, dxdt, user_data, NULL);\n");
+		driver.append("\t\t\t\n");
+		driver.append("\t\t\tfor (i=0; i<NUMBER_OF_STATES;i++)\n");
+		driver.append("\t\t\t{\n");
+		driver.append("\t\t\t\tNV_Ith_S(dxdt, NUMBER_OF_STATES*(j+1)+i) = NV_Ith_S(tempVector2,i) + DENSE_ELEM(PMatrix, i, j);\n");
+		driver.append("\t\t\t}\n");
+		driver.append("\t\t}\n");
+		driver.append("\t}\n");
+		driver.append("\telse\n");
+		driver.append("\t{\n");
+		driver.append("\t\tfor (i=0; i<NUMBER_OF_STATES;i++)\n");
+		driver.append("\t\t{\n");
+		driver.append("\t\t\tNV_Ith_S(tempVector1, i) = NV_Ith_S(x,NUMBER_OF_STATES+i);\n");
+		driver.append("\t\t}\n");
+		driver.append("\t\t\n");
+		driver.append("\t\tJacTimesVec(tempVector1, tempVector2, t, x, dxdt, user_data, NULL);\n");
+		driver.append("\t\t\n");
+		driver.append("\t\tfor (i=0; i<NUMBER_OF_STATES;i++)\n");
+		driver.append("\t\t{\n");
+		driver.append("\t\t\tNV_Ith_S(dxdt, NUMBER_OF_STATES+i) = NV_Ith_S(tempVector2,i) + DENSE_ELEM(PMatrix, i, Parameters->parameterJ);\n");
+		driver.append("\t\t}\n");
+		driver.append("\t}\n\n");
 
-        driver.append("\t// Calculate dx/dt\n");
-        driver.append("\tfor (i=0; i< NUMBER_OF_STATES; i++)\n");
-        driver.append("\t{\n");
-        driver.append("\t\ttmp = 0;\n");
-        driver.append("\t\tfor (j=0; j < NUMBER_OF_RATES; j++)\n");
-        driver.append("\t\t{\n");
-        driver.append("\t\t\ttmp += DENSE_ELEM(Parameters->pSTM,i,j) * NV_Ith_S(rateVector,j);\n");
-        driver.append("\t\t}\n");
-        driver.append("\t\tNV_Ith_S(dxdt, i) = tmp;\n");
-        driver.append("\t}\n\n");
+		driver.append("\t// Free up memory\n");
+		driver.append("\tN_VDestroy(rateVector);\n");
+		driver.append("\tN_VDestroy(tempVector1);\n");
+		driver.append("\tN_VDestroy(tempVector2);\n");
+		driver.append("\tDestroyMat(PMatrix);\n\n");
 
-        driver.append("\t// Find dS/dt matrix\n");
-        driver.append("\tJac(NUMBER_OF_STATES, t, x, dxdt, Jacobian, user_data, NULL, NULL, NULL);\n");
-        driver.append("\tcalculatePMatrix((Parameters->pRateConstantVector), x, PMatrix);\n\n");
-
-        driver.append("\tcalcDSDT(x, dxdt, Jacobian, PMatrix);\n\n");
-
-/*      Obsoleted by calcDSDT
-        driver.append("\t// DSDT=J*S+P;\n");
-        driver.append("\tfor (i=0; i<NUMBER_OF_STATES; i++)\n");
-        driver.append("\t{\n");
-        driver.append("\t\tfor (j=0; j<NUMBER_OF_RATES; j++)\n");
-        driver.append("\t\t{\n");
-        driver.append("\t\t\ttmp = 0.0;\n");
-        driver.append("\t\t\tfor (k=0; k<NUMBER_OF_STATES; k++)\n");
-        driver.append("\t\t\t{\n");
-        driver.append("\t\t\t\ttmp += DENSE_ELEM(Jacobian,i,k) * NV_Ith_S(x,NUMBER_OF_STATES+k*NUMBER_OF_RATES+j);\n");
-        driver.append("\t\t\t}\n");
-        driver.append("\t\tNV_Ith_S(dxdt,NUMBER_OF_STATES+i*NUMBER_OF_RATES+j) = tmp + DENSE_ELEM(PMatrix,i,j);\n");
-        driver.append("\t\t}\n");
-        driver.append("\t}\n\n");
- */
-
-        driver.append("\t// Free up memory\n");
-        driver.append("\tN_VDestroy(rateVector);\n");
-        driver.append("\tDestroyMat(Jacobian);\n");
-        driver.append("\tDestroyMat(PMatrix);\n\n");
-
-        driver.append("\treturn(0);\n");
-        driver.append("}\n\n");
-
+		driver.append("\treturn(0);\n");
+		driver.append("}\n\n");
     }
 
     public void buildDataFileBuffer(StringBuffer buffer) throws Exception {
@@ -1225,18 +1259,78 @@ public class SUNDIALSModel {
     	buffer.append("./");
     	buffer.append(strExeName);
     	buffer.append(" ");
-    	buffer.append(strOutputName);
+    	buffer.append("$1");
     	buffer.append(" ");
     	buffer.append(strParameters);
     	buffer.append(" ");
     	buffer.append(strInitialCondtions);
     	buffer.append(" ");
     	buffer.append(strSTMatrix);
-    	buffer.append(" $1 $2 $3\n");
+    	buffer.append(" $2 $3 $4\n");
     	
         // buffer.append("./modelCode output.dat kinetics.dat ic.dat stm.dat $1 $2 $3\n");
     }
-
+    
+    // code to dump the octave plugin to disk -
+    public void buildOctavePlugin(StringBuffer buffer) throws Exception
+    {
+    	buffer.append("function [TSIM,X]=SolveSundialsModel(TSTART,TSTOP,Ts,OUTNAME)\n");
+    	buffer.append("\n");
+    	buffer.append("\t% Formulate the command string -\n");
+    	buffer.append("\tcmd = ['ulimit -s hard && ./RunModel.sh ',OUTNAME,' ',num2str(TSTART),' ',num2str(TSTOP),' ',num2str(Ts)];\n");
+    	buffer.append("\tdisp(cmd);\n");
+    	buffer.append("\n");
+    	buffer.append("\t% Call the command string -\n");
+    	buffer.append("\tsystem(cmd);\n");
+    	buffer.append("\n");
+    	buffer.append("\t% Load the data from disk -\n");
+    	buffer.append("\tcmd = ['X = load ',OUTNAME,';'];\n");
+    	buffer.append("\teval(cmd);\n");
+    	buffer.append("\n");
+    	buffer.append("\t% Formulate the time-scale -\n");
+    	buffer.append("\tTSIM = TSTART:Ts:TSTOP;\n");
+    	buffer.append("\n");
+    	buffer.append("return;");
+    }
+    
+    // code to dump LSODECallWrapper to disk w/the call to sundials -
+    public void buildLSODECallWrapper(StringBuffer buffer,LoadXMLPropFile xmlPropTree) throws Exception
+    {
+    	// Get the name of the output, kV and IC files -
+    	String strOutputName = xmlPropTree.getProperty("//OutputFileName/output_filename/text()");
+    	String strICFileName = xmlPropTree.getProperty("//InitialConditionFileName/initialcondition_filename/text()");
+    	String strKineticFileName = xmlPropTree.getProperty("//KineticParametersFileName/kineticparameters_filename/text()");
+    	
+    	// Populate the buffer -
+    	buffer.append("function [TSIM,X]=LSODECallWrapper(TSTART,TSTOP,Ts,DF,OUTNAME)\n");
+    	buffer.append("\n");
+    	buffer.append("\t% Get the parameters and the ICs from the DF and dump them to disk -- \n");
+        buffer.append("\tkV = DF.RATE_CONSTANT_VECTOR;\n");
+        buffer.append("\tsave -ascii ");
+        buffer.append(strKineticFileName);
+        buffer.append(" kV;\n");
+    	buffer.append("\n");
+    	buffer.append("\tIC = DF.INITIAL_CONDITIONS;\n");
+        buffer.append("\tsave -ascii ");
+        buffer.append(strICFileName);
+        buffer.append(" IC;\n");
+    	buffer.append("\n");
+    	
+        
+        // Code the try catch block -
+    	buffer.append("\ttry\n");
+    	buffer.append("\t\t% Call the SUNDIALS code -\n");
+    	buffer.append("\t\t[TSIM,X]=SolveSundialsModel(TSTART,TSTOP,Ts,OUTNAME);\n");
+    	buffer.append("\tcatch\n");
+    	buffer.append("\t\t% Do populate the return arrays w/zeros -\n");
+    	buffer.append("\t\tNS = DF.NUMBER_OF_STATES;\n");	
+    	buffer.append("\t\tNT = length(TSIM);\n");
+    	buffer.append("\t\tX = zeros(NT,NS);\n");
+    	buffer.append("\t\tmsg = ['ERROR: ',lasterr];\n");
+    	buffer.append("\t\tdisp(msg);\n");
+    	buffer.append("\tend_try_catch\n");
+    	buffer.append("return;\n");
+    }
 
     // uses Jacobian and PMatrix to find DSDT   (B)
     public void buildDSDTBuffer(StringBuffer buffer) throws Exception
