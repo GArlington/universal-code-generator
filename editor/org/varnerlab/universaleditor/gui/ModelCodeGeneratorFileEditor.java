@@ -258,7 +258,7 @@ public class ModelCodeGeneratorFileEditor extends javax.swing.JInternalFrame imp
 		_propTable.setModel(_tableModel);
 
 		// Ok, so let's set the renderer on the JTable -
-		//TableColumn col = _propTable.getColumnModel().getColumn(1);
+		// TableColumn col = _propTable.getColumnModel().getColumn(1);
 		// col.setCellEditor(new PropertiesTableCellEditor());
 
 		_propTable.setRowHeight(22);
@@ -425,7 +425,9 @@ public class ModelCodeGeneratorFileEditor extends javax.swing.JInternalFrame imp
 				// ok -- hard code some properties -
 				vlNode.setProperty("KEYNAME",strNodeName);
 				vlNode.setProperty(strNodeName,strNodeValue);
-
+				
+				// I need to think about this issue more
+				
 				//_tableModel.setValueAt(strNodeName, 0, 0);
 				//_tableModel.setValueAt(strNodeValue, 0, 1);
 			}
