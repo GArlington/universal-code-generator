@@ -166,6 +166,9 @@ public class XMLTreePropertiesTableModel extends AbstractTableModel implements T
             // Ok, so I need to get the userobject from this mofo and then pull all the properties out -
             _vltnNode = (VLTreeNode)selectedNode.getUserObject();
             
+            // Is the selected item a directory or leaf?
+            String strDirectory = (String)_vltnNode.getProperty("DIRECTORY");
+            
             // Need to get the data from the xml tree node -
             Node xmlTreeNode = (Node)_vltnNode.getProperty("XML_TREE_NODE");
             
@@ -175,9 +178,18 @@ public class XMLTreePropertiesTableModel extends AbstractTableModel implements T
 
             if (strNodeValue!=null)
             {
-            	// Set the value in the table -
-            	setValueAt(strNodeName,0,0);
-            	setValueAt(strNodeValue,0,1);
+            	if (strDirectory.equalsIgnoreCase("FALSE"))
+            	{
+            		// Set the value in the table -
+            		setValueAt(strNodeName,0,0);
+            		setValueAt(strNodeValue,0,1);
+            	}
+            	else
+            	{
+            		// Set the value in the table -
+            		setValueAt(strNodeName,0,0);
+            		setValueAt(" ",0,1);
+            	}
             }
             else
             {

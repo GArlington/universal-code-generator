@@ -144,7 +144,6 @@ public class ModelCodeGeneratorFileEditor extends javax.swing.JInternalFrame imp
 		// Set some properties on the text label -
 		jTextField1.putClientProperty("JTextField.variant", "search");
 
-
 		// Register listeners -
 		//this.addFocusListener(new ModelCodeGeneratorFileToolFocusListener());
 		this.addInternalFrameListener(new ModelCodeGeneratorFileToolFocusListener());
@@ -190,6 +189,11 @@ public class ModelCodeGeneratorFileEditor extends javax.swing.JInternalFrame imp
 			error.printStackTrace();
 			System.out.println("ERROR: Property lookup failed. The following XPath "+strXPath+" resuled in an error - "+error.toString());
 		}
+	}
+	
+	public ModelPropertiesFileTableCellEditor getTableCellEditor()
+	{
+		return(_tableCellEditor);
 	}
 
 	private void configureComboBox() {
@@ -384,7 +388,7 @@ public class ModelCodeGeneratorFileEditor extends javax.swing.JInternalFrame imp
 
 		String strEditable = editNode.getNodeValue();
 
-		System.out.println("Node = "+strNodeName+" is editable? "+strEditable);
+		//System.out.println("Node = "+strNodeName+" is editable? "+strEditable);
 
 		int COMMENT = strNodeName.indexOf("#");
 		if (COMMENT==-1)
@@ -406,6 +410,7 @@ public class ModelCodeGeneratorFileEditor extends javax.swing.JInternalFrame imp
 				vlNode.setProperty("KEYNAME",strNodeName);
 				vlNode.setProperty("EDITABLE",strEditable);
 				vlNode.setProperty("XML_TREE_NODE", xmlNode);
+				vlNode.setProperty("DIRECTORY", "TRUE");
 			}
 			else
 			{
@@ -413,6 +418,7 @@ public class ModelCodeGeneratorFileEditor extends javax.swing.JInternalFrame imp
 				vlNode.setProperty("CLOSED_ICON", VLIconManagerService.getIcon("VLPROPERTY-32-GREY-ICON"));
 				vlNode.setProperty("OPENED_ICON", VLIconManagerService.getIcon("VLPROPERTY-32-ICON"));
 				vlNode.setProperty("XML_TREE_NODE", xmlNode);
+				vlNode.setProperty("DIRECTORY", "FALSE");
 
 				// Get editable flag -
 				Node leafNode = xmlNode.getAttributes().getNamedItem("editable");        	
@@ -929,9 +935,6 @@ public class ModelCodeGeneratorFileEditor extends javax.swing.JInternalFrame imp
 					
 					// Get the keyname -
 					String keyName = (String)userObj.getProperty("KEYNAME");
-
-					PublishService.submitData("Checking keyName - "+keyName);
-
 					// Check the keyname -- is it the one wee need? Ha Ha ... I said wee
 					if (keyName.equalsIgnoreCase("WORKING_DIRECTORY"))
 					{

@@ -102,8 +102,7 @@ public class ModelPropertiesFileTableCellEditor implements IVLTableCellEditor {
         
     	// Ok, so run specific logic for each *output* type - 
     	
-    	// Get the type from the selected string -
-    	
+    	// Get the type from the selected string -   	
     	if (_strSelectedItem.equalsIgnoreCase("Graphviz dot-file (*.dot)"))
     	{
     		String type="GRAPHVIZ-DOT";
