@@ -18,6 +18,7 @@ import org.varnerlab.universaleditor.domain.CodeGeneratorPropertiesFileTableMode
 import org.varnerlab.universaleditor.domain.UEditorSession;
 import org.varnerlab.universaleditor.gui.Launcher;
 import org.varnerlab.universaleditor.gui.ModelCodeGeneratorFileEditor;
+import org.varnerlab.universaleditor.gui.widgets.ModelPropertiesFileTableCellEditor;
 import org.varnerlab.universaleditor.service.SystemwideEventService;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -65,6 +66,8 @@ public class LoadModelPropFileFromDiskAction implements ActionListener {
 	        	{
 	        		// Ok, so we need to look up this type in the template tree and get the display for the combo box -
 	        		String strTypeNode = modelTypeNode.getNodeValue();
+	        		      		
+	        		// Ok, so do the lookup -
 	        		String strXPathNameLookup = "//mapping[@type='"+strTypeNode+"']/display/@name";
 	        		
 	        		// Run the xpath ... make it so #1 (a little Next Gen for your ass)
@@ -73,6 +76,10 @@ public class LoadModelPropFileFromDiskAction implements ActionListener {
 	        		if (displayName!=null)
 	        		{
 	        			windowFrame.setSelectedJComboItem(displayName.getNodeValue());
+	        			
+	        			// reset the type -
+		        		ModelPropertiesFileTableCellEditor _tableCellEditor = windowFrame.getTableCellEditor();
+		        		_tableCellEditor.setCurrentOutputType(displayName.getNodeValue());
 	        		}
 	        	}
 	        	
