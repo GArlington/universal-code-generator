@@ -94,6 +94,7 @@ public class ModelCodeGeneratorFileEditor extends javax.swing.JInternalFrame imp
 	private XPath _xpath = _xpFactory.newXPath();
 	private ArrayList<String> _aList = new ArrayList<String>();
 	private final InfiniteProgressPanel glassPane = new InfiniteProgressPanel();
+	private PropTableBackKeyListener _propTableBackKeyListener = new PropTableBackKeyListener();
 
 	// static accessor method
 	public static ModelCodeGeneratorFileEditor getInstance(){
@@ -260,6 +261,9 @@ public class ModelCodeGeneratorFileEditor extends javax.swing.JInternalFrame imp
 
 		// Set the default table model -
 		_propTable.setModel(_tableModel);
+		
+		// Set a key listner -
+		_propTable.addKeyListener(_propTableBackKeyListener);
 
 		// Ok, so let's set the renderer on the JTable -
 		// TableColumn col = _propTable.getColumnModel().getColumn(1);

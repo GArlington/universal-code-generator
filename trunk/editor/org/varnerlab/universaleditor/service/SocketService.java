@@ -52,6 +52,30 @@ public class SocketService {
         		buffer.append("MAKE_NEW_REMOTE_DIRECTORY");
         		break;
         	
+        	case DELETE_PROJECT_ON_SERVER:
+        		buffer.append((String)session.getProperty("VALIDATED_USERNAME"));	// 
+        		buffer.append("::");
+        		buffer.append((String)session.getProperty("SESSION_ID"));
+        		buffer.append("::");
+        		buffer.append((String)session.getProperty("SELECTED_REMOTE_PATH"));
+        		buffer.append("::");
+        		buffer.append("-1");
+        		buffer.append("::");
+        		buffer.append("DELETE_PROJECT_ON_SERVER");
+        		break;
+        	
+        	case DELETE_FILE_ON_SERVER:
+        		buffer.append((String)session.getProperty("VALIDATED_USERNAME"));	// 
+        		buffer.append("::");
+        		buffer.append((String)session.getProperty("SESSION_ID"));
+        		buffer.append("::");
+        		buffer.append((String)session.getProperty("SELECTED_REMOTE_PATH"));
+        		buffer.append("::");
+        		buffer.append("-1");
+        		buffer.append("::");
+        		buffer.append("DELETE_FILE_ON_SERVER");
+        		break;
+        		
         	case PROJECT_DIRECTORY_LOOKUP:
         		buffer.append((String)session.getProperty("VALIDATED_USERNAME"));	// 
         		buffer.append("::");
@@ -117,7 +141,7 @@ public class SocketService {
         // grab the buffer and put into a string -
         strRoutingInformation = buffer.toString();
         
-        PublishService.submitData(strRoutingInformation);
+        //PublishService.submitData(strRoutingInformation);
 
         // Formulate the meassge and send -
         String strData = strRoutingInformation+"\n"+data;

@@ -59,8 +59,10 @@ import org.varnerlab.universaleditor.service.SystemwideEventService;
 import org.varnerlab.universaleditor.service.VLIconManagerService;
 import org.varnerlab.universaleditor.domain.UEditorSession;
 import org.varnerlab.universaleditor.gui.actions.DeleteLocalFileKeyListener;
+import org.varnerlab.universaleditor.gui.actions.DeleteRemoteFileKeyListener;
 import org.varnerlab.universaleditor.gui.actions.FileTransferJPopupMenuActionListener;
 import org.varnerlab.universaleditor.gui.actions.FileTransferJPopupMenuDeleteLocalActionListener;
+import org.varnerlab.universaleditor.gui.actions.FileTransferJPopupMenuDeleteProjectActionListener;
 import org.varnerlab.universaleditor.gui.actions.GetFileFromServerAction;
 import org.varnerlab.universaleditor.gui.actions.LoginToolAction;
 import org.varnerlab.universaleditor.gui.actions.RefreshProjectViewJPopupMenuActionListener;
@@ -108,6 +110,7 @@ public class FileTransferTool extends javax.swing.JInternalFrame implements Acti
 	private FileTransferJPopupMenuMouseAdapter popupMouseAdapter = null;
 	private RefreshProjectViewJPopupMenuActionListener refreshMenuListner = null;
 	private FileTransferJPopupMenuDeleteLocalActionListener deleleLocalFolder = null;
+	private FileTransferJPopupMenuDeleteProjectActionListener deleteProjectFolder = null;
 	private LoginToolAction _loginTool = null;
 
 	private ImageIcon _imgIconOff = null;
@@ -120,6 +123,7 @@ public class FileTransferTool extends javax.swing.JInternalFrame implements Acti
 	private RemoteJListDoubleClickAdapter _doubleClickAdapter = new RemoteJListDoubleClickAdapter();
 	private LocalJListDoubleClickAdapter _localDoubleClickAdapter = new LocalJListDoubleClickAdapter();
 	private DeleteLocalFileKeyListener _deleteLocalFileKey = new DeleteLocalFileKeyListener();
+	private DeleteRemoteFileKeyListener _deleteRemoteFileKey = new DeleteRemoteFileKeyListener();
 
 
 	// Create a xpFactory/xpath obj (we'll use this a zillion times -)
@@ -185,11 +189,14 @@ public class FileTransferTool extends javax.swing.JInternalFrame implements Acti
 			popupMouseAdapter = new FileTransferJPopupMenuMouseAdapter();
 			refreshMenuListner = new RefreshProjectViewJPopupMenuActionListener();
 			deleleLocalFolder = new FileTransferJPopupMenuDeleteLocalActionListener();
+			deleteProjectFolder = new FileTransferJPopupMenuDeleteProjectActionListener();
+			
 			_loginTool = new LoginToolAction();
 
 			// Set the reference to the combo box -
 			popupMenuListener.setJComboBoxReference(jComboBox1);
 			deleleLocalFolder.setJComboBoxReference(jComboBox1);
+			deleteProjectFolder.setJComboBoxReference(jComboBox2);
 
 			// Setup the new folder -
 			JMenuItem item = new JMenuItem("New local folder ... ",VLIconManagerService.getIcon("FOLDER-8-ICON"));
@@ -213,7 +220,7 @@ public class FileTransferTool extends javax.swing.JInternalFrame implements Acti
 			// Setup the new project menu action -
 			JMenuItem delete_remote_project = new JMenuItem("Delete folder on server ... ",VLIconManagerService.getIcon("DRIVE-8-ICON"));
 			delete_remote_project.setHorizontalTextPosition(JMenuItem.RIGHT);
-			delete_remote_project.addActionListener(_loginTool);
+			delete_remote_project.addActionListener(deleteProjectFolder);
 			popup.add(delete_remote_project);
 			popup.addSeparator();			
 			
@@ -327,6 +334,7 @@ public class FileTransferTool extends javax.swing.JInternalFrame implements Acti
 		jList2.addMouseListener(_doubleClickAdapter);
 		jList1.addMouseListener(_localDoubleClickAdapter);
 		jList1.addKeyListener(_deleteLocalFileKey);
+		jList2.addKeyListener(_deleteRemoteFileKey);
 
 		//jList1.putClientProperty(com.sun.java.swing.SwingUtilities2.AA_TEXT_PROPERTY_KEY,Boolean.TRUE );
 		//jList2.putClientProperty(com.sun.java.swing.SwingUtilities2.AA_TEXT_PROPERTY_KEY,Boolean.TRUE );
@@ -357,6 +365,7 @@ public class FileTransferTool extends javax.swing.JInternalFrame implements Acti
 		_doubleClickAdapter.setListReference(jList2);
 		_localDoubleClickAdapter.setListReference(jList1);
 		_deleteLocalFileKey.setJListReference(jList1);
+		_deleteRemoteFileKey.setJListReference(jList2);
 		
 
 		// configure the popup menu -
