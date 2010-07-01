@@ -237,7 +237,8 @@ public class Main implements Runnable {
         
         // Ok, so when I get here I have the routing header from the message - I need to load up the message handlers and process the message -
         _logger.log(Level.INFO,"Routing information - "+strRoutingInfo);
-
+        _logger.log(Level.INFO,"Payload information - "+_tmpBuffer.toString());
+        
         // Parse the routing info to get the username and session id for this request -
         StringTokenizer tokenizer = new StringTokenizer(strRoutingInfo,"::");
         counter = 1;
