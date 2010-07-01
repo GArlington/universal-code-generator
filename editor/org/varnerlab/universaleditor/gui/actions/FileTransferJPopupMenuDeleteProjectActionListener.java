@@ -7,21 +7,20 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
+import java.util.Hashtable;
 
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
-import javax.swing.event.ListSelectionEvent;
 
 import org.varnerlab.universaleditor.domain.UEditorSession;
 import org.varnerlab.universaleditor.gui.FileTransferTool;
 import org.varnerlab.universaleditor.gui.Launcher;
-import org.varnerlab.universaleditor.gui.NewDirectoryDialog;
 import org.varnerlab.universaleditor.gui.widgets.SheetDialogFrame;
-import org.varnerlab.universaleditor.service.SystemwideEventService;
+import org.varnerlab.universaleditor.service.SocketService;
+import org.varnerlab.universaleditor.service.ServerJobTypes;
 
-
-public class FileTransferJPopupMenuDeleteLocalActionListener implements ActionListener,PropertyChangeListener {
+public class FileTransferJPopupMenuDeleteProjectActionListener implements ActionListener,PropertyChangeListener {
 	// class/instance attributes -
 	private JComboBox _jComboBox = null;
 	private Component focusedComponent = null;
@@ -31,13 +30,13 @@ public class FileTransferJPopupMenuDeleteLocalActionListener implements ActionLi
     private SheetDialogFrame _frame;
     private JOptionPane optionPane;
 	
-	public void setJComboBoxReference(JComboBox jComboBox)
+    public void setJComboBoxReference(JComboBox jComboBox)
 	{
 		_jComboBox = jComboBox;
 	}
 	
 	public void actionPerformed(ActionEvent e) {
-	
+		// TODO Auto-generated method stub
 		// Ok, so when I get here I need to create a new folder in the local file system -
 		selectedDir = (File)_jComboBox.getSelectedItem();
 		
@@ -50,7 +49,17 @@ public class FileTransferJPopupMenuDeleteLocalActionListener implements ActionLi
 			focusedComponent = manager.getFocusOwner();
 	        windowFrame = (FileTransferTool)focusedComponent.getFocusCycleRootAncestor();
 	        
-	        String strMessage = "Delete - "+selectedDir.getName()+"?";
+	        // Ok, so we need to use the human readable name -
+	        
+	        // Get the session from Launcher
+			UEditorSession session = (Launcher.getInstance()).getSession();
+	        
+	        // ok, so I have a ssid in the name -
+        	Hashtable tmpTable = (Hashtable)session.getProperty("PROJECT_TRANSLATION_TABLE");
+        	
+        	// lookup the project id -
+        	String strHumanName = (String)tmpTable.get(selectedDir.getName());
+	        String strMessage = "Delete - "+strHumanName+"?";
 			
 			//JOptionPane.showMessageDialog(_jList, strMessage);
 			
@@ -60,35 +69,19 @@ public class FileTransferJPopupMenuDeleteLocalActionListener implements ActionLi
 	                                      JOptionPane.YES_NO_OPTION);
 	        
 	        optionPane.addPropertyChangeListener (this);
-	        JDialog dialog = optionPane.createDialog (windowFrame, "irrelevant");
-	        //dialog.show();
-	        windowFrame.showJDialogAsSheet(dialog);
+	        JDialog dialog = optionPane.createDialog (windowFrame, "Delete project ... ");
+	        dialog.show();
+	        //windowFrame.showJDialogAsSheet(dialog);
 		}
 		catch (Exception error)
 		{
 			// we should log this -
 			System.out.println("Error in "+this.getClass().getName()+" "+error.toString());
 		}
-		
-		
-		
-		/* v 1.0 - this just pops up a dialog. We want the dialog to popup on the FileTransferTool window (pinned to window)
-		// Ok, so now I need to load the dialog box to capture the name of the dir -
-		NewDirectoryDialog dialog = new NewDirectoryDialog();
-		dialog.setWorkingDirectory(selectedDir.getAbsolutePath());
-		dialog.setVisible(true);
-		
-		// Grab Launcher instance
-        Launcher _main=Launcher.getInstance();
-
-        // Add the tool to the workspace -
-        _main.getContentPane().add(dialog);
-        */
 	}
-	
+
 	public void propertyChange(PropertyChangeEvent pce) {
-		 
-		
+		// TODO Auto-generated method stub
 		if (pce.getPropertyName().equals (JOptionPane.VALUE_PROPERTY)) 
 		{
 
@@ -98,55 +91,37 @@ public class FileTransferJPopupMenuDeleteLocalActionListener implements ActionLi
 				
 				System.out.println("Going to kia - "+selectedDir.getName());
 				
-				// Ok, do some crazy insane magic -
-				File parent = selectedDir.getParentFile();
-				_jComboBox.setSelectedItem(parent);
-				_jComboBox.removeItem(selectedDir);
-				processDirectoryTree(selectedDir);
-				windowFrame.updateSelectedDirectory();
-			}
-			else
-			{
-				windowFrame.hideSheet();
+				// Ok, do some crazy insane magik (yep, it is so awesome that it warrants the k) -
+				
+				// Get the session from Launcher
+				UEditorSession session = (Launcher.getInstance()).getSession();
+				
+				// Formulate the message and get stuff reqd by the socket service -
+				String strIPAddress = (String)session.getProperty("SERVER_ADDRESS");
+	    		String strPort = (String)session.getProperty("SERVER_PORT");
+	    		
+	    		StringBuffer buffer = new StringBuffer();
+	    		buffer.append("<universal>\n");
+	    		buffer.append("</universal>\n");
+				
+				// Ok, so we need to send a message to the server to nuke this dir -
+				try {
+					// Socket service - send a message -
+					SocketService.sendMessage(buffer.toString(),strIPAddress, strPort,session, ServerJobTypes.DELETE_PROJECT_ON_SERVER);
+					
+					// Update the session -
+					windowFrame.refershProjectView();
+				}
+				catch (Exception error)
+				{
+					System.out.println("Error sending message..."+error.toString());
+				}
+				
 			}
 	        
 			// close the frame -
             //windowFrame.hideSheet();
 	     }
-		
-	}
-	
-	private void processDirectoryTree(File dir)
-	{
-		// Ok, let's figure out if this dir has kids -
-		File[] contentsArr = dir.listFiles();
-		int NFILES = contentsArr.length;
-		if (NFILES==0)
-		{
-			// ok, if I get here then I have an empty list -
-			dir.delete();
-		}
-		else
-		{
-			for (int index=0;index<NFILES;index++)
-			{
-				// Get file -
-				File tmpFile = contentsArr[index];
-				if (tmpFile.isDirectory())
-				{
-					// if I get here then I have a dir that I need to kia -
-					processDirectoryTree(tmpFile);
-				}
-				else
-				{
-					// if I get here then I have a file - delete
-					tmpFile.delete();
-				}
-			}
-			
-			// lastly we need to delete me -
-			processDirectoryTree(dir);
-		}
 	}
 
 }

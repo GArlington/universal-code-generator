@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package org.varnerlab.universaleditor.gui.actions;
 
 import java.awt.Component;
@@ -15,22 +10,18 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 
-import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 
+import org.varnerlab.universaleditor.domain.UEditorSession;
 import org.varnerlab.universaleditor.gui.FileTransferTool;
 import org.varnerlab.universaleditor.gui.Launcher;
-import org.varnerlab.universaleditor.gui.ModelCodeGeneratorFileEditor;
 import org.varnerlab.universaleditor.gui.widgets.SheetDialogFrame;
-import org.w3c.dom.Document;
+import org.varnerlab.universaleditor.service.ServerJobTypes;
+import org.varnerlab.universaleditor.service.SocketService;
 
-/**
- *
- * @author jeffreyvarner
- */
-public class DeleteLocalFileKeyListener implements KeyListener,ActionListener,PropertyChangeListener  {
+public class DeleteRemoteFileKeyListener implements KeyListener,ActionListener,PropertyChangeListener  {
 	// Class/instance attributes -
 	private JList _jList= null;
 	private File[] selectedFileArr;
@@ -43,7 +34,7 @@ public class DeleteLocalFileKeyListener implements KeyListener,ActionListener,Pr
     private KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
 	
     public void keyTyped(KeyEvent e) {
-        System.out.println("Hey now -- ");
+        System.out.println("Hey now -- remote jlist2");
     }
 
     public void setJListReference(JList jList)
@@ -61,16 +52,23 @@ public class DeleteLocalFileKeyListener implements KeyListener,ActionListener,Pr
 	        focusedComponent = manager.getFocusOwner();
 	        windowFrame = (FileTransferTool)focusedComponent.getFocusCycleRootAncestor();
         	
+	        System.out.println("keyPressed on remote...");
+	        
 	        // Ok, so we need to add a dialog to make sure it is ok to delete what ever I'm about to delete
 	        
-	        
-        	// Ok, so when I get here I'm going to delete local files?
+        	// Ok, so when I get here I'm going to delete remote files?
     		Object[] objArr = _jList.getSelectedValues();
     		int NITEMS = objArr.length;
+    		
+    		
+    		
     		for (int index=0;index<NITEMS;index++)
     		{
     			File tmpFile = (File)objArr[index];
-    			if (tmpFile.isFile())
+    			
+    			System.out.println("How many items ... "+NITEMS+" what has been selected - "+tmpFile.getName()+" is this a file? "+tmpFile.isFile());
+    			
+    			if (tmpFile!=null)
     			{
     				// what file is selected -
     				_fileLocal = tmpFile;
@@ -101,8 +99,7 @@ public class DeleteLocalFileKeyListener implements KeyListener,ActionListener,Pr
 	public void propertyChange(PropertyChangeEvent evt) {
 		
 		if (evt.getPropertyName().equals (JOptionPane.VALUE_PROPERTY)) 
-		{
-					
+		{		
 			FileTransferTool windowFrame = (Launcher.getInstance()).getFileTransferToolRef();
 			int value = ((Integer)optionPane.getValue()).intValue();
 			
@@ -110,11 +107,36 @@ public class DeleteLocalFileKeyListener implements KeyListener,ActionListener,Pr
 			{
 			
 				try {				
-					// delete the file -
-					_fileLocal.delete();
 					
-					// update the GUI =
-		    		windowFrame.updateSelectedDirectory();
+					// Ok - this is where we launch...
+					// Get the session from Launcher
+					UEditorSession session = (Launcher.getInstance()).getSession();
+					
+					// Formulate the message and get stuff reqd by the socket service -
+					String strIPAddress = (String)session.getProperty("SERVER_ADDRESS");
+		    		String strPort = (String)session.getProperty("SERVER_PORT");
+		    		
+		    		// Ok, so let's create the path string -
+		    		String strFile = _fileLocal.getName();
+		    		String strSelectedRemotePath = (String)session.getProperty("SELECTED_REMOTE_PATH");
+		    		String strPath = strSelectedRemotePath+"/"+strFile;
+		    		
+		    		// Formulate the message buffer -
+		    		StringBuffer buffer = new StringBuffer();
+		    		buffer.append("<?xml version=\"1.0\"?>\n");
+		    		buffer.append("<universal>\n");
+		    		buffer.append("\t<property remotefilename=\"");
+		    		buffer.append(strPath);
+		    		buffer.append("\"/>\n");
+		    		buffer.append("</universal>\n");
+		    			
+					// Ok, so we need to send a message to the server to nuke this dir -
+					
+					// Socket service - send a message -
+					SocketService.sendMessage(buffer.toString(),strIPAddress, strPort,session, ServerJobTypes.DELETE_FILE_ON_SERVER);
+						
+					// Update the session -
+					windowFrame.refershProjectView();
 				}
 				catch (Exception error)
 				{
@@ -131,5 +153,4 @@ public class DeleteLocalFileKeyListener implements KeyListener,ActionListener,Pr
 			}
 		}
 	}
-
 }
