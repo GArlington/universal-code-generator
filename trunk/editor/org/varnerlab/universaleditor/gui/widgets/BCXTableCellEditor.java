@@ -122,7 +122,18 @@ public class BCXTableCellEditor implements IVLTableCellEditor {
 		{
 			// Add true/false to the drop down -
 			comboBox.addItem("Time");
-			comboBox.addItem("Concentration");
+			comboBox.addItem("Absolute concentration or mass");
+			comboBox.addItem("Scaled concentration or mass");
+
+			// Wrap and return -
+			DefaultCellEditor ed = new DefaultCellEditor(comboBox);
+			return(ed);
+		}
+		else if (current_row.equalsIgnoreCase("file_type"))
+		{
+			// Add true/false to the drop down -
+			comboBox.addItem("ascii");
+			comboBox.addItem("mat-binary");
 
 			// Wrap and return -
 			DefaultCellEditor ed = new DefaultCellEditor(comboBox);

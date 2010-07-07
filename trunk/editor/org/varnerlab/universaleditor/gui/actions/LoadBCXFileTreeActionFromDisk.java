@@ -77,7 +77,8 @@ public class LoadBCXFileTreeActionFromDisk implements ActionListener {
 
 			// Ok, so now let's cache the DOM tree so I can use it later -
 			session.setProperty("BCX_DOM_TREE", doc);
-
+			session.setProperty("BCX_TEMPLATE_TREE", doc);
+			
 			// Ok, when I get here I have a reference to the rootNode - hand this to BioChemExpTool -
 			windowFrame.setRootNode(doc);
 			

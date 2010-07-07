@@ -75,7 +75,7 @@ public class AddDataColumnNodeAction implements ActionListener {
 			VLTreeNode vltnNode = (VLTreeNode)selectedNode.getUserObject();
 			Node parentXMLNode = (Node)vltnNode.getProperty("XML_TREE_NODE");
 
-			// Ok, so can I add an Experiment node to this node?
+			// Ok, so can I add an data_col node to this node?
 			String strClassName = (String)vltnNode.getProperty("KEYNAME");
 			if (strClassName.equalsIgnoreCase("measurement_file"))
 			{
@@ -86,6 +86,7 @@ public class AddDataColumnNodeAction implements ActionListener {
 				newNode.setProperty("CLOSED_ICON", VLIconManagerService.getIcon("EVALUE-12-GREY-ICON"));
 				newNode.setProperty("OPENED_ICON", VLIconManagerService.getIcon("EVALUE-12-ICON"));
 				newNode.setProperty("KEYNAME","data_column");
+				newNode.setProperty("EDITABLE", "true");
 
 				// I need to create the xmlNode -
 				String strXPStimulus = "//data_column";
@@ -95,7 +96,7 @@ public class AddDataColumnNodeAction implements ActionListener {
 				// Clone the node -
 				Node clonedXMLTreeNode = tmpNode.cloneNode(false);
 				parentXMLNode.appendChild(clonedXMLTreeNode);
-				newNode.setProperty("XML_TREE_NODE", tmpNode.cloneNode(true));
+				newNode.setProperty("XML_TREE_NODE", clonedXMLTreeNode);
 
 				// Create a new DefaultMutableTreeNode gui node -
 				DefaultMutableTreeNode newGUINode = new DefaultMutableTreeNode();
