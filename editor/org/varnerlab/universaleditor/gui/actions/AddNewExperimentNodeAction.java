@@ -90,6 +90,7 @@ public class AddNewExperimentNodeAction implements ActionListener {
 				newNode.setProperty("CLOSED_ICON", VLIconManagerService.getIcon("EVALUE-12-GREY-ICON"));
 				newNode.setProperty("OPENED_ICON", VLIconManagerService.getIcon("EVALUE-12-ICON"));
 				newNode.setProperty("KEYNAME","experiment");
+				newNode.setProperty("EDITABLE", "true");
 
 				// I need to create the xmlNode -
 				String strXPStimulus = "//experiment";

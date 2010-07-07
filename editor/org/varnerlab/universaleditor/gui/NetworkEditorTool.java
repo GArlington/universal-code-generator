@@ -19,6 +19,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Vector;
+import java.util.Collections;
 
 import javax.swing.Box;
 import javax.swing.ImageIcon;
@@ -251,6 +252,9 @@ public class NetworkEditorTool extends javax.swing.JInternalFrame implements Tab
 					Node tmpNode = speciesList.item(sindex);
 					_vecSpecies.addElement(tmpNode.getNodeValue());
 				}
+				
+				// Ok, we need to sort the species -
+				Collections.sort(_vecSpecies);
 				
 				// put the list of species in session -
 				_session.setProperty("LIST_OF_SPECIES", _vecSpecies.clone());

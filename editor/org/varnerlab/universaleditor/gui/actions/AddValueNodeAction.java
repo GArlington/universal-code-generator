@@ -55,7 +55,6 @@ public class AddValueNodeAction implements ActionListener {
 
 
 	public void actionPerformed(ActionEvent e) {
-		// Ok, so when I get here - I'm trying to load a properties file from disk -
 
 		// First, you'll need to load the file chooser - hey by the way, I'm Rick Jamessss Bit*h!
 		try {

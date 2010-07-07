@@ -85,6 +85,7 @@ public class AddNewDataGroupNodeAction implements ActionListener {
 				newNode.setProperty("CLOSED_ICON", VLIconManagerService.getIcon("EGROUP-12-GREY-ICON"));
 				newNode.setProperty("OPENED_ICON", VLIconManagerService.getIcon("EGROUP-12-ICON"));
 				newNode.setProperty("KEYNAME","measurement_file");
+				newNode.setProperty("EDITABLE", "true");
 
 				// I need to create the xmlNode -
 				String strXPStimulus = "//measurement_file";
