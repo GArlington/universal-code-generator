@@ -170,6 +170,42 @@ public class FileTransferTool extends javax.swing.JInternalFrame implements Acti
 	}
 
 
+	public void refershProjectView(String strReturnString)
+	{
+		try 
+		{
+			// Ok, check to see if return string is null -
+			if (strReturnString!=null)
+			{
+				// Clear out the list model -
+				_listModelJList2.clear();
+
+				// If I get here that I should have a list of the files on the server -
+				DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+				DocumentBuilder builder = factory.newDocumentBuilder();
+
+				// Ok, so we have a document -
+				Document document = builder.parse(new InputSource(new StringReader(strReturnString)));
+				processNodes(document,_listModelJList2,false);
+
+				// Add model to jList2 -
+				jList2.setModel(_listModelJList2);
+
+				// Set the tree in session -
+				_session.setProperty("REMOTE_FILESYSTEM_TREE", document);
+			}
+			
+			// Let everyone else know that I have updated session -
+			SystemwideEventService.fireSessionUpdateEvent();
+		}
+		catch (Exception ex)
+		{
+			PublishService.submitData("Spank me - some type of error "+ex);
+			ex.printStackTrace();
+		}
+	}
+	
+	
 	public void refershProjectView()
 	{
 		this.populateProjectList();

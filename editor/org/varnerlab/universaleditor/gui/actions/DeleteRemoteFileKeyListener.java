@@ -9,10 +9,13 @@ import java.awt.event.KeyListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
+import java.io.StringReader;
 
 import javax.swing.JDialog;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.varnerlab.universaleditor.domain.UEditorSession;
 import org.varnerlab.universaleditor.gui.FileTransferTool;
@@ -20,6 +23,7 @@ import org.varnerlab.universaleditor.gui.Launcher;
 import org.varnerlab.universaleditor.gui.widgets.SheetDialogFrame;
 import org.varnerlab.universaleditor.service.ServerJobTypes;
 import org.varnerlab.universaleditor.service.SocketService;
+import org.xml.sax.InputSource;
 
 public class DeleteRemoteFileKeyListener implements KeyListener,ActionListener,PropertyChangeListener  {
 	// Class/instance attributes -
@@ -59,9 +63,7 @@ public class DeleteRemoteFileKeyListener implements KeyListener,ActionListener,P
         	// Ok, so when I get here I'm going to delete remote files?
     		Object[] objArr = _jList.getSelectedValues();
     		int NITEMS = objArr.length;
-    		
-    		
-    		
+    		  		
     		for (int index=0;index<NITEMS;index++)
     		{
     			File tmpFile = (File)objArr[index];
@@ -133,10 +135,11 @@ public class DeleteRemoteFileKeyListener implements KeyListener,ActionListener,P
 					// Ok, so we need to send a message to the server to nuke this dir -
 					
 					// Socket service - send a message -
-					SocketService.sendMessage(buffer.toString(),strIPAddress, strPort,session, ServerJobTypes.DELETE_FILE_ON_SERVER);
-						
+		    		String strReturnString = SocketService.sendMessage(buffer.toString(),strIPAddress, strPort,session, ServerJobTypes.DELETE_FILE_ON_SERVER);
+					
+		    		
 					// Update the session -
-					windowFrame.refershProjectView();
+		    		windowFrame.refershProjectView(strReturnString);
 				}
 				catch (Exception error)
 				{

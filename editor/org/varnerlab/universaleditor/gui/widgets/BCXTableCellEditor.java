@@ -118,12 +118,31 @@ public class BCXTableCellEditor implements IVLTableCellEditor {
 			DefaultCellEditor ed = new DefaultCellEditor(comboBox);
 			return(ed);
 		}
+		else if (current_row.equalsIgnoreCase("scaling"))
+		{
+			// Add scaling options -
+			comboBox.addItem("BETA");
+			comboBox.addItem("ZERO_TO_ONE");
+
+			// Wrap and return -
+			DefaultCellEditor ed = new DefaultCellEditor(comboBox);
+			return(ed);
+		}
 		else if (current_row.equalsIgnoreCase("column_type"))
 		{
 			// Add true/false to the drop down -
 			comboBox.addItem("Time");
-			comboBox.addItem("Absolute concentration or mass");
-			comboBox.addItem("Scaled concentration or mass");
+			comboBox.addItem("Concentration, mass or other");
+
+			// Wrap and return -
+			DefaultCellEditor ed = new DefaultCellEditor(comboBox);
+			return(ed);
+		}
+		else if (current_row.equalsIgnoreCase("search_network"))
+		{
+			// Add true/false to the drop down -
+			comboBox.addItem("TRUE");
+			comboBox.addItem("FALSE");
 
 			// Wrap and return -
 			DefaultCellEditor ed = new DefaultCellEditor(comboBox);
