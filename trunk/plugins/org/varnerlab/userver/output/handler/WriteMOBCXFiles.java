@@ -42,8 +42,10 @@ public class WriteMOBCXFiles implements IOutputHandler {
 		// Method attributes -
 		Document bcxTree = (Document)object;
 		MOBCXModel model_wrapper = new MOBCXModel();
-		StringBuffer expdata_buffer = new StringBuffer();
 		ArrayList<StringBuffer> expList = new ArrayList<StringBuffer>();
+		StringBuffer expdata_buffer = new StringBuffer();
+		StringBuffer moseBuffer = new StringBuffer();
+		StringBuffer soseBuffer = new StringBuffer();
 		
 		// Populate the buffers -
 		model_wrapper.buildExperimentalDataStructBuffer(expdata_buffer, bcxTree,_xmlPropTree);
@@ -71,12 +73,16 @@ public class WriteMOBCXFiles implements IOutputHandler {
 			SBMLModelUtilities.dumpErrorFunctionToDisk(err_buffer, _xmlPropTree, strExpId);
 		}
 		
-		// Write the error files -
+		// Build and write the MOSE and SOSE files -
+		model_wrapper.buildMOSEBuffer(moseBuffer, bcxTree, _xmlPropTree);
+		model_wrapper.buildSOSEBuffer(soseBuffer, bcxTree, _xmlPropTree);
 		
+		// Dump xOSE files to disk --
+		SBMLModelUtilities.dumpSEBufferToDisk(moseBuffer, _xmlPropTree, "MOSE.m");
+		SBMLModelUtilities.dumpSEBufferToDisk(soseBuffer, _xmlPropTree, "SOSE.m");
 		
 		// Dump the experimental data struct to disk -
 		SBMLModelUtilities.dumpExpDataStructToDisk(expdata_buffer,_xmlPropTree);
-		
 	}
 
 }
