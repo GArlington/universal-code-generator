@@ -392,6 +392,25 @@ public class SBMLModelUtilities {
         GIOL.write(strSBMLFile,data_buffer);
     }
     
+    public static void dumpSEBufferToDisk(StringBuffer data_buffer,LoadXMLPropFile _xmlPropTree,String strFileName) throws Exception
+    {
+    	// I have populated the string buffer, dump that mofo
+        String strWorkingDir = _xmlPropTree.getProperty("//working_directory/text()");
+        String strFilePath = "";
+        String strSBMLFile = "";
+        
+        if (strFilePath.isEmpty())
+        {
+        	strSBMLFile = strWorkingDir+"/"+strFileName;
+        }
+        else
+        {
+        	strSBMLFile = strWorkingDir+"/"+strFilePath+"/"+strFileName;
+        }
+        
+        GIOL.write(strSBMLFile,data_buffer);
+    }
+    
     public static void dumpGeneralBufferToDisk(StringBuffer data_buffer,LoadXMLPropFile _xmlPropTree) throws Exception
     {
     	// I have populated the string buffer, dump that mofo

@@ -109,11 +109,61 @@ public class MOBCXModel {
 			}
 		}
 		
-		// How many total cols?
+		// How many total cols? - Ok, we need to find the max of the column_index_in_file attributes -
 		return_index[1] = NUMBER_OF_DATA_COLS;
 		
 		// return -
 		return(return_index);
+	}
+	
+	private ArrayList<String> getUniqueSpeciesList(String strSpeciesSymbol,String[] strAExcludeFragment) throws Exception
+	{
+		// Method attributes -
+		ArrayList<String> arrayList = new ArrayList<String>();
+		
+		// Ok, lets get the list of species -
+		ListOfSpecies listOfSpecies = _model.getListOfSpecies();
+		long NUMBER_OF_SPECIES = _model.getNumSpecies();
+        for (int scounter=0;scounter<NUMBER_OF_SPECIES;scounter++)
+        {
+        	// Get the species -
+        	Species species_tmp = (Species)listOfSpecies.get(scounter);
+        	String strSpeciesTest = species_tmp.getId();
+        
+        	
+        	boolean blnFlag = strSpeciesTest.contains(strSpeciesSymbol);
+        	
+        	if (blnFlag)
+        	{
+        		boolean blnExclude = false;
+        		
+        		// do a second test - does this symbol contain any of the exclude fragments?
+        		int NUMBER_EXCLUDE_FRAGMENTS = strAExcludeFragment.length;
+        		for (int exclude_index=0;exclude_index<NUMBER_EXCLUDE_FRAGMENTS;exclude_index++)
+        		{
+        			if (strSpeciesTest.contains(strAExcludeFragment[exclude_index]))
+        			{
+        				blnExclude = true;
+        				break;
+        			}
+        		}
+        		
+
+        		if (!arrayList.contains(strSpeciesTest) && !blnExclude)
+        		{
+        			arrayList.add(strSpeciesTest);
+        			
+        			System.out.println("Adding - "+strSpeciesTest+" for species = "+strSpeciesSymbol);
+        			
+        		}
+        	}
+        }
+        
+     
+        
+		
+		// return -
+		return(arrayList);
 	}
 	
 	private ArrayList<String> getList(String strXPath,Document bcxTree) throws Exception
@@ -164,76 +214,79 @@ public class MOBCXModel {
 		return(arrayList);
 	}
 	
-	// Build the error buffer -
-	public void buildErrorBuffer(StringBuffer buffer,Document bcxTree,LoadXMLPropFile _xmlPropTree,String strExpID) throws Exception
+	
+	
+	// Build the SOSE buffer -
+	public void buildSOSEBuffer(StringBuffer buffer,Document bcxTree,LoadXMLPropFile _xmlPropTree) throws Exception
 	{
 		// Method attributes -
 		
 		// Populate the buffer -
-		buffer.append("function [ERR]=ERR_");
-		buffer.append(strExpID);
-		buffer.append("(TSTART,TSTOP,Ts,DF,EDF)\n");
+		buffer.append("function [ERR_VEC]=SOSE(DF,EDF,OBJ_INDEX,THREAD_SUFFIX)\n");
 		buffer.append("\n");
+		buffer.append("% Grab the objective function pointer -- \n");
+		buffer.append("ERROR_STRUCT = EDF.ERROR_FUNCTION_ARRAY;\n");
+		buffer.append("pObjectiveFunction = ERROR_STRUCT.FUNCTION(OBJ_INDEX).POINTER;\n");
+		buffer.append("\n");
+		buffer.append("% Grab the simulation time scale --\n");
+		buffer.append("\t TSTART = ERROR_STRUCT.FUNCTION(OBJ_INDEX).TIME_START;\n");
+		buffer.append("\t TSTOP = ERROR_STRUCT.FUNCTION(OBJ_INDEX).TIME_STOP;\n");
+		buffer.append("\t Ts = ERROR_STRUCT.FUNCTION(OBJ_INDEX).TIME_STEP;\n");
+		buffer.append("\n");
+		buffer.append("% Evaluate the error function -- \n");
+		buffer.append("ERR_EXP = feval(pObjectiveFunction,TSTART,TSTOP,Ts,DF,EDF,THREAD_SUFFIX);\n");
+		buffer.append("ERR_VEC = ERR_EXP;\n");
+		buffer.append("\n");
+		buffer.append("return;\n");
+	}
+	
+	// Build the MOSE buffer -
+	public void buildMOSEBuffer(StringBuffer buffer,Document bcxTree,LoadXMLPropFile _xmlPropTree) throws Exception
+	{
+		// Method attributes -
 		
-		// Run the simulation -
-		buffer.append("% Run the simulation -- \n");
-		buffer.append("[TSIM,XSIM]=SIM_");
-		buffer.append(strExpID);
-		buffer.append("(TSTART,TSTOP,Ts,DF);\n");
+		// Populate the buffer -
+		buffer.append("function [ERR_VEC]=MOSE(DF,EDF,THREAD_SUFFIX)\n");
 		buffer.append("\n");
-		
-		// Load the experimental data -
-		buffer.append("% Get the experimental data from the EDF -- \n");
-		buffer.append("DATA = EDF.DATA_ARRAY_");
-		buffer.append(strExpID);
-		buffer.append(";\n");
+		buffer.append("% Grab the info about the array of error function pointers from the EDF - \n");
+		buffer.append("NUMBER_OF_OBJECTIVES = EDF.NUMBER_OF_OBJECTIVES;\n");
+		buffer.append("ERR_VEC = zeros(NUMBER_OF_OBJECTIVES,1);\n");
+		buffer.append("ERROR_STRUCT = EDF.ERROR_FUNCTION_ARRAY;\n");
 		buffer.append("\n");
-		
-		// Setup the error -
-		buffer.append("% Scale the experimental data -- \n");
-		buffer.append("[NROW,NCOL]=size(DATA);\n");
-		buffer.append("SCALED_DATA = [];\n");
-		
-		// We need to figure out what index time is (if any) -
-		int[] index_time = findDataColIDIndex("Time",strExpID,bcxTree);
-		int TMP_LEN = index_time[1];
-		if (index_time[0]!=-1)
-		{
-			buffer.append("IDX_VEC = [");
-			for (int tmp_index=0;tmp_index<TMP_LEN;tmp_index++)
-			{
-				if (tmp_index!=index_time[0])
-				{
-					buffer.append(tmp_index+1);
-					buffer.append(" ");
-				}
-			}
-			buffer.append("];\n");
-		}
-		else
-		{
-			buffer.append("IDX_VEC = 1:");
-			buffer.append(TMP_LEN+1);
-			buffer.append(";\n");
-		}
-		
-		buffer.append("NCOL_MINUS_TIME = length(IDX_VEC);\n");
-		buffer.append("for tmp_col_index=1:NCOL_MINUS_TIME\n");
-		buffer.append("\t % Get the col index -- \n");
-		buffer.append("\t col_index = IDX_VEC(tmp_col_index);\n");
+		buffer.append("% main loop -- iterate through the objectives and get the error -- \n");
+		buffer.append("for obj_index=1:NUMBER_OF_OBJECTIVES\n");
+		buffer.append("\t % Grab the objective function pointer -- \n");
+		buffer.append("\t pObjectiveFunction = ERROR_STRUCT.FUNCTION(obj_index).POINTER;\n");
+		buffer.append("\n ");
+		buffer.append("% Grab the simulation time scale --\n");
+		buffer.append("TSTART = ERROR_STRUCT.FUNCTION(obj_index).TIME_START;\n");
+		buffer.append("TSTOP = ERROR_STRUCT.FUNCTION(obj_index).TIME_STOP;\n");
+		buffer.append("Ts = ERROR_STRUCT.FUNCTION(obj_index).TIME_STEP;\n");
 		buffer.append("\n");
-		buffer.append("\t % Grab a column - \n");
-		buffer.append("\t TMP_COL = DATA(:,col_index);\n");
+		buffer.append("\t % Evaluate the error function -- \n");
+		buffer.append("\t ERR_EXP = feval(pObjectiveFunction,TSTART,TSTOP,Ts,DF,EDF,THREAD_SUFFIX);\n");
 		buffer.append("\n");
-		buffer.append("\t % Calculate the MIN and the MAX -- \n");
-		buffer.append("\t MIN = min(TMP_COL);\n");
-		buffer.append("\t MAX = max(TMP_COL);\n");
-		buffer.append("\n");
-		buffer.append("\t % Calculate the scaled data - \n");
-		buffer.append("\t TMP = (TMP_COL - MIN)./(MAX - MIN);\n");
-		buffer.append("\t SCALED_DATA = [SCALED_DATA TMP];\n");
+		buffer.append("\t % Grab this error value and go around again -- \n");
+		buffer.append("\t ERR_VEC(obj_index,1) = ERR_EXP;\n");
 		buffer.append("end;\n");
 		buffer.append("\n");
+		
+		buffer.append("return;\n");
+	}
+	
+	private void buildSimulationArray(StringBuffer buffer,Document bcxTree,LoadXMLPropFile _xmlPropTree,String strExpID) throws Exception
+	{
+		// Method attributes -
+		
+		String strUseExactNameXPath = "//experiment[@id='"+strExpID+"']/measurement_file/@search_network";
+		String strUseExactName = queryBCXTree(bcxTree,strUseExactNameXPath);
+		
+		// Get the exclude -
+		String strExcludeXPath = "//experiment[@id='"+strExpID+"']/measurement_file/@exclude";
+		String strExclude = queryBCXTree(bcxTree,strExcludeXPath);
+		
+		// Ok, we need to parse the exclude string -
+		String[] strExcludeTokens = strExclude.split(",");
 		
 		// Get the cols -
 		buffer.append("% Construct the SIMULATION array -- \n");
@@ -255,85 +308,188 @@ public class MOBCXModel {
 				buffer.append(" -- \n");
 				buffer.append("TMP_GRP = [];\n");
 				buffer.append("TMP_GRP = [TMP_GRP ");
+			
 				
-				// Ok -
-				String strDataGroupSpeciesXPath = "//experiment[@id='"+strExpID+"']/measurement_file/data_column[@data_group='"+strGrpName+"']/@species";
-				ArrayList<String> groupSpeciesList = getList(strDataGroupSpeciesXPath,bcxTree);
-				int NUMBER_OF_SPECIES = groupSpeciesList.size();
-				for (int grp_species_index=0;grp_species_index<NUMBER_OF_SPECIES;grp_species_index++)
+				if (strUseExactName.equalsIgnoreCase("FALSE"))
 				{
-					// Get the species in this grp -
-					String strSpeciesSymbol = groupSpeciesList.get(grp_species_index);
+					String strDataGroupSpeciesXPath = "//experiment[@id='"+strExpID+"']/measurement_file/data_column[@data_group='"+strGrpName+"']/@species";
+					ArrayList<String> groupSpeciesList = getList(strDataGroupSpeciesXPath,bcxTree);
+					int NUMBER_OF_SPECIES = groupSpeciesList.size();
+					for (int grp_species_index=0;grp_species_index<NUMBER_OF_SPECIES;grp_species_index++)
+					{
+						// Get the species in this grp -
+						String strSpeciesSymbol = groupSpeciesList.get(grp_species_index);
 					
-					// What is the index?
-					int int_species_index = findSpeciesIndex(strSpeciesSymbol);
-					buffer.append("XSIM(:,");
-					buffer.append(int_species_index);
-					buffer.append(") ");
-				}
+						// What is the index?
+						int int_species_index = findSpeciesIndex(strSpeciesSymbol);
+						buffer.append("XSIM(:,");
+						buffer.append(int_species_index);
+						buffer.append(") ");
+					}
 				
-				// Ok, so lets close and sum -
-				buffer.append("];\n");
-				buffer.append("GROUP(:,");
-				buffer.append(counter);
-				buffer.append(") = sum(TMP_GRP,2);\n");
-				buffer.append("\n");
-				counter++;
+					// Ok, so lets close and sum -
+					buffer.append("];\n");
+					buffer.append("GROUP(:,");
+					buffer.append(counter);
+					buffer.append(") = sum(TMP_GRP,2);\n");
+					buffer.append("\n");
+					counter++;
+				}
+				else
+				{
+					String strDataGroupSpeciesXPath = "//experiment[@id='"+strExpID+"']/measurement_file/data_column[@data_group='"+strGrpName+"']/@species";
+					ArrayList<String> groupSpeciesList = getList(strDataGroupSpeciesXPath,bcxTree);
+					ArrayList<String> localList = new ArrayList<String>();
+					
+					// Ok, so now we need to check for *like* species -
+					int NUMBER_OF_SPECIES = groupSpeciesList.size();
+					for (int grp_species_index=0;grp_species_index<NUMBER_OF_SPECIES;grp_species_index++)
+					{
+						// Get the species in this grp -
+						String strSpeciesSymbol = groupSpeciesList.get(grp_species_index);
+						
+						// Get the a unique list -
+						ArrayList<String> tmpLocalList = getUniqueSpeciesList(strSpeciesSymbol,strExcludeTokens);
+						
+						// Add this to the localList -
+						localList.addAll(tmpLocalList);
+					}
+					
+					// Ok, when I get here I have a localList -
+					int NUMBER_SPECIES_LOCAL_LIST = localList.size();
+					for (int local_index=0;local_index<NUMBER_SPECIES_LOCAL_LIST;local_index++)
+					{
+						// Get the species fragment -
+						String strSpeciesFragment = localList.get(local_index);
+					
+						// What is the index?
+						int int_species_index = findSpeciesIndex(strSpeciesFragment);
+						buffer.append("XSIM(:,");
+						buffer.append(int_species_index);
+						buffer.append(") ");
+					}
+					
+					// Ok, so lets close and sum -
+					buffer.append("];\n");
+					buffer.append("GROUP(:,");
+					buffer.append(counter);
+					buffer.append(") = sum(TMP_GRP,2);\n");
+					buffer.append("\n");
+					counter++;
+				}
 			}
 		}
 		
-		// Add the groups to the simulation array -
-		buffer.append("% Add the groups to the simulation array -- \n");
-		buffer.append("SIMULATION = GROUPS;\n");
+		buffer.append("% Set GROUPS to simulation - \n");
+		buffer.append("SIMULATION = GROUP; \n");
 		
+	}
+	
+	// Process ZERO_TO_ONE scaling -
+	private void buildZeroToOneBuffer(StringBuffer buffer,Document bcxTree,LoadXMLPropFile _xmlPropTree,String strExpID) throws Exception
+	{
+		// Method attributes -
 		
+		// Figure out all species?
+		
+		// Get the group names -
+		String strDataGroupNamesXPath = "//experiment[@id='"+strExpID+"']/measurement_file/data_column/@data_group";
+		ArrayList<String> groupNameList = getUniqueList(strDataGroupNamesXPath,bcxTree);
+		int NUMBER_OF_GRP_NAMES = groupNameList.size();
+		
+		// Check to determine which scaling -
+		buffer.append("% Scale the experimental data -- \n");
+		buffer.append("[NROW,NCOL]=size(DATA);\n");
+		buffer.append("SCALED_DATA = [];\n");
 		buffer.append("\n");
+		
 		buffer.append("% Calculate the VARIANCE array -- \n");
-		for (int grp_index = 0;grp_index<NUMBER_OF_DATA_GROUPS;grp_index++)
+		
+		// We need to figure out what index time is (if any) -
+		buffer.append("IDX_VEC = [");
+		for (int index_grp_names = 0;index_grp_names<NUMBER_OF_GRP_NAMES;index_grp_names++)
+		{
+			// Get the column_index_in_file attribute from - 
+			String strXPath = "//experiment[@id='"+strExpID+"']/measurement_file/data_column[@data_group='"+groupNameList.get(index_grp_names)+"']/@column_index_in_file";
+			String strColIDinFile = queryBCXTree(bcxTree,strXPath);
+			buffer.append(strColIDinFile);
+		
+			if (index_grp_names==NUMBER_OF_GRP_NAMES-1)
+			{
+				buffer.append("];\n");
+			}
+			else
+			{
+				buffer.append(" ");
+			}
+		}
+		
+		for (int grp_index = 0;grp_index<NUMBER_OF_GRP_NAMES;grp_index++)
 		{
 			// Get the name of the grp -
-			String strGrpName = groupList.get(grp_index);
+			String strGrpName = groupNameList.get(grp_index);
 			
 			buffer.append("VARIANCE(:,");
 			buffer.append(grp_index+1);
 			buffer.append(") = ");
 			
-			String strDataColXPath = "//experiment[@id='"+strExpID+"']/measurement_file/data_column[@data_group='"+strGrpName+"']/@species";
-			ArrayList<String> coeffVList = getList(strDataColXPath,bcxTree);
-			int NUMBER_OF_CVS = coeffVList.size();
-			for (int variance_index=0;variance_index<NUMBER_OF_CVS;variance_index++)
-			{
-				
-				// Get the index of this species -
-				String strSpeciesSymbol = coeffVList.get(variance_index);
-				
-				if (!strSpeciesSymbol.isEmpty())
-				{
-					int index_species = findSpeciesIndex(strSpeciesSymbol);
-				
-					// Query the tree to get the CVs -
-					String strGetCVXPath = "//experiment[@id='"+strExpID+"']/measurement_file/data_column[@data_group='"+strGrpName+"']/@coefficient_of_variation |" +
-						"//experiment[@id='"+strExpID+"']/measurement_file/data_column[@species='"+strSpeciesSymbol+"']/@coefficient_of_variation";
-					String strCV = queryBCXTree(bcxTree,strGetCVXPath);
-				
-					buffer.append("(");
-					buffer.append(strCV);
-					buffer.append("*");
-					buffer.append("XSIM(:,");
-					buffer.append(index_species);
-					buffer.append(")");
-				
-					if (variance_index==(NUMBER_OF_CVS-1))
-					{
-						buffer.append(").^2;\n");
-					}
-					else
-					{
-						buffer.append(").^2 + ");
-					}	
-				}
-			}
+			String strDataColXPath = "//experiment[@id='"+strExpID+"']/measurement_file/data_column[@data_group='"+strGrpName+"']/@coefficient_of_variation";
+			
+			// Get the strCV -
+			String strCV = queryBCXTree(bcxTree,strDataColXPath);
+			buffer.append("(");
+			buffer.append(strCV);
+			buffer.append("*");
+			buffer.append("DATA(:,");
+			buffer.append("IDX_VEC(");
+			buffer.append(grp_index+1);
+			buffer.append("))).^2;\n");
 		}
+		
+		buffer.append("\n");
+		
+		// Check to see if variance is zero -
+		buffer.append("% Check to see if variance is zero -\n");
+		buffer.append("IDX_ZERO = find(VARIANCE==0);\n");
+		buffer.append("VARIANCE(IDX_ZERO) = 1;\n");
+		buffer.append("\n");
+		
+		buffer.append("% Scale the experimental data -- \n");
+		buffer.append("NCOL_MINUS_TIME = length(IDX_VEC);\n");
+		buffer.append("for tmp_col_index=1:NCOL_MINUS_TIME\n");
+		buffer.append("\t % Get the col index -- \n");
+		buffer.append("\t col_index = IDX_VEC(tmp_col_index);\n");
+		buffer.append("\n");
+		buffer.append("\t % Grab a column - \n");
+		buffer.append("\t TMP_COL = DATA(:,col_index);\n");
+		buffer.append("\n");
+		buffer.append("\t % Calculate the MIN and the MAX -- \n");
+		buffer.append("\t MIN = min(TMP_COL);\n");
+		buffer.append("\t MAX = max(TMP_COL);\n");
+		buffer.append("\n");
+		buffer.append("\t % Compute the DIFF - \n");
+		buffer.append("\t DIFF = min(MAX - MIN);\n");
+		buffer.append("\n");
+		buffer.append("\t % Check to see if DIFF is ok --\n");
+		buffer.append("\t if (DIFF<EPS)\n");
+		buffer.append("\t % Calculate the scaled data - \n");
+		buffer.append("\t\t NROWS = length(TMP_COL);\n");
+		buffer.append("\t\t DIFF = EPS*ones(NROWS,1);\n");
+		buffer.append("\t end;\n");
+		buffer.append("\n");
+		buffer.append("\t % Calculate the scaled data - \n");
+		buffer.append("\t TMP = (TMP_COL - MIN)./(DIFF);\n");
+		buffer.append("\t SCALED_DATA = [SCALED_DATA TMP];\n");
+		buffer.append("end;\n");
+		buffer.append("\n");
+		
+		// Formulate SIMULATION array -
+		buildSimulationArray(buffer,bcxTree,_xmlPropTree,strExpID);
+		
+		// Add the groups to the simulation array -
+		buffer.append("% Add the groups to the simulation array -- \n");
+		buffer.append("SIMULATION = GROUP;\n");
+		buffer.append("\n");
 		
 		buffer.append("\n");
 		buffer.append("% Scale the simulation data -- \n");
@@ -347,17 +503,27 @@ public class MOBCXModel {
 		buffer.append("\t MIN = min(TMP_COL);\n");
 		buffer.append("\t MAX = max(TMP_COL);\n");
 		buffer.append("\n");
+		buffer.append("\t % Compute the DIFF - \n");
+		buffer.append("\t DIFF = min(MAX - MIN);\n");
+		buffer.append("\n");
+		buffer.append("\t % Check to see if DIFF is ok --\n");
+		buffer.append("\t if (DIFF<EPS)\n");
 		buffer.append("\t % Calculate the scaled data - \n");
-		buffer.append("\t TMP = (TMP_COL - MIN)./(MAX - MIN);\n");
+		buffer.append("\t\t NROWS = length(TMP_COL);\n");
+		buffer.append("\t\t DIFF = EPS*ones(NROWS,1);\n");
+		buffer.append("\t end;\n");
+		buffer.append("\n");
+		buffer.append("\t % Calculate the scaled data - \n");
+		buffer.append("\t TMP = (TMP_COL - MIN)./(DIFF);\n");
 		buffer.append("\t SCALED_SIMULATION_DATA = [SCALED_SIMULATION_DATA TMP];\n");
 		buffer.append("end;\n");
 		buffer.append("\n");
 		
 		buffer.append("% Calculate the error in the scale -- \n");
-		for (int grp_index = 0;grp_index<NUMBER_OF_DATA_GROUPS;grp_index++)
+		for (int grp_index = 0;grp_index<NUMBER_OF_GRP_NAMES;grp_index++)
 		{
 			// Get the name of the grp -
-			String strGrpName = groupList.get(grp_index);
+			String strGrpName = groupNameList.get(grp_index);
 			
 			// Get the scale -
 			String strScaleXPath = "//experiment[@id='"+strExpID+"']/measurement_file/data_column[@data_group='"+strGrpName+"']/@scale";
@@ -376,18 +542,219 @@ public class MOBCXModel {
 		}
 		buffer.append("\n");
 		
+		buffer.append("% Get the experimental time col - \n");
+		String strXPath = "//experiment[@id='"+strExpID+"']/measurement_file/data_column[@column_type='Time']/@column_index_in_file";
+		String strColIDinFileTime = queryBCXTree(bcxTree,strXPath);
+		buffer.append("TEXP = DATA(:,");
+		buffer.append(strColIDinFileTime);
+		buffer.append(");\n");
+		buffer.append("\n");
 		
 		buffer.append("% Interpolate the simulation to the experimental time scale -- \n");
-		buffer.append("ISCALED_SIMULATION_DATA = interp(TSIM,SCALED_SIMULATION_DATA,TEXP);\n");
+		buffer.append("ISCALED_SIMULATION_DATA = interp1(TSIM,SCALED_SIMULATION_DATA,TEXP);\n");
 		buffer.append("\n");
+		
 		buffer.append("% Calculate the error - \n");
 		buffer.append("for col_index=1:NCOL\n");
 		buffer.append("\t SF = (1./VARIANCE(:,col_index));\n");
 		buffer.append("\t RELATIVE_ERR = sum(SF.*((ISCALED_SIMULATION_DATA(:,col_index) - SCALED_DATA(:,col_index)).^2));\n");
-		buffer.append("\t SCALE_ERR_GRP = SCALE_ERR(col_index);\n");
+		buffer.append("\t SCALE_ERR_GRP = (SCALE_ERR(col_index))^2;\n");
 		buffer.append("\t ERR_ARR(col_index,1) = RELATIVE_ERR + SCALE_ERR_GRP;\n");
 		buffer.append("end;\n");
+		buffer.append("\n");	
+	}
+	
+	// Build the BETA buffer -
+	private void buildBetaBuffer(StringBuffer buffer,Document bcxTree,LoadXMLPropFile _xmlPropTree,String strExpID) throws Exception
+	{
+		// Method attributes -
+		
+		// Get the group names -
+		String strDataGroupNamesXPath = "//experiment[@id='"+strExpID+"']/measurement_file/data_column/@data_group";
+		ArrayList<String> groupNameList = getUniqueList(strDataGroupNamesXPath,bcxTree);
+		int NUMBER_OF_GRP_NAMES = groupNameList.size();
+		
+		buffer.append("% Calculate the VARIANCE array -- \n");
+		
+		// We need to figure out what index time is (if any) -
+		buffer.append("IDX_VEC = [");
+		for (int index_grp_names = 0;index_grp_names<NUMBER_OF_GRP_NAMES;index_grp_names++)
+		{
+			// Get the column_index_in_file attribute from - 
+			String strXPath = "//experiment[@id='"+strExpID+"']/measurement_file/data_column[@data_group='"+groupNameList.get(index_grp_names)+"']/@column_index_in_file";
+			String strColIDinFile = queryBCXTree(bcxTree,strXPath);
+			buffer.append(strColIDinFile);
+		
+			if (index_grp_names==NUMBER_OF_GRP_NAMES-1)
+			{
+				buffer.append("];\n");
+			}
+			else
+			{
+				buffer.append(" ");
+			}
+		}
+		
+		for (int grp_index = 0;grp_index<NUMBER_OF_GRP_NAMES;grp_index++)
+		{
+			// Get the name of the grp -
+			String strGrpName = groupNameList.get(grp_index);
+			
+			buffer.append("VARIANCE(:,");
+			buffer.append(grp_index+1);
+			buffer.append(") = ");
+			
+			String strDataColXPath = "//experiment[@id='"+strExpID+"']/measurement_file/data_column[@data_group='"+strGrpName+"']/@coefficient_of_variation";
+			
+			// Get the strCV -
+			String strCV = queryBCXTree(bcxTree,strDataColXPath);
+			buffer.append("(");
+			buffer.append(strCV);
+			buffer.append("*");
+			buffer.append("DATA(:,");
+			buffer.append("IDX_VEC(");
+			buffer.append(grp_index+1);
+			buffer.append("))).^2;\n");
+		}
+		
 		buffer.append("\n");
+		
+		// Check to see if variance is zero -
+		buffer.append("% Check to see if variance is zero -\n");
+		buffer.append("IDX_ZERO = find(VARIANCE==0);\n");
+		buffer.append("VARIANCE(IDX_ZERO) = 1;\n");
+		buffer.append("\n");
+		
+		buffer.append("% BETA scaling was selected - no scaling for the experimental data - \n");
+		
+		// We need to figure out what index time is (if any) -
+		buffer.append("IDX_VEC = [");
+		for (int index_grp_names = 0;index_grp_names<NUMBER_OF_GRP_NAMES;index_grp_names++)
+		{
+			// Get the column_index_in_file attribute from - 
+			String strXPath = "//experiment[@id='"+strExpID+"']/measurement_file/data_column[@data_group='"+groupNameList.get(index_grp_names)+"']/@column_index_in_file";
+			String strColIDinFile = queryBCXTree(bcxTree,strXPath);
+			buffer.append(strColIDinFile);
+		
+			if (index_grp_names==NUMBER_OF_GRP_NAMES-1)
+			{
+				buffer.append("];\n");
+			}
+			else
+			{
+				buffer.append(" ");
+			}
+		}
+		
+		buffer.append("SCALED_DATA = DATA(:,IDX_VEC);\n");
+		buffer.append("\n");
+		
+		// Formulate SIMULATION array -
+		buildSimulationArray(buffer,bcxTree,_xmlPropTree,strExpID);
+		
+		buffer.append("\n");
+		buffer.append("% Get the experimental time col - \n");
+		String strXPath = "//experiment[@id='"+strExpID+"']/measurement_file/data_column[@column_type='Time']/@column_index_in_file";
+		String strColIDinFileTime = queryBCXTree(bcxTree,strXPath);
+		buffer.append("TEXP = DATA(:,");
+		buffer.append(strColIDinFileTime);
+		buffer.append(");\n");
+		buffer.append("\n");
+		
+		buffer.append("% Interpolate the simulation to the experimental time scale -- \n");
+		buffer.append("ISIMULATION = interp1(TSIM,SIMULATION,TEXP);\n");
+		buffer.append("\n");
+		
+		buffer.append("% Setup the BETA simulation data scaling - \n");
+		buffer.append("\n");
+		buffer.append("SCALED_SIMULATION_DATA = [];\n");
+		buffer.append("NUMBER_OF_GROUPS = ");
+		buffer.append(NUMBER_OF_GRP_NAMES);
+		buffer.append(";\n");
+		buffer.append("for col_index = 1:NUMBER_OF_GROUPS\n");
+		buffer.append("\t % Setup the numerator - \n");
+		buffer.append("\n");
+		buffer.append("\t SF = (1./VARIANCE(:,col_index));\n");
+		buffer.append("\t XM = DATA(:,IDX_VEC(col_index));\n");
+		buffer.append("\t XS = ISIMULATION(:,col_index);\n");
+		buffer.append("\t NUMERATOR = sum(SF.*(XM.*XS));\n");
+		buffer.append("\n");
+		buffer.append("\t % Setup the denominator - \n");
+		buffer.append("\t STDEV = sqrt(VARIANCE(:,col_index));\n");
+		buffer.append("\t TMP = XS./STDEV;\n");
+		buffer.append("\t DENOMINATOR = sum(TMP);\n");
+		buffer.append("\n");
+		buffer.append("\t % Calculate the BETA - \n");
+		buffer.append("\t BETA = NUMERATOR/DENOMINATOR;\n");
+		buffer.append("\n");
+		buffer.append("\t % Scaled the simulation data - \n");
+		buffer.append("\t TMP_SIM_DATA = BETA*ISIMULATION(:,col_index);\n");
+		buffer.append("\t SCALED_SIMULATION_DATA = [SCALED_SIMULATION_DATA TMP_SIM_DATA];\n");
+		buffer.append("\n");
+		buffer.append("end;\n");
+		
+		buffer.append("\n");
+		buffer.append("% Calculate the error - \n");
+		buffer.append("NUMBER_OF_GROUPS = ");
+		buffer.append(NUMBER_OF_GRP_NAMES);
+		buffer.append(";\n");
+		buffer.append("for col_index=1:NUMBER_OF_GROUPS\n");
+		buffer.append("\t SF = (1./VARIANCE(:,col_index));\n");
+		buffer.append("\t RELATIVE_ERR = sum(SF.*((SCALED_SIMULATION_DATA(:,col_index) - SCALED_DATA(:,col_index)).^2));\n");
+		buffer.append("\t ERR_ARR(col_index,1) = RELATIVE_ERR;\n");
+		buffer.append("end;\n");
+		buffer.append("\n");
+		
+	}
+	
+	
+	// Build the error buffer -
+	public void buildErrorBuffer(StringBuffer buffer,Document bcxTree,LoadXMLPropFile _xmlPropTree,String strExpID) throws Exception
+	{
+		// Method attributes -
+		
+		// Populate the buffer -
+		buffer.append("function [ERR]=ERR_");
+		buffer.append(strExpID);
+		buffer.append("(TSTART,TSTOP,Ts,DF,EDF,THREAD_SUFFIX)\n");
+		buffer.append("\n");
+		
+		// Run the simulation -
+		buffer.append("% Set the EPS - \n");
+		buffer.append("EPS = 1e-6;\n");
+		buffer.append("\n");
+		buffer.append("% Run the simulation -- \n");
+		buffer.append("[TSIM,XSIM]=SIM_");
+		buffer.append(strExpID);
+		buffer.append("(TSTART,TSTOP,Ts,DF,THREAD_SUFFIX);\n");
+		buffer.append("\n");
+		
+		// Load the experimental data -
+		buffer.append("% Get the experimental data from the EDF -- \n");
+		buffer.append("DATA = EDF.DATA_ARRAY_");
+		buffer.append(strExpID);
+		buffer.append(";\n");
+		buffer.append("\n");
+	
+		// XPath to determine scaling -
+		String strScalingXPath = "//experiment[@id='"+strExpID+"']/@scaling";
+		String strScaling = queryBCXTree(bcxTree,strScalingXPath);
+		
+		
+		// Code for the ZERO_TO_ONE scaling option -
+		if (strScaling.equalsIgnoreCase("ZERO_TO_ONE"))
+		{
+			// Process zero to one scaling -
+			buildZeroToOneBuffer(buffer,bcxTree,_xmlPropTree,strExpID);	
+		}
+		else if (strScaling.equalsIgnoreCase("BETA"))
+		{
+			// Process the BETA buffer -
+			buildBetaBuffer(buffer,bcxTree,_xmlPropTree,strExpID);	
+		}
+		
+		
+		buffer.append("\n");		
 		buffer.append("% Compute ERR -- \n");
 		buffer.append("ERR = sum(ERR_ARR);\n");
 		buffer.append("\n");
@@ -395,22 +762,13 @@ public class MOBCXModel {
 		
 	}
 	
-	
-	// Build the experimental simulation buffer -
-	public void buildSimFileBuffer(StringBuffer buffer,Document bcxTree,LoadXMLPropFile _xmlPropTree,String strExpID) throws Exception
+	private void populateSteadyStateSimulationBuffer(StringBuffer buffer,Document bcxTree,LoadXMLPropFile _xmlPropTree,String strExpID) throws Exception
 	{
 		// Method attributes -
-		
 		// Populate the buffer -
 		buffer.append("function [TSIM,XSIM]=SIM_");
 		buffer.append(strExpID);
-		buffer.append("(TSTART,TSTOP,Ts,DF)\n");
-		buffer.append("\n");
-		
-		buffer.append("% Run the model to steady-state -- \n");
-		buffer.append("[TSS,XSS] = FindSteadyState(DF);\n");
-		buffer.append("IC = XSS(:,end);\n");
-		buffer.append("DF.INITIAL_CONDITIONS = IC;\n");
+		buffer.append("(TSTART,TSTOP,Ts,DF,THREAD_SUFFIX)\n");
 		buffer.append("\n");
 		
 		// Get the initial conditions from the DF -
@@ -430,6 +788,9 @@ public class MOBCXModel {
 		{
 			loadSBMLModel(_xmlPropTree);
 		}
+		
+		// Tmp flag to make sure we only execute the ODE call once -
+		boolean blnTmpFlag = true;
 		
 		for (int stimulus_index=0;stimulus_index<NUMBER_OF_STIMULUS_SPECIES;stimulus_index++)
 		{
@@ -451,35 +812,167 @@ public class MOBCXModel {
 			// what is this index?
 			int tmp_index = findSpeciesIndex(strStimulusSpecies);
 			
-			// Check to see of stimulus time equals 0 - 
-			if (strStimulusTime.equalsIgnoreCase("0.0") || strStimulusTime.equalsIgnoreCase("0"))
-			{
+			// Find the index of this species -
+			buffer.append("IC(");
+			buffer.append(tmp_index);
+			buffer.append(",1) = ");
+			buffer.append(strStimulusValue);
+			buffer.append(";\n");
+		}
+		
+		// Ok, when I get here I just need to call the FindSteadyState -
+		buffer.append("DF.INITIAL_CONDITIONS = IC;\n");
+		buffer.append("[TSS,XSS] = FindSteadyState(DF,THREAD_SUFFIX);\n");
+		buffer.append("TSIM = TSS(end);\n");
+		buffer.append("XSIM = transpose(XSS(end,:));\n");
+		buffer.append("return;\n");
+	}
+	
+	// Build the experimental simulation buffer -
+	public void buildSimFileBuffer(StringBuffer buffer,Document bcxTree,LoadXMLPropFile _xmlPropTree,String strExpID) throws Exception
+	{
+		// Method attributes -
+		String strStimulusValue = "";
+		
+		
+		// Need to check to see if this experiment is a steady-state experiment -
+		String strSSXPath = "//experiment[@id='"+strExpID+"']/@steady_state";
+		String strSSValue = queryBCXTree(bcxTree,strSSXPath);
+		if (strSSValue.equalsIgnoreCase("TRUE"))
+		{
+			// Populate the buffer for a *steady-state* simulation -
+			populateSteadyStateSimulationBuffer(buffer,bcxTree,_xmlPropTree,strExpID);
+		}
+		else
+		{
+			// Populate the buffer -
+			buffer.append("function [TSIM,XSIM]=SIM_");
+			buffer.append(strExpID);
+			buffer.append("(TSTART,TSTOP,Ts,DF,THREAD_SUFFIX)\n");
+			buffer.append("\n");
 			
-				// Find the index of this species -
-				buffer.append("IC(");
-				buffer.append(tmp_index);
-				buffer.append(",1) = ");
-				buffer.append(strStimulusValue);
+			// Get the initial conditions from the DF -
+			buffer.append("% Get the initial conditions from the DataFile -\n");
+			buffer.append("IC = DF.INITIAL_CONDITIONS;\n");
+			buffer.append("\n");
+			buffer.append("% Setup the stimulus -- \n");
+			buffer.append("\n");
+			
+			
+			// Get the species symbol -
+			String strSpeciesXPath = "//experiment[@id='"+strExpID+"']/stimulus/@species";
+			NodeList stimulusNodeList = (NodeList) _xpath.evaluate(strSpeciesXPath, bcxTree, XPathConstants.NODESET);
+			int NUMBER_OF_STIMULUS_SPECIES = stimulusNodeList.getLength();
+			
+			// If we have a stimulus - then we need to load the sbml xml  -
+			if (NUMBER_OF_STIMULUS_SPECIES!=0)
+			{
+				loadSBMLModel(_xmlPropTree);
+			}
+			
+			// Tmp flag to make sure we only execute the ODE call once -
+			boolean blnTmpFlag = true;
+			
+			for (int stimulus_index=0;stimulus_index<NUMBER_OF_STIMULUS_SPECIES;stimulus_index++)
+			{
+				// Get the id string for this experiment -
+				Node stimulusNode = stimulusNodeList.item(stimulus_index);
+				String strStimulusSpecies = stimulusNode.getNodeValue();
+				
+				// label -
+				buffer.append("% ");
+				buffer.append(strStimulusSpecies);
 				buffer.append("\n");
+
+				// Ok, what is the time and value for this species -
+				String strStimulusTimeXPath = "//experiment[@id='"+strExpID+"']/stimulus[@species='" + strStimulusSpecies+"']/@time";
+				String strStimulusValueXPath = "//experiment[@id='"+strExpID+"']/stimulus[@species='" + strStimulusSpecies+"']/@value";
+				String strStimulusTime = queryBCXTree(bcxTree,strStimulusTimeXPath);
+				strStimulusValue = queryBCXTree(bcxTree,strStimulusValueXPath);
+				
+				// what is this index?
+				int tmp_index = findSpeciesIndex(strStimulusSpecies);
+				
+				// Check to see of stimulus time equals 0 - 
+				if (strStimulusTime.equalsIgnoreCase("0.0") || strStimulusTime.equalsIgnoreCase("0"))
+				{
+				
+					// Find the index of this species -
+					buffer.append("IC(");
+					buffer.append(tmp_index);
+					buffer.append(",1) = ");
+					buffer.append(strStimulusValue);
+					buffer.append(";\n");
+					buffer.append("\n");
+				}
+				else
+				{
+					if (blnTmpFlag)
+					{
+						// if I get here, then I'm adding stimulus after some period of time -
+						buffer.append("% Run simulation from 0 to ");
+						buffer.append(strStimulusTime);
+						buffer.append(" -- \n");
+						buffer.append("\n");
+						buffer.append("% Local time-scale -- \n");
+						buffer.append("TSTART_LOCAL = 0;\n");
+						buffer.append("TSTOP_LOCAL = ");
+						buffer.append(strStimulusTime);
+						buffer.append(" - Ts;\n");
+						buffer.append("\n");
+						buffer.append("% Call the ODESolver - \n");
+						buffer.append("DF.INITIAL_CONDITIONS = IC;\n");
+						buffer.append("[TSIM,XSIM]=LSODECallWrapper(TSTART_LOCAL,TSTOP_LOCAL,Ts,DF,'");
+						buffer.append("SIM_");
+						buffer.append(strExpID);
+						buffer.append(".dat',THREAD_SUFFIX);\n");
+						buffer.append("\n");
+						
+						buffer.append("% Reset the TSTART -\n");
+						buffer.append("TSTART = ");
+						buffer.append(strStimulusTime);
+						buffer.append(";\n");
+						buffer.append("\n");
+						
+						buffer.append("% Issue the stimulus - \n");
+						buffer.append("IC = transpose(XSIM(end,:));\n");
+						
+						// set the flag to false, so when I come around again I don't get into this block -
+						blnTmpFlag = false;
+					}
+				
+					buffer.append("IC(");
+					buffer.append(tmp_index);
+					buffer.append(",1) = ");
+					buffer.append(strStimulusValue);
+					buffer.append(";\n");
+				}
+			}
+					
+			// Run the simulation -
+			if (strStimulusValue.equalsIgnoreCase("0.0") || strStimulusValue.equalsIgnoreCase("0"))
+			{
+				buffer.append("% Recycle the steady-state because there is no stimulus.\n");
+				buffer.append("% Setup the time scale - \n");
+				buffer.append("TSIM = TSTART:Ts:TSTOP;\n");
 				buffer.append("\n");
+				buffer.append("% Formulate the XSIM - \n");
+				buffer.append("NT = length(TSIM);\n");
+				buffer.append("XSIM = ones(NT,1)*transpose(IC);\n");
+				buffer.append("return;\n");
 			}
 			else
 			{
-				// if I get here, then I'm adding stimulus after some period of time -
-				buffer.append("% Run simulation from ");
-				
+				buffer.append("% Solve the mass-balance equations.\n");
+				buffer.append("DF.INITIAL_CONDITIONS = IC;\n");
+				buffer.append("[TSIM,XSIM]=LSODECallWrapper(TSTART,TSTOP,Ts,DF,'");
+				buffer.append("SIM_");
+				buffer.append(strExpID);
+				buffer.append(".dat',THREAD_SUFFIX);\n");
+				buffer.append("\n");
+				buffer.append("return;\n");
 			}
 		}
-				
-			// Run the simulation -
-			buffer.append("% Solve the mass-balance equations.\n");
-			buffer.append("DF.INITIAL_CONDITIONS = IC;\n");
-			buffer.append("[TSIM,XSIM]=LSODECallWrapper(TSTART,TSTOP,Ts,DF,'");
-			buffer.append("SIM_");
-			buffer.append(strExpID);
-			buffer.append(".dat');\n");
-			buffer.append("\n");
-			buffer.append("return;\n");
 	}
 	
 	
@@ -598,12 +1091,53 @@ public class MOBCXModel {
 			// Get the id from the list -
 			String strExpId = expIDList.get(exp_index);
 			
+			// Build the pointer reference -
+			buffer.append("\n");
+			buffer.append("% ");
+			buffer.append(strExpId);
+			buffer.append(" -- %\n");
+			buffer.append("% Setup the function pointer - \n");
 			buffer.append("ERROR_STRUCT.FUNCTION(");
 			buffer.append(exp_index+1);
 			buffer.append(").POINTER = ");
 			buffer.append("@ERR_");
 			buffer.append(strExpId);
 			buffer.append(";\n");
+			buffer.append("\n");
+			
+			// Build the time-scale reference  -
+			buffer.append("% Setup the simulation time-scale for ");
+			buffer.append(strExpId);
+			buffer.append(" - \n");
+			
+			// Ok, so we need to get the time_start, time_stop and time_step -
+			String strTStartXPath = "//experiment[@id='"+strExpId+"']/@simulation_time_start";
+			String strTStopXPath = "//experiment[@id='"+strExpId+"']/@simulation_time_stop";
+			String strTSXPath = "//experiment[@id='"+strExpId+"']/@simulation_time_step";
+			
+			String strTimeStart = queryBCXTree(bcxTree,strTStartXPath);
+			String strTimeStop = queryBCXTree(bcxTree,strTStopXPath);
+			String strTimeStep = queryBCXTree(bcxTree,strTSXPath);
+			
+			// Ok, here we go bitches ...
+			buffer.append("ERROR_STRUCT.FUNCTION(");
+			buffer.append(exp_index+1);
+			buffer.append(").TIME_START = ");
+			buffer.append(strTimeStart);
+			buffer.append(";\n");
+			
+			buffer.append("ERROR_STRUCT.FUNCTION(");
+			buffer.append(exp_index+1);
+			buffer.append(").TIME_STOP = ");
+			buffer.append(strTimeStop);
+			buffer.append(";\n");
+			
+			buffer.append("ERROR_STRUCT.FUNCTION(");
+			buffer.append(exp_index+1);
+			buffer.append(").TIME_STEP = ");
+			buffer.append(strTimeStep);
+			buffer.append(";\n");
+			
 		}
 		
 		buffer.append("\n");
@@ -622,6 +1156,9 @@ public class MOBCXModel {
 		}
 		
 		buffer.append("EDF.ERROR_FUNCTION_ARRAY = ERROR_STRUCT;");
+		buffer.append("EDF.NUMBER_OF_OBJECTIVES = ");
+		buffer.append(NUMBER_OF_EXPERIMENTS);
+		buffer.append(";\n");
 		buffer.append("\n");
 		buffer.append("return");
 	}
