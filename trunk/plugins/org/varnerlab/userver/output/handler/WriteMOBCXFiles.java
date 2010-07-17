@@ -47,6 +47,7 @@ public class WriteMOBCXFiles implements IOutputHandler {
 		StringBuffer moseBuffer = new StringBuffer();
 		StringBuffer soseBuffer = new StringBuffer();
 		
+		
 		// Populate the buffers -
 		model_wrapper.buildExperimentalDataStructBuffer(expdata_buffer, bcxTree,_xmlPropTree);
 		
@@ -59,6 +60,7 @@ public class WriteMOBCXFiles implements IOutputHandler {
 			// Create a string buffer for this simulation and error -
 			StringBuffer exp_buffer = new StringBuffer();
 			StringBuffer err_buffer = new StringBuffer();
+			StringBuffer testSimBuffer = new StringBuffer();
 			
 			// Get the id string for this experiment -
 			Node expNode = expNodeList.item(exp_index);
@@ -67,10 +69,13 @@ public class WriteMOBCXFiles implements IOutputHandler {
 			// Ok, build the buffer -
 			model_wrapper.buildSimFileBuffer(exp_buffer, bcxTree, _xmlPropTree,strExpId);
 			model_wrapper.buildErrorBuffer(err_buffer, bcxTree, _xmlPropTree, strExpId);
+			model_wrapper.buildTestSimBuffer(testSimBuffer, bcxTree, _xmlPropTree, strExpId);
 			
 			// Dump the buffer to disk -
 			SBMLModelUtilities.dumpSimulationFunctionToDisk(exp_buffer,_xmlPropTree,strExpId);
 			SBMLModelUtilities.dumpErrorFunctionToDisk(err_buffer, _xmlPropTree, strExpId);
+			SBMLModelUtilities.dumpTestSimFunctionToDisk(testSimBuffer, _xmlPropTree, strExpId);
+			
 		}
 		
 		// Build and write the MOSE and SOSE files -

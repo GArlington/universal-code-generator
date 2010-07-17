@@ -229,15 +229,270 @@ public class MOBCXModel {
 		buffer.append("pObjectiveFunction = ERROR_STRUCT.FUNCTION(OBJ_INDEX).POINTER;\n");
 		buffer.append("\n");
 		buffer.append("% Grab the simulation time scale --\n");
-		buffer.append("\t TSTART = ERROR_STRUCT.FUNCTION(OBJ_INDEX).TIME_START;\n");
-		buffer.append("\t TSTOP = ERROR_STRUCT.FUNCTION(OBJ_INDEX).TIME_STOP;\n");
-		buffer.append("\t Ts = ERROR_STRUCT.FUNCTION(OBJ_INDEX).TIME_STEP;\n");
+		buffer.append("TSTART = ERROR_STRUCT.FUNCTION(OBJ_INDEX).TIME_START;\n");
+		buffer.append("TSTOP = ERROR_STRUCT.FUNCTION(OBJ_INDEX).TIME_STOP;\n");
+		buffer.append("Ts = ERROR_STRUCT.FUNCTION(OBJ_INDEX).TIME_STEP;\n");
 		buffer.append("\n");
 		buffer.append("% Evaluate the error function -- \n");
 		buffer.append("ERR_EXP = feval(pObjectiveFunction,TSTART,TSTOP,Ts,DF,EDF,THREAD_SUFFIX);\n");
 		buffer.append("ERR_VEC = ERR_EXP;\n");
 		buffer.append("\n");
 		buffer.append("return;\n");
+	}
+	
+	// Build the 0 to 1 scaling -
+	private void buildZeroToOneScalingBuffer(StringBuffer buffer,Document bcxTree,LoadXMLPropFile _xmlPropTree,String strExpID) throws Exception
+	{
+		// Method attributes -
+		
+		buffer.append("\n");
+		buffer.append("% Scale the simulation data -- \n");
+		buffer.append("[NROW,NCOL]=size(SIMULATION);\n");
+		buffer.append("SCALED_SIMULATION_DATA = [];\n");
+		buffer.append("for col_index=1:NCOL\n");
+		buffer.append("\t % Grab a column - \n");
+		buffer.append("\t TMP_COL = SIMULATION(:,col_index);\n");
+		buffer.append("\n");
+		buffer.append("\t % Calculate the MIN and the MAX -- \n");
+		buffer.append("\t MIN = min(TMP_COL);\n");
+		buffer.append("\t MAX = max(TMP_COL);\n");
+		buffer.append("\n");
+		buffer.append("\t % Compute the DIFF - \n");
+		buffer.append("\t DIFF = min(MAX - MIN);\n");
+		buffer.append("\n");
+		buffer.append("\t % Check to see if DIFF is ok --\n");
+		buffer.append("\t if (DIFF<EPS)\n");
+		buffer.append("\t % Calculate the scaled data - \n");
+		buffer.append("\t\t NROWS = length(TMP_COL);\n");
+		buffer.append("\t\t DIFF = EPS*ones(NROWS,1);\n");
+		buffer.append("\t end;\n");
+		buffer.append("\n");
+		buffer.append("\t % Calculate the scaled data - \n");
+		buffer.append("\t TMP = (TMP_COL - MIN)./(DIFF);\n");
+		buffer.append("\t SCALED_SIMULATION_DATA = [SCALED_SIMULATION_DATA TMP];\n");
+		buffer.append("end;\n");
+		buffer.append("\n");
+	}
+	
+	// Build the BETA scaling -
+	private void buildBetaScalingBuffer(StringBuffer buffer,Document bcxTree,LoadXMLPropFile _xmlPropTree,String strExpID) throws Exception
+	{
+		// Method attributes -
+		
+		// Get the group names -
+		String strDataGroupNamesXPath = "//experiment[@id='"+strExpID+"']/measurement_file/data_column/@data_group";
+		ArrayList<String> groupNameList = getUniqueList(strDataGroupNamesXPath,bcxTree);
+		int NUMBER_OF_GRP_NAMES = groupNameList.size();
+		
+		buffer.append("% Calculate the VARIANCE array -- \n");
+		
+		// We need to figure out what index time is (if any) -
+		buffer.append("IDX_VEC = [");
+		for (int index_grp_names = 0;index_grp_names<NUMBER_OF_GRP_NAMES;index_grp_names++)
+		{
+			// Get the column_index_in_file attribute from - 
+			String strXPath = "//experiment[@id='"+strExpID+"']/measurement_file/data_column[@data_group='"+groupNameList.get(index_grp_names)+"']/@column_index_in_file";
+			String strColIDinFile = queryBCXTree(bcxTree,strXPath);
+			buffer.append(strColIDinFile);
+		
+			if (index_grp_names==NUMBER_OF_GRP_NAMES-1)
+			{
+				buffer.append("];\n");
+			}
+			else
+			{
+				buffer.append(" ");
+			}
+		}
+		
+		for (int grp_index = 0;grp_index<NUMBER_OF_GRP_NAMES;grp_index++)
+		{
+			// Get the name of the grp -
+			String strGrpName = groupNameList.get(grp_index);
+			
+			buffer.append("VARIANCE(:,");
+			buffer.append(grp_index+1);
+			buffer.append(") = ");
+			
+			String strDataColXPath = "//experiment[@id='"+strExpID+"']/measurement_file/data_column[@data_group='"+strGrpName+"']/@coefficient_of_variation";
+			
+			// Get the strCV -
+			String strCV = queryBCXTree(bcxTree,strDataColXPath);
+			buffer.append("(");
+			buffer.append(strCV);
+			buffer.append("*");
+			buffer.append("DATA(:,");
+			buffer.append("IDX_VEC(");
+			buffer.append(grp_index+1);
+			buffer.append("))).^2;\n");
+		}
+		
+		buffer.append("\n");
+		
+		// Check to see if variance is zero -
+		buffer.append("% Check to see if variance is zero -\n");
+		buffer.append("IDX_ZERO = find(VARIANCE==0);\n");
+		buffer.append("VARIANCE(IDX_ZERO) = 1;\n");
+		buffer.append("\n");
+		
+		buffer.append("% BETA scaling was selected - no scaling for the experimental data - \n");
+		
+		// We need to figure out what index time is (if any) -
+		buffer.append("IDX_VEC = [");
+		for (int index_grp_names = 0;index_grp_names<NUMBER_OF_GRP_NAMES;index_grp_names++)
+		{
+			// Get the column_index_in_file attribute from - 
+			String strXPath = "//experiment[@id='"+strExpID+"']/measurement_file/data_column[@data_group='"+groupNameList.get(index_grp_names)+"']/@column_index_in_file";
+			String strColIDinFile = queryBCXTree(bcxTree,strXPath);
+			buffer.append(strColIDinFile);
+		
+			if (index_grp_names==NUMBER_OF_GRP_NAMES-1)
+			{
+				buffer.append("];\n");
+			}
+			else
+			{
+				buffer.append(" ");
+			}
+		}
+		
+		buffer.append("SCALED_DATA = DATA(:,IDX_VEC);\n");
+		buffer.append("\n");
+		
+		// Formulate SIMULATION array -
+		// buildSimulationArray(buffer,bcxTree,_xmlPropTree,strExpID);
+		
+		buffer.append("\n");
+		buffer.append("% Get the experimental time col - \n");
+		String strXPath = "//experiment[@id='"+strExpID+"']/measurement_file/data_column[@column_type='Time']/@column_index_in_file";
+		String strColIDinFileTime = queryBCXTree(bcxTree,strXPath);
+		buffer.append("TEXP = DATA(:,");
+		buffer.append(strColIDinFileTime);
+		buffer.append(");\n");
+		buffer.append("\n");
+		
+		buffer.append("% Interpolate the simulation to the experimental time scale -- \n");
+		buffer.append("ISIMULATION = interp1(TSIM,SIMULATION,TEXP);\n");
+		buffer.append("\n");
+		
+		buffer.append("% Setup the BETA simulation data scaling - \n");
+		buffer.append("\n");
+		buffer.append("SCALED_SIMULATION_DATA = [];\n");
+		buffer.append("NUMBER_OF_GROUPS = ");
+		buffer.append(NUMBER_OF_GRP_NAMES);
+		buffer.append(";\n");
+		buffer.append("for col_index = 1:NUMBER_OF_GROUPS\n");
+		buffer.append("\t % Setup the numerator - \n");
+		buffer.append("\n");
+		buffer.append("\t SF = (1./VARIANCE(:,col_index));\n");
+		buffer.append("\t XM = DATA(:,IDX_VEC(col_index));\n");
+		buffer.append("\t XS = ISIMULATION(:,col_index);\n");
+		buffer.append("\t NUMERATOR = sum(SF.*(XM.*XS));\n");
+		buffer.append("\n");
+		buffer.append("\t % Setup the denominator - \n");
+		buffer.append("\t STDEV = sqrt(VARIANCE(:,col_index));\n");
+		buffer.append("\t TMP = (XS./STDEV).^2;\n");
+		buffer.append("\t DENOMINATOR = sum(TMP);\n");
+		buffer.append("\n");
+		buffer.append("\t % Calculate the BETA - \n");
+		buffer.append("\t BETA = NUMERATOR/DENOMINATOR;\n");
+		buffer.append("\n");
+		buffer.append("\t % Scaled the simulation data - \n");
+		buffer.append("\t TMP_SIM_DATA = BETA*ISIMULATION(:,col_index);\n");
+		buffer.append("\t SCALED_SIMULATION_DATA = [SCALED_SIMULATION_DATA TMP_SIM_DATA];\n");
+		buffer.append("\n");
+		buffer.append("end;\n");
+		
+	}
+	
+	// Build TEST_SIM_XX files -
+	public void buildTestSimBuffer(StringBuffer buffer,Document bcxTree,LoadXMLPropFile _xmlPropTree,String strExpID) throws Exception
+	{
+		// Method attributes -
+		
+		// Get the experimental data filename -
+		String strFileNameTotal = _xmlPropTree.getProperty("//experimental_data_structure_filename/text()");
+		
+		// Get the function -
+        int last_dot = strFileNameTotal.lastIndexOf(".");
+    	String strFncName = strFileNameTotal.substring(0,last_dot);
+		
+		// Populate the buffer -
+		buffer.append("% Script to run the SIM_");
+		buffer.append(strExpID);
+		buffer.append(" -- \n");
+		buffer.append("\n");
+		buffer.append("% Load the experimental data -- \n");
+		buffer.append("EDF = ");
+		buffer.append(strFncName);
+		buffer.append("(0,0,0,[]);\n");
+		buffer.append("\n");
+		buffer.append("% Get the experimental data from the EDF -- \n");
+		buffer.append("DATA = EDF.DATA_ARRAY_");
+		buffer.append(strExpID);
+		buffer.append(";\n");
+		buffer.append("\n");
+		buffer.append("% Load the test parameters - \n");
+		buffer.append("% EDIT THIS BLOCK \n");
+		buffer.append("\n");
+		buffer.append("% Set the simulation timescale - \n");
+		
+		// Get the time-scale -
+		String strTSTARTXPath = "//experiment[@id='"+strExpID+"']/@simulation_time_start";
+		String strTimeStart = queryBCXTree(bcxTree,strTSTARTXPath);
+		
+		String strTSTOPXPath = "//experiment[@id='"+strExpID+"']/@simulation_time_stop";
+		String strTimeStop = queryBCXTree(bcxTree,strTSTOPXPath);
+		
+		String strTSXPath = "//experiment[@id='"+strExpID+"']/@simulation_time_step";
+		String strTimeStep = queryBCXTree(bcxTree,strTSXPath);
+		
+		buffer.append("TSTART = ");
+		buffer.append(strTimeStart);
+		buffer.append(";\n");
+		buffer.append("TSTOP = ");
+		buffer.append(strTimeStop);
+		buffer.append(";\n");
+		buffer.append("Ts = ");
+		buffer.append(strTimeStep);
+		buffer.append(";\n");
+		buffer.append("\n");
+		
+		buffer.append("% Find steady-state - \n");
+		buffer.append("[TSS,XSS] = FindSteadyState(DF,'TEST_CALL');\n");
+		buffer.append("IC = XSS(:,end);\n");
+		buffer.append("DF.INITIAL_CONDITIONS = IC;\n");
+		buffer.append("\n");
+		buffer.append("% Call the SIM_x.m function - \n");
+		buffer.append("[TSIM,XSIM]=SIM_");
+		buffer.append(strExpID);
+		buffer.append("(TSTART,TSTOP,Ts,DF,'TEST_CALL');\n");
+		
+		// Ok, so normally we would be done - but because I'm an outsanding teacher, advisor and all around great human being I will also provide
+		// the scaled version to you bitches...
+		
+		// Check on the scaling -
+		// XPath to determine scaling -
+		String strScalingXPath = "//experiment[@id='"+strExpID+"']/@scaling";
+		String strScaling = queryBCXTree(bcxTree,strScalingXPath);
+		
+		
+		buffer.append("\n");
+		// First, build the simulation array -
+		buildSimulationArray(buffer,bcxTree,_xmlPropTree,strExpID);
+		
+		// Code for the ZERO_TO_ONE scaling option -
+		if (strScaling.equalsIgnoreCase("ZERO_TO_ONE"))
+		{
+			// Process zero to one scaling -
+			buildZeroToOneScalingBuffer(buffer,bcxTree,_xmlPropTree,strExpID);	
+		}
+		else if (strScaling.equalsIgnoreCase("BETA"))
+		{
+			// Process the BETA buffer -
+			buildBetaScalingBuffer(buffer,bcxTree,_xmlPropTree,strExpID);	
+		}
+		
 	}
 	
 	// Build the MOSE buffer -
@@ -259,9 +514,9 @@ public class MOBCXModel {
 		buffer.append("\t pObjectiveFunction = ERROR_STRUCT.FUNCTION(obj_index).POINTER;\n");
 		buffer.append("\n ");
 		buffer.append("% Grab the simulation time scale --\n");
-		buffer.append("TSTART = ERROR_STRUCT.FUNCTION(obj_index).TIME_START;\n");
-		buffer.append("TSTOP = ERROR_STRUCT.FUNCTION(obj_index).TIME_STOP;\n");
-		buffer.append("Ts = ERROR_STRUCT.FUNCTION(obj_index).TIME_STEP;\n");
+		buffer.append("\t TSTART = ERROR_STRUCT.FUNCTION(obj_index).TIME_START;\n");
+		buffer.append("\t TSTOP = ERROR_STRUCT.FUNCTION(obj_index).TIME_STOP;\n");
+		buffer.append("\t Ts = ERROR_STRUCT.FUNCTION(obj_index).TIME_STEP;\n");
 		buffer.append("\n");
 		buffer.append("\t % Evaluate the error function -- \n");
 		buffer.append("\t ERR_EXP = feval(pObjectiveFunction,TSTART,TSTOP,Ts,DF,EDF,THREAD_SUFFIX);\n");
@@ -681,7 +936,7 @@ public class MOBCXModel {
 		buffer.append("\n");
 		buffer.append("\t % Setup the denominator - \n");
 		buffer.append("\t STDEV = sqrt(VARIANCE(:,col_index));\n");
-		buffer.append("\t TMP = XS./STDEV;\n");
+		buffer.append("\t TMP = (XS./STDEV).^2;\n");
 		buffer.append("\t DENOMINATOR = sum(TMP);\n");
 		buffer.append("\n");
 		buffer.append("\t % Calculate the BETA - \n");

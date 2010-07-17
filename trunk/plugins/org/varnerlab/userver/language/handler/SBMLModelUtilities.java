@@ -683,6 +683,17 @@ public class SBMLModelUtilities {
         GIOL.write(strSBMLFile,driver);
     }
     
+    public static void dumpTestSimFunctionToDisk(StringBuffer driver,LoadXMLPropFile _xmlPropTree,String strExpID) throws Exception
+    {
+    	// I have populated the string buffer, dump that mofo
+        String strWorkingDir = _xmlPropTree.getProperty("//working_directory/text()");
+        
+        String strSBMLFile = "";
+        strSBMLFile = strWorkingDir+"/TEST_SIM_"+strExpID+".m";
+        
+        GIOL.write(strSBMLFile,driver);
+    }
+    
     public static void dumpExpDataStructToDisk(StringBuffer driver,LoadXMLPropFile _xmlPropTree) throws Exception
     {
         // I have populated the string buffer, dump that mofo
