@@ -30,6 +30,61 @@ public class MOBCXModel {
 		System.loadLibrary("sbmlj");   
 	}
 	
+	public void buildScalingFunctionBuffer(StringBuffer buffer,Document bcxTree,LoadXMLPropFile _xmlPropTree,String strExpID) throws Exception
+	{
+		// Method attributes -
+		
+		// Ok, so I need to check what version of scaling that we are going to use for this experiment -
+		
+		buffer.append("function [ERR_ARR] = SCALE_");
+		buffer.append(strExpID);
+		buffer.append("(TSIM,SIMULATION,DATA,VARIANCE,IDX_VEC)\n");
+		buffer.append("\n");
+		
+		// XPath to determine scaling -
+		String strScalingXPath = "//experiment[@id='"+strExpID+"']/@scaling";
+		String strScaling = queryBCXTree(bcxTree,strScalingXPath);
+		
+		// Code for to assemble the groups -
+		// buildSimulationArray(buffer,bcxTree,_xmlPropTree,strExpID);
+		
+		// Code for the ZERO_TO_ONE or BETA scaling option -
+		if (strScaling.equalsIgnoreCase("ZERO_TO_ONE"))
+		{
+			// Process zero to one scaling -
+			buildZeroToOneBuffer(buffer,bcxTree,_xmlPropTree,strExpID);	
+		}
+		else if (strScaling.equalsIgnoreCase("BETA"))
+		{
+			// Process the BETA buffer -
+			buildBetaBuffer(buffer,bcxTree,_xmlPropTree,strExpID);	
+		}
+		
+		
+		buffer.append("\n");
+		buffer.append("% return to caller - \n");
+		buffer.append("return\n");
+	}
+	
+	public void buildSimGroupFunctionBuffer(StringBuffer buffer,Document bcxTree,LoadXMLPropFile _xmlPropTree,String strExpID) throws Exception
+	{
+		// Method attributes -
+		
+		// Go ..
+		buffer.append("function [SIMULATION] = SIMGRP_");
+		buffer.append(strExpID);
+		buffer.append("(XSIM)\n");
+		buffer.append("\n");
+		
+		// Build the simulation array -
+		buildSimulationArray(buffer,bcxTree,_xmlPropTree,strExpID);
+		
+		buffer.append("\n");
+		buffer.append("% return to caller - \n");
+		buffer.append("return\n");
+		
+	}
+	
 	private void loadSBMLModel(LoadXMLPropFile _xmlPropTree) throws Exception 
 	{
 		// Create an instance of the SBML reader -
@@ -381,6 +436,8 @@ public class MOBCXModel {
 		buffer.append("NUMBER_OF_GROUPS = ");
 		buffer.append(NUMBER_OF_GRP_NAMES);
 		buffer.append(";\n");
+		buffer.append("EPS = 1e-6;\n");
+		buffer.append("BETA_ARR = [];\n");
 		buffer.append("for col_index = 1:NUMBER_OF_GROUPS\n");
 		buffer.append("\t % Setup the numerator - \n");
 		buffer.append("\n");
@@ -394,8 +451,13 @@ public class MOBCXModel {
 		buffer.append("\t TMP = (XS./STDEV).^2;\n");
 		buffer.append("\t DENOMINATOR = sum(TMP);\n");
 		buffer.append("\n");
+		buffer.append("\t if (DENOMINATOR<EPS)\n");
+		buffer.append("\t\t DENOMINATOR = EPS;\n");
+		buffer.append("\t end; \n");
+		buffer.append("\n");
 		buffer.append("\t % Calculate the BETA - \n");
 		buffer.append("\t BETA = NUMERATOR/DENOMINATOR;\n");
+		buffer.append("\t BETA_ARR = [BETA_ARR BETA];\n");
 		buffer.append("\n");
 		buffer.append("\t % Scaled the simulation data - \n");
 		buffer.append("\t TMP_SIM_DATA = BETA*ISIMULATION(:,col_index);\n");
@@ -478,8 +540,13 @@ public class MOBCXModel {
 		
 		
 		buffer.append("\n");
+		buffer.append("SIMULATION = SIMGRP_");
+		buffer.append(strExpID);
+		buffer.append("(XSIM);\n");
+		buffer.append("\n");
+		
 		// First, build the simulation array -
-		buildSimulationArray(buffer,bcxTree,_xmlPropTree,strExpID);
+		// buildSimulationArray(buffer,bcxTree,_xmlPropTree,strExpID);
 		
 		// Code for the ZERO_TO_ONE scaling option -
 		if (strScaling.equalsIgnoreCase("ZERO_TO_ONE"))
@@ -513,7 +580,7 @@ public class MOBCXModel {
 		buffer.append("\t % Grab the objective function pointer -- \n");
 		buffer.append("\t pObjectiveFunction = ERROR_STRUCT.FUNCTION(obj_index).POINTER;\n");
 		buffer.append("\n ");
-		buffer.append("% Grab the simulation time scale --\n");
+		buffer.append("\t % Grab the simulation time scale --\n");
 		buffer.append("\t TSTART = ERROR_STRUCT.FUNCTION(obj_index).TIME_START;\n");
 		buffer.append("\t TSTOP = ERROR_STRUCT.FUNCTION(obj_index).TIME_STOP;\n");
 		buffer.append("\t Ts = ERROR_STRUCT.FUNCTION(obj_index).TIME_STEP;\n");
@@ -529,12 +596,69 @@ public class MOBCXModel {
 		buffer.append("return;\n");
 	}
 	
+	private StringBuffer buildSimulationArrayComment(Document bcxTree,LoadXMLPropFile _xmlPropTree,String strExpID,String strGrpName) throws Exception
+	{
+		// Method attributes -
+		StringBuffer buffer = new StringBuffer();
+		
+		String strUseExactNameXPath = "//experiment[@id='"+strExpID+"']/measurement_file/@search_network";
+		String strSearchNetwork = queryBCXTree(bcxTree,strUseExactNameXPath);
+		
+		// Get the exclude -
+		String strExcludeXPath = "//experiment[@id='"+strExpID+"']/measurement_file/@exclude";
+		String strExclude = queryBCXTree(bcxTree,strExcludeXPath);
+		
+		// Ok, we need to parse the exclude string -
+		String[] strExcludeTokens = strExclude.split(",");
+		buffer.append("% EXCLUDE: ");
+		buffer.append(strExclude);
+		buffer.append("\n");
+		
+
+		String strDataGroupSpeciesXPath = "//experiment[@id='"+strExpID+"']/measurement_file/data_column[@data_group='"+strGrpName+"']/@species";
+		ArrayList<String> groupSpeciesList = getList(strDataGroupSpeciesXPath,bcxTree);
+		ArrayList<String> localList = new ArrayList<String>();
+		
+		// Ok, so now we need to check for *like* species -
+		int NUMBER_OF_SPECIES = groupSpeciesList.size();
+		for (int grp_species_index=0;grp_species_index<NUMBER_OF_SPECIES;grp_species_index++)
+		{
+			// Get the species in this grp -
+			String strSpeciesSymbol = groupSpeciesList.get(grp_species_index);
+			
+			// Get the a unique list -
+			ArrayList<String> tmpLocalList = getUniqueSpeciesList(strSpeciesSymbol,strExcludeTokens);
+			
+			// Add this to the localList -
+			localList.addAll(tmpLocalList);
+		}
+		
+		// Ok, when I get here I have a localList -
+		int NUMBER_SPECIES_LOCAL_LIST = localList.size();
+		for (int local_index=0;local_index<NUMBER_SPECIES_LOCAL_LIST;local_index++)
+		{
+			// Get the species fragment -
+			String strSpeciesFragment = localList.get(local_index);
+		
+			// What is the index?
+			int int_species_index = findSpeciesIndex(strSpeciesFragment);
+			buffer.append("% ");
+			buffer.append(strSpeciesFragment);
+			buffer.append(" = ");
+			buffer.append(int_species_index);
+			buffer.append("\n");		
+		}
+			
+		return(buffer);
+		
+	}
+	
 	private void buildSimulationArray(StringBuffer buffer,Document bcxTree,LoadXMLPropFile _xmlPropTree,String strExpID) throws Exception
 	{
 		// Method attributes -
 		
 		String strUseExactNameXPath = "//experiment[@id='"+strExpID+"']/measurement_file/@search_network";
-		String strUseExactName = queryBCXTree(bcxTree,strUseExactNameXPath);
+		String strSearchNetwork = queryBCXTree(bcxTree,strUseExactNameXPath);
 		
 		// Get the exclude -
 		String strExcludeXPath = "//experiment[@id='"+strExpID+"']/measurement_file/@exclude";
@@ -561,11 +685,20 @@ public class MOBCXModel {
 				buffer.append("% ");
 				buffer.append(strGrpName);
 				buffer.append(" -- \n");
+				
+				// Check to see if we are using the exact name - if *no* then list the species that will be used -
+				if (strSearchNetwork.equalsIgnoreCase("TRUE"))
+				{
+					StringBuffer commentBuffer = buildSimulationArrayComment(bcxTree,_xmlPropTree,strExpID,strGrpName);
+					buffer.append(commentBuffer);
+				}
+				
+				buffer.append("\n");
 				buffer.append("TMP_GRP = [];\n");
 				buffer.append("TMP_GRP = [TMP_GRP ");
 			
 				
-				if (strUseExactName.equalsIgnoreCase("FALSE"))
+				if (strSearchNetwork.equalsIgnoreCase("FALSE"))
 				{
 					String strDataGroupSpeciesXPath = "//experiment[@id='"+strExpID+"']/measurement_file/data_column[@data_group='"+strGrpName+"']/@species";
 					ArrayList<String> groupSpeciesList = getList(strDataGroupSpeciesXPath,bcxTree);
@@ -652,55 +785,10 @@ public class MOBCXModel {
 		ArrayList<String> groupNameList = getUniqueList(strDataGroupNamesXPath,bcxTree);
 		int NUMBER_OF_GRP_NAMES = groupNameList.size();
 		
-		// Check to determine which scaling -
-		buffer.append("% Scale the experimental data -- \n");
-		buffer.append("[NROW,NCOL]=size(DATA);\n");
-		buffer.append("SCALED_DATA = [];\n");
 		buffer.append("\n");
 		
-		buffer.append("% Calculate the VARIANCE array -- \n");
-		
-		// We need to figure out what index time is (if any) -
-		buffer.append("IDX_VEC = [");
-		for (int index_grp_names = 0;index_grp_names<NUMBER_OF_GRP_NAMES;index_grp_names++)
-		{
-			// Get the column_index_in_file attribute from - 
-			String strXPath = "//experiment[@id='"+strExpID+"']/measurement_file/data_column[@data_group='"+groupNameList.get(index_grp_names)+"']/@column_index_in_file";
-			String strColIDinFile = queryBCXTree(bcxTree,strXPath);
-			buffer.append(strColIDinFile);
-		
-			if (index_grp_names==NUMBER_OF_GRP_NAMES-1)
-			{
-				buffer.append("];\n");
-			}
-			else
-			{
-				buffer.append(" ");
-			}
-		}
-		
-		for (int grp_index = 0;grp_index<NUMBER_OF_GRP_NAMES;grp_index++)
-		{
-			// Get the name of the grp -
-			String strGrpName = groupNameList.get(grp_index);
-			
-			buffer.append("VARIANCE(:,");
-			buffer.append(grp_index+1);
-			buffer.append(") = ");
-			
-			String strDataColXPath = "//experiment[@id='"+strExpID+"']/measurement_file/data_column[@data_group='"+strGrpName+"']/@coefficient_of_variation";
-			
-			// Get the strCV -
-			String strCV = queryBCXTree(bcxTree,strDataColXPath);
-			buffer.append("(");
-			buffer.append(strCV);
-			buffer.append("*");
-			buffer.append("DATA(:,");
-			buffer.append("IDX_VEC(");
-			buffer.append(grp_index+1);
-			buffer.append("))).^2;\n");
-		}
-		
+		buffer.append("% Set an EPS - \n");
+		buffer.append("EPS = 1e-6;\n");
 		buffer.append("\n");
 		
 		// Check to see if variance is zero -
@@ -711,6 +799,7 @@ public class MOBCXModel {
 		
 		buffer.append("% Scale the experimental data -- \n");
 		buffer.append("NCOL_MINUS_TIME = length(IDX_VEC);\n");
+		buffer.append("SCALED_DATA = [];\n");
 		buffer.append("for tmp_col_index=1:NCOL_MINUS_TIME\n");
 		buffer.append("\t % Get the col index -- \n");
 		buffer.append("\t col_index = IDX_VEC(tmp_col_index);\n");
@@ -739,12 +828,7 @@ public class MOBCXModel {
 		buffer.append("\n");
 		
 		// Formulate SIMULATION array -
-		buildSimulationArray(buffer,bcxTree,_xmlPropTree,strExpID);
-		
-		// Add the groups to the simulation array -
-		buffer.append("% Add the groups to the simulation array -- \n");
-		buffer.append("SIMULATION = GROUP;\n");
-		buffer.append("\n");
+		// buildSimulationArray(buffer,bcxTree,_xmlPropTree,strExpID);
 		
 		buffer.append("\n");
 		buffer.append("% Scale the simulation data -- \n");
@@ -829,9 +913,136 @@ public class MOBCXModel {
 		ArrayList<String> groupNameList = getUniqueList(strDataGroupNamesXPath,bcxTree);
 		int NUMBER_OF_GRP_NAMES = groupNameList.size();
 		
+		
+		// Check to see if variance is zero -
+		buffer.append("% Check to see if variance is zero -\n");
+		buffer.append("IDX_ZERO = find(VARIANCE==0);\n");
+		buffer.append("VARIANCE(IDX_ZERO) = 1;\n");
+		buffer.append("\n");
+		
+		buffer.append("% BETA scaling was selected - no scaling for the experimental data - \n");
+		
+		// We need to figure out what index time is (if any) -
+		buffer.append("IDX_VEC = [");
+		for (int index_grp_names = 0;index_grp_names<NUMBER_OF_GRP_NAMES;index_grp_names++)
+		{
+			// Get the column_index_in_file attribute from - 
+			String strXPath = "//experiment[@id='"+strExpID+"']/measurement_file/data_column[@data_group='"+groupNameList.get(index_grp_names)+"']/@column_index_in_file";
+			String strColIDinFile = queryBCXTree(bcxTree,strXPath);
+			buffer.append(strColIDinFile);
+		
+			if (index_grp_names==NUMBER_OF_GRP_NAMES-1)
+			{
+				buffer.append("];\n");
+			}
+			else
+			{
+				buffer.append(" ");
+			}
+		}
+		
+		buffer.append("SCALED_DATA = DATA(:,IDX_VEC);\n");
+		buffer.append("\n");
+		
+		// Formulate SIMULATION array -
+		// buildSimulationArray(buffer,bcxTree,_xmlPropTree,strExpID);
+		
+		buffer.append("\n");
+		buffer.append("% Get the experimental time col - \n");
+		String strXPath = "//experiment[@id='"+strExpID+"']/measurement_file/data_column[@column_type='Time']/@column_index_in_file";
+		String strColIDinFileTime = queryBCXTree(bcxTree,strXPath);
+		buffer.append("TEXP = DATA(:,");
+		buffer.append(strColIDinFileTime);
+		buffer.append(");\n");
+		buffer.append("\n");
+		
+		buffer.append("% Interpolate the simulation to the experimental time scale -- \n");
+		buffer.append("ISIMULATION = interp1(TSIM,SIMULATION,TEXP);\n");
+		buffer.append("\n");
+		
+		buffer.append("% Setup the BETA simulation data scaling - \n");
+		buffer.append("\n");
+		buffer.append("SCALED_SIMULATION_DATA = [];\n");
+		buffer.append("NUMBER_OF_GROUPS = ");
+		buffer.append(NUMBER_OF_GRP_NAMES);
+		buffer.append(";\n");
+		buffer.append("EPS = 1e-6;\n");
+		buffer.append("BETA_ARR = [];\n");
+		buffer.append("for col_index = 1:NUMBER_OF_GROUPS\n");
+		buffer.append("\t % Setup the numerator - \n");
+		buffer.append("\n");
+		buffer.append("\t SF = (1./VARIANCE(:,col_index));\n");
+		buffer.append("\t XM = DATA(:,IDX_VEC(col_index));\n");
+		buffer.append("\t XS = ISIMULATION(:,col_index);\n");
+		buffer.append("\t NUMERATOR = sum(SF.*(XM.*XS));\n");
+		buffer.append("\n");
+		buffer.append("\t % Setup the denominator - \n");
+		buffer.append("\t STDEV = sqrt(VARIANCE(:,col_index));\n");
+		buffer.append("\t TMP = (XS./STDEV).^2;\n");
+		buffer.append("\t DENOMINATOR = sum(TMP);\n");
+		buffer.append("\n");
+		buffer.append("\t % Calculate the BETA - \n");
+		buffer.append("\t if (DENOMINATOR<EPS)\n");
+		buffer.append("\t\t DENOMINATOR = EPS;\n");
+		buffer.append("\t end; \n");
+		buffer.append("\n");
+		buffer.append("\t % Calculate the BETA - \n");
+		buffer.append("\t BETA = NUMERATOR/DENOMINATOR;\n");
+		buffer.append("\t BETA_ARR = [BETA_ARR BETA];\n");
+		buffer.append("\n");
+		buffer.append("\t % Scaled the simulation data - \n");
+		buffer.append("\t TMP_SIM_DATA = BETA*ISIMULATION(:,col_index);\n");
+		buffer.append("\t SCALED_SIMULATION_DATA = [SCALED_SIMULATION_DATA TMP_SIM_DATA];\n");
+		buffer.append("\n");
+		buffer.append("end;\n");
+		
+		buffer.append("\n");
+		buffer.append("% Calculate the error - \n");
+		buffer.append("NUMBER_OF_GROUPS = ");
+		buffer.append(NUMBER_OF_GRP_NAMES);
+		buffer.append(";\n");
+		buffer.append("for col_index=1:NUMBER_OF_GROUPS\n");
+		buffer.append("\t SF = (1./VARIANCE(:,col_index));\n");
+		buffer.append("\t RELATIVE_ERR = sum(SF.*((SCALED_SIMULATION_DATA(:,col_index) - SCALED_DATA(:,col_index)).^2));\n");
+		buffer.append("\t ERR_ARR(col_index,1) = RELATIVE_ERR;\n");
+		buffer.append("end;\n");
+		buffer.append("\n");
+		
+	}
+	
+	
+	// Build the error buffer -
+	public void buildErrorBuffer(StringBuffer buffer,Document bcxTree,LoadXMLPropFile _xmlPropTree,String strExpID) throws Exception
+	{
+		// Method attributes -
+		
+		// Populate the buffer -
+		buffer.append("function [ERR]=ERR_");
+		buffer.append(strExpID);
+		buffer.append("(TSTART,TSTOP,Ts,DF,EDF,THREAD_SUFFIX)\n");
+		buffer.append("\n");
+		
+		// Run the simulation -
+		buffer.append("% Run the simulation -- \n");
+		buffer.append("[TSIM,XSIM]=SIM_");
+		buffer.append(strExpID);
+		buffer.append("(TSTART,TSTOP,Ts,DF,THREAD_SUFFIX);\n");
+		buffer.append("\n");
+		
+		// Load the experimental data -
+		buffer.append("% Get the experimental data from the EDF -- \n");
+		buffer.append("DATA = EDF.DATA_ARRAY_");
+		buffer.append(strExpID);
+		buffer.append(";\n");
+		buffer.append("\n");
+		
 		buffer.append("% Calculate the VARIANCE array -- \n");
 		
 		// We need to figure out what index time is (if any) -
+		String strDataGroupNamesXPath = "//experiment[@id='"+strExpID+"']/measurement_file/data_column/@data_group";
+		ArrayList<String> groupNameList = getUniqueList(strDataGroupNamesXPath,bcxTree);
+		int NUMBER_OF_GRP_NAMES = groupNameList.size();
+		
 		buffer.append("IDX_VEC = [");
 		for (int index_grp_names = 0;index_grp_names<NUMBER_OF_GRP_NAMES;index_grp_names++)
 		{
@@ -872,143 +1083,20 @@ public class MOBCXModel {
 			buffer.append("))).^2;\n");
 		}
 		
-		buffer.append("\n");
-		
-		// Check to see if variance is zero -
-		buffer.append("% Check to see if variance is zero -\n");
-		buffer.append("IDX_ZERO = find(VARIANCE==0);\n");
-		buffer.append("VARIANCE(IDX_ZERO) = 1;\n");
-		buffer.append("\n");
-		
-		buffer.append("% BETA scaling was selected - no scaling for the experimental data - \n");
-		
-		// We need to figure out what index time is (if any) -
-		buffer.append("IDX_VEC = [");
-		for (int index_grp_names = 0;index_grp_names<NUMBER_OF_GRP_NAMES;index_grp_names++)
-		{
-			// Get the column_index_in_file attribute from - 
-			String strXPath = "//experiment[@id='"+strExpID+"']/measurement_file/data_column[@data_group='"+groupNameList.get(index_grp_names)+"']/@column_index_in_file";
-			String strColIDinFile = queryBCXTree(bcxTree,strXPath);
-			buffer.append(strColIDinFile);
-		
-			if (index_grp_names==NUMBER_OF_GRP_NAMES-1)
-			{
-				buffer.append("];\n");
-			}
-			else
-			{
-				buffer.append(" ");
-			}
-		}
-		
-		buffer.append("SCALED_DATA = DATA(:,IDX_VEC);\n");
-		buffer.append("\n");
-		
-		// Formulate SIMULATION array -
-		buildSimulationArray(buffer,bcxTree,_xmlPropTree,strExpID);
 		
 		buffer.append("\n");
-		buffer.append("% Get the experimental time col - \n");
-		String strXPath = "//experiment[@id='"+strExpID+"']/measurement_file/data_column[@column_type='Time']/@column_index_in_file";
-		String strColIDinFileTime = queryBCXTree(bcxTree,strXPath);
-		buffer.append("TEXP = DATA(:,");
-		buffer.append(strColIDinFileTime);
-		buffer.append(");\n");
-		buffer.append("\n");
-		
-		buffer.append("% Interpolate the simulation to the experimental time scale -- \n");
-		buffer.append("ISIMULATION = interp1(TSIM,SIMULATION,TEXP);\n");
-		buffer.append("\n");
-		
-		buffer.append("% Setup the BETA simulation data scaling - \n");
-		buffer.append("\n");
-		buffer.append("SCALED_SIMULATION_DATA = [];\n");
-		buffer.append("NUMBER_OF_GROUPS = ");
-		buffer.append(NUMBER_OF_GRP_NAMES);
-		buffer.append(";\n");
-		buffer.append("for col_index = 1:NUMBER_OF_GROUPS\n");
-		buffer.append("\t % Setup the numerator - \n");
-		buffer.append("\n");
-		buffer.append("\t SF = (1./VARIANCE(:,col_index));\n");
-		buffer.append("\t XM = DATA(:,IDX_VEC(col_index));\n");
-		buffer.append("\t XS = ISIMULATION(:,col_index);\n");
-		buffer.append("\t NUMERATOR = sum(SF.*(XM.*XS));\n");
-		buffer.append("\n");
-		buffer.append("\t % Setup the denominator - \n");
-		buffer.append("\t STDEV = sqrt(VARIANCE(:,col_index));\n");
-		buffer.append("\t TMP = (XS./STDEV).^2;\n");
-		buffer.append("\t DENOMINATOR = sum(TMP);\n");
-		buffer.append("\n");
-		buffer.append("\t % Calculate the BETA - \n");
-		buffer.append("\t BETA = NUMERATOR/DENOMINATOR;\n");
-		buffer.append("\n");
-		buffer.append("\t % Scaled the simulation data - \n");
-		buffer.append("\t TMP_SIM_DATA = BETA*ISIMULATION(:,col_index);\n");
-		buffer.append("\t SCALED_SIMULATION_DATA = [SCALED_SIMULATION_DATA TMP_SIM_DATA];\n");
-		buffer.append("\n");
-		buffer.append("end;\n");
-		
-		buffer.append("\n");
-		buffer.append("% Calculate the error - \n");
-		buffer.append("NUMBER_OF_GROUPS = ");
-		buffer.append(NUMBER_OF_GRP_NAMES);
-		buffer.append(";\n");
-		buffer.append("for col_index=1:NUMBER_OF_GROUPS\n");
-		buffer.append("\t SF = (1./VARIANCE(:,col_index));\n");
-		buffer.append("\t RELATIVE_ERR = sum(SF.*((SCALED_SIMULATION_DATA(:,col_index) - SCALED_DATA(:,col_index)).^2));\n");
-		buffer.append("\t ERR_ARR(col_index,1) = RELATIVE_ERR;\n");
-		buffer.append("end;\n");
-		buffer.append("\n");
-		
-	}
-	
-	
-	// Build the error buffer -
-	public void buildErrorBuffer(StringBuffer buffer,Document bcxTree,LoadXMLPropFile _xmlPropTree,String strExpID) throws Exception
-	{
-		// Method attributes -
-		
-		// Populate the buffer -
-		buffer.append("function [ERR]=ERR_");
+		buffer.append("% Calculuate the simulation groups - \n");
+		buffer.append("SIMULATION = SIMGRP_");
 		buffer.append(strExpID);
-		buffer.append("(TSTART,TSTOP,Ts,DF,EDF,THREAD_SUFFIX)\n");
-		buffer.append("\n");
+		buffer.append("(XSIM);\n");
+		buffer.append("\n");		
 		
-		// Run the simulation -
-		buffer.append("% Set the EPS - \n");
-		buffer.append("EPS = 1e-6;\n");
-		buffer.append("\n");
-		buffer.append("% Run the simulation -- \n");
-		buffer.append("[TSIM,XSIM]=SIM_");
+		buffer.append("% Scale the data and calc the error - \n");
+		buffer.append("ERR_ARR = SCALE_");
 		buffer.append(strExpID);
-		buffer.append("(TSTART,TSTOP,Ts,DF,THREAD_SUFFIX);\n");
-		buffer.append("\n");
-		
-		// Load the experimental data -
-		buffer.append("% Get the experimental data from the EDF -- \n");
-		buffer.append("DATA = EDF.DATA_ARRAY_");
-		buffer.append(strExpID);
-		buffer.append(";\n");
-		buffer.append("\n");
+		buffer.append("(TSIM,SIMULATION,DATA,VARIANCE,IDX_VEC);\n");
 	
-		// XPath to determine scaling -
-		String strScalingXPath = "//experiment[@id='"+strExpID+"']/@scaling";
-		String strScaling = queryBCXTree(bcxTree,strScalingXPath);
-		
-		
-		// Code for the ZERO_TO_ONE scaling option -
-		if (strScaling.equalsIgnoreCase("ZERO_TO_ONE"))
-		{
-			// Process zero to one scaling -
-			buildZeroToOneBuffer(buffer,bcxTree,_xmlPropTree,strExpID);	
-		}
-		else if (strScaling.equalsIgnoreCase("BETA"))
-		{
-			// Process the BETA buffer -
-			buildBetaBuffer(buffer,bcxTree,_xmlPropTree,strExpID);	
-		}
-		
-		
+			
 		buffer.append("\n");		
 		buffer.append("% Compute ERR -- \n");
 		buffer.append("ERR = sum(ERR_ARR);\n");
@@ -1205,7 +1293,8 @@ public class MOBCXModel {
 			}
 					
 			// Run the simulation -
-			if (strStimulusValue.equalsIgnoreCase("0.0") || strStimulusValue.equalsIgnoreCase("0"))
+			// strStimulusValue.equalsIgnoreCase("0.0") || strStimulusValue.equalsIgnoreCase("0") 
+			if (false)
 			{
 				buffer.append("% Recycle the steady-state because there is no stimulus.\n");
 				buffer.append("% Setup the time scale - \n");

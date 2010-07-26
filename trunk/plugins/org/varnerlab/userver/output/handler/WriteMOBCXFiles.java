@@ -61,6 +61,8 @@ public class WriteMOBCXFiles implements IOutputHandler {
 			StringBuffer exp_buffer = new StringBuffer();
 			StringBuffer err_buffer = new StringBuffer();
 			StringBuffer testSimBuffer = new StringBuffer();
+			StringBuffer simGrpBuffer = new StringBuffer();
+			StringBuffer scaleBuffer = new StringBuffer();
 			
 			// Get the id string for this experiment -
 			Node expNode = expNodeList.item(exp_index);
@@ -70,11 +72,15 @@ public class WriteMOBCXFiles implements IOutputHandler {
 			model_wrapper.buildSimFileBuffer(exp_buffer, bcxTree, _xmlPropTree,strExpId);
 			model_wrapper.buildErrorBuffer(err_buffer, bcxTree, _xmlPropTree, strExpId);
 			model_wrapper.buildTestSimBuffer(testSimBuffer, bcxTree, _xmlPropTree, strExpId);
+			model_wrapper.buildSimGroupFunctionBuffer(simGrpBuffer, bcxTree, _xmlPropTree, strExpId);
+			model_wrapper.buildScalingFunctionBuffer(scaleBuffer, bcxTree, _xmlPropTree, strExpId);
 			
 			// Dump the buffer to disk -
 			SBMLModelUtilities.dumpSimulationFunctionToDisk(exp_buffer,_xmlPropTree,strExpId);
 			SBMLModelUtilities.dumpErrorFunctionToDisk(err_buffer, _xmlPropTree, strExpId);
 			SBMLModelUtilities.dumpTestSimFunctionToDisk(testSimBuffer, _xmlPropTree, strExpId);
+			SBMLModelUtilities.dumpSimGrpFunctionToDisk(simGrpBuffer, _xmlPropTree, strExpId);
+			SBMLModelUtilities.dumpScaleFunctionToDisk(scaleBuffer, _xmlPropTree, strExpId);
 			
 		}
 		
