@@ -694,6 +694,28 @@ public class SBMLModelUtilities {
         GIOL.write(strSBMLFile,driver);
     }
     
+    public static void dumpSimGrpFunctionToDisk(StringBuffer driver,LoadXMLPropFile _xmlPropTree,String strExpID) throws Exception
+    {
+    	// I have populated the string buffer, dump that mofo
+        String strWorkingDir = _xmlPropTree.getProperty("//working_directory/text()");
+        
+        String strSBMLFile = "";
+        strSBMLFile = strWorkingDir+"/SIMGRP_"+strExpID+".m";
+        
+        GIOL.write(strSBMLFile,driver);
+    }
+    
+    public static void dumpScaleFunctionToDisk(StringBuffer driver,LoadXMLPropFile _xmlPropTree,String strExpID) throws Exception
+    {
+    	// I have populated the string buffer, dump that mofo
+        String strWorkingDir = _xmlPropTree.getProperty("//working_directory/text()");
+        
+        String strSBMLFile = "";
+        strSBMLFile = strWorkingDir+"/SCALE_"+strExpID+".m";
+        
+        GIOL.write(strSBMLFile,driver);
+    }
+    
     public static void dumpExpDataStructToDisk(StringBuffer driver,LoadXMLPropFile _xmlPropTree) throws Exception
     {
         // I have populated the string buffer, dump that mofo
