@@ -127,7 +127,7 @@ public class SBMLModelUtilities {
 	
 	
 	// Build the data file for the case when the reactions were expanded (and we are assming mass action kinetics)
-	public static void buildDataFileBuffer(StringBuffer datafile,Model model,LoadXMLPropFile propTree,Vector<Reaction> vecReactions) throws Exception
+	public static void buildDataFileBuffer(StringBuffer datafile,Model model,LoadXMLPropFile propTree,Vector<Reaction> vecReactions,Vector<Species> vecSpecies) throws Exception
 	{
 		String strDataFileNameRaw = (String)propTree.getProperty("//DataFile/datafile_filename/text()");
     	int INT_TO_DOT = strDataFileNameRaw.indexOf(".");
@@ -197,11 +197,11 @@ public class SBMLModelUtilities {
         
         // Put the initial condition -
         datafile.append("IC=[\n");
-        ListOf species_list = model.getListOfSpecies();
-        int NUMBER_OF_SPECIES = (int)species_list.size();
+        //ListOf species_list = model.getListOfSpecies();
+        int NUMBER_OF_SPECIES = (int)vecSpecies.size();
         for (int pindex=0;pindex<NUMBER_OF_SPECIES;pindex++)
         {
-            Species species = (Species)species_list.get(pindex);
+            Species species = (Species)vecSpecies.get(pindex);
             datafile.append("\t");
             datafile.append(species.getInitialAmount());
             datafile.append("\t;%\t");
@@ -831,6 +831,71 @@ public class SBMLModelUtilities {
 		}
 	}
 	
+	public static void reorderSpeciesVector(Model model_wrapper,Vector vecOrder,Vector<Species> vecSpecies) throws Exception
+	{
+		// Method resources -
+		Vector<Species> local_vector = new Vector<Species>();
+		Vector<String> local_vector_id = new Vector<String>();
+		Vector<Species> bottom_vector = new Vector<Species>();
+		
+		// Transfer the SBML species list into a vector -
+		ListOf species_list_tmp = model_wrapper.getListOfSpecies();
+        long NUMBER_OF_SPECIES = model_wrapper.getNumSpecies();
+        for (int scounter=0;scounter<NUMBER_OF_SPECIES;scounter++)
+        {
+            Species species_tmp = (Species)species_list_tmp.get(scounter);
+            String strSpeciesID = species_tmp.getId();
+            local_vector.add(species_tmp);
+            local_vector_id.add(strSpeciesID);
+        }
+		
+		// Ok, when I get here I have all the species in the local_vector -
+        int NUMBER_ORDER = vecOrder.size();
+        for (int order_index=0;order_index<NUMBER_ORDER;order_index++)
+        {
+        	// Ok, get the test species symbol -
+        	String strTestSymbol = (String)vecOrder.get(order_index);
+        	
+        	// Check to see if this is a valid symbol -
+        	if (local_vector_id.contains(strTestSymbol))
+        	{
+        		// Ok, If I get here then I have a valid symbol -
+        		local_vector_id.remove(strTestSymbol);
+
+				if (!local_vector_id.contains(strTestSymbol))
+				{
+					local_vector_id.addElement(strTestSymbol);
+				}
+        	}		
+        }
+        
+        // When I get here I have the sorted local_vector of ID's
+        // I need to get the species object -
+        int NUMBER_SORTED_SPECIES = local_vector_id.size();
+        for (int species_index=0;species_index<NUMBER_SORTED_SPECIES;species_index++)
+        {
+        	// Get the species -
+        	String strTmpID = local_vector_id.get(species_index);
+        	
+        	// Find this species in the <Species> vector -
+        	int NUMBER_SORTED_INNER = local_vector.size();
+        	for (int species_index_inner=0;species_index_inner<NUMBER_SORTED_INNER;species_index_inner++)
+        	{
+        		// Get the species id -
+        		Species tmpSpecies = (Species)local_vector.get(species_index_inner);
+        		String strSpeciesTmpId = tmpSpecies.getId();
+        		
+        		// Compare -
+        		if (strTmpID.equalsIgnoreCase(strSpeciesTmpId))
+        		{
+        			// Add this Species to vecSpecies -
+        			vecSpecies.addElement(tmpSpecies);
+        			break;
+        		}
+        	}
+        }
+     }
+	
 	
 	// Util method to dump species list to disk -
 	public static void dumpSpeciesToDisk(Properties _propTable,Model model_wrapper) throws Exception
@@ -903,7 +968,7 @@ public class SBMLModelUtilities {
 		
 	
 	// Build the stoichiometric matrix -
-    public static void buildStoichiometricMatrix(double[][] dblSTMatrix,Model model_wrapper,Vector<Reaction> listRates) throws Exception
+    public static void buildStoichiometricMatrix(double[][] dblSTMatrix,Model model_wrapper,Vector<Reaction> listRates,Vector<Species> listSpecies) throws Exception
     {
         
         // Get the dimension of the system -
@@ -911,7 +976,7 @@ public class SBMLModelUtilities {
         int NUMBER_OF_RATES = 0;
         
         // Get the system dimension -
-        NUMBER_OF_SPECIES = (int)model_wrapper.getNumSpecies(); 
+        NUMBER_OF_SPECIES = (int)listSpecies.size();
         NUMBER_OF_RATES = (int)listRates.size(); 
         
         // //System.out.println("Dimension "+NUMBER_OF_SPECIES+" by "+NUMBER_OF_RATES);
@@ -925,7 +990,7 @@ public class SBMLModelUtilities {
             }
         }
         
-        ListOf listSpecies = model_wrapper.getListOfSpecies();
+        // ListOf listSpecies = model_wrapper.getListOfSpecies();
         for (int scounter=0;scounter<NUMBER_OF_SPECIES;scounter++)
         {
             // Get the species reference -

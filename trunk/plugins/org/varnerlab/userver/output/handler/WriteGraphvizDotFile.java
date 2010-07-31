@@ -2,12 +2,16 @@ package org.varnerlab.userver.output.handler;
 
 import java.util.Hashtable;
 import java.util.Vector;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.sbml.libsbml.ListOf;
 import org.sbml.libsbml.Model;
 import org.sbml.libsbml.Reaction;
+import org.sbml.libsbml.Species;
 import org.varnerlab.server.transport.IOutputHandler;
 import org.varnerlab.server.transport.LoadXMLPropFile;
+import org.varnerlab.userver.input.handler.OrderFileReader;
 import org.varnerlab.userver.language.handler.GraphvizModel;
 import org.varnerlab.userver.language.handler.OctaveCModel;
 import org.varnerlab.userver.language.handler.SBMLModelUtilities;
@@ -34,10 +38,58 @@ public class WriteGraphvizDotFile implements IOutputHandler {
         double[][] dblSTMatrix = null;
         Vector<Reaction> vecReactions = new Vector<Reaction>();
         GraphvizModel graphiz_model = new GraphvizModel();
+        Vector<Species> vecSpecies = new Vector<Species>();
+        Vector vecSpeciesOrder = new Vector();
 	
+        
         // Get the resource type (sbml model) -
         Model model_wrapper = (Model)object;
         
+        // Ok get the order file -
+        // Need to check to see if order file is there -
+		String strOrderFileName = _xmlPropTree.getProperty("//OrderFileName/orderfile_filename/text()");
+		String strOrderFileNamePath = _xmlPropTree.getProperty("//OrderFileName/orderfile_path/text()");
+		String strWorkingDir = _xmlPropTree.getProperty("//working_directory/text()");
+		
+		// Ok, load the order file if we have a pointer
+		if (!strOrderFileName.isEmpty())
+		{
+			String strTmp = "";
+			OrderFileReader orderReader = new OrderFileReader();
+			if (!strOrderFileNamePath.isEmpty())
+			{
+				// Create a tmp path string -
+				strTmp = strWorkingDir+"/"+strOrderFileNamePath+"/"+strOrderFileName;
+			}
+			else
+			{
+				// Create a tmp path string -
+				strTmp = strWorkingDir+"/"+strOrderFileName;
+			}
+
+			// Log that we are going to load the order file -
+			_logger.log(Level.INFO,"Going to load the following order file: "+strTmp);
+			
+			// read the symbol file name -
+			orderReader.readFile(strTmp,vecSpeciesOrder);
+			
+			// generate the new species *ordered* species list -
+			SBMLModelUtilities.reorderSpeciesVector(model_wrapper,vecSpeciesOrder,vecSpecies);	
+		}
+		else
+		{
+			// I have no order file, but I need to populate to the vecSpecies
+			
+			// Transfer the SBML species list into a vector -
+			ListOf species_list_tmp = model_wrapper.getListOfSpecies();
+	        long NUMBER_OF_SPECIES = model_wrapper.getNumSpecies();
+	        for (int scounter=0;scounter<NUMBER_OF_SPECIES;scounter++)
+	        {
+	            Species species_tmp = (Species)species_list_tmp.get(scounter);
+	            vecSpecies.add(species_tmp);
+	        }
+		}
+              
         // Check to make sure all the reversible rates are 0,inf
         SBMLModelUtilities.convertReversibleRates(model_wrapper,vecReactions);
         
@@ -46,18 +98,18 @@ public class WriteGraphvizDotFile implements IOutputHandler {
         graphiz_model.setProperties(_xmlPropTree);
         
         // Ok, lets build the stoichiometric matrix -
-        NUMBER_OF_SPECIES = (int)model_wrapper.getNumSpecies(); 
+        NUMBER_OF_SPECIES = (int)vecSpecies.size(); 
         NUMBER_OF_RATES = (int)vecReactions.size();
         
         // Initialize the stoichiometric matrix -
         dblSTMatrix = new double[NUMBER_OF_SPECIES][NUMBER_OF_RATES];
         
         // Build the matrix -
-        SBMLModelUtilities.buildStoichiometricMatrix(dblSTMatrix, model_wrapper,vecReactions);
+        SBMLModelUtilities.buildStoichiometricMatrix(dblSTMatrix, model_wrapper,vecReactions,vecSpecies);
         
         // Construct the dot file -
         graphiz_model.buildDotFileHeader(dot_buffer, model_wrapper, vecReactions);
-        graphiz_model.buildGraphizNodeList(dot_buffer, model_wrapper, vecReactions);
+        graphiz_model.buildGraphizNodeList(dot_buffer, model_wrapper, vecReactions,vecSpecies);
         graphiz_model.buildGraphvizReactionList(dot_buffer,model_wrapper, vecReactions);
         
         // add the last line of the buffer -

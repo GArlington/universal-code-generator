@@ -83,6 +83,8 @@ public class LoadSBMLFile implements IInputHandler {
         _sbmlDocument = _sbmlReader.readSBML(_strSBMLFile);
         _model = _sbmlDocument.getModel();
         
+        
+        
         // String strsbml = _sbmlDocument.toSBML();
         // GIOL.write(_propTable.getProperty("TMP_SBML_OUT"),strsbml);
     }

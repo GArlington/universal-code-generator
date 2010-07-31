@@ -2,11 +2,13 @@ package org.varnerlab.userver.output.handler;
 
 import java.util.Hashtable;
 import java.util.Vector;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.sbml.libsbml.*;
 import org.varnerlab.server.transport.IOutputHandler;
 import org.varnerlab.server.transport.LoadXMLPropFile;
+import org.varnerlab.userver.input.handler.OrderFileReader;
 import org.varnerlab.userver.language.handler.*;
 
 public class WriteOctaveCModel implements IOutputHandler {
@@ -40,23 +42,70 @@ public class WriteOctaveCModel implements IOutputHandler {
         StringBuffer adj_buffer = new StringBuffer();
         StringBuffer debug_buffer = new StringBuffer();
         Vector<Reaction> vecReactions = new Vector<Reaction>();
+        Vector<Species> vecSpecies = new Vector<Species>();
+        Vector vecSpeciesOrder = new Vector();
         
         double[][] dblSTMatrix = null;
         OctaveCModel octave = new OctaveCModel();
         
         System.out.println("Im here...writeResources");
          
+        // Get the resource type (sbml model) -
+        Model model_wrapper = (Model)object;
+        
+        
         // Grab some names - mass balances
         String strMassBalanceFileName = _xmlPropTree.getProperty("//MassBalanceFunction/massbalance_filename/text()");
         String strMassBalancePath = _xmlPropTree.getProperty("//MassBalanceFunction/massbalance_path/text()");
         String strWorkingDir = _xmlPropTree.getProperty("//working_directory/text()");
         
+        // Ok get the order file -
+        // Need to check to see if order file is there -
+		String strOrderFileName = _xmlPropTree.getProperty("//OrderFileName/orderfile_filename/text()");
+		String strOrderFileNamePath = _xmlPropTree.getProperty("//OrderFileName/orderfile_path/text()");
+		
+		// Ok, load the order file if we have a pointer
+		if (!strOrderFileName.isEmpty())
+		{
+			String strTmp = "";
+			OrderFileReader orderReader = new OrderFileReader();
+			if (!strOrderFileNamePath.isEmpty())
+			{
+				// Create a tmp path string -
+				strTmp = strWorkingDir+"/"+strOrderFileNamePath+"/"+strOrderFileName;
+			}
+			else
+			{
+				// Create a tmp path string -
+				strTmp = strWorkingDir+"/"+strOrderFileName;
+			}
+
+			// Log that we are going to load the order file -
+			_logger.log(Level.INFO,"Going to load the following order file: "+strTmp);
+			
+			// read the symbol file name -
+			orderReader.readFile(strTmp,vecSpeciesOrder);
+			
+			// generate the new species *ordered* species list -
+			SBMLModelUtilities.reorderSpeciesVector(model_wrapper,vecSpeciesOrder,vecSpecies);	
+		}
+		else
+		{
+			// I have no order file, but I need to populate to the vecSpecies
+			
+			// Transfer the SBML species list into a vector -
+			ListOf species_list_tmp = model_wrapper.getListOfSpecies();
+	        long NUMBER_OF_SPECIES = model_wrapper.getNumSpecies();
+	        for (int scounter=0;scounter<NUMBER_OF_SPECIES;scounter++)
+	        {
+	            Species species_tmp = (Species)species_list_tmp.get(scounter);
+	            vecSpecies.add(species_tmp);
+	        }
+		}
+        
         // Get the massbalance filename -
         last_dot = strMassBalanceFileName.lastIndexOf(".");
     	mbfunctionName = strMassBalanceFileName.substring(0,last_dot);
-        
-        // Get the resource type (sbml model) -
-        Model model_wrapper = (Model)object;
         
         // Check to make sure all the reversible rates are 0,inf
         SBMLModelUtilities.convertReversibleRates(model_wrapper,vecReactions);
@@ -65,19 +114,19 @@ public class WriteOctaveCModel implements IOutputHandler {
         octave.setModel(model_wrapper);
         
         // Ok, lets build the stoichiometric matrix -
-        NUMBER_OF_SPECIES = (int)model_wrapper.getNumSpecies(); 
+        NUMBER_OF_SPECIES = (int)vecSpecies.size();
         NUMBER_OF_RATES = (int)vecReactions.size();
         
         // Initialize the stoichiometric matrix -
         dblSTMatrix = new double[NUMBER_OF_SPECIES][NUMBER_OF_RATES];
         
         // Build the matrix -
-        SBMLModelUtilities.buildStoichiometricMatrix(dblSTMatrix, model_wrapper,vecReactions);
+        SBMLModelUtilities.buildStoichiometricMatrix(dblSTMatrix, model_wrapper,vecReactions,vecSpecies);
             
         // Ok, so lets start spanking my monkey ...
         octave.buildMassBalanceBuffer(massbalances_buffer,_xmlPropTree);
         octave.buildMassBalanceEquations(massbalances_buffer);
-        octave.buildKineticsBuffer(massbalances_buffer,model_wrapper,vecReactions);
+        octave.buildKineticsBuffer(massbalances_buffer,model_wrapper,vecReactions,vecSpecies);
         octave.buildDriverBuffer(driver_buffer,_xmlPropTree);
         
         SBMLModelUtilities.buildDebugReactionListBuffer(debug_buffer, model_wrapper, vecReactions);
@@ -86,15 +135,15 @@ public class WriteOctaveCModel implements IOutputHandler {
         // Ok, build adj buffer -
         octave.buildSolveAdjBalBuffer(adj_driver_buffer, _xmlPropTree);
         octave.buildAdjBalFntBuffer(adj_buffer, _xmlPropTree);
-        octave.buildKineticsBuffer(adj_buffer,model_wrapper,vecReactions);
+        octave.buildKineticsBuffer(adj_buffer,model_wrapper,vecReactions,vecSpecies);
         octave.buildDSDTBuffer(adj_buffer);
         octave.buildMassBalanceEquations(adj_buffer);
-        octave.buildJacobianBuffer(adj_buffer,vecReactions);
-        octave.buildPMatrixBuffer(adj_buffer,vecReactions);
+        octave.buildJacobianBuffer(adj_buffer,vecReactions,vecSpecies);
+        octave.buildPMatrixBuffer(adj_buffer,vecReactions,vecSpecies);
         octave.buildInputsBuffer(adj_buffer);
         
         // Build the data file -
-        SBMLModelUtilities.buildDataFileBuffer(data_buffer, model_wrapper, _xmlPropTree,vecReactions);
+        SBMLModelUtilities.buildDataFileBuffer(data_buffer, model_wrapper, _xmlPropTree,vecReactions,vecSpecies);
         
         // Dump to regular model to disk -
         SBMLModelUtilities.dumpDriverToDisk(driver_buffer,_xmlPropTree);
@@ -106,6 +155,10 @@ public class WriteOctaveCModel implements IOutputHandler {
         SBMLModelUtilities.dumpAdjDriverFileToDisk(adj_driver_buffer,_xmlPropTree);
         SBMLModelUtilities.dumpAdjFunctionFileToDisk(adj_buffer, _xmlPropTree);
 	}
+	
+	
+	
+		
 
 	public void setLogger(Logger log) {
 		_logger = log;

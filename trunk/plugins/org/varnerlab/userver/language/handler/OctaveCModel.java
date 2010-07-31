@@ -56,7 +56,7 @@ public class OctaveCModel {
         buffer.append("}\n");
     }
             
-    public void buildKineticsBuffer(StringBuffer buffer,Model model_wrapper,Vector<Reaction> vecReactions) throws Exception
+    public void buildKineticsBuffer(StringBuffer buffer,Model model_wrapper,Vector<Reaction> vecReactions,Vector<Species> vecSpecies) throws Exception
     {
     	buffer.append("\n");
         buffer.append("void calculateKinetics(ColumnVector& kV,ColumnVector& x,ColumnVector& rV)\n");
@@ -64,11 +64,11 @@ public class OctaveCModel {
         buffer.append("\t// Formulate the kinetics -\n");
         buffer.append("\t// Put the x's in terms of symbols, helps with debugging\n");
         
-        ListOf species_list_tmp = model_wrapper.getListOfSpecies();
-        long NUMBER_OF_SPECIES = model_wrapper.getNumSpecies();
+        //ListOf species_list_tmp = model_wrapper.getListOfSpecies();
+        int NUMBER_OF_SPECIES = vecSpecies.size();
         for (int scounter=0;scounter<NUMBER_OF_SPECIES;scounter++)
         {
-            Species species_tmp = (Species)species_list_tmp.get(scounter);
+            Species species_tmp = (Species)vecSpecies.get(scounter);
             buffer.append("\tdouble ");
             
             // replace the - w/underscores -
@@ -103,7 +103,7 @@ public class OctaveCModel {
         
         // Ok, so I need to see if the rates have kinietc laws, if so use those. Otherwise
         // use mass action as the default
-        //ListOf rate_list = model_wrapper.getListOfReactions();
+        // ListOf rate_list = model_wrapper.getListOfReactions();
         int NUMBER_OF_RATES = vecReactions.size();
         for (int rcounter=0;rcounter<NUMBER_OF_RATES;rcounter++)
         {
@@ -163,39 +163,44 @@ public class OctaveCModel {
                     String strTmpRaw = srTmp.getSpecies();
                     String strTmp = strTmpRaw.replaceAll("-", "_");
                     
-                    // Ok, I need to check to see if there is a stoichiometric coefficient
-                    // that is not 1
-                    double dblTmp = srTmp.getStoichiometry();
-                    //System.out.println("What the f*ck - Species "+strTmp+" has a coeff of "+dblTmp+" in rxn "+reactant_index);
-                    
-                    if (dblTmp!=1.0)
+                    if (!strTmpRaw.equalsIgnoreCase("[]"))
                     {
-                        
-                        //System.out.println("Why is "+(-1*dblTmp)+" equal to 1.0");
-                        
-                        buffer.append("pow(");
-                        buffer.append(strTmp);
-                        buffer.append(",");
-                        buffer.append(-1*dblTmp);
-                        buffer.append(")");
-                    }
+                    
+	                    // Ok, I need to check to see if there is a stoichiometric coefficient
+	                    // that is not 1
+	                    double dblTmp = srTmp.getStoichiometry();
+	                    //System.out.println("What the f*ck - Species "+strTmp+" has a coeff of "+dblTmp+" in rxn "+reactant_index);
+	                    
+	                    if (dblTmp!=1.0)
+	                    {
+	                        
+	                        //System.out.println("Why is "+(-1*dblTmp)+" equal to 1.0");
+	                        
+	                        buffer.append("pow(");
+	                        buffer.append(strTmp);
+	                        buffer.append(",");
+	                        buffer.append(dblTmp);
+	                        buffer.append(")");
+	                    }
+	                    else
+	                    {
+	                        buffer.append(strTmp); 
+	                    }
+	                    
+	                    if (reactant_index<NUMBER_OF_REACTANTS-1)
+	                    {
+	                        buffer.append("*");
+	                    }
+	                    else
+	                    {
+	                        buffer.append(";\n");
+	                    }
+	                }
                     else
                     {
-                        buffer.append(strTmp); 
+                    	buffer.append("1;\n");
                     }
-                    
-                    if (reactant_index<NUMBER_OF_REACTANTS-1)
-                    {
-                        buffer.append("*");
-                    }
-                    else
-                    {
-                        buffer.append(";");
-                    }
-                }
-                
-                buffer.append("\n");
-                
+	            }
             }
         }
         
@@ -515,7 +520,7 @@ public class OctaveCModel {
         buffer.append("}\n");
     }
     
-    public void buildJacobianBuffer(StringBuffer buffer,Vector vecReactions) throws Exception
+    public void buildJacobianBuffer(StringBuffer buffer,Vector vecReactions,Vector vecSpecies) throws Exception
     {
         
     	// Get the dimension of the system -
@@ -524,7 +529,7 @@ public class OctaveCModel {
         
         // Create a local copy of the stoichiometric matrix -
         double[][] matrix = new double[NROWS][NCOLS];
-        SBMLModelUtilities.buildStoichiometricMatrix(matrix, model_wrapper,vecReactions);
+        SBMLModelUtilities.buildStoichiometricMatrix(matrix, model_wrapper,vecReactions,vecSpecies);
 
         // Ok, when I get here I have the stoichiometric matrix -
         // Initialize the array -
@@ -545,7 +550,7 @@ public class OctaveCModel {
             for (int state_counter_inner=0;state_counter_inner<NROWS;state_counter_inner++)
             {
                 // put jacobian logic here -
-                strJacobian[state_counter_outer][state_counter_inner]=formulateJacobianElement(matrix,state_counter_outer,state_counter_inner,vecReactions);
+                strJacobian[state_counter_outer][state_counter_inner]=formulateJacobianElement(matrix,state_counter_outer,state_counter_inner,vecReactions,vecSpecies);
             }
         }
         
@@ -584,15 +589,15 @@ public class OctaveCModel {
     }
     
     
-    public void buildPMatrixBuffer(StringBuffer buffer,Vector vecReactions) throws Exception
+    public void buildPMatrixBuffer(StringBuffer buffer,Vector vecReactions,Vector<Species> vecSpecies) throws Exception
     {
     	// Get the dimension of the system -
-        int NROWS = (int)model_wrapper.getNumSpecies();
+        int NROWS = (int)vecSpecies.size();
         int NCOLS = (int)vecReactions.size();
         
         // Create a local copy of the stoichiometric matrix -
         double[][] matrix = new double[NROWS][NCOLS];
-        SBMLModelUtilities.buildStoichiometricMatrix(matrix, model_wrapper,vecReactions);
+        SBMLModelUtilities.buildStoichiometricMatrix(matrix, model_wrapper,vecReactions,vecSpecies);
 
         // Ok, when I get here I have the stoichiometric matrix -
         // Initialize the pmatrix array -
@@ -610,7 +615,7 @@ public class OctaveCModel {
         {
             for (int counter_inner=0;counter_inner<NCOLS;counter_inner++)
             {
-                strPMatrix[counter_outer][counter_inner]=formulatePMatrixElement(matrix,counter_outer,counter_inner,vecReactions);
+                strPMatrix[counter_outer][counter_inner]=formulatePMatrixElement(matrix,counter_outer,counter_inner,vecReactions,vecSpecies);
             }
         }
         
@@ -648,13 +653,13 @@ public class OctaveCModel {
     }
     
     
-    private String formulatePMatrixElement(double[][] matrix,int massbalance,int parameter,Vector vecReactions)
+    private String formulatePMatrixElement(double[][] matrix,int massbalance,int parameter,Vector vecReactions,Vector<Species> vecSpecies)
     {
         StringBuffer buffer = new StringBuffer();
         String rString = "0.0";
         
         // Get the size of the system -
-        int NROWS = (int)model_wrapper.getNumSpecies();
+        int NROWS = (int)vecSpecies.size();
         int NCOLS = (int)vecReactions.size();
 
         double dblStmElement = matrix[massbalance][parameter];
@@ -709,13 +714,13 @@ public class OctaveCModel {
     
     
     // This logic will need to be overriden -
-    private String formulateJacobianElement(double[][] matrix,int massbalance,int state,Vector vecReactions)
+    private String formulateJacobianElement(double[][] matrix,int massbalance,int state,Vector vecReactions,Vector<Species> vecSpecies)
     {
         StringBuffer buffer = new StringBuffer();
         String rString = "";
                 
         // Get the dimension of the system -
-        int NROWS = (int)model_wrapper.getNumSpecies();
+        int NROWS = (int)vecSpecies.size();
         int NCOLS = (int)vecReactions.size();
 
         Vector<String> vecRates = new Vector<String>(); 
