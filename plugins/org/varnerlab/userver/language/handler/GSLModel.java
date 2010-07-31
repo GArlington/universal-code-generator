@@ -17,6 +17,7 @@ import java.util.Vector;
 
 import org.sbml.libsbml.ListOfSpecies;
 import org.sbml.libsbml.Model;
+import org.sbml.libsbml.Species;
 import org.varnerlab.server.transport.LoadXMLPropFile;
 
 /**
@@ -75,16 +76,16 @@ public class GSLModel {
 
 
 
-    public void buildKineticsBuffer(StringBuffer buffer,Vector vecReactions) throws Exception {
+    public void buildKineticsBuffer(StringBuffer buffer,Vector vecReactions,Vector<Species> vecSpecies) throws Exception {
         // Ok, build the kinetics -
 
     	// First things first - get the size of the system -
-        int NUMBER_OF_SPECIES = (int)model_wrapper.getNumSpecies(); 
+        int NUMBER_OF_SPECIES = (int)vecSpecies.size(); 
         int NUMBER_OF_RATES = (int)model_wrapper.getNumReactions(); 
         
         // Create a local copy of the stoichiometric matrix -
         double[][] matrix = new double[NUMBER_OF_SPECIES][NUMBER_OF_RATES];
-        SBMLModelUtilities.buildStoichiometricMatrix(matrix, model_wrapper,vecReactions);
+        SBMLModelUtilities.buildStoichiometricMatrix(matrix, model_wrapper,vecReactions,vecSpecies);
 
         // Now the fun begins -
         buffer.append("static void Kinetics(double t, const double x[], gsl_vector *pRateConstantVector, gsl_vector *pRateVector)\n");
@@ -740,7 +741,7 @@ public class GSLModel {
 
     }
 
-    public void buildJacobianBuffer(StringBuffer buffer,Vector vecReactions) throws Exception
+    public void buildJacobianBuffer(StringBuffer buffer,Vector vecReactions,Vector<Species> vecSpecies) throws Exception
     {
 
         
@@ -750,7 +751,7 @@ public class GSLModel {
 
         // Create a local copy of the stoichiometric matrix -
         double[][] matrix = new double[NUMBER_OF_SPECIES][NUMBER_OF_RATES];
-        SBMLModelUtilities.buildStoichiometricMatrix(matrix, model_wrapper,vecReactions);
+        SBMLModelUtilities.buildStoichiometricMatrix(matrix, model_wrapper,vecReactions,vecSpecies);
         
         // Ok, when I get here I have the stoichiometric matrix -
         // Initialize the array -
@@ -855,7 +856,7 @@ public class GSLModel {
     }
 
 
-    public void buildPMatrixBuffer(StringBuffer buffer,Vector vecReactions) throws Exception
+    public void buildPMatrixBuffer(StringBuffer buffer,Vector vecReactions,Vector<Species> vecSpecies) throws Exception
     {
     	// Get the dimension of the system -
         int NROWS = (int)model_wrapper.getNumSpecies();
@@ -863,7 +864,7 @@ public class GSLModel {
         
         // Create a local copy of the stoichiometric matrix -
         double[][] matrix = new double[NROWS][NCOLS];
-        SBMLModelUtilities.buildStoichiometricMatrix(matrix, model_wrapper,vecReactions);
+        SBMLModelUtilities.buildStoichiometricMatrix(matrix, model_wrapper,vecReactions,vecSpecies);
     	
         // Ok, when I get here I have the stoichiometric matrix -
         // Initialize the pmatrix array -

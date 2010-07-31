@@ -156,18 +156,18 @@ public class GraphvizModel {
 		}
 	}
 
-	public void buildGraphizNodeList(StringBuffer buffer,Model model_wrapper,Vector<Reaction> vecReactions) throws Exception
+	public void buildGraphizNodeList(StringBuffer buffer,Model model_wrapper,Vector<Reaction> vecReactions,Vector<Species> vecSpecies) throws Exception
 	{
 		// Default color
 		double dblValue = 0.0;
 
 		// Get the dimension of the system -
-		int NROWS = (int)model_wrapper.getNumSpecies();
+		int NROWS = (int)vecSpecies.size();
 		int NCOLS = (int)vecReactions.size();
 
 		// Create a local copy of the stoichiometric matrix -
 		double[][] matrix = new double[NROWS][NCOLS];
-		SBMLModelUtilities.buildStoichiometricMatrix(matrix, model_wrapper,vecReactions);
+		SBMLModelUtilities.buildStoichiometricMatrix(matrix, model_wrapper,vecReactions,vecSpecies);
 
 		// Get the list of species -
 		ListOf listOfSpecies = (ListOf)model_wrapper.getListOfSpecies();
