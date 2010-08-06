@@ -224,6 +224,7 @@ public class BioChemExpTool extends javax.swing.JInternalFrame implements TableM
 		jtreeXMLTree = new JTree();
 		jtreeXMLTree.setCellRenderer(new BCXJTreeCellRenderer());
 		jtreeXMLTree.addKeyListener(new DeleteNodeKeyListener());
+		jtreeXMLTree.addKeyListener(new CopyAndPasteTreeNodeKeyListener());
 		jtreeXMLTree.setShowsRootHandles(true);
 	}
 
@@ -807,6 +808,8 @@ public class BioChemExpTool extends javax.swing.JInternalFrame implements TableM
 		// Add the tree to the scroll pane -
 		jScrollPane2.setViewportView(jtreeXMLTree);
 	}
+	
+	
 
 	// Populate the jtree -
 	private DefaultMutableTreeNode populateJTree(Node xmlNode) throws Exception
@@ -895,7 +898,7 @@ public class BioChemExpTool extends javax.swing.JInternalFrame implements TableM
 
 			// set the node linkage -
 			guiNode.setUserObject(vlNode);
-
+			
 			// ok, let's process this guys kids -
 			NodeList kids = xmlNode.getChildNodes();
 			int NUMBER_OF_KIDS = kids.getLength();

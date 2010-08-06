@@ -25,11 +25,11 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import org.varnerlab.universaleditor.database.DatabaseAPI;
+import org.varnerlab.universaleditor.database.UniversalDataStore;
 import org.varnerlab.universaleditor.gui.ModelCodeGeneratorFileEditor;
 import org.varnerlab.universaleditor.domain.*;
 import org.varnerlab.universaleditor.gui.parser.*;
 import org.varnerlab.universaleditor.gui.*;
-import org.varnerlab.universaleditor.gui.BioChemExpTool;
 import org.varnerlab.universaleditor.gui.widgets.VLTreeNode;
 
 
@@ -72,7 +72,10 @@ public class CheckUserNameAndPasswordAction implements ActionListener {
            // Get username and password -
            String strUserName = (String)this.getProperty("USERNAME");
            String strPassword = (String)this.getProperty("USER_PASSWORD");
-           DatabaseAPI dbAPI = (DatabaseAPI)this.getProperty("DATABASE_CONNECTION");
+           
+           // Get the database API from the DataStote object -
+           UniversalDataStore dataStore = UniversalDataStore.getDataStore();
+           DatabaseAPI dbAPI = dataStore.getDatabaseAPIInstance();
 
            // Ok, when I get here I need to check the database -
            _isOkToLoadThePage = dbAPI.checkUserInformation(strUserName, strPassword);           
