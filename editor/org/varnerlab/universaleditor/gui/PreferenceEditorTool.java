@@ -9,7 +9,7 @@
  * Created on Jul 17, 2010, 8:55:23 AM
  */
 
-package editor.org.varnerlab.universaleditor.gui;
+package org.varnerlab.universaleditor.gui;
 
 /**
  *

@@ -77,6 +77,7 @@ public class DeleteTreeNodeAction {
                 if (parent != null)
                 {
                     treeModel.removeNodeFromParent(selectedNode);
+                   
                     return;
                 }
             }

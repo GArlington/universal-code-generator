@@ -24,6 +24,8 @@ import org.varnerlab.universaleditor.service.SystemwideEventService;
 import org.varnerlab.universaleditor.database.DatabaseAPI;
 import org.varnerlab.universaleditor.database.GConnectionFactory;
 import org.varnerlab.universaleditor.database.IGFactory;
+import org.varnerlab.universaleditor.database.UniversalDataStore;
+import org.varnerlab.universaleditor.database.XMLDataStoreAPI;
 import org.varnerlab.universaleditor.domain.*;
 import org.varnerlab.universaleditor.gui.actions.CheckUserNameAndPasswordAction;
 import org.varnerlab.universaleditor.gui.widgets.LoginToolFocusListener;
@@ -53,35 +55,9 @@ public class LoginTool extends javax.swing.JInternalFrame {
     private VLDialogGlassPane _glassPane = null;
     private XPathFactory  _xpFactory = XPathFactory.newInstance();
 	private XPath _xpath = _xpFactory.newXPath();
+	private UniversalDataStore _dataStoreObject = null;
 
    
-	private void processPropertyAttributes(String strXPath,Document doc,IGFactory session) throws Exception
-    {
-    	NodeList propNodeList = (NodeList)_xpath.evaluate(strXPath, doc, XPathConstants.NODESET);
-    	int NUMBER_PATH_NODES = propNodeList.getLength();
-    	for (int index=0;index<NUMBER_PATH_NODES;index++)
-    	{
-    		// Get the current node -
-    		Node tmpNode = propNodeList.item(index);
-    		
-    		// Process the attributes of this node ..
-    		NamedNodeMap map = tmpNode.getAttributes();
-    		int NUMBER_OF_ATTRIBUTES = map.getLength();
-    		for (int att_index=0;att_index<NUMBER_OF_ATTRIBUTES;att_index++)
-    		{
-    			// Ok bitches, so I should get the attribute name (capitalize it) and key the value 
-    			Node attNode = map.item(att_index);
-    			String keyName = ((String)attNode.getNodeName()).toUpperCase();
-    			String strValue = attNode.getNodeValue();
-    			
-    			// store the key,value pair in the session object -
-    			
-
-    			
-    			session.setProperty(keyName, strValue);
-    		}
-    	}
-    }
     
     public void setUserName(String name)
     {
@@ -116,8 +92,10 @@ public class LoginTool extends javax.swing.JInternalFrame {
         _session = (Launcher.getInstance()).getSession();
 
         // Ok, so I need to establish a connection with the database -
-        connectToDatabase();
+        //connectToDatabase();
+        _dataStoreObject = UniversalDataStore.getDataStore();
 
+        // We need this in case there is a major malfunction -
         _glassPane = new VLDialogGlassPane(this,(new ImageIcon(VLImageLoader.getPNGImage("agt_update_critical-32.png"))),60);
         
         // Build this mofo -
@@ -133,48 +111,8 @@ public class LoginTool extends javax.swing.JInternalFrame {
         jButton1.requestFocusInWindow();
     }
 
-    private void connectToDatabase() {
-        try
-        {
-            // Ok, we need to check to see if the database connection is in Session -
-            dbAPI = (DatabaseAPI)_session.getProperty("DATABASE_CONNECTION");
-
-            // Check if connection -
-            if (dbAPI == null)
-            {
-
-                PublishService.submitData("No current db connection. Let's try to create a new database connection -");
-
-                // Ok, create a connection factory object -
-                IGFactory tmpFactory = new GConnectionFactory();
-                
-                // Configure the connection factory -
-                
-                // Get the prop_tree out of memory -
-                Document doc = (Document)_session.getProperty("UNIVERSAL_DOM_TREE");
-                
-                // Database information -
-            	String strXPDatabase = "//database_information/property";
-            	processPropertyAttributes(strXPDatabase,doc,tmpFactory);
-            	
-            	 // If I get here, then I don't have a db component. Load one -
-                dbAPI = new DatabaseAPI();
-                dbAPI.setProperty("CONNECTION_FACTORY", tmpFactory);
-
-                // Load the config and establish the connection -
-                dbAPI.loadConnection();
-
-                // Put dbAPI into session -
-                _session.setProperty("DATABASE_CONNECTION", dbAPI);
-
-                PublishService.submitData("New db connection established and cached in session");
-            }
-        }
-        catch (Exception error)
-        {
-
-        }
-    }
+    
+    
 
 
     public void setOffIcon(ImageIcon imgIcon)
@@ -337,125 +275,260 @@ public class LoginTool extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void processXMLDataStoreLogin()
+    {
+    	// Method attributes -
+    	
+    	try
+    	{
+    		// Ok, so when I get here I need to query the xml tree for username and password information -
+    		UniversalDataStore dataStore = UniversalDataStore.getDataStore();
+    		XMLDataStoreAPI xmlAPI = dataStore.getXMLDataStoreAPIInstance();
+    		
+    		// Get the text from txt and password fields -
+	        String strUserName = txtFldUserName.getText();
+	        String strPassword = new String(pwdTxtField.getPassword());
+	        
+	        // Compare username and password -
+    		boolean blnFlag = xmlAPI.checkUserNameAndPassword(strUserName, strPassword);
+	        if (!blnFlag)
+	        {
+	        	PublishService.submitData("Hey monkey spank - what is your major malfunction?");
+	            _glassPane.setMessage("Login Failed!");
+	            _glassPane.blowMe();
+	        }
+	        else
+	        {
+	        	// Ok, so if I get here then I've logged in correctly...
+	        	PublishService.submitData("Just want to do something special ...");
+	            PublishService.submitData("for all the ladies of the world.");
+	            PublishService.submitData("Your in. Enjoy the flight.");
+	
+	            // If I get here then I need to let the user know that they are logged on -
+	            // How should I do this??
+	            UEditorSession session = (Launcher.getInstance()).getSession();
+	            session.setProperty("VALIDATED_USERNAME",strUserName);
+	            session.setProperty("USER_PASSWORD", strPassword);
+	
+	            VLDesktopPane desktop = (VLDesktopPane)(Launcher.getInstance()).getContentPane();
+	            desktop.setUserName(strUserName);
+	        	
+	            // Ok, I need to check to see if the check box is enabled -
+	            if (jCheckBox1.isSelected())
+	            {
+	
+	                // Ok, so I also need to contact the backend and drop some knowledge on it ...
+	                VLCreateRemoteDir remoteDir = new VLCreateRemoteDir();
+	                remoteDir.setProperty("IPADDRESS", session.getProperty("SERVER_ADDRESS"));
+	                remoteDir.setProperty("PORT", session.getProperty("SERVER_PORT"));
+	                remoteDir.setProperty("USERNAME",strUserName);
+	                remoteDir.setProperty("SESSIONID",session.getProperty("SESSION_ID"));
+	
+	                // Formute the message -
+	                String strMsg = remoteDir.formulateXMLMessage();
+	
+	                try {
+	                    // Send the message -
+	                    String strIPAddress = (String)session.getProperty("SERVER_ADDRESS");
+	                    String strPort = (String)session.getProperty("SERVER_PORT");
+	
+	                    PublishService.submitData("Trying to contact - "+strIPAddress+" on port "+strPort);
+	
+	                    String rFlag = SocketService.sendMessage(strMsg, strIPAddress, strPort,session,ServerJobTypes.MAKE_NEW_REMOTE_DIRECTORY);
+	                  
+	                    PublishService.submitData("Creating a directory on the server - server issued "+rFlag);
+	
+	
+	                    // Launch -
+	                    SystemwideEventService.fireUsernameUpdateEvent();
+	                    SystemwideEventService.fireSessionUpdateEvent();
+	
+	                    // Update the database -
+	                    String strSessionID = (String)session.getProperty("SESSION_ID");
+	                    String strUName = (String)session.getProperty("VALIDATED_USERNAME");
+	                    String strProjectName = (String)txtFldUserName1.getText();
+	
+	                    // put in the db -
+	                    xmlAPI.insertProjectInformation(strUName, strSessionID, strProjectName);
+	
+	                    // ok, now that we have inserted the project-info into the db, we need to grab the translation table -
+	                    session.setProperty("PROJECT_TRANSLATION_TABLE", xmlAPI.getUserProjects(strUName));
+	                    
+	                    // Close the name dialog -
+	                    this.dispose();
+	
+	                }
+	                catch (Exception error)
+	                {
+	                    PublishService.submitData("What the duck...."+error);
+	                    this.dispose();
+	                }
+	            }
+	            else
+	            {
+	            	// ok, now that we have inserted the project-info into the db, we need to grab the translation table -
+	                try {
+	                	
+	                	// Lookup the project translation table -
+	                	session.setProperty("PROJECT_TRANSLATION_TABLE", xmlAPI.getUserProjects(strUserName));
+	                }
+	                catch (Exception error)
+	                {
+	                	error.printStackTrace();
+	                	System.out.println("Trying to get the translation table using the XMLDataSource - wtf? "+error.toString());
+	                }
+	            	
+	            	
+	            	
+	                // Update the session and then shutdown -
+	                SystemwideEventService.fireSessionUpdateEvent();
+	                this.dispose();
+	            }       
+	        }	
+    	}
+    	catch (Exception error)
+    	{
+    		error.printStackTrace();
+    	}
+    }
+    
     private void checkUserNameAndPassword(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkUserNameAndPassword
-        // Create the action -
-        CheckUserNameAndPasswordAction newLoginAction = new CheckUserNameAndPasswordAction();
-        boolean isOkToLogin = false;
-
-        PublishService.submitData("Checking username and password.");
-
-        // Set the username, password and database connection -
-        newLoginAction.setProperty("DATABASE_CONNECTION", dbAPI);
-
-        // Get the text from txt and password fields -
-        String strUserName = txtFldUserName.getText();
-        String strPassword = new String(pwdTxtField.getPassword());
-
-        newLoginAction.setProperty("USERNAME", strUserName);
-        newLoginAction.setProperty("USER_PASSWORD", strPassword);
-
-        // Check the username -
-        newLoginAction.actionPerformed(evt);
-
-        // Get the login flaq -
-        isOkToLogin = newLoginAction.isOkToLogIn();
-
-        // If something went wrong w/the login. Notify the user -
-        if (!isOkToLogin)
-        {
-            PublishService.submitData("Hey monkey spank - what is your major malfunction?");
-            _glassPane.setMessage("Login Failed!");
-            _glassPane.blowMe();
-        }
-        else
-        {
-            PublishService.submitData("Just want to do something special ...");
-            PublishService.submitData("for all the ladies of the world.");
-            PublishService.submitData("Your in. Enjoy the flight.");
-
-            // If I get here then I need to let the user know that they are logged on -
-            // How should I do this??
-            UEditorSession session = (Launcher.getInstance()).getSession();
-            session.setProperty("VALIDATED_USERNAME",strUserName);
-            session.setProperty("USER_PASSWORD", strPassword);
-
-            VLDesktopPane desktop = (VLDesktopPane)(Launcher.getInstance()).getContentPane();
-            desktop.setUserName(strUserName);
-           
-            
-
-            // Ok, I need to check to see if the check box is enabled -
-            if (jCheckBox1.isSelected())
-            {
-
-                // Ok, so I also need to contact the backend and drop some knowledge on it ...
-                VLCreateRemoteDir remoteDir = new VLCreateRemoteDir();
-                remoteDir.setProperty("IPADDRESS", session.getProperty("SERVER_ADDRESS"));
-                remoteDir.setProperty("PORT", session.getProperty("SERVER_PORT"));
-                remoteDir.setProperty("USERNAME",strUserName);
-                remoteDir.setProperty("SESSIONID",session.getProperty("SESSION_ID"));
-
-                // Formute the message -
-                String strMsg = remoteDir.formulateXMLMessage();
-
-                try {
-                    // Send the message -
-                    String strIPAddress = (String)session.getProperty("SERVER_ADDRESS");
-                    String strPort = (String)session.getProperty("SERVER_PORT");
-
-                    PublishService.submitData("Trying to contact - "+strIPAddress+" on port "+strPort);
-
-                    String rFlag = SocketService.sendMessage(strMsg, strIPAddress, strPort,session,ServerJobTypes.MAKE_NEW_REMOTE_DIRECTORY);
-                  
-                    PublishService.submitData("Creating a directory on the server - server issued "+rFlag);
-
-                    //remoteDir.sendMessage(strMsg);
-
-                    // Launch -
-                    SystemwideEventService.fireUsernameUpdateEvent();
-                    SystemwideEventService.fireSessionUpdateEvent();
-
-                    // Update the database -
-                    String strSessionID = (String)session.getProperty("SESSION_ID");
-                    String strUName = (String)session.getProperty("VALIDATED_USERNAME");
-                    String strProjectName = (String)txtFldUserName1.getText();
-
-                    // put in the db -
-                    dbAPI.insertProjectInformation(strUName, strSessionID, strProjectName);
-
-                    // ok, now that we have inserted the project-info into the db, we need to grab the translation table -
-                    session.setProperty("PROJECT_TRANSLATION_TABLE", dbAPI.getUserProjects(strUName));
-                    
-                    // Close the name dialog -
-                    this.dispose();
-
-                }
-                catch (Exception error)
-                {
-                    PublishService.submitData("What the duck...."+error);
-                    this.dispose();
-                }
-            }
-            else
-            {
-                
-            	// ok, now that we have inserted the project-info into the db, we need to grab the translation table -
-                try {
-                	session.setProperty("PROJECT_TRANSLATION_TABLE", dbAPI.getUserProjects(strUserName));
-                }
-                catch (Exception error)
-                {
-                	System.out.println("Trying to get the translation table - wtf? "+error.toString());
-                }
-            	
-            	
-            	
-                // Update the session and then shutdown -
-                SystemwideEventService.fireSessionUpdateEvent();
-                this.dispose();
-            }
-            
-        }
+        // Method attributes -
+        
+    	// Get what type of data store we are using -
+    	String strDataStoreType = (String)_session.getProperty("DATASTORE_TYPE");
+    	if (strDataStoreType.equalsIgnoreCase("XML"))
+    	{
+    		// process the login using the xmldata store -
+    		processXMLDataStoreLogin();
+    	}
+    	else
+    	{
+    	  	// Use the database to check -
+	    	CheckUserNameAndPasswordAction newLoginAction = new CheckUserNameAndPasswordAction();
+	        boolean isOkToLogin = false;
+	
+	        PublishService.submitData("Checking username and password.");
+	
+	   
+	        // Get the text from txt and password fields -
+	        String strUserName = txtFldUserName.getText();
+	        String strPassword = new String(pwdTxtField.getPassword());
+	
+	        newLoginAction.setProperty("USERNAME", strUserName);
+	        newLoginAction.setProperty("USER_PASSWORD", strPassword);
+	
+	        // Check the username -
+	        newLoginAction.actionPerformed(evt);
+	
+	        // Get the login flaq -
+	        isOkToLogin = newLoginAction.isOkToLogIn();
+	
+	        // If something went wrong w/the login. Notify the user -
+	        if (!isOkToLogin)
+	        {
+	            PublishService.submitData("Hey monkey spank - what is your major malfunction?");
+	            _glassPane.setMessage("Login Failed!");
+	            _glassPane.blowMe();
+	        }
+	        else
+	        {
+	            PublishService.submitData("Just want to do something special ...");
+	            PublishService.submitData("for all the ladies of the world.");
+	            PublishService.submitData("Your in. Enjoy the flight.");
+	
+	            // If I get here then I need to let the user know that they are logged on -
+	            // How should I do this??
+	            UEditorSession session = (Launcher.getInstance()).getSession();
+	            session.setProperty("VALIDATED_USERNAME",strUserName);
+	            session.setProperty("USER_PASSWORD", strPassword);
+	
+	            VLDesktopPane desktop = (VLDesktopPane)(Launcher.getInstance()).getContentPane();
+	            desktop.setUserName(strUserName);
+	           
+	        
+	            // Ok, I need to check to see if the check box is enabled -
+	            if (jCheckBox1.isSelected())
+	            {
+	
+	                // Ok, so I also need to contact the backend and drop some knowledge on it ...
+	                VLCreateRemoteDir remoteDir = new VLCreateRemoteDir();
+	                remoteDir.setProperty("IPADDRESS", session.getProperty("SERVER_ADDRESS"));
+	                remoteDir.setProperty("PORT", session.getProperty("SERVER_PORT"));
+	                remoteDir.setProperty("USERNAME",strUserName);
+	                remoteDir.setProperty("SESSIONID",session.getProperty("SESSION_ID"));
+	
+	                // Formute the message -
+	                String strMsg = remoteDir.formulateXMLMessage();
+	
+	                try {
+	                    // Send the message -
+	                    String strIPAddress = (String)session.getProperty("SERVER_ADDRESS");
+	                    String strPort = (String)session.getProperty("SERVER_PORT");
+	
+	                    PublishService.submitData("Trying to contact - "+strIPAddress+" on port "+strPort);
+	
+	                    String rFlag = SocketService.sendMessage(strMsg, strIPAddress, strPort,session,ServerJobTypes.MAKE_NEW_REMOTE_DIRECTORY);
+	                  
+	                    PublishService.submitData("Creating a directory on the server - server issued "+rFlag);
+	
+	                    //remoteDir.sendMessage(strMsg);
+	
+	                    // Launch -
+	                    SystemwideEventService.fireUsernameUpdateEvent();
+	                    SystemwideEventService.fireSessionUpdateEvent();
+	
+	                    // Update the database -
+	                    String strSessionID = (String)session.getProperty("SESSION_ID");
+	                    String strUName = (String)session.getProperty("VALIDATED_USERNAME");
+	                    String strProjectName = (String)txtFldUserName1.getText();
+	
+	                    // put in the db -
+	                    // Get the dbAPI from the DataStore object -
+	                	UniversalDataStore dataStore = UniversalDataStore.getDataStore();
+	                	dbAPI = dataStore.getDatabaseAPIInstance();
+	                    dbAPI.insertProjectInformation(strUName, strSessionID, strProjectName);
+	
+	                    // ok, now that we have inserted the project-info into the db, we need to grab the translation table -
+	                    session.setProperty("PROJECT_TRANSLATION_TABLE", dbAPI.getUserProjects(strUName));
+	                    
+	                    // Close the name dialog -
+	                    this.dispose();
+	
+	                }
+	                catch (Exception error)
+	                {
+	                    PublishService.submitData("What the duck...."+error);
+	                    this.dispose();
+	                }
+	            }
+	            else
+	            {
+	                
+	            	// ok, now that we have inserted the project-info into the db, we need to grab the translation table -
+	                try {
+	                	
+	                	// Get the dbAPI from the DataStore object -
+	                	UniversalDataStore dataStore = UniversalDataStore.getDataStore();
+	                	dbAPI = dataStore.getDatabaseAPIInstance();
+	                	
+	                	// Lookup the project translation table -
+	                	session.setProperty("PROJECT_TRANSLATION_TABLE", dbAPI.getUserProjects(strUserName));
+	                }
+	                catch (Exception error)
+	                {
+	                	error.printStackTrace();
+	                	System.out.println("Trying to get the translation table - wtf? "+error.toString());
+	                }
+	            	
+	            	
+	            	
+	                // Update the session and then shutdown -
+	                SystemwideEventService.fireSessionUpdateEvent();
+	                this.dispose();
+	            }       
+	        }
+    	}
 
     }//GEN-LAST:event_checkUserNameAndPassword
 

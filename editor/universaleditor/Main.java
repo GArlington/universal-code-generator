@@ -250,6 +250,16 @@ public class Main {
     {
     	// Ok, so let's get some stuff - we'll process in the order of the blocks in the file -
     	
+    	// What data store are we using?
+    	String strDataStoreXPath = "/UniversalCodeGenerator/@datastore";
+    	Node dataStroreNode = (Node)_xpath.evaluate(strDataStoreXPath, doc, XPathConstants.NODE);
+    	session.setProperty("DATASTORE_TYPE",dataStroreNode.getNodeValue());
+    	
+    	// Load the XML data store file information -
+    	String strXMLFileInformationXPath = "//xmldatastrore_information/xmlstore/@filename";
+    	Node dataXMLStroreNode = (Node)_xpath.evaluate(strXMLFileInformationXPath, doc, XPathConstants.NODE);
+    	session.setProperty("XML_DATASTORE_PATH",dataXMLStroreNode.getNodeValue());
+    	
     	// Architecture -
     	String strXPArchitecture = "//architecture/property/@platform";
     	Node architectureNode = (Node)_xpath.evaluate(strXPArchitecture, doc, XPathConstants.NODE);
