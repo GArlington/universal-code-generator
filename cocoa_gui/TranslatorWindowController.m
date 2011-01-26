@@ -125,8 +125,7 @@
 	// Load 
 	[[self consoleTextField] setString:@"Loaded window controller ..."];
 	
-	// Set the window text -
-	//[[self window] setTitle:@"UNIVERSAL v1.1"];
+	// Not sure why this is not getting updated. How do I commit changes?
 }
 
 #pragma mark --------------------------------
