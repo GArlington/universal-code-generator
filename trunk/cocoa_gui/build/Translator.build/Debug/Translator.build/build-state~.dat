@@ -1,0 +1,1639 @@
+TTranslator
+v7
+r0
+t317623205.000604
+cCheck dependencies
+cProcessInfoPlistFile /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Info.plist Translator-Info.plist
+cCpResource build/Debug/Translator.app/Contents/Resources/English.lproj/Credits.rtf English.lproj/Credits.rtf
+cCopyStringsFile /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources/English.lproj/InfoPlist.strings English.lproj/InfoPlist.strings
+cCompileXIB /Users/jeffreyvarner/Documents/dev_iOS/Translator/English.lproj/MyDocument.xib
+cCompileXIB /Users/jeffreyvarner/Documents/dev_iOS/Translator/English.lproj/MainMenu.xib
+cCpResource build/Debug/Translator.app/Contents/Resources/IconMapping.xml IconMapping.xml
+cCpResource build/Debug/Translator.app/Contents/Resources/layout.icns layout.icns
+cCpResource build/Debug/Translator.app/Contents/Resources/puzzle.icns puzzle.icns
+cCpResource build/Debug/Translator.app/Contents/Resources/shopping-basket-full.icns shopping-basket-full.icns
+cCpResource build/Debug/Translator.app/Contents/Resources/pin-red.icns pin-red.icns
+cCpResource build/Debug/Translator.app/Contents/Resources/pin-green.icns pin-green.icns
+cCpResource build/Debug/Translator.app/Contents/Resources/library.icns library.icns
+cCpResource build/Debug/Translator.app/Contents/Resources/folder.icns folder.icns
+cCpResource build/Debug/Translator.app/Contents/Resources/question-type-drag-drop.icns question-type-drag-drop.icns
+cCpResource build/Debug/Translator.app/Contents/Resources/billboard.icns billboard.icns
+cCpResource build/Debug/Translator.app/Contents/Resources/themes.icns themes.icns
+cCpResource build/Debug/Translator.app/Contents/Resources/organization.icns organization.icns
+cCpResource build/Debug/Translator.app/Contents/Resources/surveys.icns surveys.icns
+cCpResource build/Debug/Translator.app/Contents/Resources/catalog.icns catalog.icns
+cCpResource build/Debug/Translator.app/Contents/Resources/file-explorer.icns file-explorer.icns
+cCpResource build/Debug/Translator.app/Contents/Resources/SystemPreferences.icns SystemPreferences.icns
+cCpResource build/Debug/Translator.app/Contents/Resources/settings.icns settings.icns
+cCpResource build/Debug/Translator.app/Contents/Resources/Transport-256.icns Transport-256.icns
+cCpResource build/Debug/Translator.app/Contents/Resources/FolderExperiments.icns FolderExperiments.icns
+cCpResource build/Debug/Translator.app/Contents/Resources/folder-128.icns folder-128.icns
+cCpResource build/Debug/Translator.app/Contents/Resources/Transmit-256.icns Transmit-256.icns
+cCpResource build/Debug/Translator.app/Contents/Resources/AdminNetwork-256.icns AdminNetwork-256.icns
+cCpResource build/Debug/Translator.app/Contents/Resources/runprog-256.icns runprog-256.icns
+cCpResource build/Debug/Translator.app/Contents/Resources/wdrive.icns wdrive.icns
+cCpResource build/Debug/Translator.app/Contents/Resources/Window-256.icns Window-256.icns
+cCpResource build/Debug/Translator.app/Contents/Resources/Notes-128.icns Notes-128.icns
+cCpResource build/Debug/Translator.app/Contents/Resources/Wish.icns Wish.icns
+cCpResource build/Debug/Translator.app/Contents/Resources/WOAfile.icns WOAfile.icns
+cCpResource build/Debug/Translator.app/Contents/Resources/TemplateIcon.icns TemplateIcon.icns
+cCpResource build/Debug/Translator.app/Contents/Resources/bubbly.icns bubbly.icns
+cCpResource build/Debug/Translator.app/Contents/Resources/stardusty.icns stardusty.icns
+cCpResource build/Debug/Translator.app/Contents/Resources/GenericFolderIcon.icns GenericFolderIcon.icns
+cCpResource build/Debug/Translator.app/Contents/Resources/Edit.icns Edit.icns
+cCpResource build/Debug/Translator.app/Contents/Resources/blue_creature.icns blue_creature.icns
+cCpResource build/Debug/Translator.app/Contents/Resources/Templates.xml Templates.xml
+cCpResource build/Debug/Translator.app/Contents/Resources/C-Octave.xml C-Octave.xml
+cCpResource build/Debug/Translator.app/Contents/Resources/custom-reports.icns custom-reports.icns
+cCpResource build/Debug/Translator.app/Contents/Resources/home.icns home.icns
+cCpResource build/Debug/Translator.app/Contents/Resources/autoship.icns autoship.icns
+cCpResource build/Debug/Translator.app/Contents/Resources/Open-Folder-Full.icns Open-Folder-Full.icns
+cCpResource build/Debug/Translator.app/Contents/Resources/import-export.icns import-export.icns
+cCpResource build/Debug/Translator.app/Contents/Resources/upload1.icns upload1.icns
+cCpResource build/Debug/Translator.app/Contents/Resources/NodeNaming.xml NodeNaming.xml
+cCpResource build/Debug/Translator.app/Contents/Resources/SBML.xml SBML.xml
+cProcessPCH /var/folders/nT/nT6t96pgGky16r0n69Nb0k+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/Translator_Prefix-grjwapcieaaiwydxecjwztsafbot/Translator_Prefix.pch.gch Translator_Prefix.pch normal x86_64 objective-c com.apple.compilers.gcc.4_2
+cProcessPCH /var/folders/nT/nT6t96pgGky16r0n69Nb0k+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/Translator_Prefix-cjyvymsabybadhhfcrndvmseaues/Translator_Prefix.pch.pth Translator_Prefix.pch normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.analyzer
+cCompileC build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/MyDocument.o /Users/jeffreyvarner/Documents/dev_iOS/Translator/MyDocument.m normal x86_64 objective-c com.apple.compilers.gcc.4_2
+cCompileC build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/main.o /Users/jeffreyvarner/Documents/dev_iOS/Translator/main.m normal x86_64 objective-c com.apple.compilers.gcc.4_2
+cCompileC build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/TaskController.o /Users/jeffreyvarner/Documents/dev_iOS/Translator/TaskController.m normal x86_64 objective-c com.apple.compilers.gcc.4_2
+cCompileC build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/NSXMLElement_Category.o /Users/jeffreyvarner/Documents/dev_iOS/Translator/NSXMLElement_Category.m normal x86_64 objective-c com.apple.compilers.gcc.4_2
+cCompileC build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/NSXMLNode_Category.o /Users/jeffreyvarner/Documents/dev_iOS/Translator/NSXMLNode_Category.m normal x86_64 objective-c com.apple.compilers.gcc.4_2
+cCompileC build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/XMLTreeModel.o /Users/jeffreyvarner/Documents/dev_iOS/Translator/XMLTreeModel.m normal x86_64 objective-c com.apple.compilers.gcc.4_2
+cCompileC build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/XMLAttributeWrapper.o /Users/jeffreyvarner/Documents/dev_iOS/Translator/XMLAttributeWrapper.m normal x86_64 objective-c com.apple.compilers.gcc.4_2
+cCompileC build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/TranslatorWindowController.o /Users/jeffreyvarner/Documents/dev_iOS/Translator/TranslatorWindowController.m normal x86_64 objective-c com.apple.compilers.gcc.4_2
+cCompileC build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/TreeIconModel.o /Users/jeffreyvarner/Documents/dev_iOS/Translator/TreeIconModel.m normal x86_64 objective-c com.apple.compilers.gcc.4_2
+cCompileC build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/OutlineViewDelegate.o /Users/jeffreyvarner/Documents/dev_iOS/Translator/OutlineViewDelegate.m normal x86_64 objective-c com.apple.compilers.gcc.4_2
+cCompileC build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/TableViewDelegate.o /Users/jeffreyvarner/Documents/dev_iOS/Translator/TableViewDelegate.m normal x86_64 objective-c com.apple.compilers.gcc.4_2
+cCompileC build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/TableComboBoxDataSource.o /Users/jeffreyvarner/Documents/dev_iOS/Translator/TableComboBoxDataSource.m normal x86_64 objective-c com.apple.compilers.gcc.4_2
+cCompileC build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/TreeNodeNamingModel.o /Users/jeffreyvarner/Documents/dev_iOS/Translator/TreeNodeNamingModel.m normal x86_64 objective-c com.apple.compilers.gcc.4_2
+cAnalyze /Users/jeffreyvarner/Documents/dev_iOS/Translator/MyDocument.m
+cLd /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/MacOS/Translator normal x86_64
+cAnalyze /Users/jeffreyvarner/Documents/dev_iOS/Translator/main.m
+cAnalyze /Users/jeffreyvarner/Documents/dev_iOS/Translator/TaskController.m
+cAnalyze /Users/jeffreyvarner/Documents/dev_iOS/Translator/NSXMLElement_Category.m
+cAnalyze /Users/jeffreyvarner/Documents/dev_iOS/Translator/NSXMLNode_Category.m
+cAnalyze /Users/jeffreyvarner/Documents/dev_iOS/Translator/XMLTreeModel.m
+cAnalyze /Users/jeffreyvarner/Documents/dev_iOS/Translator/XMLAttributeWrapper.m
+cAnalyze /Users/jeffreyvarner/Documents/dev_iOS/Translator/TranslatorWindowController.m
+cAnalyze /Users/jeffreyvarner/Documents/dev_iOS/Translator/TreeIconModel.m
+cAnalyze /Users/jeffreyvarner/Documents/dev_iOS/Translator/OutlineViewDelegate.m
+cAnalyze /Users/jeffreyvarner/Documents/dev_iOS/Translator/TableViewDelegate.m
+cAnalyze /Users/jeffreyvarner/Documents/dev_iOS/Translator/TableComboBoxDataSource.m
+cAnalyze /Users/jeffreyvarner/Documents/dev_iOS/Translator/TreeNodeNamingModel.m
+cTouch /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app
+
+N/Developer/SDKs/MacOSX10.6.sdk
+c000000004D00E45B00000000000000EE
+t1291904091
+s238
+
+N/Developer/SDKs/MacOSX10.6.sdk/System/Library/Frameworks/Cocoa.framework/Headers/Cocoa.h
+c0000000040C4AA6800000000000001E5
+t1086630504
+s485
+
+N/System/Library/Frameworks/Cocoa.framework/Cocoa
+c000000004A1F2D63000000000000A5E0
+t1243557219
+s42464
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/AdminNetwork-256.icns
+c000000004D10075D0000000000032E37
+t1292896093
+s208439
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/C-Octave.xml
+c000000004D3E409900000000000011D1
+t1295925401
+s4561
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/CCMLTableComboBoxDataSource.h
+c000000004D2A4567000000000000052E
+t1294615911
+s1326
+i<Cocoa/Cocoa.h>
+i"NSXMLElement_Category.h"
+i"XMLAttributeWrapper.h"
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/CCMLTableComboBoxDataSource.m
+c000000004D39C610000000000000208C
+t1295631888
+s8332
+i"TableComboBoxDataSource.h"
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/CCMLTreeIconModel.h
+c000000004D38BD3800000000000002AA
+t1295564088
+s682
+i<Cocoa/Cocoa.h>
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/CCMLTreeIconModel.m
+c000000004D38BD4800000000000012DF
+t1295564104
+s4831
+i"TreeIconModel.h"
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/Edit.icns
+c000000004D0FDA710000000000032FC0
+t1292884593
+s208832
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/English.lproj/Credits.rtf
+c000000004D38570700000000000001B4
+t1295537927
+s436
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/English.lproj/InfoPlist.strings
+c000000004D385707000000000000002D
+t1295537927
+s45
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/English.lproj/MainMenu.xib
+c000000004D385707000000000002ADE8
+t1295537927
+s175592
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/English.lproj/MyDocument.xib
+c000000004D3E4C6B000000000001E3AA
+t1295928427
+s123818
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/FolderExperiments.icns
+c000000004D10083D000000000003F94D
+t1292896317
+s260429
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/GenericFolderIcon.icns
+c0000000046F9BB07000000000007E753
+t1190771463
+s517971
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/IconMapping.xml
+c000000004D39E647000000000000035F
+t1295640135
+s863
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/MyDocument.h
+c000000004D38B4F90000000000000173
+t1295561977
+s371
+i<Cocoa/Cocoa.h>
+i"TranslatorWindowController.h"
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/MyDocument.m
+c000000004D38B6010000000000000CD5
+t1295562241
+s3285
+i"MyDocument.h"
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/NSXMLElement_Category.h
+c000000004D3C6DAD000000000000014A
+t1295805869
+s330
+i<Cocoa/Cocoa.h>
+i"TreeNodeNamingModel.h"
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/NSXMLElement_Category.m
+c000000004D3C72AB0000000000001836
+t1295807147
+s6198
+i"NSXMLElement_Category.h"
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/NSXMLNode_Category.h
+c000000004D15D6AC0000000000000121
+t1293276844
+s289
+i<Cocoa/Cocoa.h>
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/NSXMLNode_Category.m
+c000000004D2BA3E80000000000000DF7
+t1294705640
+s3575
+i"NSXMLNode_Category.h"
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/NodeNaming.xml
+c000000004D3C5B07000000000000054C
+t1295801095
+s1356
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/Notes-128.icns
+c000000004D1007F0000000000001486B
+t1292896240
+s84075
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/Open-Folder-Full.icns
+c000000004C648BA8000000000000FC8B
+t1281657768
+s64651
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/OutlineViewDelegate.h
+c000000004D3938F20000000000000230
+t1295595762
+s560
+i<Cocoa/Cocoa.h>
+i"TreeIconModel.h"
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/OutlineViewDelegate.m
+c000000004D39C24B0000000000000A8F
+t1295630923
+s2703
+i"OutlineViewDelegate.h"
+i"NSXMLNode_Category.h"
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/SBML.xml
+c000000004D3E4C220000000000000EBA
+t1295928354
+s3770
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/SystemPreferences.icns
+c000000004923AD6E00000000000082AD
+t1227074926
+s33453
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/TableComboBoxDataSource.h
+c000000004D39E84F00000000000003AB
+t1295640655
+s939
+i<Cocoa/Cocoa.h>
+i"NSXMLElement_Category.h"
+i"XMLAttributeWrapper.h"
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/TableComboBoxDataSource.m
+c000000004D39F78B0000000000001D8C
+t1295644555
+s7564
+i"TableComboBoxDataSource.h"
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/TableViewDelegate.h
+c000000004D39CCC80000000000000367
+t1295633608
+s871
+i<Cocoa/Cocoa.h>
+i"TableComboBoxDataSource.h"
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/TableViewDelegate.m
+c000000004D39F98D0000000000001D39
+t1295645069
+s7481
+i"TableViewDelegate.h"
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/TaskController.h
+c000000004D38B0BF0000000000000172
+t1295560895
+s370
+i<Cocoa/Cocoa.h>
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/TaskController.m
+c000000004D38B22600000000000002CC
+t1295561254
+s716
+i"TaskController.h"
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/TemplateIcon.icns
+c000000004D0FDB51000000000000DB62
+t1292884817
+s56162
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/Templates.xml
+c000000004D3E37DA0000000000000579
+t1295923162
+s1401
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/TranslatorWindowController.h
+c000000004D3CFF380000000000000887
+t1295843128
+s2183
+i<Cocoa/Cocoa.h>
+i"XMLTreeModel.h"
+i"TreeIconModel.h"
+i"TreeNodeNamingModel.h"
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/TranslatorWindowController.m
+c000000004D3E53760000000000003F23
+t1295930230
+s16163
+i"TranslatorWindowController.h"
+i"NSXMLElement_Category.h"
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/Translator_Prefix.pch
+c000000004D3857070000000000000097
+t1295537927
+s151
+i<Cocoa/Cocoa.h>
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/Transmit-256.icns
+c000000004D1007370000000000036B0B
+t1292896055
+s224011
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/Transport-256.icns
+c000000004D10070B0000000000054D94
+t1292896011
+s347540
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/TreeIconModel.h
+c000000004D38BFB600000000000002A6
+t1295564726
+s678
+i<Cocoa/Cocoa.h>
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/TreeIconModel.m
+c000000004D3C696100000000000012EB
+t1295804769
+s4843
+i"TreeIconModel.h"
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/TreeNodeNamingModel.h
+c000000004D3C68AB00000000000001F7
+t1295804587
+s503
+i<Cocoa/Cocoa.h>
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/TreeNodeNamingModel.m
+c000000004D3C718B0000000000000B08
+t1295806859
+s2824
+i"TreeNodeNamingModel.h"
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/WOAfile.icns
+c000000004D0FDB85000000000000C155
+t1292884869
+s49493
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/Window-256.icns
+c000000004D1007A00000000000017AAD
+t1292896160
+s96941
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/Wish.icns
+c000000004D0FDB99000000000000C3FC
+t1292884889
+s50172
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/XMLAttributeWrapper.h
+c000000004D0ECB1D000000000000016E
+t1292815133
+s366
+i<Cocoa/Cocoa.h>
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/XMLAttributeWrapper.m
+c000000004D17325500000000000001BD
+t1293365845
+s445
+i"XMLAttributeWrapper.h"
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/XMLTreeModel.h
+c000000004D1B540C00000000000001E7
+t1293636620
+s487
+i<Cocoa/Cocoa.h>
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/XMLTreeModel.m
+c000000004D3C6A1200000000000002B8
+t1295804946
+s696
+i"XMLTreeModel.h"
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/autoship.icns
+c000000004B91767A000000000001012C
+t1267824250
+s65836
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/billboard.icns
+c000000004C76CE28000000000000EA6F
+t1282854440
+s60015
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/blue_creature.icns
+c0000000049EA952E000000000000C76B
+t1240110382
+s51051
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/bubbly.icns
+c0000000049EA9AFA000000000000BDBB
+t1240111866
+s48571
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app
+t1295930404
+s102
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Info.plist
+t1295930388
+s1372
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/MacOS/Translator
+t1295930403
+s93584
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/PkgInfo
+t1295930388
+s8
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources/AdminNetwork-256.icns
+t1295930389
+s208439
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources/C-Octave.xml
+t1295930389
+s4561
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources/Edit.icns
+t1295930389
+s208832
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources/English.lproj/Credits.rtf
+t1295930388
+s436
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources/English.lproj/InfoPlist.strings
+t1295930389
+s92
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources/English.lproj/MainMenu.nib
+t1295930389
+s33314
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources/English.lproj/MyDocument.nib
+t1295930389
+s24142
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources/FolderExperiments.icns
+t1295930389
+s260429
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources/GenericFolderIcon.icns
+t1295930389
+s517971
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources/IconMapping.xml
+t1295930389
+s863
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources/NodeNaming.xml
+t1295930389
+s1356
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources/Notes-128.icns
+t1295930389
+s84075
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources/Open-Folder-Full.icns
+t1295930389
+s64651
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources/SBML.xml
+t1295930389
+s3770
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources/SystemPreferences.icns
+t1295930389
+s33453
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources/TemplateIcon.icns
+t1295930389
+s56162
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources/Templates.xml
+t1295930389
+s1401
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources/Transmit-256.icns
+t1295930389
+s224011
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources/Transport-256.icns
+t1295930389
+s347540
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources/WOAfile.icns
+t1295930389
+s49493
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources/Window-256.icns
+t1295930389
+s96941
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources/Wish.icns
+t1295930389
+s50172
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources/autoship.icns
+t1295930389
+s65836
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources/billboard.icns
+t1295930389
+s60015
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources/blue_creature.icns
+t1295930389
+s51051
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources/bubbly.icns
+t1295930389
+s48571
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources/catalog.icns
+t1295930389
+s54394
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources/custom-reports.icns
+t1295930389
+s69168
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources/file-explorer.icns
+t1295930389
+s69042
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources/folder-128.icns
+t1295930389
+s254376
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources/folder.icns
+t1295930389
+s47411
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources/home.icns
+t1295930389
+s85212
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources/import-export.icns
+t1295930389
+s77323
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources/layout.icns
+t1295930389
+s64795
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources/library.icns
+t1295930389
+s52462
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources/organization.icns
+t1295930389
+s49939
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources/pin-green.icns
+t1295930389
+s82592
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources/pin-red.icns
+t1295930389
+s67779
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources/puzzle.icns
+t1295930389
+s85752
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources/question-type-drag-drop.icns
+t1295930389
+s77696
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources/runprog-256.icns
+t1295930389
+s157492
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources/settings.icns
+t1295930389
+s76859
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources/shopping-basket-full.icns
+t1295930389
+s82512
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources/stardusty.icns
+t1295930389
+s47819
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources/surveys.icns
+t1295930389
+s61158
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources/themes.icns
+t1295930389
+s72468
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources/upload1.icns
+t1295930389
+s49960
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources/wdrive.icns
+t1295930389
+s131939
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/CCMLTableComboBoxDataSource.o
+t2
+s0
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/CCMLTreeIconModel.o
+t2
+s0
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/MyDocument.o
+t1295930402
+s32972
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/NSXMLElement_Category.o
+t1295930402
+s14764
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/NSXMLNode_Category.o
+t1295930402
+s12628
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/OutlineViewDelegate.o
+t1295930403
+s39704
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/TableComboBoxDataSource.o
+t1295930403
+s53084
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/TableViewDelegate.o
+t1295930403
+s62444
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/TaskController.o
+t1295930402
+s14572
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/Translator.LinkFileList
+c000000004D3E541400000000000006FC
+t1295930388
+s1788
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/TranslatorWindowController.o
+t1295930402
+s85112
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/TreeIconModel.o
+t1295930402
+s26532
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/TreeNodeNamingModel.o
+t1295930403
+s19304
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/XMLAttributeWrapper.o
+t1295930402
+s10776
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/XMLTreeModel.o
+t1295930402
+s12452
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/main.o
+t1295930402
+s5008
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/StaticAnalyzer/normal/x86_64/MyDocument.plist
+t1295930404
+s276
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/StaticAnalyzer/normal/x86_64/NSXMLElement_Category.plist
+t1295930404
+s276
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/StaticAnalyzer/normal/x86_64/NSXMLNode_Category.plist
+t1295930404
+s276
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/StaticAnalyzer/normal/x86_64/OutlineViewDelegate.plist
+t1295930404
+s276
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/StaticAnalyzer/normal/x86_64/TableComboBoxDataSource.plist
+t1295930404
+s276
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/StaticAnalyzer/normal/x86_64/TableViewDelegate.plist
+t1295930404
+s276
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/StaticAnalyzer/normal/x86_64/TaskController.plist
+t1295930404
+s276
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/StaticAnalyzer/normal/x86_64/TranslatorWindowController.plist
+t1295930404
+s276
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/StaticAnalyzer/normal/x86_64/TreeIconModel.plist
+t1295930404
+s276
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/StaticAnalyzer/normal/x86_64/TreeNodeNamingModel.plist
+t1295930404
+s276
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/StaticAnalyzer/normal/x86_64/XMLAttributeWrapper.plist
+t1295930404
+s276
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/StaticAnalyzer/normal/x86_64/XMLTreeModel.plist
+t1295930404
+s276
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/StaticAnalyzer/normal/x86_64/main.plist
+t1295930404
+s276
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/catalog.icns
+c000000004C76CC62000000000000D47A
+t1282853986
+s54394
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/custom-reports.icns
+c000000004D23406E0000000000010E30
+t1294155886
+s69168
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/file-explorer.icns
+c000000004C76C9340000000000010DB2
+t1282853172
+s69042
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/folder-128.icns
+c000000004D100786000000000003E1A8
+t1292896134
+s254376
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/folder.icns
+c000000004B917B7E000000000000B933
+t1267825534
+s47411
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/home.icns
+c000000004C6553B40000000000014CDC
+t1281708980
+s85212
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/import-export.icns
+c000000004D233F0A0000000000012E0B
+t1294155530
+s77323
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/layout.icns
+c000000004C76C588000000000000FD1B
+t1282852232
+s64795
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/library.icns
+c000000004B917C2E000000000000CCEE
+t1267825710
+s52462
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/main.m
+c000000004D3857070000000000000115
+t1295537927
+s277
+i<Cocoa/Cocoa.h>
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/organization.icns
+c000000004C76C20C000000000000C313
+t1282851340
+s49939
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/pin-green.icns
+c000000004D233C4A00000000000142A0
+t1294154826
+s82592
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/pin-red.icns
+c000000004D233C1800000000000108C3
+t1294154776
+s67779
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/puzzle.icns
+c000000004D233A980000000000014EF8
+t1294154392
+s85752
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/question-type-drag-drop.icns
+c000000004D233A640000000000012F80
+t1294154340
+s77696
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/runprog-256.icns
+c000000004D10085F0000000000026734
+t1292896351
+s157492
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/settings.icns
+c0000000049DE29E20000000000012C3B
+t1239296482
+s76859
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/shopping-basket-full.icns
+c000000004D23386C0000000000014250
+t1294153836
+s82512
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/stardusty.icns
+c0000000049EA9A56000000000000BACB
+t1240111702
+s47819
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/surveys.icns
+c000000004C76BAE4000000000000EEE6
+t1282849508
+s61158
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/themes.icns
+c000000004C76BA680000000000011B14
+t1282849384
+s72468
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/upload1.icns
+c000000004C648738000000000000C328
+t1281656632
+s49960
+
+N/Users/jeffreyvarner/Documents/dev_iOS/Translator/wdrive.icns
+c000000004D1008910000000000020363
+t1292896401
+s131939
+
+N/var/folders/nT/nT6t96pgGky16r0n69Nb0k+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/Translator_Prefix-cjyvymsabybadhhfcrndvmseaues/Translator_Prefix.pch.pth
+t1295839594
+s9005528
+
+N/var/folders/nT/nT6t96pgGky16r0n69Nb0k+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/Translator_Prefix-grjwapcieaaiwydxecjwztsafbot/Translator_Prefix.pch.gch
+t1295930401
+s54306576
+
+NTranslator-Info.plist
+c000000004D39E61F00000000000005CF
+t1295640095
+s1487
+
+CAnalyze /Users/jeffreyvarner/Documents/dev_iOS/Translator/MyDocument.m
+s317623203.335881
+e317623204.202722
+r1
+xAnalyze
+x/Users/jeffreyvarner/Documents/dev_iOS/Translator/MyDocument.m
+lSLF07#2@70"Analyze /Users/jeffreyvarner/Documents/dev_iOS/Translator/MyDocument.m317623203#317623204#0(0"0(0#0#62"/Users/jeffreyvarner/Documents/dev_iOS/Translator/MyDocument.m8607362144#1697"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    setenv LANG en_US.US-ASCII    /Developer/usr/bin/clang -x objective-c -arch x86_64 -fmessage-length=0 -pipe -fdiagnostics-print-source-range-info -std=gnu99 -Wno-trigraphs -fpascal-strings -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.6.sdk -fasm-blocks -mfix-and-continue -mmacosx-version-min=10.6 -gdwarf-2 -iquote /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-generated-files.hmap -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-own-target-headers.hmap -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-all-target-headers.hmap -iquote /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-project-headers.hmap -F/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/include -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/DerivedSources/x86_64 -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/DerivedSources -include /var/folders/nT/nT6t96pgGky16r0n69Nb0k+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/Translator_Prefix-cjyvymsabybadhhfcrndvmseaues/Translator_Prefix.pch --analyze /Users/jeffreyvarner/Documents/dev_iOS/Translator/MyDocument.m -o /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/StaticAnalyzer/normal/x86_64/MyDocument.plist0#
+
+CAnalyze /Users/jeffreyvarner/Documents/dev_iOS/Translator/NSXMLElement_Category.m
+s317623204.202957
+e317623204.312000
+r1
+xAnalyze
+x/Users/jeffreyvarner/Documents/dev_iOS/Translator/NSXMLElement_Category.m
+lSLF07#2@81"Analyze /Users/jeffreyvarner/Documents/dev_iOS/Translator/NSXMLElement_Category.m317623204#317623204#0(0"0(0#0#73"/Users/jeffreyvarner/Documents/dev_iOS/Translator/NSXMLElement_Category.m8613727776#1719"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    setenv LANG en_US.US-ASCII    /Developer/usr/bin/clang -x objective-c -arch x86_64 -fmessage-length=0 -pipe -fdiagnostics-print-source-range-info -std=gnu99 -Wno-trigraphs -fpascal-strings -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.6.sdk -fasm-blocks -mfix-and-continue -mmacosx-version-min=10.6 -gdwarf-2 -iquote /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-generated-files.hmap -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-own-target-headers.hmap -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-all-target-headers.hmap -iquote /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-project-headers.hmap -F/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/include -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/DerivedSources/x86_64 -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/DerivedSources -include /var/folders/nT/nT6t96pgGky16r0n69Nb0k+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/Translator_Prefix-cjyvymsabybadhhfcrndvmseaues/Translator_Prefix.pch --analyze /Users/jeffreyvarner/Documents/dev_iOS/Translator/NSXMLElement_Category.m -o /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/StaticAnalyzer/normal/x86_64/NSXMLElement_Category.plist0#
+
+CAnalyze /Users/jeffreyvarner/Documents/dev_iOS/Translator/NSXMLNode_Category.m
+s317623204.307529
+e317623204.444419
+r1
+xAnalyze
+x/Users/jeffreyvarner/Documents/dev_iOS/Translator/NSXMLNode_Category.m
+lSLF07#2@78"Analyze /Users/jeffreyvarner/Documents/dev_iOS/Translator/NSXMLNode_Category.m317623204#317623204#0(0"0(0#0#70"/Users/jeffreyvarner/Documents/dev_iOS/Translator/NSXMLNode_Category.m8603466464#1713"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    setenv LANG en_US.US-ASCII    /Developer/usr/bin/clang -x objective-c -arch x86_64 -fmessage-length=0 -pipe -fdiagnostics-print-source-range-info -std=gnu99 -Wno-trigraphs -fpascal-strings -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.6.sdk -fasm-blocks -mfix-and-continue -mmacosx-version-min=10.6 -gdwarf-2 -iquote /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-generated-files.hmap -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-own-target-headers.hmap -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-all-target-headers.hmap -iquote /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-project-headers.hmap -F/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/include -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/DerivedSources/x86_64 -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/DerivedSources -include /var/folders/nT/nT6t96pgGky16r0n69Nb0k+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/Translator_Prefix-cjyvymsabybadhhfcrndvmseaues/Translator_Prefix.pch --analyze /Users/jeffreyvarner/Documents/dev_iOS/Translator/NSXMLNode_Category.m -o /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/StaticAnalyzer/normal/x86_64/NSXMLNode_Category.plist0#
+
+CAnalyze /Users/jeffreyvarner/Documents/dev_iOS/Translator/OutlineViewDelegate.m
+s317623204.698420
+e317623204.825322
+r1
+xAnalyze
+x/Users/jeffreyvarner/Documents/dev_iOS/Translator/OutlineViewDelegate.m
+lSLF07#2@79"Analyze /Users/jeffreyvarner/Documents/dev_iOS/Translator/OutlineViewDelegate.m317623204#317623204#0(0"0(0#0#71"/Users/jeffreyvarner/Documents/dev_iOS/Translator/OutlineViewDelegate.m8619334944#1715"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    setenv LANG en_US.US-ASCII    /Developer/usr/bin/clang -x objective-c -arch x86_64 -fmessage-length=0 -pipe -fdiagnostics-print-source-range-info -std=gnu99 -Wno-trigraphs -fpascal-strings -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.6.sdk -fasm-blocks -mfix-and-continue -mmacosx-version-min=10.6 -gdwarf-2 -iquote /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-generated-files.hmap -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-own-target-headers.hmap -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-all-target-headers.hmap -iquote /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-project-headers.hmap -F/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/include -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/DerivedSources/x86_64 -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/DerivedSources -include /var/folders/nT/nT6t96pgGky16r0n69Nb0k+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/Translator_Prefix-cjyvymsabybadhhfcrndvmseaues/Translator_Prefix.pch --analyze /Users/jeffreyvarner/Documents/dev_iOS/Translator/OutlineViewDelegate.m -o /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/StaticAnalyzer/normal/x86_64/OutlineViewDelegate.plist0#
+
+CAnalyze /Users/jeffreyvarner/Documents/dev_iOS/Translator/TableComboBoxDataSource.m
+s317623204.825408
+e317623204.956676
+r1
+xAnalyze
+x/Users/jeffreyvarner/Documents/dev_iOS/Translator/TableComboBoxDataSource.m
+lSLF07#2@83"Analyze /Users/jeffreyvarner/Documents/dev_iOS/Translator/TableComboBoxDataSource.m317623204#317623204#0(0"0(0#0#75"/Users/jeffreyvarner/Documents/dev_iOS/Translator/TableComboBoxDataSource.m8614294816#1723"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    setenv LANG en_US.US-ASCII    /Developer/usr/bin/clang -x objective-c -arch x86_64 -fmessage-length=0 -pipe -fdiagnostics-print-source-range-info -std=gnu99 -Wno-trigraphs -fpascal-strings -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.6.sdk -fasm-blocks -mfix-and-continue -mmacosx-version-min=10.6 -gdwarf-2 -iquote /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-generated-files.hmap -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-own-target-headers.hmap -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-all-target-headers.hmap -iquote /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-project-headers.hmap -F/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/include -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/DerivedSources/x86_64 -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/DerivedSources -include /var/folders/nT/nT6t96pgGky16r0n69Nb0k+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/Translator_Prefix-cjyvymsabybadhhfcrndvmseaues/Translator_Prefix.pch --analyze /Users/jeffreyvarner/Documents/dev_iOS/Translator/TableComboBoxDataSource.m -o /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/StaticAnalyzer/normal/x86_64/TableComboBoxDataSource.plist0#
+
+CAnalyze /Users/jeffreyvarner/Documents/dev_iOS/Translator/TableViewDelegate.m
+s317623204.728165
+e317623204.881883
+r1
+xAnalyze
+x/Users/jeffreyvarner/Documents/dev_iOS/Translator/TableViewDelegate.m
+lSLF07#2@77"Analyze /Users/jeffreyvarner/Documents/dev_iOS/Translator/TableViewDelegate.m317623204#317623204#0(0"0(0#0#69"/Users/jeffreyvarner/Documents/dev_iOS/Translator/TableViewDelegate.m8615875136#1711"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    setenv LANG en_US.US-ASCII    /Developer/usr/bin/clang -x objective-c -arch x86_64 -fmessage-length=0 -pipe -fdiagnostics-print-source-range-info -std=gnu99 -Wno-trigraphs -fpascal-strings -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.6.sdk -fasm-blocks -mfix-and-continue -mmacosx-version-min=10.6 -gdwarf-2 -iquote /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-generated-files.hmap -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-own-target-headers.hmap -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-all-target-headers.hmap -iquote /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-project-headers.hmap -F/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/include -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/DerivedSources/x86_64 -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/DerivedSources -include /var/folders/nT/nT6t96pgGky16r0n69Nb0k+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/Translator_Prefix-cjyvymsabybadhhfcrndvmseaues/Translator_Prefix.pch --analyze /Users/jeffreyvarner/Documents/dev_iOS/Translator/TableViewDelegate.m -o /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/StaticAnalyzer/normal/x86_64/TableViewDelegate.plist0#
+
+CAnalyze /Users/jeffreyvarner/Documents/dev_iOS/Translator/TaskController.m
+s317623204.199030
+e317623204.307436
+r1
+xAnalyze
+x/Users/jeffreyvarner/Documents/dev_iOS/Translator/TaskController.m
+lSLF07#2@74"Analyze /Users/jeffreyvarner/Documents/dev_iOS/Translator/TaskController.m317623204#317623204#0(0"0(0#0#66"/Users/jeffreyvarner/Documents/dev_iOS/Translator/TaskController.m8615523776#1705"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    setenv LANG en_US.US-ASCII    /Developer/usr/bin/clang -x objective-c -arch x86_64 -fmessage-length=0 -pipe -fdiagnostics-print-source-range-info -std=gnu99 -Wno-trigraphs -fpascal-strings -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.6.sdk -fasm-blocks -mfix-and-continue -mmacosx-version-min=10.6 -gdwarf-2 -iquote /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-generated-files.hmap -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-own-target-headers.hmap -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-all-target-headers.hmap -iquote /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-project-headers.hmap -F/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/include -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/DerivedSources/x86_64 -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/DerivedSources -include /var/folders/nT/nT6t96pgGky16r0n69Nb0k+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/Translator_Prefix-cjyvymsabybadhhfcrndvmseaues/Translator_Prefix.pch --analyze /Users/jeffreyvarner/Documents/dev_iOS/Translator/TaskController.m -o /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/StaticAnalyzer/normal/x86_64/TaskController.plist0#
+
+CAnalyze /Users/jeffreyvarner/Documents/dev_iOS/Translator/TranslatorWindowController.m
+s317623204.460158
+e317623204.698329
+r1
+xAnalyze
+x/Users/jeffreyvarner/Documents/dev_iOS/Translator/TranslatorWindowController.m
+lSLF07#2@86"Analyze /Users/jeffreyvarner/Documents/dev_iOS/Translator/TranslatorWindowController.m317623204#317623204#0(0"0(0#0#78"/Users/jeffreyvarner/Documents/dev_iOS/Translator/TranslatorWindowController.m8605459872#1729"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    setenv LANG en_US.US-ASCII    /Developer/usr/bin/clang -x objective-c -arch x86_64 -fmessage-length=0 -pipe -fdiagnostics-print-source-range-info -std=gnu99 -Wno-trigraphs -fpascal-strings -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.6.sdk -fasm-blocks -mfix-and-continue -mmacosx-version-min=10.6 -gdwarf-2 -iquote /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-generated-files.hmap -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-own-target-headers.hmap -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-all-target-headers.hmap -iquote /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-project-headers.hmap -F/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/include -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/DerivedSources/x86_64 -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/DerivedSources -include /var/folders/nT/nT6t96pgGky16r0n69Nb0k+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/Translator_Prefix-cjyvymsabybadhhfcrndvmseaues/Translator_Prefix.pch --analyze /Users/jeffreyvarner/Documents/dev_iOS/Translator/TranslatorWindowController.m -o /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/StaticAnalyzer/normal/x86_64/TranslatorWindowController.plist0#
+
+CAnalyze /Users/jeffreyvarner/Documents/dev_iOS/Translator/TreeIconModel.m
+s317623204.557788
+e317623204.728082
+r1
+xAnalyze
+x/Users/jeffreyvarner/Documents/dev_iOS/Translator/TreeIconModel.m
+lSLF07#2@73"Analyze /Users/jeffreyvarner/Documents/dev_iOS/Translator/TreeIconModel.m317623204#317623204#0(0"0(0#0#65"/Users/jeffreyvarner/Documents/dev_iOS/Translator/TreeIconModel.m8600698464#1703"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    setenv LANG en_US.US-ASCII    /Developer/usr/bin/clang -x objective-c -arch x86_64 -fmessage-length=0 -pipe -fdiagnostics-print-source-range-info -std=gnu99 -Wno-trigraphs -fpascal-strings -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.6.sdk -fasm-blocks -mfix-and-continue -mmacosx-version-min=10.6 -gdwarf-2 -iquote /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-generated-files.hmap -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-own-target-headers.hmap -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-all-target-headers.hmap -iquote /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-project-headers.hmap -F/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/include -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/DerivedSources/x86_64 -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/DerivedSources -include /var/folders/nT/nT6t96pgGky16r0n69Nb0k+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/Translator_Prefix-cjyvymsabybadhhfcrndvmseaues/Translator_Prefix.pch --analyze /Users/jeffreyvarner/Documents/dev_iOS/Translator/TreeIconModel.m -o /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/StaticAnalyzer/normal/x86_64/TreeIconModel.plist0#
+
+CAnalyze /Users/jeffreyvarner/Documents/dev_iOS/Translator/TreeNodeNamingModel.m
+s317623204.881968
+e317623204.995408
+r1
+xAnalyze
+x/Users/jeffreyvarner/Documents/dev_iOS/Translator/TreeNodeNamingModel.m
+lSLF07#2@79"Analyze /Users/jeffreyvarner/Documents/dev_iOS/Translator/TreeNodeNamingModel.m317623204#317623205#0(0"0(0#0#71"/Users/jeffreyvarner/Documents/dev_iOS/Translator/TreeNodeNamingModel.m8619762912#1715"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    setenv LANG en_US.US-ASCII    /Developer/usr/bin/clang -x objective-c -arch x86_64 -fmessage-length=0 -pipe -fdiagnostics-print-source-range-info -std=gnu99 -Wno-trigraphs -fpascal-strings -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.6.sdk -fasm-blocks -mfix-and-continue -mmacosx-version-min=10.6 -gdwarf-2 -iquote /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-generated-files.hmap -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-own-target-headers.hmap -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-all-target-headers.hmap -iquote /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-project-headers.hmap -F/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/include -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/DerivedSources/x86_64 -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/DerivedSources -include /var/folders/nT/nT6t96pgGky16r0n69Nb0k+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/Translator_Prefix-cjyvymsabybadhhfcrndvmseaues/Translator_Prefix.pch --analyze /Users/jeffreyvarner/Documents/dev_iOS/Translator/TreeNodeNamingModel.m -o /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/StaticAnalyzer/normal/x86_64/TreeNodeNamingModel.plist0#
+
+CAnalyze /Users/jeffreyvarner/Documents/dev_iOS/Translator/XMLAttributeWrapper.m
+s317623204.444531
+e317623204.557696
+r1
+xAnalyze
+x/Users/jeffreyvarner/Documents/dev_iOS/Translator/XMLAttributeWrapper.m
+lSLF07#2@79"Analyze /Users/jeffreyvarner/Documents/dev_iOS/Translator/XMLAttributeWrapper.m317623204#317623204#0(0"0(0#0#71"/Users/jeffreyvarner/Documents/dev_iOS/Translator/XMLAttributeWrapper.m8612422208#1715"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    setenv LANG en_US.US-ASCII    /Developer/usr/bin/clang -x objective-c -arch x86_64 -fmessage-length=0 -pipe -fdiagnostics-print-source-range-info -std=gnu99 -Wno-trigraphs -fpascal-strings -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.6.sdk -fasm-blocks -mfix-and-continue -mmacosx-version-min=10.6 -gdwarf-2 -iquote /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-generated-files.hmap -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-own-target-headers.hmap -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-all-target-headers.hmap -iquote /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-project-headers.hmap -F/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/include -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/DerivedSources/x86_64 -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/DerivedSources -include /var/folders/nT/nT6t96pgGky16r0n69Nb0k+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/Translator_Prefix-cjyvymsabybadhhfcrndvmseaues/Translator_Prefix.pch --analyze /Users/jeffreyvarner/Documents/dev_iOS/Translator/XMLAttributeWrapper.m -o /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/StaticAnalyzer/normal/x86_64/XMLAttributeWrapper.plist0#
+
+CAnalyze /Users/jeffreyvarner/Documents/dev_iOS/Translator/XMLTreeModel.m
+s317623204.312084
+e317623204.460065
+r1
+xAnalyze
+x/Users/jeffreyvarner/Documents/dev_iOS/Translator/XMLTreeModel.m
+lSLF07#2@72"Analyze /Users/jeffreyvarner/Documents/dev_iOS/Translator/XMLTreeModel.m317623204#317623204#0(0"0(0#0#64"/Users/jeffreyvarner/Documents/dev_iOS/Translator/XMLTreeModel.m8603449920#1701"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    setenv LANG en_US.US-ASCII    /Developer/usr/bin/clang -x objective-c -arch x86_64 -fmessage-length=0 -pipe -fdiagnostics-print-source-range-info -std=gnu99 -Wno-trigraphs -fpascal-strings -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.6.sdk -fasm-blocks -mfix-and-continue -mmacosx-version-min=10.6 -gdwarf-2 -iquote /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-generated-files.hmap -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-own-target-headers.hmap -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-all-target-headers.hmap -iquote /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-project-headers.hmap -F/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/include -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/DerivedSources/x86_64 -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/DerivedSources -include /var/folders/nT/nT6t96pgGky16r0n69Nb0k+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/Translator_Prefix-cjyvymsabybadhhfcrndvmseaues/Translator_Prefix.pch --analyze /Users/jeffreyvarner/Documents/dev_iOS/Translator/XMLTreeModel.m -o /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/StaticAnalyzer/normal/x86_64/XMLTreeModel.plist0#
+
+CAnalyze /Users/jeffreyvarner/Documents/dev_iOS/Translator/main.m
+s317623203.452180
+e317623204.198900
+r1
+xAnalyze
+x/Users/jeffreyvarner/Documents/dev_iOS/Translator/main.m
+lSLF07#2@64"Analyze /Users/jeffreyvarner/Documents/dev_iOS/Translator/main.m317623203#317623204#0(0"0(0#0#56"/Users/jeffreyvarner/Documents/dev_iOS/Translator/main.m8603419904#1685"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    setenv LANG en_US.US-ASCII    /Developer/usr/bin/clang -x objective-c -arch x86_64 -fmessage-length=0 -pipe -fdiagnostics-print-source-range-info -std=gnu99 -Wno-trigraphs -fpascal-strings -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.6.sdk -fasm-blocks -mfix-and-continue -mmacosx-version-min=10.6 -gdwarf-2 -iquote /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-generated-files.hmap -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-own-target-headers.hmap -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-all-target-headers.hmap -iquote /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-project-headers.hmap -F/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/include -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/DerivedSources/x86_64 -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/DerivedSources -include /var/folders/nT/nT6t96pgGky16r0n69Nb0k+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/Translator_Prefix-cjyvymsabybadhhfcrndvmseaues/Translator_Prefix.pch --analyze /Users/jeffreyvarner/Documents/dev_iOS/Translator/main.m -o /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/StaticAnalyzer/normal/x86_64/main.plist0#
+
+CCheck dependencies
+r0
+lSLF07#2@18"Check dependencies317623187#317623188#0(0"0(0#1#0"8615730336#0"0#
+
+CCompileC build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/CCMLTableComboBoxDataSource.o /Users/jeffreyvarner/Documents/dev_iOS/Translator/CCMLTableComboBoxDataSource.m normal x86_64 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/CCMLTreeIconModel.o /Users/jeffreyvarner/Documents/dev_iOS/Translator/CCMLTreeIconModel.m normal x86_64 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/MyDocument.o /Users/jeffreyvarner/Documents/dev_iOS/Translator/MyDocument.m normal x86_64 objective-c com.apple.compilers.gcc.4_2
+s317623201.957170
+e317623202.223409
+r1
+xCompileC
+xbuild/Translator.build/Debug/Translator.build/Objects-normal/x86_64/MyDocument.o
+x/Users/jeffreyvarner/Documents/dev_iOS/Translator/MyDocument.m
+xnormal
+xx86_64
+xobjective-c
+xcom.apple.compilers.gcc.4_2
+lSLF07#2@70"Compile /Users/jeffreyvarner/Documents/dev_iOS/Translator/MyDocument.m317623201#317623202#0(0"0(0#0#62"/Users/jeffreyvarner/Documents/dev_iOS/Translator/MyDocument.m8607263328#1643"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.2 -x objective-c -arch x86_64 -fmessage-length=0 -pipe -std=gnu99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.6.sdk -mfix-and-continue -mmacosx-version-min=10.6 -gdwarf-2 -iquote /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-generated-files.hmap -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-own-target-headers.hmap -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-all-target-headers.hmap -iquote /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-project-headers.hmap -F/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/include -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/DerivedSources/x86_64 -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/DerivedSources -include /var/folders/nT/nT6t96pgGky16r0n69Nb0k+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/Translator_Prefix-grjwapcieaaiwydxecjwztsafbot/Translator_Prefix.pch -c /Users/jeffreyvarner/Documents/dev_iOS/Translator/MyDocument.m -o /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/MyDocument.o0#
+
+CCompileC build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/NSXMLElement_Category.o /Users/jeffreyvarner/Documents/dev_iOS/Translator/NSXMLElement_Category.m normal x86_64 objective-c com.apple.compilers.gcc.4_2
+s317623202.223510
+e317623202.407682
+r1
+xCompileC
+xbuild/Translator.build/Debug/Translator.build/Objects-normal/x86_64/NSXMLElement_Category.o
+x/Users/jeffreyvarner/Documents/dev_iOS/Translator/NSXMLElement_Category.m
+xnormal
+xx86_64
+xobjective-c
+xcom.apple.compilers.gcc.4_2
+lSLF07#2@81"Compile /Users/jeffreyvarner/Documents/dev_iOS/Translator/NSXMLElement_Category.m317623202#317623202#0(0"0(0#0#73"/Users/jeffreyvarner/Documents/dev_iOS/Translator/NSXMLElement_Category.m8615724576#1665"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.2 -x objective-c -arch x86_64 -fmessage-length=0 -pipe -std=gnu99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.6.sdk -mfix-and-continue -mmacosx-version-min=10.6 -gdwarf-2 -iquote /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-generated-files.hmap -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-own-target-headers.hmap -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-all-target-headers.hmap -iquote /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-project-headers.hmap -F/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/include -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/DerivedSources/x86_64 -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/DerivedSources -include /var/folders/nT/nT6t96pgGky16r0n69Nb0k+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/Translator_Prefix-grjwapcieaaiwydxecjwztsafbot/Translator_Prefix.pch -c /Users/jeffreyvarner/Documents/dev_iOS/Translator/NSXMLElement_Category.m -o /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/NSXMLElement_Category.o0#
+
+CCompileC build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/NSXMLNode_Category.o /Users/jeffreyvarner/Documents/dev_iOS/Translator/NSXMLNode_Category.m normal x86_64 objective-c com.apple.compilers.gcc.4_2
+s317623202.314189
+e317623202.511774
+r1
+xCompileC
+xbuild/Translator.build/Debug/Translator.build/Objects-normal/x86_64/NSXMLNode_Category.o
+x/Users/jeffreyvarner/Documents/dev_iOS/Translator/NSXMLNode_Category.m
+xnormal
+xx86_64
+xobjective-c
+xcom.apple.compilers.gcc.4_2
+lSLF07#2@78"Compile /Users/jeffreyvarner/Documents/dev_iOS/Translator/NSXMLNode_Category.m317623202#317623202#0(0"0(0#0#70"/Users/jeffreyvarner/Documents/dev_iOS/Translator/NSXMLNode_Category.m8613729728#1659"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.2 -x objective-c -arch x86_64 -fmessage-length=0 -pipe -std=gnu99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.6.sdk -mfix-and-continue -mmacosx-version-min=10.6 -gdwarf-2 -iquote /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-generated-files.hmap -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-own-target-headers.hmap -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-all-target-headers.hmap -iquote /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-project-headers.hmap -F/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/include -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/DerivedSources/x86_64 -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/DerivedSources -include /var/folders/nT/nT6t96pgGky16r0n69Nb0k+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/Translator_Prefix-grjwapcieaaiwydxecjwztsafbot/Translator_Prefix.pch -c /Users/jeffreyvarner/Documents/dev_iOS/Translator/NSXMLNode_Category.m -o /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/NSXMLNode_Category.o0#
+
+CCompileC build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/OutlineViewDelegate.o /Users/jeffreyvarner/Documents/dev_iOS/Translator/OutlineViewDelegate.m normal x86_64 objective-c com.apple.compilers.gcc.4_2
+s317623202.880423
+e317623203.101023
+r1
+xCompileC
+xbuild/Translator.build/Debug/Translator.build/Objects-normal/x86_64/OutlineViewDelegate.o
+x/Users/jeffreyvarner/Documents/dev_iOS/Translator/OutlineViewDelegate.m
+xnormal
+xx86_64
+xobjective-c
+xcom.apple.compilers.gcc.4_2
+lSLF07#2@79"Compile /Users/jeffreyvarner/Documents/dev_iOS/Translator/OutlineViewDelegate.m317623202#317623203#0(0"0(0#0#71"/Users/jeffreyvarner/Documents/dev_iOS/Translator/OutlineViewDelegate.m8614603200#1661"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.2 -x objective-c -arch x86_64 -fmessage-length=0 -pipe -std=gnu99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.6.sdk -mfix-and-continue -mmacosx-version-min=10.6 -gdwarf-2 -iquote /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-generated-files.hmap -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-own-target-headers.hmap -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-all-target-headers.hmap -iquote /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-project-headers.hmap -F/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/include -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/DerivedSources/x86_64 -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/DerivedSources -include /var/folders/nT/nT6t96pgGky16r0n69Nb0k+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/Translator_Prefix-grjwapcieaaiwydxecjwztsafbot/Translator_Prefix.pch -c /Users/jeffreyvarner/Documents/dev_iOS/Translator/OutlineViewDelegate.m -o /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/OutlineViewDelegate.o0#
+
+CCompileC build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/TableComboBoxDataSource.o /Users/jeffreyvarner/Documents/dev_iOS/Translator/TableComboBoxDataSource.m normal x86_64 objective-c com.apple.compilers.gcc.4_2
+s317623203.101146
+e317623203.337119
+r1
+xCompileC
+xbuild/Translator.build/Debug/Translator.build/Objects-normal/x86_64/TableComboBoxDataSource.o
+x/Users/jeffreyvarner/Documents/dev_iOS/Translator/TableComboBoxDataSource.m
+xnormal
+xx86_64
+xobjective-c
+xcom.apple.compilers.gcc.4_2
+lSLF07#2@83"Compile /Users/jeffreyvarner/Documents/dev_iOS/Translator/TableComboBoxDataSource.m317623203#317623203#0(0"0(0#0#75"/Users/jeffreyvarner/Documents/dev_iOS/Translator/TableComboBoxDataSource.m8622017344#1669"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.2 -x objective-c -arch x86_64 -fmessage-length=0 -pipe -std=gnu99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.6.sdk -mfix-and-continue -mmacosx-version-min=10.6 -gdwarf-2 -iquote /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-generated-files.hmap -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-own-target-headers.hmap -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-all-target-headers.hmap -iquote /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-project-headers.hmap -F/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/include -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/DerivedSources/x86_64 -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/DerivedSources -include /var/folders/nT/nT6t96pgGky16r0n69Nb0k+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/Translator_Prefix-grjwapcieaaiwydxecjwztsafbot/Translator_Prefix.pch -c /Users/jeffreyvarner/Documents/dev_iOS/Translator/TableComboBoxDataSource.m -o /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/TableComboBoxDataSource.o0#
+
+CCompileC build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/TableViewDelegate.o /Users/jeffreyvarner/Documents/dev_iOS/Translator/TableViewDelegate.m normal x86_64 objective-c com.apple.compilers.gcc.4_2
+s317623202.889812
+e317623203.155457
+r1
+xCompileC
+xbuild/Translator.build/Debug/Translator.build/Objects-normal/x86_64/TableViewDelegate.o
+x/Users/jeffreyvarner/Documents/dev_iOS/Translator/TableViewDelegate.m
+xnormal
+xx86_64
+xobjective-c
+xcom.apple.compilers.gcc.4_2
+lSLF07#2@77"Compile /Users/jeffreyvarner/Documents/dev_iOS/Translator/TableViewDelegate.m317623202#317623203#0(0"0(0#0#69"/Users/jeffreyvarner/Documents/dev_iOS/Translator/TableViewDelegate.m8614385120#1657"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.2 -x objective-c -arch x86_64 -fmessage-length=0 -pipe -std=gnu99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.6.sdk -mfix-and-continue -mmacosx-version-min=10.6 -gdwarf-2 -iquote /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-generated-files.hmap -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-own-target-headers.hmap -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-all-target-headers.hmap -iquote /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-project-headers.hmap -F/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/include -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/DerivedSources/x86_64 -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/DerivedSources -include /var/folders/nT/nT6t96pgGky16r0n69Nb0k+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/Translator_Prefix-grjwapcieaaiwydxecjwztsafbot/Translator_Prefix.pch -c /Users/jeffreyvarner/Documents/dev_iOS/Translator/TableViewDelegate.m -o /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/TableViewDelegate.o0#
+
+CCompileC build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/TaskController.o /Users/jeffreyvarner/Documents/dev_iOS/Translator/TaskController.m normal x86_64 objective-c com.apple.compilers.gcc.4_2
+s317623202.136009
+e317623202.314086
+r1
+xCompileC
+xbuild/Translator.build/Debug/Translator.build/Objects-normal/x86_64/TaskController.o
+x/Users/jeffreyvarner/Documents/dev_iOS/Translator/TaskController.m
+xnormal
+xx86_64
+xobjective-c
+xcom.apple.compilers.gcc.4_2
+lSLF07#2@74"Compile /Users/jeffreyvarner/Documents/dev_iOS/Translator/TaskController.m317623202#317623202#0(0"0(0#0#66"/Users/jeffreyvarner/Documents/dev_iOS/Translator/TaskController.m8616388960#1651"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.2 -x objective-c -arch x86_64 -fmessage-length=0 -pipe -std=gnu99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.6.sdk -mfix-and-continue -mmacosx-version-min=10.6 -gdwarf-2 -iquote /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-generated-files.hmap -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-own-target-headers.hmap -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-all-target-headers.hmap -iquote /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-project-headers.hmap -F/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/include -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/DerivedSources/x86_64 -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/DerivedSources -include /var/folders/nT/nT6t96pgGky16r0n69Nb0k+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/Translator_Prefix-grjwapcieaaiwydxecjwztsafbot/Translator_Prefix.pch -c /Users/jeffreyvarner/Documents/dev_iOS/Translator/TaskController.m -o /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/TaskController.o0#
+
+CCompileC build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/TranslatorWindowController.o /Users/jeffreyvarner/Documents/dev_iOS/Translator/TranslatorWindowController.m normal x86_64 objective-c com.apple.compilers.gcc.4_2
+s317623202.601429
+e317623202.889713
+r1
+xCompileC
+xbuild/Translator.build/Debug/Translator.build/Objects-normal/x86_64/TranslatorWindowController.o
+x/Users/jeffreyvarner/Documents/dev_iOS/Translator/TranslatorWindowController.m
+xnormal
+xx86_64
+xobjective-c
+xcom.apple.compilers.gcc.4_2
+lSLF07#2@86"Compile /Users/jeffreyvarner/Documents/dev_iOS/Translator/TranslatorWindowController.m317623202#317623202#0(0"0(0#0#78"/Users/jeffreyvarner/Documents/dev_iOS/Translator/TranslatorWindowController.m8618721504#1675"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.2 -x objective-c -arch x86_64 -fmessage-length=0 -pipe -std=gnu99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.6.sdk -mfix-and-continue -mmacosx-version-min=10.6 -gdwarf-2 -iquote /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-generated-files.hmap -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-own-target-headers.hmap -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-all-target-headers.hmap -iquote /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-project-headers.hmap -F/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/include -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/DerivedSources/x86_64 -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/DerivedSources -include /var/folders/nT/nT6t96pgGky16r0n69Nb0k+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/Translator_Prefix-grjwapcieaaiwydxecjwztsafbot/Translator_Prefix.pch -c /Users/jeffreyvarner/Documents/dev_iOS/Translator/TranslatorWindowController.m -o /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/TranslatorWindowController.o0#
+
+CCompileC build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/TreeIconModel.o /Users/jeffreyvarner/Documents/dev_iOS/Translator/TreeIconModel.m normal x86_64 objective-c com.apple.compilers.gcc.4_2
+s317623202.668894
+e317623202.880321
+r1
+xCompileC
+xbuild/Translator.build/Debug/Translator.build/Objects-normal/x86_64/TreeIconModel.o
+x/Users/jeffreyvarner/Documents/dev_iOS/Translator/TreeIconModel.m
+xnormal
+xx86_64
+xobjective-c
+xcom.apple.compilers.gcc.4_2
+lSLF07#2@73"Compile /Users/jeffreyvarner/Documents/dev_iOS/Translator/TreeIconModel.m317623202#317623202#0(0"0(0#0#65"/Users/jeffreyvarner/Documents/dev_iOS/Translator/TreeIconModel.m8615368480#1649"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.2 -x objective-c -arch x86_64 -fmessage-length=0 -pipe -std=gnu99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.6.sdk -mfix-and-continue -mmacosx-version-min=10.6 -gdwarf-2 -iquote /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-generated-files.hmap -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-own-target-headers.hmap -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-all-target-headers.hmap -iquote /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-project-headers.hmap -F/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/include -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/DerivedSources/x86_64 -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/DerivedSources -include /var/folders/nT/nT6t96pgGky16r0n69Nb0k+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/Translator_Prefix-grjwapcieaaiwydxecjwztsafbot/Translator_Prefix.pch -c /Users/jeffreyvarner/Documents/dev_iOS/Translator/TreeIconModel.m -o /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/TreeIconModel.o0#
+
+CCompileC build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/TreeNodeNamingModel.o /Users/jeffreyvarner/Documents/dev_iOS/Translator/TreeNodeNamingModel.m normal x86_64 objective-c com.apple.compilers.gcc.4_2
+s317623203.155554
+e317623203.335556
+r1
+xCompileC
+xbuild/Translator.build/Debug/Translator.build/Objects-normal/x86_64/TreeNodeNamingModel.o
+x/Users/jeffreyvarner/Documents/dev_iOS/Translator/TreeNodeNamingModel.m
+xnormal
+xx86_64
+xobjective-c
+xcom.apple.compilers.gcc.4_2
+lSLF07#2@79"Compile /Users/jeffreyvarner/Documents/dev_iOS/Translator/TreeNodeNamingModel.m317623203#317623203#0(0"0(0#0#71"/Users/jeffreyvarner/Documents/dev_iOS/Translator/TreeNodeNamingModel.m8615361632#1661"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.2 -x objective-c -arch x86_64 -fmessage-length=0 -pipe -std=gnu99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.6.sdk -mfix-and-continue -mmacosx-version-min=10.6 -gdwarf-2 -iquote /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-generated-files.hmap -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-own-target-headers.hmap -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-all-target-headers.hmap -iquote /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-project-headers.hmap -F/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/include -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/DerivedSources/x86_64 -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/DerivedSources -include /var/folders/nT/nT6t96pgGky16r0n69Nb0k+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/Translator_Prefix-grjwapcieaaiwydxecjwztsafbot/Translator_Prefix.pch -c /Users/jeffreyvarner/Documents/dev_iOS/Translator/TreeNodeNamingModel.m -o /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/TreeNodeNamingModel.o0#
+
+CCompileC build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/XMLAttributeWrapper.o /Users/jeffreyvarner/Documents/dev_iOS/Translator/XMLAttributeWrapper.m normal x86_64 objective-c com.apple.compilers.gcc.4_2
+s317623202.511871
+e317623202.668792
+r1
+xCompileC
+xbuild/Translator.build/Debug/Translator.build/Objects-normal/x86_64/XMLAttributeWrapper.o
+x/Users/jeffreyvarner/Documents/dev_iOS/Translator/XMLAttributeWrapper.m
+xnormal
+xx86_64
+xobjective-c
+xcom.apple.compilers.gcc.4_2
+lSLF07#2@79"Compile /Users/jeffreyvarner/Documents/dev_iOS/Translator/XMLAttributeWrapper.m317623202#317623202#0(0"0(0#0#71"/Users/jeffreyvarner/Documents/dev_iOS/Translator/XMLAttributeWrapper.m8615487744#1661"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.2 -x objective-c -arch x86_64 -fmessage-length=0 -pipe -std=gnu99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.6.sdk -mfix-and-continue -mmacosx-version-min=10.6 -gdwarf-2 -iquote /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-generated-files.hmap -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-own-target-headers.hmap -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-all-target-headers.hmap -iquote /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-project-headers.hmap -F/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/include -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/DerivedSources/x86_64 -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/DerivedSources -include /var/folders/nT/nT6t96pgGky16r0n69Nb0k+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/Translator_Prefix-grjwapcieaaiwydxecjwztsafbot/Translator_Prefix.pch -c /Users/jeffreyvarner/Documents/dev_iOS/Translator/XMLAttributeWrapper.m -o /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/XMLAttributeWrapper.o0#
+
+CCompileC build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/XMLTreeModel.o /Users/jeffreyvarner/Documents/dev_iOS/Translator/XMLTreeModel.m normal x86_64 objective-c com.apple.compilers.gcc.4_2
+s317623202.407893
+e317623202.601314
+r1
+xCompileC
+xbuild/Translator.build/Debug/Translator.build/Objects-normal/x86_64/XMLTreeModel.o
+x/Users/jeffreyvarner/Documents/dev_iOS/Translator/XMLTreeModel.m
+xnormal
+xx86_64
+xobjective-c
+xcom.apple.compilers.gcc.4_2
+lSLF07#2@72"Compile /Users/jeffreyvarner/Documents/dev_iOS/Translator/XMLTreeModel.m317623202#317623202#0(0"0(0#0#64"/Users/jeffreyvarner/Documents/dev_iOS/Translator/XMLTreeModel.m8613043072#1647"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.2 -x objective-c -arch x86_64 -fmessage-length=0 -pipe -std=gnu99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.6.sdk -mfix-and-continue -mmacosx-version-min=10.6 -gdwarf-2 -iquote /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-generated-files.hmap -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-own-target-headers.hmap -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-all-target-headers.hmap -iquote /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-project-headers.hmap -F/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/include -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/DerivedSources/x86_64 -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/DerivedSources -include /var/folders/nT/nT6t96pgGky16r0n69Nb0k+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/Translator_Prefix-grjwapcieaaiwydxecjwztsafbot/Translator_Prefix.pch -c /Users/jeffreyvarner/Documents/dev_iOS/Translator/XMLTreeModel.m -o /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/XMLTreeModel.o0#
+
+CCompileC build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/main.o /Users/jeffreyvarner/Documents/dev_iOS/Translator/main.m normal x86_64 objective-c com.apple.compilers.gcc.4_2
+s317623201.958112
+e317623202.135911
+r1
+xCompileC
+xbuild/Translator.build/Debug/Translator.build/Objects-normal/x86_64/main.o
+x/Users/jeffreyvarner/Documents/dev_iOS/Translator/main.m
+xnormal
+xx86_64
+xobjective-c
+xcom.apple.compilers.gcc.4_2
+lSLF07#2@64"Compile /Users/jeffreyvarner/Documents/dev_iOS/Translator/main.m317623201#317623202#0(0"0(0#0#56"/Users/jeffreyvarner/Documents/dev_iOS/Translator/main.m8604755136#1631"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.2 -x objective-c -arch x86_64 -fmessage-length=0 -pipe -std=gnu99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.6.sdk -mfix-and-continue -mmacosx-version-min=10.6 -gdwarf-2 -iquote /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-generated-files.hmap -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-own-target-headers.hmap -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-all-target-headers.hmap -iquote /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-project-headers.hmap -F/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/include -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/DerivedSources/x86_64 -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/DerivedSources -include /var/folders/nT/nT6t96pgGky16r0n69Nb0k+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/Translator_Prefix-grjwapcieaaiwydxecjwztsafbot/Translator_Prefix.pch -c /Users/jeffreyvarner/Documents/dev_iOS/Translator/main.m -o /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/main.o0#
+
+CCompileXIB /Users/jeffreyvarner/Documents/dev_iOS/Translator/English.lproj/MainMenu.xib
+s317623189.231672
+e317623189.600090
+r1
+xCompileXIB
+x/Users/jeffreyvarner/Documents/dev_iOS/Translator/English.lproj/MainMenu.xib
+lSLF07#2@37"CompileXIB English.lproj/MainMenu.xib317623189#317623189#0(0"0(0#0#76"/Users/jeffreyvarner/Documents/dev_iOS/Translator/English.lproj/MainMenu.xib8621490016#400"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    /Developer/usr/bin/ibtool --errors --warnings --notices --output-format human-readable-text --compile /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources/English.lproj/MainMenu.nib /Users/jeffreyvarner/Documents/dev_iOS/Translator/English.lproj/MainMenu.xib --sdk /Developer/SDKs/MacOSX10.6.sdk0#
+
+CCompileXIB /Users/jeffreyvarner/Documents/dev_iOS/Translator/English.lproj/MyDocument.xib
+s317623188.361577
+e317623189.588949
+r1
+xCompileXIB
+x/Users/jeffreyvarner/Documents/dev_iOS/Translator/English.lproj/MyDocument.xib
+o/* com.apple.ibtool.document.notices */
+o/Users/jeffreyvarner/Documents/dev_iOS/Translator/English.lproj/MyDocument.xib:100110: note: This view is clipping its content.
+lSLF07#2@39"CompileXIB English.lproj/MyDocument.xib317623188#317623189#0(168"/* com.apple.ibtool.document.notices *//Users/jeffreyvarner/Documents/dev_iOS/Translator/English.lproj/MyDocument.xib:100110: note: This view is clipping its content.1(13@34"This view is clipping its content.317623189#18446744073709551615#0#0(6@78"/Users/jeffreyvarner/Documents/dev_iOS/Translator/English.lproj/MyDocument.xib317621227#100110#0#100110#0#0"0(0#0#78"/Users/jeffreyvarner/Documents/dev_iOS/Translator/English.lproj/MyDocument.xib8613002592#404"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    /Developer/usr/bin/ibtool --errors --warnings --notices --output-format human-readable-text --compile /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources/English.lproj/MyDocument.nib /Users/jeffreyvarner/Documents/dev_iOS/Translator/English.lproj/MyDocument.xib --sdk /Developer/SDKs/MacOSX10.6.sdk0#
+
+CCopyStringsFile /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources/English.lproj/InfoPlist.strings English.lproj/InfoPlist.strings
+s317623188.310626
+e317623189.231556
+r1
+xCopyStringsFile
+x/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources/English.lproj/InfoPlist.strings
+xEnglish.lproj/InfoPlist.strings
+lSLF07#2@36"Copy English.lproj/InfoPlist.strings317623188#317623189#0(0"0(0#0#81"/Users/jeffreyvarner/Documents/dev_iOS/Translator/English.lproj/InfoPlist.strings8613191648#390"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    setenv ICONV /usr/bin/iconv    /Developer/Library/Xcode/Plug-ins/CoreBuildTasks.xcplugin/Contents/Resources/copystrings --validate --inputencoding utf-8 --outputencoding UTF-16 English.lproj/InfoPlist.strings --outdir /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources/English.lproj0#
+
+CCpResource build/Debug/Translator.app/Contents/Resources/AdminNetwork-256.icns AdminNetwork-256.icns
+s317623189.638737
+e317623189.681307
+r1
+xCpResource
+xbuild/Debug/Translator.app/Contents/Resources/AdminNetwork-256.icns
+xAdminNetwork-256.icns
+lSLF07#2@26"Copy AdminNetwork-256.icns317623189#317623189#0(0"0(0#0#71"/Users/jeffreyvarner/Documents/dev_iOS/Translator/AdminNetwork-256.icns8612916192#387"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -resolve-src-symlinks /Users/jeffreyvarner/Documents/dev_iOS/Translator/AdminNetwork-256.icns /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources0#
+
+CCpResource build/Debug/Translator.app/Contents/Resources/C-Octave.xml C-Octave.xml
+s317623189.685684
+e317623189.692385
+r1
+xCpResource
+xbuild/Debug/Translator.app/Contents/Resources/C-Octave.xml
+xC-Octave.xml
+lSLF07#2@17"Copy C-Octave.xml317623189#317623189#0(0"0(0#0#62"/Users/jeffreyvarner/Documents/dev_iOS/Translator/C-Octave.xml8612108736#378"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -resolve-src-symlinks /Users/jeffreyvarner/Documents/dev_iOS/Translator/C-Octave.xml /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources0#
+
+CCpResource build/Debug/Translator.app/Contents/Resources/Edit.icns Edit.icns
+s317623189.681576
+e317623189.789672
+r1
+xCpResource
+xbuild/Debug/Translator.app/Contents/Resources/Edit.icns
+xEdit.icns
+lSLF07#2@14"Copy Edit.icns317623189#317623189#0(0"0(0#0#59"/Users/jeffreyvarner/Documents/dev_iOS/Translator/Edit.icns8612341696#375"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -resolve-src-symlinks /Users/jeffreyvarner/Documents/dev_iOS/Translator/Edit.icns /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources0#
+
+CCpResource build/Debug/Translator.app/Contents/Resources/English.lproj/Credits.rtf English.lproj/Credits.rtf
+s317623188.310005
+e317623188.361367
+r1
+xCpResource
+xbuild/Debug/Translator.app/Contents/Resources/English.lproj/Credits.rtf
+xEnglish.lproj/Credits.rtf
+lSLF07#2@30"Copy English.lproj/Credits.rtf317623188#317623188#0(0"0(0#0#75"/Users/jeffreyvarner/Documents/dev_iOS/Translator/English.lproj/Credits.rtf8613280352#405"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -resolve-src-symlinks /Users/jeffreyvarner/Documents/dev_iOS/Translator/English.lproj/Credits.rtf /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources/English.lproj0#
+
+CCpResource build/Debug/Translator.app/Contents/Resources/FolderExperiments.icns FolderExperiments.icns
+s317623189.629833
+e317623189.676466
+r1
+xCpResource
+xbuild/Debug/Translator.app/Contents/Resources/FolderExperiments.icns
+xFolderExperiments.icns
+lSLF07#2@27"Copy FolderExperiments.icns317623189#317623189#0(0"0(0#0#72"/Users/jeffreyvarner/Documents/dev_iOS/Translator/FolderExperiments.icns8613386080#388"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -resolve-src-symlinks /Users/jeffreyvarner/Documents/dev_iOS/Translator/FolderExperiments.icns /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources0#
+
+CCpResource build/Debug/Translator.app/Contents/Resources/GenericFolderIcon.icns GenericFolderIcon.icns
+s317623189.677369
+e317623189.840407
+r1
+xCpResource
+xbuild/Debug/Translator.app/Contents/Resources/GenericFolderIcon.icns
+xGenericFolderIcon.icns
+lSLF07#2@27"Copy GenericFolderIcon.icns317623189#317623189#0(0"0(0#0#72"/Users/jeffreyvarner/Documents/dev_iOS/Translator/GenericFolderIcon.icns8612223392#388"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -resolve-src-symlinks /Users/jeffreyvarner/Documents/dev_iOS/Translator/GenericFolderIcon.icns /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources0#
+
+CCpResource build/Debug/Translator.app/Contents/Resources/IconMapping.xml IconMapping.xml
+s317623189.589528
+e317623189.608811
+r1
+xCpResource
+xbuild/Debug/Translator.app/Contents/Resources/IconMapping.xml
+xIconMapping.xml
+lSLF07#2@20"Copy IconMapping.xml317623189#317623189#0(0"0(0#0#65"/Users/jeffreyvarner/Documents/dev_iOS/Translator/IconMapping.xml8618725728#381"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -resolve-src-symlinks /Users/jeffreyvarner/Documents/dev_iOS/Translator/IconMapping.xml /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources0#
+
+CCpResource build/Debug/Translator.app/Contents/Resources/NodeNaming.xml NodeNaming.xml
+s317623189.740950
+e317623189.829377
+r1
+xCpResource
+xbuild/Debug/Translator.app/Contents/Resources/NodeNaming.xml
+xNodeNaming.xml
+lSLF07#2@19"Copy NodeNaming.xml317623189#317623189#0(0"0(0#0#64"/Users/jeffreyvarner/Documents/dev_iOS/Translator/NodeNaming.xml8608340704#380"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -resolve-src-symlinks /Users/jeffreyvarner/Documents/dev_iOS/Translator/NodeNaming.xml /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources0#
+
+CCpResource build/Debug/Translator.app/Contents/Resources/Notes-128.icns Notes-128.icns
+s317623189.648739
+e317623189.660378
+r1
+xCpResource
+xbuild/Debug/Translator.app/Contents/Resources/Notes-128.icns
+xNotes-128.icns
+lSLF07#2@19"Copy Notes-128.icns317623189#317623189#0(0"0(0#0#64"/Users/jeffreyvarner/Documents/dev_iOS/Translator/Notes-128.icns8612670176#380"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -resolve-src-symlinks /Users/jeffreyvarner/Documents/dev_iOS/Translator/Notes-128.icns /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources0#
+
+CCpResource build/Debug/Translator.app/Contents/Resources/Open-Folder-Full.icns Open-Folder-Full.icns
+s317623189.719868
+e317623189.740876
+r1
+xCpResource
+xbuild/Debug/Translator.app/Contents/Resources/Open-Folder-Full.icns
+xOpen-Folder-Full.icns
+lSLF07#2@26"Copy Open-Folder-Full.icns317623189#317623189#0(0"0(0#0#71"/Users/jeffreyvarner/Documents/dev_iOS/Translator/Open-Folder-Full.icns8611866592#387"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -resolve-src-symlinks /Users/jeffreyvarner/Documents/dev_iOS/Translator/Open-Folder-Full.icns /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources0#
+
+CCpResource build/Debug/Translator.app/Contents/Resources/SBML.xml SBML.xml
+s317623189.751888
+e317623189.760904
+r1
+xCpResource
+xbuild/Debug/Translator.app/Contents/Resources/SBML.xml
+xSBML.xml
+lSLF07#2@13"Copy SBML.xml317623189#317623189#0(0"0(0#0#58"/Users/jeffreyvarner/Documents/dev_iOS/Translator/SBML.xml8622097120#374"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -resolve-src-symlinks /Users/jeffreyvarner/Documents/dev_iOS/Translator/SBML.xml /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources0#
+
+CCpResource build/Debug/Translator.app/Contents/Resources/SystemPreferences.icns SystemPreferences.icns
+s317623189.622634
+e317623189.635872
+r1
+xCpResource
+xbuild/Debug/Translator.app/Contents/Resources/SystemPreferences.icns
+xSystemPreferences.icns
+lSLF07#2@27"Copy SystemPreferences.icns317623189#317623189#0(0"0(0#0#72"/Users/jeffreyvarner/Documents/dev_iOS/Translator/SystemPreferences.icns8613813280#388"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -resolve-src-symlinks /Users/jeffreyvarner/Documents/dev_iOS/Translator/SystemPreferences.icns /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources0#
+
+CCpResource build/Debug/Translator.app/Contents/Resources/TemplateIcon.icns TemplateIcon.icns
+s317623189.659515
+e317623189.688408
+r1
+xCpResource
+xbuild/Debug/Translator.app/Contents/Resources/TemplateIcon.icns
+xTemplateIcon.icns
+lSLF07#2@22"Copy TemplateIcon.icns317623189#317623189#0(0"0(0#0#67"/Users/jeffreyvarner/Documents/dev_iOS/Translator/TemplateIcon.icns8612483616#383"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -resolve-src-symlinks /Users/jeffreyvarner/Documents/dev_iOS/Translator/TemplateIcon.icns /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources0#
+
+CCpResource build/Debug/Translator.app/Contents/Resources/Templates.xml Templates.xml
+s317623189.683446
+e317623189.718201
+r1
+xCpResource
+xbuild/Debug/Translator.app/Contents/Resources/Templates.xml
+xTemplates.xml
+lSLF07#2@18"Copy Templates.xml317623189#317623189#0(0"0(0#0#63"/Users/jeffreyvarner/Documents/dev_iOS/Translator/Templates.xml8612140992#379"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -resolve-src-symlinks /Users/jeffreyvarner/Documents/dev_iOS/Translator/Templates.xml /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources0#
+
+CCpResource build/Debug/Translator.app/Contents/Resources/Transmit-256.icns Transmit-256.icns
+s317623189.636033
+e317623189.681160
+r1
+xCpResource
+xbuild/Debug/Translator.app/Contents/Resources/Transmit-256.icns
+xTransmit-256.icns
+lSLF07#2@22"Copy Transmit-256.icns317623189#317623189#0(0"0(0#0#67"/Users/jeffreyvarner/Documents/dev_iOS/Translator/Transmit-256.icns8613082240#383"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -resolve-src-symlinks /Users/jeffreyvarner/Documents/dev_iOS/Translator/Transmit-256.icns /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources0#
+
+CCpResource build/Debug/Translator.app/Contents/Resources/Transport-256.icns Transport-256.icns
+s317623189.628382
+e317623189.755048
+r1
+xCpResource
+xbuild/Debug/Translator.app/Contents/Resources/Transport-256.icns
+xTransport-256.icns
+lSLF07#2@23"Copy Transport-256.icns317623189#317623189#0(0"0(0#0#68"/Users/jeffreyvarner/Documents/dev_iOS/Translator/Transport-256.icns8613430976#384"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -resolve-src-symlinks /Users/jeffreyvarner/Documents/dev_iOS/Translator/Transport-256.icns /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources0#
+
+CCpResource build/Debug/Translator.app/Contents/Resources/WOAfile.icns WOAfile.icns
+s317623189.658774
+e317623189.681511
+r1
+xCpResource
+xbuild/Debug/Translator.app/Contents/Resources/WOAfile.icns
+xWOAfile.icns
+lSLF07#2@17"Copy WOAfile.icns317623189#317623189#0(0"0(0#0#62"/Users/jeffreyvarner/Documents/dev_iOS/Translator/WOAfile.icns8612540480#378"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -resolve-src-symlinks /Users/jeffreyvarner/Documents/dev_iOS/Translator/WOAfile.icns /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources0#
+
+CCpResource build/Debug/Translator.app/Contents/Resources/Window-256.icns Window-256.icns
+s317623189.645006
+e317623189.658683
+r1
+xCpResource
+xbuild/Debug/Translator.app/Contents/Resources/Window-256.icns
+xWindow-256.icns
+lSLF07#2@20"Copy Window-256.icns317623189#317623189#0(0"0(0#0#65"/Users/jeffreyvarner/Documents/dev_iOS/Translator/Window-256.icns8612796000#381"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -resolve-src-symlinks /Users/jeffreyvarner/Documents/dev_iOS/Translator/Window-256.icns /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources0#
+
+CCpResource build/Debug/Translator.app/Contents/Resources/Wish.icns Wish.icns
+s317623189.649666
+e317623189.677283
+r1
+xCpResource
+xbuild/Debug/Translator.app/Contents/Resources/Wish.icns
+xWish.icns
+lSLF07#2@14"Copy Wish.icns317623189#317623189#0(0"0(0#0#59"/Users/jeffreyvarner/Documents/dev_iOS/Translator/Wish.icns8612656064#375"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -resolve-src-symlinks /Users/jeffreyvarner/Documents/dev_iOS/Translator/Wish.icns /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources0#
+
+CCpResource build/Debug/Translator.app/Contents/Resources/autoship.icns autoship.icns
+s317623189.718381
+e317623189.740768
+r1
+xCpResource
+xbuild/Debug/Translator.app/Contents/Resources/autoship.icns
+xautoship.icns
+lSLF07#2@18"Copy autoship.icns317623189#317623189#0(0"0(0#0#63"/Users/jeffreyvarner/Documents/dev_iOS/Translator/autoship.icns8611903200#379"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -resolve-src-symlinks /Users/jeffreyvarner/Documents/dev_iOS/Translator/autoship.icns /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources0#
+
+CCpResource build/Debug/Translator.app/Contents/Resources/billboard.icns billboard.icns
+s317623189.600159
+e317623189.613546
+r1
+xCpResource
+xbuild/Debug/Translator.app/Contents/Resources/billboard.icns
+xbillboard.icns
+lSLF07#2@19"Copy billboard.icns317623189#317623189#0(0"0(0#0#64"/Users/jeffreyvarner/Documents/dev_iOS/Translator/billboard.icns8615464384#380"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -resolve-src-symlinks /Users/jeffreyvarner/Documents/dev_iOS/Translator/billboard.icns /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources0#
+
+CCpResource build/Debug/Translator.app/Contents/Resources/blue_creature.icns blue_creature.icns
+s317623189.682140
+e317623189.740547
+r1
+xCpResource
+xbuild/Debug/Translator.app/Contents/Resources/blue_creature.icns
+xblue_creature.icns
+lSLF07#2@23"Copy blue_creature.icns317623189#317623189#0(0"0(0#0#68"/Users/jeffreyvarner/Documents/dev_iOS/Translator/blue_creature.icns8612289312#384"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -resolve-src-symlinks /Users/jeffreyvarner/Documents/dev_iOS/Translator/blue_creature.icns /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources0#
+
+CCpResource build/Debug/Translator.app/Contents/Resources/bubbly.icns bubbly.icns
+s317623189.660437
+e317623189.722890
+r1
+xCpResource
+xbuild/Debug/Translator.app/Contents/Resources/bubbly.icns
+xbubbly.icns
+lSLF07#2@16"Copy bubbly.icns317623189#317623189#0(0"0(0#0#61"/Users/jeffreyvarner/Documents/dev_iOS/Translator/bubbly.icns8621842528#377"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -resolve-src-symlinks /Users/jeffreyvarner/Documents/dev_iOS/Translator/bubbly.icns /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources0#
+
+CCpResource build/Debug/Translator.app/Contents/Resources/catalog.icns catalog.icns
+s317623189.616344
+e317623189.635768
+r1
+xCpResource
+xbuild/Debug/Translator.app/Contents/Resources/catalog.icns
+xcatalog.icns
+lSLF07#2@17"Copy catalog.icns317623189#317623189#0(0"0(0#0#62"/Users/jeffreyvarner/Documents/dev_iOS/Translator/catalog.icns8614359008#378"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -resolve-src-symlinks /Users/jeffreyvarner/Documents/dev_iOS/Translator/catalog.icns /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources0#
+
+CCpResource build/Debug/Translator.app/Contents/Resources/custom-reports.icns custom-reports.icns
+s317623189.688479
+e317623189.740661
+r1
+xCpResource
+xbuild/Debug/Translator.app/Contents/Resources/custom-reports.icns
+xcustom-reports.icns
+lSLF07#2@24"Copy custom-reports.icns317623189#317623189#0(0"0(0#0#69"/Users/jeffreyvarner/Documents/dev_iOS/Translator/custom-reports.icns8612062496#385"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -resolve-src-symlinks /Users/jeffreyvarner/Documents/dev_iOS/Translator/custom-reports.icns /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources0#
+
+CCpResource build/Debug/Translator.app/Contents/Resources/file-explorer.icns file-explorer.icns
+s317623189.618687
+e317623189.635974
+r1
+xCpResource
+xbuild/Debug/Translator.app/Contents/Resources/file-explorer.icns
+xfile-explorer.icns
+lSLF07#2@23"Copy file-explorer.icns317623189#317623189#0(0"0(0#0#68"/Users/jeffreyvarner/Documents/dev_iOS/Translator/file-explorer.icns8614180800#384"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -resolve-src-symlinks /Users/jeffreyvarner/Documents/dev_iOS/Translator/file-explorer.icns /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources0#
+
+CCpResource build/Debug/Translator.app/Contents/Resources/folder-128.icns folder-128.icns
+s317623189.633465
+e317623189.719749
+r1
+xCpResource
+xbuild/Debug/Translator.app/Contents/Resources/folder-128.icns
+xfolder-128.icns
+lSLF07#2@20"Copy folder-128.icns317623189#317623189#0(0"0(0#0#65"/Users/jeffreyvarner/Documents/dev_iOS/Translator/folder-128.icns8613209056#381"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -resolve-src-symlinks /Users/jeffreyvarner/Documents/dev_iOS/Translator/folder-128.icns /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources0#
+
+CCpResource build/Debug/Translator.app/Contents/Resources/folder.icns folder.icns
+s317623189.597697
+e317623189.622571
+r1
+xCpResource
+xbuild/Debug/Translator.app/Contents/Resources/folder.icns
+xfolder.icns
+lSLF07#2@16"Copy folder.icns317623189#317623189#0(0"0(0#0#61"/Users/jeffreyvarner/Documents/dev_iOS/Translator/folder.icns8615676704#377"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -resolve-src-symlinks /Users/jeffreyvarner/Documents/dev_iOS/Translator/folder.icns /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources0#
+
+CCpResource build/Debug/Translator.app/Contents/Resources/home.icns home.icns
+s317623189.692452
+e317623189.754920
+r1
+xCpResource
+xbuild/Debug/Translator.app/Contents/Resources/home.icns
+xhome.icns
+lSLF07#2@14"Copy home.icns317623189#317623189#0(0"0(0#0#59"/Users/jeffreyvarner/Documents/dev_iOS/Translator/home.icns8612001888#375"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -resolve-src-symlinks /Users/jeffreyvarner/Documents/dev_iOS/Translator/home.icns /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources0#
+
+CCpResource build/Debug/Translator.app/Contents/Resources/import-export.icns import-export.icns
+s317623189.722981
+e317623189.755362
+r1
+xCpResource
+xbuild/Debug/Translator.app/Contents/Resources/import-export.icns
+ximport-export.icns
+lSLF07#2@23"Copy import-export.icns317623189#317623189#0(0"0(0#0#68"/Users/jeffreyvarner/Documents/dev_iOS/Translator/import-export.icns8611848288#384"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -resolve-src-symlinks /Users/jeffreyvarner/Documents/dev_iOS/Translator/import-export.icns /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources0#
+
+CCpResource build/Debug/Translator.app/Contents/Resources/layout.icns layout.icns
+s317623189.591190
+e317623189.613664
+r1
+xCpResource
+xbuild/Debug/Translator.app/Contents/Resources/layout.icns
+xlayout.icns
+lSLF07#2@16"Copy layout.icns317623189#317623189#0(0"0(0#0#61"/Users/jeffreyvarner/Documents/dev_iOS/Translator/layout.icns8617027840#377"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -resolve-src-symlinks /Users/jeffreyvarner/Documents/dev_iOS/Translator/layout.icns /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources0#
+
+CCpResource build/Debug/Translator.app/Contents/Resources/library.icns library.icns
+s317623189.597224
+e317623189.622468
+r1
+xCpResource
+xbuild/Debug/Translator.app/Contents/Resources/library.icns
+xlibrary.icns
+lSLF07#2@17"Copy library.icns317623189#317623189#0(0"0(0#0#62"/Users/jeffreyvarner/Documents/dev_iOS/Translator/library.icns8615750528#378"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -resolve-src-symlinks /Users/jeffreyvarner/Documents/dev_iOS/Translator/library.icns /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources0#
+
+CCpResource build/Debug/Translator.app/Contents/Resources/organization.icns organization.icns
+s317623189.613975
+e317623189.635534
+r1
+xCpResource
+xbuild/Debug/Translator.app/Contents/Resources/organization.icns
+xorganization.icns
+lSLF07#2@22"Copy organization.icns317623189#317623189#0(0"0(0#0#67"/Users/jeffreyvarner/Documents/dev_iOS/Translator/organization.icns8614822336#383"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -resolve-src-symlinks /Users/jeffreyvarner/Documents/dev_iOS/Translator/organization.icns /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources0#
+
+CCpResource build/Debug/Translator.app/Contents/Resources/pin-green.icns pin-green.icns
+s317623189.596762
+e317623189.622255
+r1
+xCpResource
+xbuild/Debug/Translator.app/Contents/Resources/pin-green.icns
+xpin-green.icns
+lSLF07#2@19"Copy pin-green.icns317623189#317623189#0(0"0(0#0#64"/Users/jeffreyvarner/Documents/dev_iOS/Translator/pin-green.icns8615924576#380"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -resolve-src-symlinks /Users/jeffreyvarner/Documents/dev_iOS/Translator/pin-green.icns /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources0#
+
+CCpResource build/Debug/Translator.app/Contents/Resources/pin-red.icns pin-red.icns
+s317623189.596303
+e317623189.622154
+r1
+xCpResource
+xbuild/Debug/Translator.app/Contents/Resources/pin-red.icns
+xpin-red.icns
+lSLF07#2@17"Copy pin-red.icns317623189#317623189#0(0"0(0#0#62"/Users/jeffreyvarner/Documents/dev_iOS/Translator/pin-red.icns8616048096#378"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -resolve-src-symlinks /Users/jeffreyvarner/Documents/dev_iOS/Translator/pin-red.icns /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources0#
+
+CCpResource build/Debug/Translator.app/Contents/Resources/puzzle.icns puzzle.icns
+s317623189.595025
+e317623189.613765
+r1
+xCpResource
+xbuild/Debug/Translator.app/Contents/Resources/puzzle.icns
+xpuzzle.icns
+lSLF07#2@16"Copy puzzle.icns317623189#317623189#0(0"0(0#0#61"/Users/jeffreyvarner/Documents/dev_iOS/Translator/puzzle.icns8616522528#377"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -resolve-src-symlinks /Users/jeffreyvarner/Documents/dev_iOS/Translator/puzzle.icns /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources0#
+
+CCpResource build/Debug/Translator.app/Contents/Resources/question-type-drag-drop.icns question-type-drag-drop.icns
+s317623189.598162
+e317623189.613911
+r1
+xCpResource
+xbuild/Debug/Translator.app/Contents/Resources/question-type-drag-drop.icns
+xquestion-type-drag-drop.icns
+lSLF07#2@33"Copy question-type-drag-drop.icns317623189#317623189#0(0"0(0#0#78"/Users/jeffreyvarner/Documents/dev_iOS/Translator/question-type-drag-drop.icns8615521792#394"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -resolve-src-symlinks /Users/jeffreyvarner/Documents/dev_iOS/Translator/question-type-drag-drop.icns /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources0#
+
+CCpResource build/Debug/Translator.app/Contents/Resources/runprog-256.icns runprog-256.icns
+s317623189.643434
+e317623189.659463
+r1
+xCpResource
+xbuild/Debug/Translator.app/Contents/Resources/runprog-256.icns
+xrunprog-256.icns
+lSLF07#2@21"Copy runprog-256.icns317623189#317623189#0(0"0(0#0#66"/Users/jeffreyvarner/Documents/dev_iOS/Translator/runprog-256.icns8612891424#382"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -resolve-src-symlinks /Users/jeffreyvarner/Documents/dev_iOS/Translator/runprog-256.icns /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources0#
+
+CCpResource build/Debug/Translator.app/Contents/Resources/settings.icns settings.icns
+s317623189.624216
+e317623189.649606
+r1
+xCpResource
+xbuild/Debug/Translator.app/Contents/Resources/settings.icns
+xsettings.icns
+lSLF07#2@18"Copy settings.icns317623189#317623189#0(0"0(0#0#63"/Users/jeffreyvarner/Documents/dev_iOS/Translator/settings.icns8613638848#379"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -resolve-src-symlinks /Users/jeffreyvarner/Documents/dev_iOS/Translator/settings.icns /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources0#
+
+CCpResource build/Debug/Translator.app/Contents/Resources/shopping-basket-full.icns shopping-basket-full.icns
+s317623189.595589
+e317623189.622039
+r1
+xCpResource
+xbuild/Debug/Translator.app/Contents/Resources/shopping-basket-full.icns
+xshopping-basket-full.icns
+lSLF07#2@30"Copy shopping-basket-full.icns317623189#317623189#0(0"0(0#0#75"/Users/jeffreyvarner/Documents/dev_iOS/Translator/shopping-basket-full.icns8616205472#391"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -resolve-src-symlinks /Users/jeffreyvarner/Documents/dev_iOS/Translator/shopping-basket-full.icns /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources0#
+
+CCpResource build/Debug/Translator.app/Contents/Resources/stardusty.icns stardusty.icns
+s317623189.676548
+e317623189.722704
+r1
+xCpResource
+xbuild/Debug/Translator.app/Contents/Resources/stardusty.icns
+xstardusty.icns
+lSLF07#2@19"Copy stardusty.icns317623189#317623189#0(0"0(0#0#64"/Users/jeffreyvarner/Documents/dev_iOS/Translator/stardusty.icns8618896000#380"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -resolve-src-symlinks /Users/jeffreyvarner/Documents/dev_iOS/Translator/stardusty.icns /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources0#
+
+CCpResource build/Debug/Translator.app/Contents/Resources/surveys.icns surveys.icns
+s317623189.615367
+e317623189.635666
+r1
+xCpResource
+xbuild/Debug/Translator.app/Contents/Resources/surveys.icns
+xsurveys.icns
+lSLF07#2@17"Copy surveys.icns317623189#317623189#0(0"0(0#0#62"/Users/jeffreyvarner/Documents/dev_iOS/Translator/surveys.icns8614528256#378"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -resolve-src-symlinks /Users/jeffreyvarner/Documents/dev_iOS/Translator/surveys.icns /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources0#
+
+CCpResource build/Debug/Translator.app/Contents/Resources/themes.icns themes.icns
+s317623189.608895
+e317623189.635360
+r1
+xCpResource
+xbuild/Debug/Translator.app/Contents/Resources/themes.icns
+xthemes.icns
+lSLF07#2@16"Copy themes.icns317623189#317623189#0(0"0(0#0#61"/Users/jeffreyvarner/Documents/dev_iOS/Translator/themes.icns8614963328#377"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -resolve-src-symlinks /Users/jeffreyvarner/Documents/dev_iOS/Translator/themes.icns /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources0#
+
+CCpResource build/Debug/Translator.app/Contents/Resources/upload1.icns upload1.icns
+s317623189.728999
+e317623189.755469
+r1
+xCpResource
+xbuild/Debug/Translator.app/Contents/Resources/upload1.icns
+xupload1.icns
+lSLF07#2@17"Copy upload1.icns317623189#317623189#0(0"0(0#0#62"/Users/jeffreyvarner/Documents/dev_iOS/Translator/upload1.icns8608740256#378"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -resolve-src-symlinks /Users/jeffreyvarner/Documents/dev_iOS/Translator/upload1.icns /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources0#
+
+CCpResource build/Debug/Translator.app/Contents/Resources/wdrive.icns wdrive.icns
+s317623189.644202
+e317623189.681409
+r1
+xCpResource
+xbuild/Debug/Translator.app/Contents/Resources/wdrive.icns
+xwdrive.icns
+lSLF07#2@16"Copy wdrive.icns317623189#317623189#0(0"0(0#0#61"/Users/jeffreyvarner/Documents/dev_iOS/Translator/wdrive.icns8612823040#377"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -resolve-src-symlinks /Users/jeffreyvarner/Documents/dev_iOS/Translator/wdrive.icns /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources0#
+
+CLd /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/MacOS/Translator normal x86_64
+s317623203.337178
+e317623203.452045
+r1
+xLd
+x/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/MacOS/Translator
+xnormal
+xx86_64
+lSLF07#2@107"Link /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/MacOS/Translator317623203#317623203#0(0"0(0#0#0"8603470272#612"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    setenv MACOSX_DEPLOYMENT_TARGET 10.6    /Developer/usr/bin/gcc-4.2 -arch x86_64 -isysroot /Developer/SDKs/MacOSX10.6.sdk -L/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug -F/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug -filelist /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/Translator.LinkFileList -mmacosx-version-min=10.6 -framework Cocoa -o /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/MacOS/Translator0#
+
+CProcessInfoPlistFile /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Info.plist Translator-Info.plist
+s317623188.305835
+e317623188.309942
+r1
+xProcessInfoPlistFile
+x/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Info.plist
+xTranslator-Info.plist
+lSLF07#2@29"Process Translator-Info.plist317623188#317623188#0(0"0(0#0#71"/Users/jeffreyvarner/Documents/dev_iOS/Translator/Translator-Info.plist8614099648#352"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    builtin-infoPlistUtility Translator-Info.plist -genpkginfo /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/PkgInfo -expandbuildsettings -platform macosx -o /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Info.plist0#
+
+CProcessPCH /var/folders/nT/nT6t96pgGky16r0n69Nb0k+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/Translator_Prefix-cjyvymsabybadhhfcrndvmseaues/Translator_Prefix.pch.pth Translator_Prefix.pch normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.analyzer
+s317532384.063434
+e317532394.780408
+r1
+xProcessPCH
+x/var/folders/nT/nT6t96pgGky16r0n69Nb0k+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/Translator_Prefix-cjyvymsabybadhhfcrndvmseaues/Translator_Prefix.pch.pth
+xTranslator_Prefix.pch
+xnormal
+xx86_64
+xobjective-c
+xcom.apple.compilers.llvm.clang.1_0.analyzer
+lSLF07#2@32"Precompile Translator_Prefix.pch317532384#317532394#0(0"0(0#0#71"/Users/jeffreyvarner/Documents/dev_iOS/Translator/Translator_Prefix.pch8640152064#1559"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    setenv LANG en_US.US-ASCII    /Developer/usr/bin/clang -x objective-c-header -arch x86_64 -fmessage-length=0 -pipe -fdiagnostics-print-source-range-info -std=gnu99 -Wno-trigraphs -fpascal-strings -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.6.sdk -fasm-blocks -mfix-and-continue -mmacosx-version-min=10.6 -gdwarf-2 -iquote /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-generated-files.hmap -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-own-target-headers.hmap -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-all-target-headers.hmap -iquote /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-project-headers.hmap -F/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/include -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/DerivedSources/x86_64 -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/DerivedSources -c /Users/jeffreyvarner/Documents/dev_iOS/Translator/Translator_Prefix.pch -o /var/folders/nT/nT6t96pgGky16r0n69Nb0k+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/Translator_Prefix-cjyvymsabybadhhfcrndvmseaues/Translator_Prefix.pch.pth0#
+
+CProcessPCH /var/folders/nT/nT6t96pgGky16r0n69Nb0k+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/Translator_Prefix-grjwapcieaaiwydxecjwztsafbot/Translator_Prefix.pch.gch Translator_Prefix.pch normal x86_64 objective-c com.apple.compilers.gcc.4_2
+s317623189.840586
+e317623201.956947
+r1
+xProcessPCH
+x/var/folders/nT/nT6t96pgGky16r0n69Nb0k+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/Translator_Prefix-grjwapcieaaiwydxecjwztsafbot/Translator_Prefix.pch.gch
+xTranslator_Prefix.pch
+xnormal
+xx86_64
+xobjective-c
+xcom.apple.compilers.gcc.4_2
+lSLF07#2@32"Precompile Translator_Prefix.pch317623189#317623201#0(0"0(0#0#71"/Users/jeffreyvarner/Documents/dev_iOS/Translator/Translator_Prefix.pch8621880736#1523"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.2 -x objective-c-header -arch x86_64 -fmessage-length=0 -pipe -std=gnu99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.6.sdk -mfix-and-continue -mmacosx-version-min=10.6 -gdwarf-2 -iquote /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-generated-files.hmap -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-own-target-headers.hmap -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-all-target-headers.hmap -iquote /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-project-headers.hmap -F/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/include -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/DerivedSources/x86_64 -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/DerivedSources -c /Users/jeffreyvarner/Documents/dev_iOS/Translator/Translator_Prefix.pch -o /var/folders/nT/nT6t96pgGky16r0n69Nb0k+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/Translator_Prefix-grjwapcieaaiwydxecjwztsafbot/Translator_Prefix.pch.gch0#
+
+CTouch /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app
+s317623204.995486
+e317623205.000561
+r1
+xTouch
+x/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app
+lSLF07#2@82"Touch /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app317623204#317623205#0(0"0(0#0#0"8614852480#156"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    /usr/bin/touch -c /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app0#
+

@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<IconMapping>
+	
+	<!-- List of icons -->
+	<ListOfIcons>
+		<icon symbol="Open-Folder-Full" key="FOLDER"></icon>
+		<icon symbol="themes" key="LEAF"></icon>
+		<icon symbol="bubbly" key="ROOT"></icon>
+		<icon symbol="settings" key="CONFIGURATION"></icon>
+		<icon symbol="pin-green" key="ATTRIBUTED_LEAF_GREEN"></icon>
+		<icon symbol="pin-red" key="ATTRIBUTED_LEAF_RED"></icon>
+		<icon symbol="themes" key="ATTRIBUTED_FOLDER"></icon>
+		<icon symbol="organization" key="LIST_OF_FOLDER"></icon>
+		<icon symbol="library" key="LIBRARY"></icon>
+		<icon symbol="autoship" key="HANDLER"></icon>
+		<icon symbol="question-type-drag-drop" key="NETWORK"></icon>
+	</ListOfIcons>
+	
+	<!-- Mapping of tag types to icons -->
+	<ListOfTagIconMapping>
+		<mapping tag_name="Configuration" icon_key="CONFIGURATION"></mapping>
+	</ListOfTagIconMapping>
+	
+</IconMapping>

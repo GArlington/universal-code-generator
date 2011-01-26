@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+<Model username="" version="" name="" type="OCTAVE-C">
+	
+	<Configuration>
+		<ListOfPackages>
+			<package symbol="DEFAULT_INPUT_HANDLER_PACKAGE" package_name="org.varnerlab.userver.input.handler"></package>
+			<package symbol="DEFAULT_OUTPUT_HANDLER_PACKAGE" package_name="org.varnerlab.userver.output.handler"></package>
+			<package symbol="DEFAULTT_LANGUAGE_PACKAGE" package_name="org.varnerlab.userver.language.handler"></package>
+			<package symbol="DEFAULTT_BCX_PACKAGE" package_name="org.varnerlab.userver.language.handler.bcx"></package>
+		</ListOfPackages>
+		<ListOfPaths>
+			<path symbol="UNIVERSAL_INPUT_PATH" path_location=""></path>
+			<path symbol="UNIVERSAL_OUTPUT_PATH" path_location=""></path>
+			<path symbol="UNIVERSAL_NETWORK_OUTPUT_PATH" path_location=""></path>
+			<path symbol="UNIVERSAL_DEBUG_OUTPUT_PATH" path_location=""></path>
+			<path symbol="UNIVERSAL_SERVER_ROOT_DIRECTORY" path_location=""></path>
+			<path symbol="UNIVERSAL_SERVER_JAR_DIRECTORY" path_location=""></path>
+			<path symbol="UNIVERSAL_PLUGIN_JAR_DIRECTORY" path_location=""></path>
+		</ListOfPaths>
+		<ListOfClasses>
+			<InputHandlerClasses>
+				<class package="DEFAULT_INPUT_HANDLER_PACKAGE" classname="LoadSBMLFile"></class>
+				<class package="DEFAULT_INPUT_HANDLER_PACKAGE" classname="LoadVarnerFlatFile"></class>
+				<class package="DEFAULT_INPUT_HANDLER_PACKAGE" classname="LoadMOBCXFile"></class>
+				<class package="DEFAULT_INPUT_HANDLER_PACKAGE" classname="LoadBCXFile"></class>
+			</InputHandlerClasses>
+			
+			<OutputHandlerClasses>
+				<class package="DEFAULT_OUTPUT_HANDLER_PACKAGE" classname="WriteOctaveMModel"></class>
+				<class package="DEFAULT_OUTPUT_HANDLER_PACKAGE" classname="WriteMatlabMModel"></class>
+				<class package="DEFAULT_OUTPUT_HANDLER_PACKAGE" classname="WriteOctaveCModel"></class>
+				<class package="DEFAULT_OUTPUT_HANDLER_PACKAGE" classname="WriteGSLModel"></class>
+				<class package="DEFAULT_OUTPUT_HANDLER_PACKAGE" classname="WriteSundialsModel"></class>
+				<class package="DEFAULT_OUTPUT_HANDLER_PACKAGE" classname="WriteScilabModel"></class>
+				<class package="DEFAULT_OUTPUT_HANDLER_PACKAGE" classname="WriteVarnerFlatFile"></class>
+				<class package="DEFAULT_OUTPUT_HANDLER_PACKAGE" classname="WriteGraphvizDotFile"></class>
+				<class package="DEFAULT_OUTPUT_HANDLER_PACKAGE" classname="WriteSBMLFile"></class>
+				<class package="DEFAULT_OUTPUT_HANDLER_PACKAGE" classname="WriteMOBCXFiles"></class>
+				<class package="DEFAULT_OUTPUT_HANDLER_PACKAGE" classname="WriteBCXFiles"></class>
+			</OutputHandlerClasses>
+		</ListOfClasses>
+		
+		<ServerConfiguration>
+			<server_jar_directory path_symbol="UNIVERSAL_SERVER_JAR_DIRECTORY" filename=""></server_jar_directory>
+			<ListOfPlugins>
+				<plugin_jar_directory path_symbol="UNIVERSAL_PLUGIN_JAR_DIRECTORY" filename="UServer-v1.0.jar"></plugin_jar_directory>
+				<plugin_jar_directory path_symbol="UNIVERSAL_PLUGIN_JAR_DIRECTORY" filename="libsbmlj.jar"></plugin_jar_directory>
+			</ListOfPlugins>
+		</ServerConfiguration>
+		
+	</Configuration>
+	
+	
+	<Handler>
+		<InputHandler input_classname="" package="DEFAULT_INPUT_HANDLER_PACKAGE"></InputHandler>
+		<OutputHandler output_classname="" package="DEFAULT_OUTPUT_HANDLER_PACKAGE"></OutputHandler>
+	</Handler>
+	
+	<InputOptions>
+		<NetworkFile path_symbol="UNIVERSAL_INPUT_PATH" filename=""></NetworkFile>
+		<OrderFile path_symbol="UNIVERSAL_INPUT_PATH" filename=""></OrderFile>
+		<KineticParameterFile path_symbol="UNIVERSAL_INPUT_PATH" filename=""></KineticParameterFile>
+		<InitialConditionFile path_symbol="UNIVERSAL_INPUT_PATH" filename=""></InitialConditionFile>
+	</InputOptions>	
+	
+	<OutputOptions>
+		<DataFile path_symbol="UNIVERSAL_OUTPUT_PATH" filename="DataFile.m"></DataFile>
+		<MassBalanceFunction path_symbol="UNIVERSAL_OUTPUT_PATH" filename="MassBalances.cc"></MassBalanceFunction>
+		<KineticsFunction path_symbol="UNIVERSAL_OUTPUT_PATH" filename="Kinetics.cc"></KineticsFunction>
+		<JacobianMatrix path_symbol="UNIVERSAL_OUTPUT_PATH" filename="Jacobian.cc"></JacobianMatrix>
+		<BMatrix path_symbol="UNIVERSAL_OUTPUT_PATH" filename="BMatrix.cc"></BMatrix>
+		<DriverFile path_symbol="UNIVERSAL_OUTPUT_PATH" filename="SolveMassBalances.m"></DriverFile>
+		<StoichiometricMatrix path_symbol="UNIVERSAL_NETWORK_OUTPUT_PATH" filename="Network.dat"></StoichiometricMatrix>
+		<BoundsFile path_symbol="UNIVERSAL_NETWORK_OUTPUT_PATH" filename="FB.dat"></BoundsFile>
+		<DebugOutputFile path_symbol="UNIVERSAL_DEDUG_OUTPUT_PATH" filename="Debug.txt"></DebugOutputFile>
+		
+		<SensitivityAnalysis>
+			<AdjointDriver path_symbol="UNIVERSAL_OUTPUT_PATH" filename="SolveADJBalances.m"></AdjointDriver>
+			<AdjointBalances path_symbol="UNIVERSAL_OUTPUT_PATH" filename="ADJBalances.cc"></AdjointBalances>
+		</SensitivityAnalysis>
+		
+	</OutputOptions>	
+	
+</Model>
