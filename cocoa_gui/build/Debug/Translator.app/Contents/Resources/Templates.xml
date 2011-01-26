@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<Template>
+	
+	<mapping type="OCTAVE-C" working_dir="./templates/">
+		<display name="Octave C-code (*.cc)" filename="C-Octave"></display>
+	</mapping>
+	
+	<mapping type="OCTAVE-M" working_dir="./templates/">
+		<display name="Octave M-code (*.m)" filename="M-Octave"></display>
+	</mapping>
+	
+	<mapping type="MATLAB-M" working_dir="./templates/">
+		<display name="Matlab M-code (*.m)" filename="C-Octave"></display>
+	</mapping>
+	
+	<mapping type="SCILAB" working_dir="./templates/">
+		<display name="Scilab model (*.m)" filename="C-Octave"></display>
+	</mapping>
+	
+	<mapping type="GRAPHVIZ-DOT" working_dir="./templates/">
+		<display name="Graphviz dot-file (*.dot)" filename="C-Octave"></display>
+	</mapping>
+	
+	<mapping type="SBML" working_dir="./templates/">
+		<display name="File type translation (flatfile to SBML conversion)" filename="SBML"></display>
+	</mapping>
+	
+	<mapping type="VFF" working_dir="./templates/">
+		<display name="File type translation (SBML to flatfile conversion)" filename="C-Octave"></display>
+		<filename>Varnerlab.xml</filename>
+	</mapping>
+	
+	<mapping type="SUNDIALS" working_dir="./templates/">
+		<display name="Sundials model (*.c)" filename="C-Octave"></display>
+	</mapping>
+	
+	<mapping type="BCX" working_dir="./templates/">
+		<display name="Biochemical experiment specification file (*.xml)" filename="C-Octave"></display>
+	</mapping>
+	
+</Template>

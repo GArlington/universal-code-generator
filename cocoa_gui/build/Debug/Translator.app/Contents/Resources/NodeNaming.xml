@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<NodeNaming>
+	<item tree_name="path" attribute_name="symbol"></item>
+	<item tree_name="package" attribute_name="symbol"></item>
+	
+	<item tree_name="NetworkFile" attribute_name="filename"></item>
+	<item tree_name="OrderFile" attribute_name="filename"></item>
+	<item tree_name="KineticParameterFile" attribute_name="filename"></item>
+	<item tree_name="InitialConditionFile" attribute_name="filename"></item>
+	
+	<item tree_name="DataFile" attribute_name="filename"></item>
+	<item tree_name="MassBalanceFunction" attribute_name="filename"></item>
+	<item tree_name="DriverFile" attribute_name="filename"></item>
+	<item tree_name="StoichiometricMatrix" attribute_name="filename"></item>
+	<item tree_name="BoundsFileName" attribute_name="filename"></item>
+	<item tree_name="DebugOutputFileName" attribute_name="filename"></item>
+	
+	<item tree_name="AdjointDriver" attribute_name="filename"></item>
+	<item tree_name="AdjointBalances" attribute_name="filename"></item>
+	
+
+	<item tree_name="class" attribute_name="classname"></item>
+	<item tree_name="InputHandler" attribute_name="input_classname"></item>
+	<item tree_name="OutputHandler" attribute_name="output_classname"></item>
+	
+	<item tree_name="plugin_jar_directory" attribute_name="filename"></item>
+	<item tree_name="server_jar_directory" attribute_name="filename"></item>
+</NodeNaming>
