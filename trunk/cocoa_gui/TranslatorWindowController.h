@@ -12,22 +12,25 @@
 #import "TreeNodeNamingModel.h"
 
 
+
 @interface TranslatorWindowController : NSWindowController {
 	
 	@private
-	XMLTreeModel *xmlTreeModel;						// Pointer to the tree model 
-	TreeIconModel *iconModel;						// Icon model -
-	NSString *strFilePath;							// Pointer to the path to the file -
-	NSXMLDocument *xmlDocument;						// Pointer to the xml document w/the tag children relationships -
-	NSXMLElement *selectedXMLNode;					// Node currently selected on the tree -
+	XMLTreeModel *xmlTreeModel;							// Pointer to the tree model 
+	TreeIconModel *iconModel;							// Icon model -
+	NSString *strFilePath;								// Pointer to the path to the file -
+	NSXMLDocument *xmlDocument;							// Pointer to the xml document w/the tag children relationships -
+	NSXMLElement *selectedXMLNode;						// Node currently selected on the tree -
 	
-	IBOutlet NSTextField *bottomDisplayLabel;		// Bottom label to update user on status -
-	IBOutlet NSProgressIndicator *progressWheel;	// Pointer to progress wheel (so I can turn on/off)
-	IBOutlet NSPopUpButton *popupButton;			// Popup button holding conversion types -
-	IBOutlet NSButton *saveAsButton;				// Pointer to the save as button -
-	IBOutlet NSButton *codeGeneratorButton;			// Pointer to code generator button 
-	IBOutlet NSOutlineView *treeView;				// Pointer to the tree -
-	IBOutlet NSTextView *consoleTextField;			// Text field 
+	
+	IBOutlet NSTextField *bottomDisplayLabel;			// Bottom label to update user on status -
+	IBOutlet NSProgressIndicator *progressWheel;		// Pointer to progress wheel (so I can turn on/off)
+	IBOutlet NSPopUpButton *popupButton;				// Popup button holding conversion types -
+	IBOutlet NSButton *saveAsButton;					// Pointer to the save as button -
+	IBOutlet NSButton *codeGeneratorButton;				// Pointer to code generator button 
+	IBOutlet NSOutlineView *treeView;					// Pointer to the tree -
+	IBOutlet NSTextView *consoleTextField;				// Text field 
+	IBOutlet NSProgressIndicator *progressIndicator;	// Pointer to the progress indicator -
 	
 
 }
@@ -39,6 +42,7 @@
 @property (retain) NSXMLDocument *xmlDocument;
 @property (retain) NSXMLElement *selectedXMLNode;
 
+
 @property (retain) IBOutlet NSTextField *bottomDisplayLabel;
 @property (retain) IBOutlet NSProgressIndicator *progressWheel;
 @property (retain) IBOutlet NSPopUpButton *popupButton;
@@ -46,6 +50,7 @@
 @property (retain) IBOutlet NSButton *codeGeneratorButton;
 @property (retain) IBOutlet NSOutlineView *treeView;
 @property (retain) IBOutlet	NSTextView *consoleTextField;
+@property (retain) IBOutlet NSProgressIndicator *progressIndicator;
 
 
 

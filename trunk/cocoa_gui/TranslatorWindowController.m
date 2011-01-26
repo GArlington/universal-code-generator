@@ -19,8 +19,10 @@
 -(void)popupButtonSelected:(NSNotification *)notification;
 -(void)treeNodeDataChanged:(NSNotification *)notifcation;
 -(void)treeSelectionChanged:(NSNotification *)notification;
+-(void)codeGenerationCompleted:(NSNotification *)notification;
 -(void)removeTreeNodeAlertEnded:(NSAlert *)alert code:(int)choice context:(void *)v;
 -(void)savePanelDidEnd:(NSSavePanel *)savePanel returnCode:(int)returnCode contextInfo:(void *)contextInfo;
+-(void)executeCodeGenJob;
 
 
 @end
@@ -45,6 +47,7 @@
 @synthesize treeView;
 @synthesize consoleTextField;
 @synthesize codeGeneratorButton;
+@synthesize progressIndicator;
 
 
 #pragma mark --------------------------------
@@ -86,6 +89,7 @@
 	self.treeView = nil;
 	self.consoleTextField = nil;
 	self.codeGeneratorButton = nil;
+	self.progressIndicator = nil;
 	
 	// deallocate the super -
 	[super dealloc];
@@ -107,9 +111,9 @@
 	// [TreeNodeNamingModel sharedInstance];
 	
 	// Register self for different notifications -	
-	//[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(popupButtonSelected:) name:NSPopUpButtonWillPopUpNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(treeNodeDataChanged:) name:@"TreeNodeDataChanged" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(treeSelectionChanged:) name:NSOutlineViewSelectionDidChangeNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(codeGenerationCompleted:) name:NSTaskDidTerminateNotification object:nil];
 	
 	// Load the popup mapping tree -
 	NSString* templateName = [[NSBundle mainBundle] pathForResource:@"Templates" ofType:@"xml"];
@@ -125,7 +129,13 @@
 	// Load 
 	[[self consoleTextField] setString:@"Loaded window controller ..."];
 	
-	// Not sure why this is not getting updated. How do I commit changes?
+	
+	
+	// Set some attributes on the progress bar -
+	[[self progressIndicator] setIndeterminate:YES];
+	[[self progressIndicator] setDisplayedWhenStopped:NO];
+	[[self progressIndicator] setUsesThreadedAnimation:YES];
+		
 }
 
 #pragma mark --------------------------------
@@ -383,6 +393,29 @@
 
 -(IBAction)runCodeGenerator:(NSButton *)sender
 {
+	// Running -
+	[[self consoleTextField] setString:@"Starting conversion..."];
+	[[self consoleTextField] setNeedsDisplay:YES];
+	
+	// Disable the button -
+	[[self codeGeneratorButton] setEnabled:NO];
+
+	// Start the progress indicator - and set the label -
+	[[self bottomDisplayLabel] setStringValue:@"Executing code generation job ..."];
+	[[self bottomDisplayLabel] setNeedsDisplay:YES];
+	[[self progressIndicator] startAnimation:nil];
+	
+	// Let's create a timer have it fire in a couple of seconds -
+	[NSTimer scheduledTimerWithTimeInterval:1.0 
+									 target:self 
+								   selector:@selector(executeCodeGenJob) 
+								   userInfo:nil 
+									repeats:NO];
+	
+}
+
+-(void)executeCodeGenJob
+{
 	// Clear all -
 	[[self consoleTextField] setString:@""];
 	NSError *errObject = nil;
@@ -396,11 +429,7 @@
 	NSData *errData = nil;
 	NSFileHandle *readHandle = [outPipe fileHandleForReading];
 	NSFileHandle *readErrHandle = [errPipe fileHandleForReading];
-	
 	NSMutableString *tmpBuffer = [[NSMutableString alloc] initWithCapacity:140];
-		
-	// Running -
-	[[self consoleTextField] setString:@"Starting conversion..."];
 	
 	// Need to setup paths -
 	[args addObject:[[self window] title]];
@@ -436,24 +465,26 @@
 		while ((inData = [readHandle availableData]) && ([inData length]))
 		{
 			NSString *aString = [[[NSString alloc] initWithData:inData encoding:NSUTF8StringEncoding] autorelease];
-			[tmpBuffer appendString:aString];
+			//[tmpBuffer appendString:aString];
+			[[self consoleTextField] insertText:aString];
 		}
 		
 		while ((errData = [readErrHandle availableData]) && ([errData length]))
 		{
 			NSString *errString = [[[NSString alloc] initWithData:errData encoding:NSUTF8StringEncoding] autorelease];
-			[tmpBuffer appendString:errString];
+			//[tmpBuffer appendString:errString];
+			[[self consoleTextField] insertText:errString];
 		}
 		
 		// Post to the buffer -
-		[[self consoleTextField] setString:tmpBuffer];
+		//[[self consoleTextField] setString:tmpBuffer];
 		
 		// close the file -
 		[readHandle closeFile];
 		[readErrHandle closeFile];
 		
-		[tmpBuffer appendString:@"Completed ..."];
-		[[self consoleTextField] setString:tmpBuffer];
+		//[tmpBuffer appendString:@"Completed ..."];
+		//[[self consoleTextField] setString:tmpBuffer];
 	}
 	
 	// release local stuff -
@@ -501,6 +532,17 @@
 	// Ok, this has a bug -- it runs the query *before* the use has selected ... 
 	//NSString *tmpString = [[self popupButton] titleOfSelectedItem];
 	
+	
+}
+
+-(void)codeGenerationCompleted:(NSNotification *)notification
+{
+	// Ok, reenable the code gen button -
+	[[self codeGeneratorButton] setEnabled:YES];
+	
+	// Stop the progress indicator -
+	[[self progressIndicator] stopAnimation:nil];
+	[[self bottomDisplayLabel] setStringValue:@"Translator loaded normally. Running ..."];
 	
 }
 
