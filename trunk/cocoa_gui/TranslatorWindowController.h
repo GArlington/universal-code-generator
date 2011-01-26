@@ -27,7 +27,8 @@
 	IBOutlet NSProgressIndicator *progressWheel;		// Pointer to progress wheel (so I can turn on/off)
 	IBOutlet NSPopUpButton *popupButton;				// Popup button holding conversion types -
 	IBOutlet NSButton *saveAsButton;					// Pointer to the save as button -
-	IBOutlet NSButton *codeGeneratorButton;				// Pointer to code generator button 
+	IBOutlet NSButton *codeGeneratorButton;				// Pointer to code generator button
+	IBOutlet NSButton *treeCheckButton;					// Pointer to the tree check button (makes sure all stuff is set correctly)
 	IBOutlet NSOutlineView *treeView;					// Pointer to the tree -
 	IBOutlet NSTextView *consoleTextField;				// Text field 
 	IBOutlet NSProgressIndicator *progressIndicator;	// Pointer to the progress indicator -
@@ -48,6 +49,7 @@
 @property (retain) IBOutlet NSPopUpButton *popupButton;
 @property (retain) IBOutlet NSButton *saveAsButton;
 @property (retain) IBOutlet NSButton *codeGeneratorButton;
+@property (retain) IBOutlet NSButton *treeCheckButton;
 @property (retain) IBOutlet NSOutlineView *treeView;
 @property (retain) IBOutlet	NSTextView *consoleTextField;
 @property (retain) IBOutlet NSProgressIndicator *progressIndicator;
@@ -61,6 +63,7 @@
 -(IBAction)addTreeNode:(NSButton *)sender;
 -(IBAction)removeTreeNode:(NSButton *)sender;
 -(IBAction)runCodeGenerator:(NSButton *)sender;
+-(IBAction)checkTreeCompleteness:(NSButton *)sender;
 
 // Create XML document methods -
 -(void)createXMLDocumentFromFile:(NSString *)file;

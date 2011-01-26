@@ -10,6 +10,7 @@
 #import "NSXMLElement_Category.h"
 
 
+
 // Private utility methods -
 @interface TranslatorWindowController (hidden)
 
@@ -23,6 +24,7 @@
 -(void)removeTreeNodeAlertEnded:(NSAlert *)alert code:(int)choice context:(void *)v;
 -(void)savePanelDidEnd:(NSSavePanel *)savePanel returnCode:(int)returnCode contextInfo:(void *)contextInfo;
 -(void)executeCodeGenJob;
+-(void)checkSpecificationTree;
 
 
 @end
@@ -48,6 +50,7 @@
 @synthesize consoleTextField;
 @synthesize codeGeneratorButton;
 @synthesize progressIndicator;
+@synthesize treeCheckButton;
 
 
 #pragma mark --------------------------------
@@ -90,6 +93,7 @@
 	self.consoleTextField = nil;
 	self.codeGeneratorButton = nil;
 	self.progressIndicator = nil;
+	self.treeCheckButton = nil;
 	
 	// deallocate the super -
 	[super dealloc];
@@ -129,8 +133,6 @@
 	// Load 
 	[[self consoleTextField] setString:@"Loaded window controller ..."];
 	
-	
-	
 	// Set some attributes on the progress bar -
 	[[self progressIndicator] setIndeterminate:YES];
 	[[self progressIndicator] setDisplayedWhenStopped:NO];
@@ -141,6 +143,82 @@
 #pragma mark --------------------------------
 #pragma mark IBAction methods
 #pragma mark --------------------------------
+
+-(IBAction)checkTreeCompleteness:(NSButton *)sender
+{
+	// Ok, so I need to go through the current tree and determine if all the required nodes have text in the attributes -
+	[[self consoleTextField] setString:@""];
+	[[self consoleTextField] setString:@"Checking the specification tree for completeness ...\n"];
+	[[self progressIndicator] startAnimation:nil];
+	
+	// Let's create a timer have it fire in a couple of seconds -
+	[NSTimer scheduledTimerWithTimeInterval:1.0 
+									 target:self 
+								   selector:@selector(checkSpecificationTree) 
+								   userInfo:nil 
+									repeats:NO];
+	
+}
+
+// Check the specification tree -
+-(void)checkSpecificationTree
+{
+	// Method attributes -
+	NSError *err = nil;
+	
+	// Ok, so when I get here I need to get the tree and check required -
+	NSMutableString *strXPath = [[NSMutableString alloc] initWithCapacity:140];
+	[strXPath appendString:@"//*[@required='YES']"];
+	 
+	// Run the query -
+	NSArray *listOfChildren = [[[self xmlTreeModel] xmlDocument] nodesForXPath:strXPath error:&err];
+	//NSLog(@"How many kids %d for xpath %@",[listOfChildren count],strXPath);
+
+	// Iterate through the kids and see if both attributs have been filled out -
+	int counter = 1;
+	for (NSXMLElement *node in listOfChildren)
+	{
+		// Ok, get the attributes for this node -
+		NSArray *attributeArray = [node attributes];
+		
+		// Go through these attributes and see if they are populated -
+		for (NSXMLNode *attrNode in attributeArray)
+		{
+			// Get the name of string -
+			NSMutableString *tmpString = [[NSMutableString alloc] initWithCapacity:140];
+			[tmpString appendString:@"("];
+			[tmpString appendString:[[NSNumber numberWithInt:counter] stringValue]];
+			[tmpString appendString:@")\t"];
+			[tmpString appendString:[node name]];
+			
+			// Ok, check to see if this populated -
+			if ([[attrNode stringValue] length]==0)
+			{
+				// Ok, if I get here then I have an issue - something has a zero length string -
+				
+				[tmpString appendString:@" has a child "];
+				[tmpString appendString:[attrNode name]];
+				[tmpString appendString:@" which is empty. Please check the tree \n"];
+				[[self consoleTextField] insertText:tmpString];
+				//[[self consoleTextField] insertText:@"\n"];
+				counter = counter + 1;
+			}
+			else 
+			{
+				//[tmpString appendString:@" is OK. \n"];
+				//[[self consoleTextField] insertText:tmpString];
+			}
+			[tmpString release];
+		}
+	}
+	
+	 
+	// update the GUI -
+	[[self progressIndicator] stopAnimation:nil];
+	
+	// release local memory -
+	[strXPath release];
+}
 
 -(void)menuSelectionAction:(NSMenuItem *)sender
 {

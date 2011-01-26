@@ -216,7 +216,7 @@
 						<key>_historyCapacity</key>
 						<integer>0</integer>
 						<key>bookmark</key>
-						<string>AD37E51212F0B51D00151864</string>
+						<string>AD37E5E612F0D56700151864</string>
 						<key>history</key>
 						<array>
 							<string>AD37E43C12F0985600151864</string>
@@ -312,6 +312,7 @@
 								<string>AD8E884812E8E6FF0055C601</string>
 								<string>AD8E884712E8E6F50055C601</string>
 								<string>2A37F4B8FDCFA73011CA2CEA</string>
+								<string>AD8E88CA12E8F5020055C601</string>
 								<string>1C37FBAC04509CD000000102</string>
 								<string>1C37FABC05509CD000000102</string>
 							</array>
@@ -346,7 +347,7 @@
 							<real>344</real>
 						</array>
 						<key>RubberWindowFrame</key>
-						<string>72 204 1706 960 0 0 1920 1178 </string>
+						<string>105 176 1706 960 0 0 1920 1178 </string>
 					</dict>
 					<key>Module</key>
 					<string>PBXSmartGroupTreeModule</string>
@@ -376,7 +377,7 @@
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>AD37E51112F0B51D00151864</string>
+										<string>AD37E5E512F0D56700151864</string>
 										<key>history</key>
 										<array>
 											<string>AD8E889312E8F2A00055C601</string>
@@ -429,18 +430,19 @@
 											<string>AD2BE9DD12EE734D00D8972D</string>
 											<string>AD2BE9EB12EE7A7A00D8972D</string>
 											<string>AD2BEA5B12EFB9B100D8972D</string>
-											<string>AD2BEA5C12EFB9B100D8972D</string>
-											<string>AD2BEA5D12EFB9B100D8972D</string>
-											<string>AD2BEA8212EFCE6500D8972D</string>
 											<string>AD2BEAA712EFD43E00D8972D</string>
 											<string>AD5FF94812EFED020052EA61</string>
 											<string>AD5FF97412EFEF8B0052EA61</string>
-											<string>AD5FF97512EFEF8B0052EA61</string>
 											<string>AD10567D12EFF0B2003E2FA5</string>
 											<string>AD1056B812F0857D003E2FA5</string>
 											<string>AD37E43612F0985600151864</string>
-											<string>AD37E47112F0A29200151864</string>
-											<string>AD37E4FB12F0B0D400151864</string>
+											<string>AD37E52B12F0BAA700151864</string>
+											<string>AD37E53512F0C61500151864</string>
+											<string>AD37E53612F0C61500151864</string>
+											<string>AD37E53712F0C61500151864</string>
+											<string>AD37E55D12F0CAE000151864</string>
+											<string>AD37E56912F0CB5100151864</string>
+											<string>AD37E56A12F0CB5100151864</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -452,14 +454,14 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 0}, {1318, 914}}</string>
+								<string>{{0, 0}, {1318, 640}}</string>
 								<key>RubberWindowFrame</key>
-								<string>72 204 1706 960 0 0 1920 1178 </string>
+								<string>105 176 1706 960 0 0 1920 1178 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
 							<key>Proportion</key>
-							<string>914pt</string>
+							<string>640pt</string>
 						</dict>
 						<dict>
 							<key>ContentConfiguration</key>
@@ -472,14 +474,14 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 919}, {1318, 0}}</string>
+								<string>{{0, 645}, {1318, 274}}</string>
 								<key>RubberWindowFrame</key>
-								<string>72 204 1706 960 0 0 1920 1178 </string>
+								<string>105 176 1706 960 0 0 1920 1178 </string>
 							</dict>
 							<key>Module</key>
 							<string>XCDetailModule</string>
 							<key>Proportion</key>
-							<string>0pt</string>
+							<string>274pt</string>
 						</dict>
 					</array>
 					<key>Proportion</key>
@@ -638,7 +640,7 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>AD37E51312F0B51D00151864</string>
+		<string>AD37E5E712F0D56700151864</string>
 		<string>AD37E44E12F098D500151864</string>
 		<string>AD37E44F12F098D500151864</string>
 		<string>1CD10A99069EF8BA00B06720</string>
@@ -648,7 +650,7 @@
 		<string>1C78EAAD065D492600B07095</string>
 	</array>
 	<key>WindowString</key>
-	<string>72 204 1706 960 0 0 1920 1178 </string>
+	<string>105 176 1706 960 0 0 1920 1178 </string>
 	<key>WindowToolsV3</key>
 	<array>
 		<dict>
