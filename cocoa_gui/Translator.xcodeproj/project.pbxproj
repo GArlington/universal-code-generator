@@ -23,6 +23,7 @@
 		AD2BEA9A12EFD20200D8972D /* drive.icns in Resources */ = {isa = PBXBuildFile; fileRef = AD2BEA9912EFD20200D8972D /* drive.icns */; };
 		AD2BEA9C12EFD24D00D8972D /* down.icns in Resources */ = {isa = PBXBuildFile; fileRef = AD2BEA9B12EFD24D00D8972D /* down.icns */; };
 		AD2BEA9E12EFD2AD00D8972D /* download.icns in Resources */ = {isa = PBXBuildFile; fileRef = AD2BEA9D12EFD2AD00D8972D /* download.icns */; };
+		AD37E52612F0B6F300151864 /* Automator.icns in Resources */ = {isa = PBXBuildFile; fileRef = AD37E52512F0B6F300151864 /* Automator.icns */; };
 		AD8E884D12E8E7EA0055C601 /* TaskController.m in Sources */ = {isa = PBXBuildFile; fileRef = AD8E884C12E8E7EA0055C601 /* TaskController.m */; };
 		AD8E885E12E8E9E10055C601 /* NSXMLElement_Category.m in Sources */ = {isa = PBXBuildFile; fileRef = AD8E885712E8E9E10055C601 /* NSXMLElement_Category.m */; };
 		AD8E885F12E8E9E10055C601 /* NSXMLNode_Category.m in Sources */ = {isa = PBXBuildFile; fileRef = AD8E885912E8E9E10055C601 /* NSXMLNode_Category.m */; };
@@ -103,6 +104,7 @@
 		AD2BEA9912EFD20200D8972D /* drive.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = drive.icns; sourceTree = "<group>"; };
 		AD2BEA9B12EFD24D00D8972D /* down.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = down.icns; sourceTree = "<group>"; };
 		AD2BEA9D12EFD2AD00D8972D /* download.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = download.icns; sourceTree = "<group>"; };
+		AD37E52512F0B6F300151864 /* Automator.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Automator.icns; sourceTree = "<group>"; };
 		AD8E884B12E8E7EA0055C601 /* TaskController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TaskController.h; sourceTree = "<group>"; };
 		AD8E884C12E8E7EA0055C601 /* TaskController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TaskController.m; sourceTree = "<group>"; };
 		AD8E885612E8E9E10055C601 /* NSXMLElement_Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSXMLElement_Category.h; sourceTree = "<group>"; };
@@ -315,6 +317,7 @@
 		AD8E88CD12E8F5270055C601 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				AD37E52512F0B6F300151864 /* Automator.icns */,
 				AD2BEA9D12EFD2AD00D8972D /* download.icns */,
 				AD2BEA9B12EFD24D00D8972D /* down.icns */,
 				AD2BEA9912EFD20200D8972D /* drive.icns */,
@@ -474,6 +477,7 @@
 				AD2BEA9A12EFD20200D8972D /* drive.icns in Resources */,
 				AD2BEA9C12EFD24D00D8972D /* down.icns in Resources */,
 				AD2BEA9E12EFD2AD00D8972D /* download.icns in Resources */,
+				AD37E52612F0B6F300151864 /* Automator.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
