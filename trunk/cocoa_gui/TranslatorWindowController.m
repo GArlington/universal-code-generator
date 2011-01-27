@@ -148,7 +148,8 @@
 {
 	// Ok, so I need to go through the current tree and determine if all the required nodes have text in the attributes -
 	[[self consoleTextField] setString:@""];
-	[[self consoleTextField] setString:@"Checking the specification tree for completeness ...\n"];
+	[[self consoleTextField] setString:@"Checking the specification tree for completeness ... \n"];
+	//[[self consoleTextField] insertText:@"--------------------------------------------------------------------------------- \n"];
 	[[self progressIndicator] startAnimation:nil];
 	
 	// Let's create a timer have it fire in a couple of seconds -
@@ -214,6 +215,12 @@
 	
 	 
 	// update the GUI -
+	//[[self consoleTextField] insertText:@"--------------------------------------------------------------------------------- \n"];
+	[[self consoleTextField] insertText:@"\nThere were "];
+	[[self consoleTextField] insertText:[[NSNumber numberWithInt:counter-1] stringValue]];
+	[[self consoleTextField] insertText:@" errors. \n"];
+	
+	
 	[[self progressIndicator] stopAnimation:nil];
 	
 	// release local memory -
@@ -262,7 +269,10 @@
 		
 		// Release the path -
 		[strXPath release];
-	}	
+	}
+	
+	// Enable the tree check button -
+	[[self treeCheckButton] setEnabled:YES];
 }
 
 // Adds a node of the same type as the selected node -
@@ -405,6 +415,9 @@
 	
 	// Set the enabled state on the code gen button -
 	[[self codeGeneratorButton] setEnabled:YES];
+	
+	// Enable the codeTree check button -
+	[[self treeCheckButton] setEnabled:YES];
 }
 
 

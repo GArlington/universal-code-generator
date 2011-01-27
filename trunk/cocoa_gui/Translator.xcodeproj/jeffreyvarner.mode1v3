@@ -216,7 +216,7 @@
 						<key>_historyCapacity</key>
 						<integer>0</integer>
 						<key>bookmark</key>
-						<string>AD37E5E612F0D56700151864</string>
+						<string>AD37E62B12F0EDC300151864</string>
 						<key>history</key>
 						<array>
 							<string>AD37E43C12F0985600151864</string>
@@ -311,8 +311,6 @@
 								<string>2A37F4ABFDCFA73011CA2CEA</string>
 								<string>AD8E884812E8E6FF0055C601</string>
 								<string>AD8E884712E8E6F50055C601</string>
-								<string>2A37F4B8FDCFA73011CA2CEA</string>
-								<string>AD8E88CA12E8F5020055C601</string>
 								<string>1C37FBAC04509CD000000102</string>
 								<string>1C37FABC05509CD000000102</string>
 							</array>
@@ -377,7 +375,7 @@
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>AD37E5E512F0D56700151864</string>
+										<string>AD37E62A12F0EDC300151864</string>
 										<key>history</key>
 										<array>
 											<string>AD8E889312E8F2A00055C601</string>
@@ -436,13 +434,13 @@
 											<string>AD10567D12EFF0B2003E2FA5</string>
 											<string>AD1056B812F0857D003E2FA5</string>
 											<string>AD37E43612F0985600151864</string>
-											<string>AD37E52B12F0BAA700151864</string>
 											<string>AD37E53512F0C61500151864</string>
 											<string>AD37E53612F0C61500151864</string>
 											<string>AD37E53712F0C61500151864</string>
 											<string>AD37E55D12F0CAE000151864</string>
 											<string>AD37E56912F0CB5100151864</string>
-											<string>AD37E56A12F0CB5100151864</string>
+											<string>AD37E5F212F0D76500151864</string>
+											<string>AD37E5F312F0D76500151864</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -640,14 +638,13 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>AD37E5E712F0D56700151864</string>
 		<string>AD37E44E12F098D500151864</string>
 		<string>AD37E44F12F098D500151864</string>
 		<string>1CD10A99069EF8BA00B06720</string>
 		<string>AD8E882412E88E910055C601</string>
 		<string>AD37E43A12F0985600151864</string>
-		<string>/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/Translator.xcodeproj</string>
 		<string>1C78EAAD065D492600B07095</string>
+		<string>/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/Translator.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
 	<string>105 176 1706 960 0 0 1920 1178 </string>

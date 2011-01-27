@@ -8,7 +8,7 @@
 			8D15AC270486D014006FF6A4 /* Translator */,
 		);
 		breakpoints = (
-			AD8E8DF412ED23BF0055C601 /* TranslatorWindowController.m:493 */,
+			AD8E8DF412ED23BF0055C601 /* TranslatorWindowController.m:506 */,
 		);
 		codeSenseManager = AD8E882712E88E910055C601 /* Code sense */;
 		executables = (
@@ -326,6 +326,32 @@
 			AD37E5E112F0D4DB00151864 /* PBXTextBookmark */ = AD37E5E112F0D4DB00151864 /* PBXTextBookmark */;
 			AD37E5E512F0D56700151864 /* PBXTextBookmark */ = AD37E5E512F0D56700151864 /* PBXTextBookmark */;
 			AD37E5E612F0D56700151864 /* PBXTextBookmark */ = AD37E5E612F0D56700151864 /* PBXTextBookmark */;
+			AD37E5F212F0D76500151864 /* PBXBookmark */ = AD37E5F212F0D76500151864 /* PBXBookmark */;
+			AD37E5F312F0D76500151864 /* PBXTextBookmark */ = AD37E5F312F0D76500151864 /* PBXTextBookmark */;
+			AD37E5F412F0D76500151864 /* PBXTextBookmark */ = AD37E5F412F0D76500151864 /* PBXTextBookmark */;
+			AD37E5F512F0D76500151864 /* PBXTextBookmark */ = AD37E5F512F0D76500151864 /* PBXTextBookmark */;
+			AD37E5FA12F0D7D100151864 /* PBXTextBookmark */ = AD37E5FA12F0D7D100151864 /* PBXTextBookmark */;
+			AD37E5FB12F0D7D100151864 /* PBXTextBookmark */ = AD37E5FB12F0D7D100151864 /* PBXTextBookmark */;
+			AD37E60012F0D7F200151864 /* PBXTextBookmark */ = AD37E60012F0D7F200151864 /* PBXTextBookmark */;
+			AD37E60112F0D7F200151864 /* PBXTextBookmark */ = AD37E60112F0D7F200151864 /* PBXTextBookmark */;
+			AD37E60512F0D83400151864 /* PBXTextBookmark */ = AD37E60512F0D83400151864 /* PBXTextBookmark */;
+			AD37E60612F0D83400151864 /* PBXTextBookmark */ = AD37E60612F0D83400151864 /* PBXTextBookmark */;
+			AD37E60A12F0D8F000151864 /* PBXTextBookmark */ = AD37E60A12F0D8F000151864 /* PBXTextBookmark */;
+			AD37E60B12F0D8F000151864 /* PBXTextBookmark */ = AD37E60B12F0D8F000151864 /* PBXTextBookmark */;
+			AD37E60F12F0D92200151864 /* PBXTextBookmark */ = AD37E60F12F0D92200151864 /* PBXTextBookmark */;
+			AD37E61012F0D92200151864 /* PBXTextBookmark */ = AD37E61012F0D92200151864 /* PBXTextBookmark */;
+			AD37E61412F0D98200151864 /* PBXTextBookmark */ = AD37E61412F0D98200151864 /* PBXTextBookmark */;
+			AD37E61512F0D98200151864 /* PBXTextBookmark */ = AD37E61512F0D98200151864 /* PBXTextBookmark */;
+			AD37E61B12F0E61700151864 /* PBXTextBookmark */ = AD37E61B12F0E61700151864 /* PBXTextBookmark */;
+			AD37E61C12F0E61700151864 /* PBXTextBookmark */ = AD37E61C12F0E61700151864 /* PBXTextBookmark */;
+			AD37E61E12F0ECD700151864 /* PBXTextBookmark */ = AD37E61E12F0ECD700151864 /* PBXTextBookmark */;
+			AD37E61F12F0ECD700151864 /* PBXTextBookmark */ = AD37E61F12F0ECD700151864 /* PBXTextBookmark */;
+			AD37E62212F0ED3000151864 /* PBXTextBookmark */ = AD37E62212F0ED3000151864 /* PBXTextBookmark */;
+			AD37E62312F0ED3000151864 /* PBXTextBookmark */ = AD37E62312F0ED3000151864 /* PBXTextBookmark */;
+			AD37E62812F0EDC200151864 /* XCBuildMessageTextBookmark */ = AD37E62812F0EDC200151864 /* XCBuildMessageTextBookmark */;
+			AD37E62912F0EDC200151864 /* PBXTextBookmark */ = AD37E62912F0EDC200151864 /* PBXTextBookmark */;
+			AD37E62A12F0EDC300151864 /* PBXTextBookmark */ = AD37E62A12F0EDC300151864 /* PBXTextBookmark */;
+			AD37E62B12F0EDC300151864 /* PBXTextBookmark */ = AD37E62B12F0EDC300151864 /* PBXTextBookmark */;
 			AD5FF94812EFED020052EA61 = AD5FF94812EFED020052EA61 /* PBXTextBookmark */;
 			AD5FF97212EFEF8B0052EA61 = AD5FF97212EFEF8B0052EA61 /* PBXTextBookmark */;
 			AD5FF97412EFEF8B0052EA61 = AD5FF97412EFEF8B0052EA61 /* PBXTextBookmark */;
@@ -581,7 +607,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 405";
 		rLen = 0;
-		rLoc = 15221;
+		rLoc = 15843;
 		rType = 0;
 		vrLen = 2055;
 		vrLoc = 11310;
@@ -591,7 +617,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 513";
 		rLen = 0;
-		rLoc = 19484;
+		rLoc = 20106;
 		rType = 0;
 		vrLen = 1645;
 		vrLoc = 15146;
@@ -611,7 +637,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 453";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 1974;
 		vrLoc = 12260;
@@ -631,7 +657,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 443";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 2022;
 		vrLoc = 12260;
@@ -651,7 +677,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 454";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 2020;
 		vrLoc = 12260;
@@ -690,7 +716,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 453";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 2004;
 		vrLoc = 12272;
@@ -720,7 +746,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 410";
 		rLen = 0;
-		rLoc = 15221;
+		rLoc = 15843;
 		rType = 0;
 		vrLen = 1508;
 		vrLoc = 11445;
@@ -730,7 +756,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 458";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 2025;
 		vrLoc = 12334;
@@ -750,7 +776,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 461";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 2025;
 		vrLoc = 12430;
@@ -770,7 +796,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 462";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 2064;
 		vrLoc = 12513;
@@ -780,7 +806,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 527";
 		rLen = 0;
-		rLoc = 19484;
+		rLoc = 20106;
 		rType = 0;
 		vrLen = 1335;
 		vrLoc = 15223;
@@ -790,7 +816,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 463";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 2003;
 		vrLoc = 12574;
@@ -800,7 +826,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 397";
 		rLen = 0;
-		rLoc = 14554;
+		rLoc = 15176;
 		rType = 0;
 		vrLen = 1409;
 		vrLoc = 11427;
@@ -810,7 +836,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 467";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 2215;
 		vrLoc = 12320;
@@ -820,7 +846,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 397";
 		rLen = 0;
-		rLoc = 14554;
+		rLoc = 15176;
 		rType = 0;
 		vrLen = 1369;
 		vrLoc = 11427;
@@ -830,7 +856,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 467";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 2219;
 		vrLoc = 12237;
@@ -840,7 +866,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 478";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 1332;
 		vrLoc = 13697;
@@ -850,7 +876,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 463";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 2082;
 		vrLoc = 12330;
@@ -860,7 +886,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 478";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 1334;
 		vrLoc = 13697;
@@ -870,7 +896,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 463";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 2082;
 		vrLoc = 12330;
@@ -880,7 +906,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 416";
 		rLen = 0;
-		rLoc = 15221;
+		rLoc = 15843;
 		rType = 0;
 		vrLen = 1373;
 		vrLoc = 11515;
@@ -890,7 +916,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 464";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 2091;
 		vrLoc = 12330;
@@ -900,7 +926,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 415";
 		rLen = 0;
-		rLoc = 15221;
+		rLoc = 15843;
 		rType = 0;
 		vrLen = 1380;
 		vrLoc = 11515;
@@ -910,7 +936,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 464";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 2098;
 		vrLoc = 12330;
@@ -920,7 +946,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 415";
 		rLen = 279;
-		rLoc = 14942;
+		rLoc = 15564;
 		rType = 0;
 		vrLen = 1544;
 		vrLoc = 12267;
@@ -930,7 +956,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 464";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 2098;
 		vrLoc = 12330;
@@ -940,7 +966,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 479";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 1267;
 		vrLoc = 13922;
@@ -950,7 +976,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 464";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 2098;
 		vrLoc = 12330;
@@ -960,7 +986,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 416";
 		rLen = 0;
-		rLoc = 15221;
+		rLoc = 15843;
 		rType = 0;
 		vrLen = 1653;
 		vrLoc = 12640;
@@ -970,7 +996,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 464";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 2096;
 		vrLoc = 12330;
@@ -980,7 +1006,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 479";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 1267;
 		vrLoc = 13925;
@@ -990,7 +1016,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 464";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 2051;
 		vrLoc = 12409;
@@ -1000,7 +1026,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 476";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 1292;
 		vrLoc = 13817;
@@ -1010,7 +1036,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 465";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 2100;
 		vrLoc = 12409;
@@ -1030,7 +1056,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 465";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 2100;
 		vrLoc = 12411;
@@ -1050,7 +1076,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 465";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 2100;
 		vrLoc = 12408;
@@ -1060,7 +1086,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 415";
 		rLen = 0;
-		rLoc = 14942;
+		rLoc = 15564;
 		rType = 0;
 		vrLen = 1413;
 		vrLoc = 11427;
@@ -1070,7 +1096,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 466";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 2076;
 		vrLoc = 12408;
@@ -1080,7 +1106,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 482";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 1403;
 		vrLoc = 13533;
@@ -1090,7 +1116,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 466";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 2076;
 		vrLoc = 12408;
@@ -1100,7 +1126,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 537";
 		rLen = 0;
-		rLoc = 19483;
+		rLoc = 20105;
 		rType = 0;
 		vrLen = 1291;
 		vrLoc = 15577;
@@ -1110,7 +1136,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 466";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 2076;
 		vrLoc = 12408;
@@ -1121,7 +1147,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		fallbackIsa = XCBuildMessageTextBookmark;
 		rLen = 1;
-		rLoc = 490;
+		rLoc = 503;
 		rType = 1;
 	};
 	AD37E4D712F0ABA400151864 /* PBXTextBookmark */ = {
@@ -1129,7 +1155,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 418";
 		rLen = 0;
-		rLoc = 14942;
+		rLoc = 15564;
 		rType = 0;
 		vrLen = 1151;
 		vrLoc = 12325;
@@ -1139,7 +1165,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 536";
 		rLen = 0;
-		rLoc = 19373;
+		rLoc = 19995;
 		rType = 0;
 		vrLen = 1205;
 		vrLoc = 15795;
@@ -1149,7 +1175,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 467";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 2196;
 		vrLoc = 12325;
@@ -1159,7 +1185,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 537";
 		rLen = 0;
-		rLoc = 19396;
+		rLoc = 20018;
 		rType = 0;
 		vrLen = 1166;
 		vrLoc = 15911;
@@ -1169,7 +1195,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 467";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 2196;
 		vrLoc = 12325;
@@ -1189,7 +1215,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 467";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 2196;
 		vrLoc = 12326;
@@ -1209,7 +1235,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 467";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 2196;
 		vrLoc = 12325;
@@ -1219,7 +1245,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 418";
 		rLen = 0;
-		rLoc = 14940;
+		rLoc = 15562;
 		rType = 0;
 		vrLen = 2231;
 		vrLoc = 11235;
@@ -1229,7 +1255,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 469";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 2219;
 		vrLoc = 12325;
@@ -1240,7 +1266,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		fallbackIsa = XCBuildMessageTextBookmark;
 		rLen = 0;
-		rLoc = 482;
+		rLoc = 495;
 		rType = 1;
 	};
 	AD37E4F812F0B0D200151864 /* PBXTextBookmark */ = {
@@ -1248,7 +1274,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 420";
 		rLen = 0;
-		rLoc = 14940;
+		rLoc = 15562;
 		rType = 0;
 		vrLen = 1156;
 		vrLoc = 12265;
@@ -1259,7 +1285,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		fallbackIsa = XCBuildMessageTextBookmark;
 		rLen = 0;
-		rLoc = 492;
+		rLoc = 505;
 		rType = 1;
 	};
 	AD37E4FC12F0B0D400151864 /* PBXTextBookmark */ = {
@@ -1267,7 +1293,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 483";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 2109;
 		vrLoc = 13966;
@@ -1277,7 +1303,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 472";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 2166;
 		vrLoc = 12325;
@@ -1287,7 +1313,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 405";
 		rLen = 0;
-		rLoc = 15221;
+		rLoc = 15843;
 		rType = 0;
 		vrLen = 2135;
 		vrLoc = 11419;
@@ -1297,7 +1323,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 406";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 2183;
 		vrLoc = 12359;
@@ -1307,7 +1333,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 407";
 		rLen = 0;
-		rLoc = 15055;
+		rLoc = 15677;
 		rType = 0;
 		vrLen = 2219;
 		vrLoc = 11419;
@@ -1317,7 +1343,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 409";
 		rLen = 0;
-		rLoc = 15055;
+		rLoc = 15677;
 		rType = 0;
 		vrLen = 2161;
 		vrLoc = 12377;
@@ -1327,7 +1353,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 407";
 		rLen = 0;
-		rLoc = 15098;
+		rLoc = 15720;
 		rType = 0;
 		vrLen = 2229;
 		vrLoc = 11419;
@@ -1337,7 +1363,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 413";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 2080;
 		vrLoc = 12377;
@@ -1357,7 +1383,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 414";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 2135;
 		vrLoc = 12381;
@@ -1377,7 +1403,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 415";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 2104;
 		vrLoc = 12492;
@@ -1387,7 +1413,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 487";
 		rLen = 0;
-		rLoc = 17625;
+		rLoc = 18247;
 		rType = 0;
 		vrLen = 2324;
 		vrLoc = 12771;
@@ -1397,7 +1423,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 415";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 2027;
 		vrLoc = 12492;
@@ -1407,7 +1433,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 487";
 		rLen = 0;
-		rLoc = 17625;
+		rLoc = 18247;
 		rType = 0;
 		vrLen = 1748;
 		vrLoc = 12771;
@@ -1417,7 +1443,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 415";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 2105;
 		vrLoc = 12492;
@@ -1441,7 +1467,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 487";
 		rLen = 0;
-		rLoc = 17625;
+		rLoc = 18247;
 		rType = 0;
 		vrLen = 1708;
 		vrLoc = 12811;
@@ -1461,7 +1487,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 416";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 2105;
 		vrLoc = 12521;
@@ -1491,7 +1517,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 416";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 2105;
 		vrLoc = 12521;
@@ -1551,7 +1577,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 150";
 		rLen = 0;
-		rLoc = 4923;
+		rLoc = 5053;
 		rType = 0;
 		vrLen = 1794;
 		vrLoc = 2796;
@@ -1561,7 +1587,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 179";
 		rLen = 0;
-		rLoc = 6719;
+		rLoc = 6849;
 		rType = 0;
 		vrLen = 1436;
 		vrLoc = 4200;
@@ -1571,7 +1597,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 459";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 2210;
 		vrLoc = 13359;
@@ -1581,7 +1607,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 187";
 		rLen = 0;
-		rLoc = 6567;
+		rLoc = 6697;
 		rType = 0;
 		vrLen = 1197;
 		vrLoc = 4958;
@@ -1591,7 +1617,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 469";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 2210;
 		vrLoc = 13626;
@@ -1601,7 +1627,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 170";
 		rLen = 0;
-		rLoc = 5236;
+		rLoc = 5366;
 		rType = 0;
 		vrLen = 1335;
 		vrLoc = 4897;
@@ -1611,7 +1637,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 480";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 2122;
 		vrLoc = 14038;
@@ -1621,7 +1647,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 170";
 		rLen = 0;
-		rLoc = 5217;
+		rLoc = 5347;
 		rType = 0;
 		vrLen = 1565;
 		vrLoc = 4378;
@@ -1631,7 +1657,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 480";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 2122;
 		vrLoc = 14039;
@@ -1641,7 +1667,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 176";
 		rLen = 0;
-		rLoc = 5435;
+		rLoc = 5565;
 		rType = 0;
 		vrLen = 1433;
 		vrLoc = 4818;
@@ -1651,7 +1677,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 483";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 2137;
 		vrLoc = 14101;
@@ -1671,7 +1697,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 176";
 		rLen = 0;
-		rLoc = 5435;
+		rLoc = 5565;
 		rType = 0;
 		vrLen = 1437;
 		vrLoc = 4818;
@@ -1681,7 +1707,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 171";
 		rLen = 0;
-		rLoc = 5214;
+		rLoc = 5344;
 		rType = 0;
 		vrLen = 1394;
 		vrLoc = 4795;
@@ -1691,7 +1717,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 483";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 2110;
 		vrLoc = 14163;
@@ -1711,7 +1737,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 171";
 		rLen = 0;
-		rLoc = 5214;
+		rLoc = 5344;
 		rType = 0;
 		vrLen = 1454;
 		vrLoc = 4795;
@@ -1721,7 +1747,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 171";
 		rLen = 0;
-		rLoc = 5217;
+		rLoc = 5347;
 		rType = 0;
 		vrLen = 1395;
 		vrLoc = 4795;
@@ -1731,7 +1757,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 483";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 2110;
 		vrLoc = 14164;
@@ -1741,7 +1767,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 177";
 		rLen = 0;
-		rLoc = 5435;
+		rLoc = 5565;
 		rType = 0;
 		vrLen = 1366;
 		vrLoc = 4795;
@@ -1751,7 +1777,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 484";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 2137;
 		vrLoc = 14123;
@@ -1771,7 +1797,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 175";
 		rLen = 0;
-		rLoc = 5308;
+		rLoc = 5438;
 		rType = 0;
 		vrLen = 1361;
 		vrLoc = 4795;
@@ -1781,7 +1807,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 175";
 		rLen = 0;
-		rLoc = 5322;
+		rLoc = 5452;
 		rType = 0;
 		vrLen = 1382;
 		vrLoc = 4795;
@@ -1791,7 +1817,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 484";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 2098;
 		vrLoc = 14251;
@@ -1801,7 +1827,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 175";
 		rLen = 0;
-		rLoc = 5435;
+		rLoc = 5565;
 		rType = 0;
 		vrLen = 1401;
 		vrLoc = 4795;
@@ -1811,7 +1837,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 484";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 2110;
 		vrLoc = 14222;
@@ -1821,7 +1847,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 214";
 		rLen = 0;
-		rLoc = 6845;
+		rLoc = 7306;
 		rType = 0;
 		vrLen = 1493;
 		vrLoc = 4636;
@@ -1831,7 +1857,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 487";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 2110;
 		vrLoc = 14234;
@@ -1841,7 +1867,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 177";
 		rLen = 0;
-		rLoc = 5435;
+		rLoc = 5565;
 		rType = 0;
 		vrLen = 1501;
 		vrLoc = 4636;
@@ -1851,7 +1877,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 487";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 2110;
 		vrLoc = 14242;
@@ -1861,7 +1887,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 171";
 		rLen = 0;
-		rLoc = 5237;
+		rLoc = 5367;
 		rType = 0;
 		vrLen = 1593;
 		vrLoc = 4280;
@@ -1871,7 +1897,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 487";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 2110;
 		vrLoc = 14240;
@@ -1881,7 +1907,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 174";
 		rLen = 0;
-		rLoc = 5262;
+		rLoc = 5392;
 		rType = 0;
 		vrLen = 1591;
 		vrLoc = 4280;
@@ -1891,7 +1917,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 487";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 2110;
 		vrLoc = 14238;
@@ -1901,7 +1927,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 177";
 		rLen = 0;
-		rLoc = 5435;
+		rLoc = 5565;
 		rType = 0;
 		vrLen = 1569;
 		vrLoc = 4280;
@@ -1911,7 +1937,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 486";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 2098;
 		vrLoc = 14260;
@@ -1921,7 +1947,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 175";
 		rLen = 0;
-		rLoc = 5362;
+		rLoc = 5492;
 		rType = 0;
 		vrLen = 1571;
 		vrLoc = 4280;
@@ -1931,7 +1957,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 486";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 2098;
 		vrLoc = 14262;
@@ -1941,7 +1967,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 175";
 		rLen = 0;
-		rLoc = 5362;
+		rLoc = 5492;
 		rType = 0;
 		vrLen = 1569;
 		vrLoc = 4280;
@@ -1951,7 +1977,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 486";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 2098;
 		vrLoc = 14260;
@@ -1961,7 +1987,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 210";
 		rLen = 0;
-		rLoc = 6845;
+		rLoc = 7306;
 		rType = 0;
 		vrLen = 1156;
 		vrLoc = 5762;
@@ -1971,7 +1997,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 483";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 2145;
 		vrLoc = 14251;
@@ -1981,7 +2007,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 200";
 		rLen = 0;
-		rLoc = 6629;
+		rLoc = 6759;
 		rType = 0;
 		vrLen = 1205;
 		vrLoc = 5431;
@@ -1991,7 +2017,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 484";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 2096;
 		vrLoc = 14375;
@@ -2001,7 +2027,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 151";
 		rLen = 0;
-		rLoc = 4634;
+		rLoc = 4635;
 		rType = 0;
 		vrLen = 1643;
 		vrLoc = 3916;
@@ -2011,7 +2037,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 484";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 2096;
 		vrLoc = 14377;
@@ -2021,7 +2047,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 201";
 		rLen = 0;
-		rLoc = 6639;
+		rLoc = 6769;
 		rType = 0;
 		vrLen = 1465;
 		vrLoc = 4961;
@@ -2031,7 +2057,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 484";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 2096;
 		vrLoc = 14381;
@@ -2041,7 +2067,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 198";
 		rLen = 0;
-		rLoc = 6401;
+		rLoc = 6531;
 		rType = 0;
 		vrLen = 1600;
 		vrLoc = 4961;
@@ -2051,7 +2077,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 488";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 2072;
 		vrLoc = 14389;
@@ -2061,7 +2087,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 200";
 		rLen = 0;
-		rLoc = 6497;
+		rLoc = 6627;
 		rType = 0;
 		vrLen = 1562;
 		vrLoc = 4875;
@@ -2071,7 +2097,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 488";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 2072;
 		vrLoc = 14393;
@@ -2081,7 +2107,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 189";
 		rLen = 0;
-		rLoc = 6044;
+		rLoc = 6174;
 		rType = 0;
 		vrLen = 1681;
 		vrLoc = 4751;
@@ -2091,7 +2117,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 489";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 2188;
 		vrLoc = 14409;
@@ -2101,7 +2127,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 189";
 		rLen = 0;
-		rLoc = 6007;
+		rLoc = 6137;
 		rType = 0;
 		vrLen = 1687;
 		vrLoc = 4927;
@@ -2111,7 +2137,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 489";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 2072;
 		vrLoc = 14447;
@@ -2121,7 +2147,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 193";
 		rLen = 0;
-		rLoc = 6125;
+		rLoc = 6255;
 		rType = 0;
 		vrLen = 1723;
 		vrLoc = 4927;
@@ -2131,7 +2157,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 490";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 2153;
 		vrLoc = 14483;
@@ -2141,7 +2167,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 190";
 		rLen = 0;
-		rLoc = 6038;
+		rLoc = 6168;
 		rType = 0;
 		vrLen = 1737;
 		vrLoc = 4927;
@@ -2151,7 +2177,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 491";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 2116;
 		vrLoc = 14462;
@@ -2161,7 +2187,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 189";
 		rLen = 0;
-		rLoc = 5932;
+		rLoc = 6062;
 		rType = 0;
 		vrLen = 1717;
 		vrLoc = 4927;
@@ -2171,7 +2197,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 492";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 2116;
 		vrLoc = 14496;
@@ -2181,7 +2207,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 209";
 		rLen = 0;
-		rLoc = 6639;
+		rLoc = 6769;
 		rType = 0;
 		vrLen = 1673;
 		vrLoc = 5038;
@@ -2191,7 +2217,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 492";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 2116;
 		vrLoc = 14492;
@@ -2201,7 +2227,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 209";
 		rLen = 0;
-		rLoc = 6639;
+		rLoc = 6769;
 		rType = 0;
 		vrLen = 1662;
 		vrLoc = 5038;
@@ -2211,7 +2237,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 492";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 2116;
 		vrLoc = 14481;
@@ -2221,7 +2247,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 209";
 		rLen = 0;
-		rLoc = 6639;
+		rLoc = 6769;
 		rType = 0;
 		vrLen = 1666;
 		vrLoc = 5038;
@@ -2231,7 +2257,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 492";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 2116;
 		vrLoc = 14485;
@@ -2241,7 +2267,7 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 211";
 		rLen = 0;
-		rLoc = 6715;
+		rLoc = 6845;
 		rType = 0;
 		vrLen = 1685;
 		vrLoc = 5038;
@@ -2251,10 +2277,263 @@
 		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
 		name = "TranslatorWindowController.m: 493";
 		rLen = 0;
-		rLoc = 15222;
+		rLoc = 15844;
 		rType = 0;
 		vrLen = 2072;
 		vrLoc = 14553;
+	};
+	AD37E5F212F0D76500151864 /* PBXBookmark */ = {
+		isa = PBXBookmark;
+		fRef = AD37E52512F0B6F300151864 /* Automator.icns */;
+	};
+	AD37E5F312F0D76500151864 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
+		name = "TranslatorWindowController.m: 211";
+		rLen = 0;
+		rLoc = 6845;
+		rType = 0;
+		vrLen = 1687;
+		vrLoc = 5038;
+	};
+	AD37E5F412F0D76500151864 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
+		name = "TranslatorWindowController.m: 220";
+		rLen = 0;
+		rLoc = 7205;
+		rType = 0;
+		vrLen = 1555;
+		vrLoc = 5677;
+	};
+	AD37E5F512F0D76500151864 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
+		name = "TranslatorWindowController.m: 498";
+		rLen = 0;
+		rLoc = 15844;
+		rType = 0;
+		vrLen = 2053;
+		vrLoc = 14747;
+	};
+	AD37E5FA12F0D7D100151864 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
+		name = "TranslatorWindowController.m: 152";
+		rLen = 0;
+		rLoc = 4642;
+		rType = 0;
+		vrLen = 2082;
+		vrLoc = 2943;
+	};
+	AD37E5FB12F0D7D100151864 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
+		name = "TranslatorWindowController.m: 499";
+		rLen = 0;
+		rLoc = 15844;
+		rType = 0;
+		vrLen = 2055;
+		vrLoc = 14793;
+	};
+	AD37E60012F0D7F200151864 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
+		name = "TranslatorWindowController.m: 218";
+		rLen = 0;
+		rLoc = 7049;
+		rType = 0;
+		vrLen = 1679;
+		vrLoc = 5458;
+	};
+	AD37E60112F0D7F200151864 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
+		name = "TranslatorWindowController.m: 499";
+		rLen = 0;
+		rLoc = 15844;
+		rType = 0;
+		vrLen = 2055;
+		vrLoc = 14793;
+	};
+	AD37E60512F0D83400151864 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
+		name = "TranslatorWindowController.m: 152";
+		rLen = 0;
+		rLoc = 4767;
+		rType = 0;
+		vrLen = 1668;
+		vrLoc = 4198;
+	};
+	AD37E60612F0D83400151864 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
+		name = "TranslatorWindowController.m: 499";
+		rLen = 0;
+		rLoc = 15844;
+		rType = 0;
+		vrLen = 2053;
+		vrLoc = 14815;
+	};
+	AD37E60A12F0D8F000151864 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
+		name = "TranslatorWindowController.m: 218";
+		rLen = 0;
+		rLoc = 7049;
+		rType = 0;
+		vrLen = 1337;
+		vrLoc = 6214;
+	};
+	AD37E60B12F0D8F000151864 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
+		name = "TranslatorWindowController.m: 499";
+		rLen = 0;
+		rLoc = 15844;
+		rType = 0;
+		vrLen = 2053;
+		vrLoc = 14817;
+	};
+	AD37E60F12F0D92200151864 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
+		name = "TranslatorWindowController.m: 219";
+		rLen = 0;
+		rLoc = 7135;
+		rType = 0;
+		vrLen = 1486;
+		vrLoc = 5912;
+	};
+	AD37E61012F0D92200151864 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
+		name = "TranslatorWindowController.m: 499";
+		rLen = 0;
+		rLoc = 15844;
+		rType = 0;
+		vrLen = 2053;
+		vrLoc = 14819;
+	};
+	AD37E61412F0D98200151864 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
+		name = "TranslatorWindowController.m: 218";
+		rLen = 0;
+		rLoc = 7007;
+		rType = 0;
+		vrLen = 1468;
+		vrLoc = 5912;
+	};
+	AD37E61512F0D98200151864 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
+		name = "TranslatorWindowController.m: 500";
+		rLen = 0;
+		rLoc = 15844;
+		rType = 0;
+		vrLen = 2053;
+		vrLoc = 14821;
+	};
+	AD37E61B12F0E61700151864 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
+		name = "TranslatorWindowController.m: 152";
+		rLen = 0;
+		rLoc = 4642;
+		rType = 0;
+		vrLen = 1568;
+		vrLoc = 3823;
+	};
+	AD37E61C12F0E61700151864 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
+		name = "TranslatorWindowController.m: 500";
+		rLen = 0;
+		rLoc = 15844;
+		rType = 0;
+		vrLen = 2069;
+		vrLoc = 14806;
+	};
+	AD37E61E12F0ECD700151864 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
+		name = "TranslatorWindowController.m: 152";
+		rLen = 0;
+		rLoc = 4642;
+		rType = 0;
+		vrLen = 1742;
+		vrLoc = 3823;
+	};
+	AD37E61F12F0ECD700151864 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
+		name = "TranslatorWindowController.m: 500";
+		rLen = 0;
+		rLoc = 15844;
+		rType = 0;
+		vrLen = 2113;
+		vrLoc = 14806;
+	};
+	AD37E62212F0ED3000151864 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
+		name = "TranslatorWindowController.m: 417";
+		rLen = 0;
+		rLoc = 13276;
+		rType = 0;
+		vrLen = 1261;
+		vrLoc = 11989;
+	};
+	AD37E62312F0ED3000151864 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
+		name = "TranslatorWindowController.m: 503";
+		rLen = 0;
+		rLoc = 15844;
+		rType = 0;
+		vrLen = 2208;
+		vrLoc = 14668;
+	};
+	AD37E62812F0EDC200151864 /* XCBuildMessageTextBookmark */ = {
+		isa = PBXTextBookmark;
+		comments = "Expected expression before ':' token";
+		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
+		fallbackIsa = XCBuildMessageTextBookmark;
+		rLen = 1;
+		rLoc = 419;
+		rType = 1;
+	};
+	AD37E62912F0EDC200151864 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
+		name = "TranslatorWindowController.m: 420";
+		rLen = 0;
+		rLoc = 13271;
+		rType = 0;
+		vrLen = 938;
+		vrLoc = 12637;
+	};
+	AD37E62A12F0EDC300151864 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
+		name = "TranslatorWindowController.m: 275";
+		rLen = 0;
+		rLoc = 8579;
+		rType = 0;
+		vrLen = 1378;
+		vrLoc = 7598;
+	};
+	AD37E62B12F0EDC300151864 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */;
+		name = "TranslatorWindowController.m: 506";
+		rLen = 0;
+		rLoc = 15844;
+		rType = 0;
+		vrLen = 2203;
+		vrLoc = 14702;
 	};
 	AD5FF94812EFED020052EA61 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
@@ -2415,9 +2694,9 @@
 	};
 	AD8E886712E8EBEF0055C601 /* TranslatorWindowController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1556, 8853}}";
-			sepNavSelRange = "{15222, 0}";
-			sepNavVisRange = "{14553, 2072}";
+			sepNavIntBoundsRect = "{{0, 0}, {1556, 9165}}";
+			sepNavSelRange = "{15844, 0}";
+			sepNavVisRange = "{14702, 2203}";
 			sepNavWindowFrame = "{{250, 153}, {1615, 950}}";
 		};
 	};
@@ -2797,7 +3076,7 @@
 		vrLen = 2668;
 		vrLoc = 0;
 	};
-	AD8E8DF412ED23BF0055C601 /* TranslatorWindowController.m:493 */ = {
+	AD8E8DF412ED23BF0055C601 /* TranslatorWindowController.m:506 */ = {
 		isa = PBXFileBreakpoint;
 		actions = (
 		);
@@ -2809,7 +3088,7 @@
 		functionName = "-runCodeGenerator:";
 		hitCount = 3;
 		ignoreCount = 0;
-		lineNumber = 493;
+		lineNumber = 506;
 		location = Translator;
 		modificationTime = 317531161.499542;
 		originalNumberOfMultipleMatches = 1;
