@@ -51,6 +51,7 @@
 @synthesize codeGeneratorButton;
 @synthesize progressIndicator;
 @synthesize treeCheckButton;
+@synthesize fileTypePopupButton;
 
 
 #pragma mark --------------------------------
@@ -94,6 +95,7 @@
 	self.codeGeneratorButton = nil;
 	self.progressIndicator = nil;
 	self.treeCheckButton = nil;
+	self.fileTypePopupButton = nil;
 	
 	// deallocate the super -
 	[super dealloc];
@@ -589,6 +591,16 @@
 #pragma mark --------------------------------
 #pragma mark Create tree methods
 #pragma mark --------------------------------
+-(void)createXMLDocumentFromData:(NSData *)data
+{
+	NSError *errObject = nil;
+	self.xmlTreeModel.xmlDocument = [[NSXMLDocument alloc] initWithData:data options:NSXMLNodeOptionsNone error:&errObject];
+	
+	// Send a message to the notification center to let folks know that I've loaded an xml file -
+	NSNotification *myNotification = [NSNotification notificationWithName:@"TreeDidLoad" object:nil]; 
+	[[NSNotificationQueue defaultQueue] enqueueNotification:myNotification postingStyle:NSPostNow coalesceMask:NSNotificationCoalescingOnName forModes:nil];
+}
+
 -(void)createXMLDocumentFromFile:(NSString *)file
 {
 	// Create a URL from the file string -
@@ -607,7 +619,31 @@
 	[[self window] setTitle:file];
 	
 	// Figure out what combo item has been selected -
+	NSMutableString *strXPath = [[NSMutableString alloc] initWithCapacity:140];
+	[strXPath appendString:@".//Model/@type"];
+	NSArray *listOfChildren = [[[self xmlTreeModel] xmlDocument] nodesForXPath:strXPath error:&errObject];
 	
+	// Get the type node -
+	NSXMLElement *typeNode = (NSXMLElement *)[listOfChildren lastObject];
+	
+	// OK, so now we need to look the string visible to the user -
+	[strXPath setString:@""];
+	[strXPath appendString:@".//mapping[@type='"];
+	[strXPath appendString:[typeNode stringValue]];
+	[strXPath appendString:@"']/display/@name"];
+	
+	NSLog(@"What was the xpath %@",strXPath);
+	
+	NSArray *displayName = [[self xmlDocument] nodesForXPath:strXPath error:&errObject];
+	NSXMLElement *displayNode = (NSXMLElement *)[displayName lastObject];
+
+	NSLog(@"What was selected %@",[displayNode stringValue]);
+	
+	// Ok, so now we need to figure which item is selected -
+	[[self fileTypePopupButton] selectItemWithTitle:[displayNode stringValue]];
+	
+	// release -
+	[strXPath release];
 }
 
 

@@ -12,7 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="6"/>
+			<integer value="5"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -274,7 +274,7 @@
 															<string key="NSAction">_popUpItemAction:</string>
 															<reference key="NSTarget" ref="1094471"/>
 														</object>
-														<object class="NSMenuItem" id="123668135">
+														<object class="NSMenuItem" id="106867111">
 															<reference key="NSMenu" ref="79257516"/>
 															<bool key="NSIsDisabled">YES</bool>
 															<bool key="NSIsSeparator">YES</bool>
@@ -286,7 +286,7 @@
 															<string key="NSAction">_popUpItemAction:</string>
 															<reference key="NSTarget" ref="1094471"/>
 														</object>
-														<object class="NSMenuItem" id="969240574">
+														<object class="NSMenuItem" id="999667565">
 															<reference key="NSMenu" ref="79257516"/>
 															<string key="NSTitle">Load custom specification ...</string>
 															<string key="NSKeyEquiv"/>
@@ -678,7 +678,7 @@
 													<int key="NSvFlags">317</int>
 													<object class="NSMutableArray" key="NSSubviews">
 														<bool key="EncodedWithXMLCoder">YES</bool>
-														<object class="NSProgressIndicator" id="335507451">
+														<object class="NSProgressIndicator" id="800820935">
 															<reference key="NSNextResponder" ref="423440903"/>
 															<int key="NSvFlags">1282</int>
 															<object class="NSPSMatrix" key="NSDrawMatrix"/>
@@ -996,18 +996,18 @@
 								<int key="NSPeriodicInterval">75</int>
 							</object>
 						</object>
-						<object class="NSButton" id="937650514">
+						<object class="NSButton" id="1016235405">
 							<reference key="NSNextResponder" ref="568628114"/>
 							<int key="NSvFlags">268</int>
 							<string key="NSFrame">{{87, 530}, {48, 30}}</string>
 							<reference key="NSSuperview" ref="568628114"/>
 							<bool key="NSEnabled">YES</bool>
-							<object class="NSButtonCell" key="NSCell" id="650786883">
+							<object class="NSButtonCell" key="NSCell" id="545324073">
 								<int key="NSCellFlags">604110336</int>
 								<int key="NSCellFlags2">134217728</int>
 								<string key="NSContents"/>
 								<reference key="NSSupport" ref="78187581"/>
-								<reference key="NSControlView" ref="937650514"/>
+								<reference key="NSControlView" ref="1016235405"/>
 								<int key="NSButtonFlags">-2042347265</int>
 								<int key="NSButtonFlags2">134</int>
 								<object class="NSCustomResource" key="NSNormalImage">
@@ -1325,7 +1325,7 @@
 					<object class="IBOutletConnection" key="connection">
 						<string key="label">progressIndicator</string>
 						<reference key="source" ref="512844837"/>
-						<reference key="destination" ref="335507451"/>
+						<reference key="destination" ref="800820935"/>
 					</object>
 					<int key="connectionID">100196</int>
 				</object>
@@ -1333,7 +1333,7 @@
 					<object class="IBOutletConnection" key="connection">
 						<string key="label">treeCheckButton</string>
 						<reference key="source" ref="512844837"/>
-						<reference key="destination" ref="937650514"/>
+						<reference key="destination" ref="1016235405"/>
 					</object>
 					<int key="connectionID">100199</int>
 				</object>
@@ -1341,7 +1341,7 @@
 					<object class="IBActionConnection" key="connection">
 						<string key="label">checkTreeCompleteness:</string>
 						<reference key="source" ref="512844837"/>
-						<reference key="destination" ref="937650514"/>
+						<reference key="destination" ref="1016235405"/>
 					</object>
 					<int key="connectionID">100200</int>
 				</object>
@@ -1349,9 +1349,17 @@
 					<object class="IBActionConnection" key="connection">
 						<string key="label">menuSelectionAction:</string>
 						<reference key="source" ref="512844837"/>
-						<reference key="destination" ref="969240574"/>
+						<reference key="destination" ref="999667565"/>
 					</object>
 					<int key="connectionID">100203</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">fileTypePopupButton</string>
+						<reference key="source" ref="512844837"/>
+						<reference key="destination" ref="129083923"/>
+					</object>
+					<int key="connectionID">100204</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -1398,7 +1406,7 @@
 							<reference ref="561292487"/>
 							<reference ref="948563747"/>
 							<reference ref="605158730"/>
-							<reference ref="937650514"/>
+							<reference ref="1016235405"/>
 							<reference ref="1033507461"/>
 						</object>
 						<reference key="parent" ref="275939982"/>
@@ -1466,7 +1474,7 @@
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="485259477"/>
-							<reference ref="335507451"/>
+							<reference ref="800820935"/>
 						</object>
 						<reference key="parent" ref="620749209"/>
 					</object>
@@ -1619,8 +1627,8 @@
 							<reference ref="5262530"/>
 							<reference ref="327386194"/>
 							<reference ref="891629521"/>
-							<reference ref="123668135"/>
-							<reference ref="969240574"/>
+							<reference ref="106867111"/>
+							<reference ref="999667565"/>
 						</object>
 						<reference key="parent" ref="1094471"/>
 					</object>
@@ -1840,31 +1848,31 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">100195</int>
-						<reference key="object" ref="335507451"/>
+						<reference key="object" ref="800820935"/>
 						<reference key="parent" ref="423440903"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">100197</int>
-						<reference key="object" ref="937650514"/>
+						<reference key="object" ref="1016235405"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="650786883"/>
+							<reference ref="545324073"/>
 						</object>
 						<reference key="parent" ref="568628114"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">100198</int>
-						<reference key="object" ref="650786883"/>
-						<reference key="parent" ref="937650514"/>
+						<reference key="object" ref="545324073"/>
+						<reference key="parent" ref="1016235405"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">100201</int>
-						<reference key="object" ref="123668135"/>
+						<reference key="object" ref="106867111"/>
 						<reference key="parent" ref="79257516"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">100202</int>
-						<reference key="object" ref="969240574"/>
+						<reference key="object" ref="999667565"/>
 						<reference key="parent" ref="79257516"/>
 					</object>
 				</object>
@@ -2106,7 +2114,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">100203</int>
+			<int key="maxID">100204</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -2215,6 +2223,7 @@
 							<string>bottomDisplayLabel</string>
 							<string>codeGeneratorButton</string>
 							<string>consoleTextField</string>
+							<string>fileTypePopupButton</string>
 							<string>popupButton</string>
 							<string>progressIndicator</string>
 							<string>progressWheel</string>
@@ -2227,6 +2236,7 @@
 							<string>NSTextField</string>
 							<string>NSButton</string>
 							<string>NSTextView</string>
+							<string>NSPopUpButton</string>
 							<string>NSPopUpButton</string>
 							<string>NSProgressIndicator</string>
 							<string>NSProgressIndicator</string>
@@ -2242,6 +2252,7 @@
 							<string>bottomDisplayLabel</string>
 							<string>codeGeneratorButton</string>
 							<string>consoleTextField</string>
+							<string>fileTypePopupButton</string>
 							<string>popupButton</string>
 							<string>progressIndicator</string>
 							<string>progressWheel</string>
@@ -2262,6 +2273,10 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">consoleTextField</string>
 								<string key="candidateClassName">NSTextView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">fileTypePopupButton</string>
+								<string key="candidateClassName">NSPopUpButton</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">popupButton</string>

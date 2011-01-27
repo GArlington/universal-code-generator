@@ -32,6 +32,8 @@
 	IBOutlet NSOutlineView *treeView;					// Pointer to the tree -
 	IBOutlet NSTextView *consoleTextField;				// Text field 
 	IBOutlet NSProgressIndicator *progressIndicator;	// Pointer to the progress indicator -
+	IBOutlet NSPopUpButton *fileTypePopupButton;		// Pointer to the popup button -
+	
 	
 
 }
@@ -53,6 +55,7 @@
 @property (retain) IBOutlet NSOutlineView *treeView;
 @property (retain) IBOutlet	NSTextView *consoleTextField;
 @property (retain) IBOutlet NSProgressIndicator *progressIndicator;
+@property (retain) IBOutlet NSPopUpButton *fileTypePopupButton;
 
 
 
@@ -67,6 +70,7 @@
 
 // Create XML document methods -
 -(void)createXMLDocumentFromFile:(NSString *)file;
+-(void)createXMLDocumentFromData:(NSData *)data;
 
 
 @end

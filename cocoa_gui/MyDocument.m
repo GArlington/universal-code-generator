@@ -90,7 +90,34 @@
     
     // For applications targeted for Panther or earlier systems, you should use the deprecated API -loadDataRepresentation:ofType. In this case you can also choose to override -readFromFile:ofType: or -loadFileWrapperRepresentation:ofType: instead.
     
-    if ( outError != NULL ) {
+    if (data!=nil)
+	{
+		// Get window controller -
+		//CCMLProjectWindowController *controller = (CCMLProjectWindowController *)[[self windowControllers] lastObject];
+		if (translatorWindowController!=nil)
+		{
+			[translatorWindowController createXMLDocumentFromData:data];
+			
+			NSLog(@"Yes...I am getting called...");
+			
+		}
+		else {
+			// Ok, we need to alloc init our custom window controller -
+			translatorWindowController  = [[TranslatorWindowController alloc] init];
+			
+			// Ok, we need to add this to the list of window controllers 
+			[self addWindowController:translatorWindowController];
+			
+			// Create the document -
+			[translatorWindowController createXMLDocumentFromData:data];
+			
+			NSLog(@"Super spank ... Yes...I am getting called...%@ ",typeName);
+		}
+		
+	}
+	
+	
+	if ( outError != NULL ) {
 		*outError = [NSError errorWithDomain:NSOSStatusErrorDomain code:unimpErr userInfo:NULL];
 	}
     return YES;
