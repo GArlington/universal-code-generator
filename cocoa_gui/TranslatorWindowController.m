@@ -25,6 +25,7 @@
 -(void)savePanelDidEnd:(NSSavePanel *)savePanel returnCode:(int)returnCode contextInfo:(void *)contextInfo;
 -(void)executeCodeGenJob;
 -(void)checkSpecificationTree;
+-(void)alertDidEnd:(NSAlert *)alert returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo; 
 
 
 @end
@@ -507,6 +508,21 @@
 	
 }
 
+- (void)alertDidEnd:(NSAlert *)alert returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo 
+{
+    if (returnCode == NSAlertFirstButtonReturn) 
+	{
+		// First, reset the state -
+		// Ok, reenable the code gen button -
+		[[self codeGeneratorButton] setEnabled:YES];
+		
+		// Stop the progress indicator -
+		[[self progressIndicator] stopAnimation:nil];
+		[[self bottomDisplayLabel] setStringValue:@"Translator loaded normally. Running ..."];
+		
+	}
+}
+
 -(void)executeCodeGenJob
 {
 	// Clear all -
@@ -536,48 +552,71 @@
 		// Get the path -
 		NSString *tmpNameString = [node stringValue];
 		
-		// Clearout the string - we are going to reuse ..
-		[strXPath setString:@""];
-		
-		[strXPath appendString:tmpNameString];
-		[strXPath appendString:@"/ExecuteJob.sh"];
-		
-		//NSLog(@"What is the launch path? %@",strXPath);
-		
-		// Set the launch path -
-		[aTask setLaunchPath:strXPath];
-		
-		// Set the arguments (path to the control file -)
-		[aTask setArguments:args];
-		[aTask setStandardOutput:outPipe];
-		[aTask setStandardError:errPipe];
-		[aTask setCurrentDirectoryPath:tmpNameString];
-		[aTask launch];
-		
-		
-		while ((inData = [readHandle availableData]) && ([inData length]))
+				
+		if ([tmpNameString length]==0)
 		{
-			NSString *aString = [[[NSString alloc] initWithData:inData encoding:NSUTF8StringEncoding] autorelease];
-			//[tmpBuffer appendString:aString];
-			[[self consoleTextField] insertText:aString];
+			// Ok, so If I get here, then I have *not* the path to the server properly -
+			// We need to do 2 things, first, reset the state of the application so I can fix the problem and retry the job
+			// and second, fire up an NSAlert telling the user...
+			
+			// Shut down the animation -
+			[[self progressIndicator] stopAnimation:nil];
+						
+			// First, fire up the Alert (reset the state when the user hits the button)
+			
+			NSAlert *alert = [[[NSAlert alloc] init] autorelease];
+			[alert addButtonWithTitle:@"OK"];
+			[alert addButtonWithTitle:@"Cancel"];
+			[alert setMessageText:@"An error was encounter when contacting the code generation server."];
+			[alert setInformativeText:@"Please check your path settings in the specification tree and try again."];
+			[alert setAlertStyle:NSWarningAlertStyle];
+			
+			// Fire up the alert 
+			[alert beginSheetModalForWindow:[self window] 
+							  modalDelegate:self didEndSelector:@selector(alertDidEnd:returnCode:contextInfo:) 
+								contextInfo:nil];
+			
+		}
+		else
+		{
+			// Clearout the string - we are going to reuse ..
+			[strXPath setString:@""];
+			
+			[strXPath appendString:tmpNameString];
+			[strXPath appendString:@"/ExecuteJob.sh"];
+			
+			//NSLog(@"What is the launch path? %@",strXPath);
+			[aTask setLaunchPath:strXPath];
+			
+			// Set the arguments (path to the control file -)
+			[aTask setArguments:args];
+			[aTask setStandardOutput:outPipe];
+			[aTask setStandardError:errPipe];
+			[aTask setCurrentDirectoryPath:tmpNameString];
+			
+			// Ok, so we at least have a 
+			[aTask launch];
+			
+			while ((inData = [readHandle availableData]) && ([inData length]))
+			{
+				NSString *aString = [[[NSString alloc] initWithData:inData encoding:NSUTF8StringEncoding] autorelease];
+				//[tmpBuffer appendString:aString];
+				[[self consoleTextField] insertText:aString];
+			}
+			
+			while ((errData = [readErrHandle availableData]) && ([errData length]))
+			{
+				NSString *errString = [[[NSString alloc] initWithData:errData encoding:NSUTF8StringEncoding] autorelease];
+				//[tmpBuffer appendString:errString];
+				[[self consoleTextField] insertText:errString];
+			}			
 		}
 		
-		while ((errData = [readErrHandle availableData]) && ([errData length]))
-		{
-			NSString *errString = [[[NSString alloc] initWithData:errData encoding:NSUTF8StringEncoding] autorelease];
-			//[tmpBuffer appendString:errString];
-			[[self consoleTextField] insertText:errString];
-		}
-		
-		// Post to the buffer -
-		//[[self consoleTextField] setString:tmpBuffer];
 		
 		// close the file -
 		[readHandle closeFile];
 		[readErrHandle closeFile];
 		
-		//[tmpBuffer appendString:@"Completed ..."];
-		//[[self consoleTextField] setString:tmpBuffer];
 	}
 	
 	// release local stuff -
