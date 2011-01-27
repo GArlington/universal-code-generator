@@ -632,12 +632,12 @@
 	[strXPath appendString:[typeNode stringValue]];
 	[strXPath appendString:@"']/display/@name"];
 	
-	NSLog(@"What was the xpath %@",strXPath);
+	//NSLog(@"What was the xpath %@",strXPath);
 	
 	NSArray *displayName = [[self xmlDocument] nodesForXPath:strXPath error:&errObject];
 	NSXMLElement *displayNode = (NSXMLElement *)[displayName lastObject];
 
-	NSLog(@"What was selected %@",[displayNode stringValue]);
+	//NSLog(@"What was selected %@",[displayNode stringValue]);
 	
 	// Ok, so now we need to figure which item is selected -
 	[[self fileTypePopupButton] selectItemWithTitle:[displayNode stringValue]];
