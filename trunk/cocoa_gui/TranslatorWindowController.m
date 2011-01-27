@@ -199,7 +199,7 @@
 				
 				[tmpString appendString:@" has a child "];
 				[tmpString appendString:[attrNode name]];
-				[tmpString appendString:@" which is empty. Please check the tree \n"];
+				[tmpString appendString:@" which is empty.\n"];
 				[[self consoleTextField] insertText:tmpString];
 				//[[self consoleTextField] insertText:@"\n"];
 				counter = counter + 1;
