@@ -599,6 +599,40 @@
 	// Send a message to the notification center to let folks know that I've loaded an xml file -
 	NSNotification *myNotification = [NSNotification notificationWithName:@"TreeDidLoad" object:nil]; 
 	[[NSNotificationQueue defaultQueue] enqueueNotification:myNotification postingStyle:NSPostNow coalesceMask:NSNotificationCoalescingOnName forModes:nil];
+	
+	// Figure out what combo item has been selected -
+	NSMutableString *strXPath = [[NSMutableString alloc] initWithCapacity:140];
+	[strXPath appendString:@".//Model/@type"];
+	NSArray *listOfChildren = [[[self xmlTreeModel] xmlDocument] nodesForXPath:strXPath error:&errObject];
+	
+	// Get the type node -
+	NSXMLElement *typeNode = (NSXMLElement *)[listOfChildren lastObject];
+	
+	// OK, so now we need to look the string visible to the user -
+	[strXPath setString:@""];
+	[strXPath appendString:@".//mapping[@type='"];
+	[strXPath appendString:[typeNode stringValue]];
+	[strXPath appendString:@"']/display/@name"];
+	
+	//NSLog(@"What was the xpath %@",strXPath);
+	
+	NSArray *displayName = [[self xmlDocument] nodesForXPath:strXPath error:&errObject];
+	NSXMLElement *displayNode = (NSXMLElement *)[displayName lastObject];
+	
+	//NSLog(@"What was selected %@",[displayNode stringValue]);
+	
+	// Ok, so now we need to figure which item is selected -
+	[[self fileTypePopupButton] selectItemWithTitle:[displayNode stringValue]];
+	
+	// release -
+	[strXPath release];
+	
+	// Set the enabled state on the code gen button -
+	[[self codeGeneratorButton] setEnabled:YES];
+	
+	// Enable the codeTree check button -
+	[[self treeCheckButton] setEnabled:YES];
+	
 }
 
 -(void)createXMLDocumentFromFile:(NSString *)file
