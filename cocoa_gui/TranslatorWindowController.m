@@ -140,6 +140,10 @@
 	[[self progressIndicator] setIndeterminate:YES];
 	[[self progressIndicator] setDisplayedWhenStopped:NO];
 	[[self progressIndicator] setUsesThreadedAnimation:YES];
+	
+	// Ok, so we have a weird issue that I didn't get on my laptop -- the file load button has focus when I first start up
+	// this should be the tree..
+	[[self window] makeFirstResponder:[self treeView]];
 		
 }
 
