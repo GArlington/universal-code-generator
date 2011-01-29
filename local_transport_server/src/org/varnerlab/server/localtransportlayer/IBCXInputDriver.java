@@ -2,7 +2,7 @@ package org.varnerlab.server.localtransportlayer;
 
 import java.util.Properties;
 import java.util.Hashtable;
-import org.sbml.libsbml.*;
+
 
 public interface IBCXInputDriver extends IInputHandler {
 
