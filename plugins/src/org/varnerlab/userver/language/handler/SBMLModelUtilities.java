@@ -1113,7 +1113,7 @@ public class SBMLModelUtilities {
                 // If the rate is reversible then I need to split -
            
                 // Create a new reaction object -
-                Reaction rxn_new = new Reaction();
+                Reaction rxn_new = new Reaction(2,4);
                 String strNewName = "_REVERSE_"+strOldName;
                 String strNewID = "_REVERSE_"+strOldID;
                 rxn_new.setName(strNewName);

@@ -872,7 +872,7 @@ public class CodeGenUtilMethods extends Object {
                 // If the rate is reversible then I need to split -
            
                 // Create a new reaction object -
-                Reaction rxn_new = new Reaction();
+                Reaction rxn_new = new Reaction(2,4);
                 
                 // Before I do anything else, lets grab the notes and reverse
                 if (rxn_local.isSetNotes())
@@ -931,7 +931,7 @@ public class CodeGenUtilMethods extends Object {
                 // If the rate is reversible then I need to split -
            
                 // Create a new reaction object -
-                Reaction rxn_new = new Reaction();
+                Reaction rxn_new = new Reaction(2,4);
                 
                 // Add the reactants to the products list and vice-versa -
                 int NPRODUCTS_LOCAL = (int)rxn_local.getNumProducts();
