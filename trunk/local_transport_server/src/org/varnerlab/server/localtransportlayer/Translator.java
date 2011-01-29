@@ -16,8 +16,6 @@ import java.util.Properties;
 import java.util.Hashtable;
 import java.util.logging.Logger;
 
-import org.sbml.libsbml.*;
-
 /**
  *
  * @author jeffreyvarner
@@ -25,7 +23,6 @@ import org.sbml.libsbml.*;
 public class Translator {
     // Class/instance attributes -
     private Hashtable _propTable = null;
-    private SBMLReader _sbmlReader = null;
     private Logger _logger = Logger.getLogger(Translator.class.getName());
     
     /** Creates a new instance of Translator */
@@ -55,7 +52,7 @@ public class Translator {
         
         // load the sbml?
         // System.out.println("New - "+System.getProperty("java.library.path"));
-        System.loadLibrary("sbmlj");
+        // System.loadLibrary("sbmlj");
         
         // Ok, so when I get here I have to create the dirs in case they are not already there -
         ArrayList<String> arrList = new ArrayList<String>();
