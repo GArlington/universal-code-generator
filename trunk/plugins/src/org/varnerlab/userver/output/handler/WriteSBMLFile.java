@@ -41,11 +41,13 @@ public class WriteSBMLFile implements IOutputHandler {
         // New document -
         SBMLDocument doc = new SBMLDocument();
         
+        System.out.println("How many species (in output handler)? "+model_wrapper.getNumSpecies());
+        
         // set the model -
-        doc.setModel(model_wrapper);
+        doc.setModel(model_wrapper.getModel());
         
         // Get the resource string -
-        String strNetworkFileName = _xmlPropTree.getProperty("//OutputOptions/SBMLOutputFile/@filename");
+        String strNetworkFileName = _xmlPropTree.getProperty(".//OutputOptions/SBMLOutputFile/@filename");
         
         // Get the path key for this file name -
         String strNetworkPathKey = _xmlPropTree.getProperty(".//OutputOptions/SBMLOutputFile[@filename='"+strNetworkFileName+"']/@path_symbol");
@@ -61,9 +63,20 @@ public class WriteSBMLFile implements IOutputHandler {
         	strSBMLFile = strNetworkFileNamePath+"/"+strNetworkFileName;
         }
         
-        // Write the SBML file -
-        String strSBMLTree = doc.toSBML();
-        GIOL.write(strSBMLFile,strSBMLTree);
+        // THIS SHOULD *NOT* BE NEEDED...there must be a bug in libSBML?
+        // If we call writeXX directly on the document, then we get an empty model?
+        // Create string buffer -
+        StringBuffer buffer = new StringBuffer();
+        buffer.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+        buffer.append("<sbml xmlns=\"http://www.sbml.org/sbml/level3/version1/core\" level=\"3\" version=\"1\">\n");
+        buffer.append(model_wrapper.toSBML());
+        buffer.append("\n");
+        buffer.append("</sbml>");
+        
+        //System.out.println("WTF?? - "+doc.toSBML());
+        
+        // Write to file 
+        GIOL.write(strSBMLFile,buffer.toString());
     }
 
     public void setHashtable(Hashtable prop) {
