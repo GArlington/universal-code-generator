@@ -144,7 +144,9 @@
 	// Ok, so we have a weird issue that I didn't get on my laptop -- the file load button has focus when I first start up
 	// this should be the tree..
 	[[self window] makeFirstResponder:[self treeView]];
-		
+	
+	// Ok, so we need to have the window pop-up when I start -
+	[[self window] makeKeyAndOrderFront:nil];
 }
 
 #pragma mark --------------------------------
@@ -245,37 +247,42 @@
 	if (tmpString!=nil)
 	{
 		// Ok, so when I get here I have a non-nil string title -
-		
-		// Setup the XPath query string -
-		NSMutableString *strXPath = [[NSMutableString alloc] initWithCapacity:140];
-		
-		// Lookup the filename given this choice -
-		[strXPath appendString:@".//display[@name=\""];
-		[strXPath appendString:tmpString];
-		[strXPath appendString:@"\"]/@filename"];
-		
-		// NSLog(@"XPATH %@",strXPath);
-		
-		// Get all the children of the current node -
-		NSArray *listOfChildren = [[self xmlDocument] nodesForXPath:strXPath error:&err];
-		
-		// Ok, so I should have a filename to load -
-		for (NSXMLElement *node in listOfChildren)
+	
+		if ([tmpString isEqualToString:@"Load custom specification ..."])
 		{
-			// Ok, get the file name, and load from the bundle -
-			NSString* templateName = [[NSBundle mainBundle] pathForResource:[node stringValue] ofType:@"xml"];
-			
-			// NSLog(@"TemplateName - %@",templateName);
-			
-			if (templateName!=nil)
-			{
-				// Load the tree -
-				[self createXMLDocumentFromFile:templateName];
-			}
+			[self doOpenXMLFile:nil];
 		}
-		
-		// Release the path -
-		[strXPath release];
+		else 
+		{
+			// Setup the XPath query string -
+			NSMutableString *strXPath = [[NSMutableString alloc] initWithCapacity:140];
+			
+			// Lookup the filename given this choice -
+			[strXPath appendString:@".//display[@name=\""];
+			[strXPath appendString:tmpString];
+			[strXPath appendString:@"\"]/@filename"];
+			
+			// Get all the children of the current node -
+			NSArray *listOfChildren = [[self xmlDocument] nodesForXPath:strXPath error:&err];
+			
+			// Ok, so I should have a filename to load -
+			for (NSXMLElement *node in listOfChildren)
+			{
+				// Ok, get the file name, and load from the bundle -
+				NSString* templateName = [[NSBundle mainBundle] pathForResource:[node stringValue] ofType:@"xml"];
+				
+				//NSLog(@"TemplateName - %@",templateName);
+				
+				if (templateName!=nil)
+				{
+					// Load the tree -
+					[self createXMLDocumentFromFile:templateName];
+				}
+			}
+			
+			// Release the path -
+			[strXPath release];
+		}
 	}
 	
 	// Enable the tree check button -

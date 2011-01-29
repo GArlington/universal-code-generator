@@ -1346,20 +1346,20 @@
 					<int key="connectionID">100200</int>
 				</object>
 				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">menuSelectionAction:</string>
-						<reference key="source" ref="512844837"/>
-						<reference key="destination" ref="999667565"/>
-					</object>
-					<int key="connectionID">100203</int>
-				</object>
-				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
 						<string key="label">fileTypePopupButton</string>
 						<reference key="source" ref="512844837"/>
 						<reference key="destination" ref="129083923"/>
 					</object>
 					<int key="connectionID">100204</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">menuSelectionAction:</string>
+						<reference key="source" ref="512844837"/>
+						<reference key="destination" ref="999667565"/>
+					</object>
+					<int key="connectionID">100205</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -2114,7 +2114,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">100204</int>
+			<int key="maxID">100205</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -2919,7 +2919,7 @@
 			</object>
 			<object class="NSMutableArray" key="dict.values">
 				<bool key="EncodedWithXMLCoder">YES</bool>
-				<string>{256, 256}</string>
+				<string>{32, 32}</string>
 				<string>{8, 8}</string>
 				<string>{9, 8}</string>
 				<string>{7, 2}</string>

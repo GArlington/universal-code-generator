@@ -1,7 +1,7 @@
 TTranslator
 v7
 r0
-t317780452.292597
+t317969410.699691
 cCheck dependencies
 cProcessInfoPlistFile /Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/build/Debug/Translator.app/Contents/Info.plist Translator-Info.plist
 cCpResource build/Debug/Translator.app/Contents/Resources/English.lproj/Credits.rtf English.lproj/Credits.rtf
@@ -959,9 +959,9 @@ t1296020530
 s175592
 
 N/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/English.lproj/MyDocument.xib
-c000000004D40B5590000000000021580
-t1296086361
-s136576
+c000000004D439A7A00000000000217FB
+t1296276090
+s137211
 
 N/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/FolderExperiments.icns
 c000000004D3FB432000000000003F94D
@@ -1127,18 +1127,18 @@ t1296020530
 s1401
 
 N/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/TranslatorWindowController.h
-c000000004D4083E00000000000000A9F
-t1296073696
-s2719
+c000000004D41C62F0000000000000B62
+t1296156207
+s2914
 i<Cocoa/Cocoa.h>
 i"XMLTreeModel.h"
 i"TreeIconModel.h"
 i"TreeNodeNamingModel.h"
 
 N/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/TranslatorWindowController.m
-c000000004D40B7960000000000005296
-t1296086934
-s21142
+c000000004D439C7F0000000000006536
+t1296276607
+s25910
 i"TranslatorWindowController.h"
 i"NSXMLElement_Category.h"
 
@@ -1259,7 +1259,7 @@ t1296020530
 s48571
 
 N/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/build/Debug/Translator.app
-t1296087652
+t1296276610
 s136
 
 N/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/build/Debug/Translator.app/Contents/Info.plist
@@ -1267,8 +1267,8 @@ t1296020777
 s1372
 
 N/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/build/Debug/Translator.app/Contents/MacOS/Translator
-t1296087652
-s104240
+t1296276610
+s105160
 
 N/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/build/Debug/Translator.app/Contents/PkgInfo
 t1296020777
@@ -1303,8 +1303,8 @@ t1296020778
 s33314
 
 N/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/build/Debug/Translator.app/Contents/Resources/English.lproj/MyDocument.nib
-t1296086367
-s26563
+t1296276098
+s26662
 
 N/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/build/Debug/Translator.app/Contents/Resources/FolderExperiments.icns
 t1296020777
@@ -1503,8 +1503,8 @@ t1296020777
 s131939
 
 N/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/MyDocument.o
-t1296087651
-s33992
+t1296156208
+s34016
 
 N/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/NSXMLElement_Category.o
 t1296020783
@@ -1540,8 +1540,8 @@ t1296064740
 s1775
 
 N/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/TranslatorWindowController.o
-t1296086937
-s98704
+t1296276610
+s107204
 
 N/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/TreeIconModel.o
 t1296020783
@@ -1831,7 +1831,7 @@ lSLF07#2@64"Analyze /Users/jeffreyvarner/Documents/dev_iOS/Translator/main.m3176
 
 CCheck dependencies
 r0
-lSLF07#2@18"Check dependencies317780451#317780451#0(0"0(0#1#0"8596991328#0"0#
+lSLF07#2@18"Check dependencies317969410#317969410#0(0"0(0#1#0"8618209984#0"0#
 
 CCompileC build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/CCMLTableComboBoxDataSource.o /Users/jeffreyvarner/Documents/dev_iOS/Translator/CCMLTableComboBoxDataSource.m normal x86_64 objective-c com.apple.compilers.gcc.4_2
 r0
@@ -1853,8 +1853,8 @@ xcom.apple.compilers.gcc.4_2
 lSLF07#2@70"Compile /Users/jeffreyvarner/Documents/dev_iOS/Translator/MyDocument.m317707350#317707350#0(0"0(0#0#62"/Users/jeffreyvarner/Documents/dev_iOS/Translator/MyDocument.m8625375712#1643"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.2 -x objective-c -arch x86_64 -fmessage-length=0 -pipe -std=gnu99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.6.sdk -mfix-and-continue -mmacosx-version-min=10.6 -gdwarf-2 -iquote /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-generated-files.hmap -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-own-target-headers.hmap -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-all-target-headers.hmap -iquote /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-project-headers.hmap -F/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/include -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/DerivedSources/x86_64 -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/DerivedSources -include /var/folders/nT/nT6t96pgGky16r0n69Nb0k+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/Translator_Prefix-grjwapcieaaiwydxecjwztsafbot/Translator_Prefix.pch -c /Users/jeffreyvarner/Documents/dev_iOS/Translator/MyDocument.m -o /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/MyDocument.o0#
 
 CCompileC build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/MyDocument.o /Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/MyDocument.m normal x86_64 objective-c com.apple.compilers.gcc.4_2
-s317780451.665411
-e317780451.892051
+s317849008.133373
+e317849008.419474
 r1
 xCompileC
 xbuild/Translator.build/Debug/Translator.build/Objects-normal/x86_64/MyDocument.o
@@ -1863,13 +1863,7 @@ xnormal
 xx86_64
 xobjective-c
 xcom.apple.compilers.gcc.4_2
-o/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/MyDocument.m: In function '-[MyDocument readFromData:ofType:error:]':
-o/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/MyDocument.m:99: warning: 'TranslatorWindowController' may not respond to '-createXMLDocumentFromData:'
-o/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/MyDocument.m:99: warning: (Messages without a matching method signature
-o/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/MyDocument.m:99: warning: will be assumed to return 'id' and accept
-o/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/MyDocument.m:99: warning: '...' as arguments.)
-o/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/MyDocument.m:112: warning: 'TranslatorWindowController' may not respond to '-createXMLDocumentFromData:'
-lSLF07#2@69"Compile /Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/MyDocument.m317780451#317780451#0(760"/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/MyDocument.m: In function '-[MyDocument readFromData:ofType:error:]':/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/MyDocument.m:99: warning: 'TranslatorWindowController' may not respond to '-createXMLDocumentFromData:'/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/MyDocument.m:99: warning: (Messages without a matching method signature/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/MyDocument.m:99: warning: will be assumed to return 'id' and accept/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/MyDocument.m:99: warning: '...' as arguments.)/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/MyDocument.m:112: warning: 'TranslatorWindowController' may not respond to '-createXMLDocumentFromData:'3(22@77"'TranslatorWindowController' may not respond to '-createXMLDocumentFromData:'317780451#119#153#0(6@61"/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/MyDocument.m317780447#99#0#99#0#26"'*' may not respond to '*'0(13@108"(Messages without a matching method signature will be assumed to return 'id' and accept '...' as arguments.)317780451#272#121#0(6@61"/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/MyDocument.m317780447#99#0#99#0#0"0(22@77"'TranslatorWindowController' may not respond to '-createXMLDocumentFromData:'317780451#606#154#0(6@61"/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/MyDocument.m317780447#112#0#112#0#26"'*' may not respond to '*'0(0#0#61"/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/MyDocument.m8625719456#1632"    cd /Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.2 -x objective-c -arch x86_64 -fmessage-length=0 -pipe -std=gnu99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.6.sdk -mfix-and-continue -mmacosx-version-min=10.6 -gdwarf-2 -iquote /Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/build/Translator.build/Debug/Translator.build/Translator-generated-files.hmap -I/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/build/Translator.build/Debug/Translator.build/Translator-own-target-headers.hmap -I/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/build/Translator.build/Debug/Translator.build/Translator-all-target-headers.hmap -iquote /Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/build/Translator.build/Debug/Translator.build/Translator-project-headers.hmap -F/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/build/Debug -I/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/build/Debug/include -I/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/build/Translator.build/Debug/Translator.build/DerivedSources/x86_64 -I/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/build/Translator.build/Debug/Translator.build/DerivedSources -include /var/folders/nT/nT6t96pgGky16r0n69Nb0k+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/Translator_Prefix-gvhaglkbzacmazfstggoafzfnvnm/Translator_Prefix.pch -c /Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/MyDocument.m -o /Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/MyDocument.o0#
+lSLF07#2@69"Compile /Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/MyDocument.m317849008#317849008#0(0"0(0#0#61"/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/MyDocument.m8660259774160596992#1632"    cd /Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.2 -x objective-c -arch x86_64 -fmessage-length=0 -pipe -std=gnu99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.6.sdk -mfix-and-continue -mmacosx-version-min=10.6 -gdwarf-2 -iquote /Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/build/Translator.build/Debug/Translator.build/Translator-generated-files.hmap -I/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/build/Translator.build/Debug/Translator.build/Translator-own-target-headers.hmap -I/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/build/Translator.build/Debug/Translator.build/Translator-all-target-headers.hmap -iquote /Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/build/Translator.build/Debug/Translator.build/Translator-project-headers.hmap -F/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/build/Debug -I/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/build/Debug/include -I/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/build/Translator.build/Debug/Translator.build/DerivedSources/x86_64 -I/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/build/Translator.build/Debug/Translator.build/DerivedSources -include /var/folders/nT/nT6t96pgGky16r0n69Nb0k+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/Translator_Prefix-gvhaglkbzacmazfstggoafzfnvnm/Translator_Prefix.pch -c /Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/MyDocument.m -o /Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/MyDocument.o0#
 
 CCompileC build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/NSXMLElement_Category.o /Users/jeffreyvarner/Documents/dev_iOS/Translator/NSXMLElement_Category.m normal x86_64 objective-c com.apple.compilers.gcc.4_2
 s317623202.223510
@@ -2044,8 +2038,8 @@ xcom.apple.compilers.gcc.4_2
 lSLF07#2@86"Compile /Users/jeffreyvarner/Documents/dev_iOS/Translator/TranslatorWindowController.m317708307#317708307#0(0"0(0#0#78"/Users/jeffreyvarner/Documents/dev_iOS/Translator/TranslatorWindowController.m8613069376#1675"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.2 -x objective-c -arch x86_64 -fmessage-length=0 -pipe -std=gnu99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.6.sdk -mfix-and-continue -mmacosx-version-min=10.6 -gdwarf-2 -iquote /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-generated-files.hmap -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-own-target-headers.hmap -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-all-target-headers.hmap -iquote /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Translator-project-headers.hmap -F/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/include -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/DerivedSources/x86_64 -I/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/DerivedSources -include /var/folders/nT/nT6t96pgGky16r0n69Nb0k+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/Translator_Prefix-grjwapcieaaiwydxecjwztsafbot/Translator_Prefix.pch -c /Users/jeffreyvarner/Documents/dev_iOS/Translator/TranslatorWindowController.m -o /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/TranslatorWindowController.o0#
 
 CCompileC build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/TranslatorWindowController.o /Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/TranslatorWindowController.m normal x86_64 objective-c com.apple.compilers.gcc.4_2
-s317779737.090956
-e317779737.789773
+s317969410.314077
+e317969410.641884
 r1
 xCompileC
 xbuild/Translator.build/Debug/Translator.build/Objects-normal/x86_64/TranslatorWindowController.o
@@ -2054,7 +2048,7 @@ xnormal
 xx86_64
 xobjective-c
 xcom.apple.compilers.gcc.4_2
-lSLF07#2@85"Compile /Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/TranslatorWindowController.m317779737#317779737#0(0"0(0#0#77"/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/TranslatorWindowController.m8628633824#1664"    cd /Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.2 -x objective-c -arch x86_64 -fmessage-length=0 -pipe -std=gnu99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.6.sdk -mfix-and-continue -mmacosx-version-min=10.6 -gdwarf-2 -iquote /Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/build/Translator.build/Debug/Translator.build/Translator-generated-files.hmap -I/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/build/Translator.build/Debug/Translator.build/Translator-own-target-headers.hmap -I/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/build/Translator.build/Debug/Translator.build/Translator-all-target-headers.hmap -iquote /Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/build/Translator.build/Debug/Translator.build/Translator-project-headers.hmap -F/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/build/Debug -I/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/build/Debug/include -I/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/build/Translator.build/Debug/Translator.build/DerivedSources/x86_64 -I/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/build/Translator.build/Debug/Translator.build/DerivedSources -include /var/folders/nT/nT6t96pgGky16r0n69Nb0k+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/Translator_Prefix-gvhaglkbzacmazfstggoafzfnvnm/Translator_Prefix.pch -c /Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/TranslatorWindowController.m -o /Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/TranslatorWindowController.o0#
+lSLF07#2@85"Compile /Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/TranslatorWindowController.m317969410#317969410#0(0"0(0#0#77"/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/TranslatorWindowController.m8613557728#1664"    cd /Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.2 -x objective-c -arch x86_64 -fmessage-length=0 -pipe -std=gnu99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.6.sdk -mfix-and-continue -mmacosx-version-min=10.6 -gdwarf-2 -iquote /Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/build/Translator.build/Debug/Translator.build/Translator-generated-files.hmap -I/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/build/Translator.build/Debug/Translator.build/Translator-own-target-headers.hmap -I/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/build/Translator.build/Debug/Translator.build/Translator-all-target-headers.hmap -iquote /Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/build/Translator.build/Debug/Translator.build/Translator-project-headers.hmap -F/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/build/Debug -I/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/build/Debug/include -I/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/build/Translator.build/Debug/Translator.build/DerivedSources/x86_64 -I/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/build/Translator.build/Debug/Translator.build/DerivedSources -include /var/folders/nT/nT6t96pgGky16r0n69Nb0k+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/Translator_Prefix-gvhaglkbzacmazfstggoafzfnvnm/Translator_Prefix.pch -c /Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/TranslatorWindowController.m -o /Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/TranslatorWindowController.o0#
 
 CCompileC build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/TreeIconModel.o /Users/jeffreyvarner/Documents/dev_iOS/Translator/TreeIconModel.m normal x86_64 objective-c com.apple.compilers.gcc.4_2
 s317623202.668894
@@ -2229,8 +2223,8 @@ x/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/English.lproj/MainMenu.xib
 lSLF07#2@37"CompileXIB English.lproj/MainMenu.xib317713577#317713578#0(0"0(0#0#75"/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/English.lproj/MainMenu.xib8604487392#397"    cd /Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui    /Developer/usr/bin/ibtool --errors --warnings --notices --output-format human-readable-text --compile /Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/build/Debug/Translator.app/Contents/Resources/English.lproj/MainMenu.nib /Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/English.lproj/MainMenu.xib --sdk /Developer/SDKs/MacOSX10.6.sdk0#
 
 CCompileXIB /Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/English.lproj/MyDocument.xib
-s317779166.081388
-e317779167.600203
+s317968898.145365
+e317968898.673324
 r1
 xCompileXIB
 x/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/English.lproj/MyDocument.xib
@@ -2240,7 +2234,7 @@ o/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/English.lproj/MyDocument.xib:1
 o/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/English.lproj/MyDocument.xib:100170: note: This view is clipping its content.
 o/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/English.lproj/MyDocument.xib:100197: note: This view is clipping its content.
 o/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/English.lproj/MyDocument.xib:100172: note: This view is clipping its content.
-lSLF07#2@39"CompileXIB English.lproj/MyDocument.xib317779166#317779167#0(675"/* com.apple.ibtool.document.notices *//Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/English.lproj/MyDocument.xib:100168: note: This view is clipping its content./Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/English.lproj/MyDocument.xib:100177: note: This view is clipping its content./Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/English.lproj/MyDocument.xib:100170: note: This view is clipping its content./Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/English.lproj/MyDocument.xib:100197: note: This view is clipping its content./Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/English.lproj/MyDocument.xib:100172: note: This view is clipping its content.5(13@34"This view is clipping its content.317779167#18446744073709551615#0#0(6@77"/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/English.lproj/MyDocument.xib317779161#100168#0#100168#0#0"0(13@34"This view is clipping its content.317779167#18446744073709551615#0#0(6@77"/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/English.lproj/MyDocument.xib317779161#100177#0#100177#0#0"0(13@34"This view is clipping its content.317779167#18446744073709551615#0#0(6@77"/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/English.lproj/MyDocument.xib317779161#100170#0#100170#0#0"0(13@34"This view is clipping its content.317779167#18446744073709551615#0#0(6@77"/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/English.lproj/MyDocument.xib317779161#100197#0#100197#0#0"0(13@34"This view is clipping its content.317779167#18446744073709551615#0#0(6@77"/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/English.lproj/MyDocument.xib317779161#100172#0#100172#0#0"0(0#0#77"/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/English.lproj/MyDocument.xib8602024128#401"    cd /Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui    /Developer/usr/bin/ibtool --errors --warnings --notices --output-format human-readable-text --compile /Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/build/Debug/Translator.app/Contents/Resources/English.lproj/MyDocument.nib /Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/English.lproj/MyDocument.xib --sdk /Developer/SDKs/MacOSX10.6.sdk0#
+lSLF07#2@39"CompileXIB English.lproj/MyDocument.xib317968898#317968898#0(675"/* com.apple.ibtool.document.notices *//Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/English.lproj/MyDocument.xib:100168: note: This view is clipping its content./Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/English.lproj/MyDocument.xib:100177: note: This view is clipping its content./Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/English.lproj/MyDocument.xib:100170: note: This view is clipping its content./Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/English.lproj/MyDocument.xib:100197: note: This view is clipping its content./Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/English.lproj/MyDocument.xib:100172: note: This view is clipping its content.5(13@34"This view is clipping its content.317968898#18446744073709551615#0#0(6@77"/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/English.lproj/MyDocument.xib317968890#100168#0#100168#0#0"0(13@34"This view is clipping its content.317968898#18446744073709551615#0#0(6@77"/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/English.lproj/MyDocument.xib317968890#100177#0#100177#0#0"0(13@34"This view is clipping its content.317968898#18446744073709551615#0#0(6@77"/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/English.lproj/MyDocument.xib317968890#100170#0#100170#0#0"0(13@34"This view is clipping its content.317968898#18446744073709551615#0#0(6@77"/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/English.lproj/MyDocument.xib317968890#100197#0#100197#0#0"0(13@34"This view is clipping its content.317968898#18446744073709551615#0#0(6@77"/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/English.lproj/MyDocument.xib317968890#100172#0#100172#0#0"0(0#0#77"/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/English.lproj/MyDocument.xib8599936256#401"    cd /Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui    /Developer/usr/bin/ibtool --errors --warnings --notices --output-format human-readable-text --compile /Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/build/Debug/Translator.app/Contents/Resources/English.lproj/MyDocument.nib /Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/English.lproj/MyDocument.xib --sdk /Developer/SDKs/MacOSX10.6.sdk0#
 
 CCopyStringsFile /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Resources/English.lproj/InfoPlist.strings English.lproj/InfoPlist.strings
 s317623188.310626
@@ -2757,14 +2751,14 @@ xx86_64
 lSLF07#2@107"Link /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/MacOS/Translator317708307#317708308#0(0"0(0#0#0"8615505120#612"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    setenv MACOSX_DEPLOYMENT_TARGET 10.6    /Developer/usr/bin/gcc-4.2 -arch x86_64 -isysroot /Developer/SDKs/MacOSX10.6.sdk -L/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug -F/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug -filelist /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/Translator.LinkFileList -mmacosx-version-min=10.6 -framework Cocoa -o /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/MacOS/Translator0#
 
 CLd /Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/build/Debug/Translator.app/Contents/MacOS/Translator normal x86_64
-s317780451.892183
-e317780452.260357
+s317969410.642004
+e317969410.696660
 r1
 xLd
 x/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/build/Debug/Translator.app/Contents/MacOS/Translator
 xnormal
 xx86_64
-lSLF07#2@106"Link /Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/build/Debug/Translator.app/Contents/MacOS/Translator317780451#317780452#0(0"0(0#0#0"8631629056#607"    cd /Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui    setenv MACOSX_DEPLOYMENT_TARGET 10.6    /Developer/usr/bin/gcc-4.2 -arch x86_64 -isysroot /Developer/SDKs/MacOSX10.6.sdk -L/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/build/Debug -F/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/build/Debug -filelist /Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/Translator.LinkFileList -mmacosx-version-min=10.6 -framework Cocoa -o /Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/build/Debug/Translator.app/Contents/MacOS/Translator0#
+lSLF07#2@106"Link /Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/build/Debug/Translator.app/Contents/MacOS/Translator317969410#317969410#0(0"0(0#0#0"8617372480#607"    cd /Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui    setenv MACOSX_DEPLOYMENT_TARGET 10.6    /Developer/usr/bin/gcc-4.2 -arch x86_64 -isysroot /Developer/SDKs/MacOSX10.6.sdk -L/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/build/Debug -F/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/build/Debug -filelist /Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/build/Translator.build/Debug/Translator.build/Objects-normal/x86_64/Translator.LinkFileList -mmacosx-version-min=10.6 -framework Cocoa -o /Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/build/Debug/Translator.app/Contents/MacOS/Translator0#
 
 CProcessInfoPlistFile /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app/Contents/Info.plist Translator-Info.plist
 s317623188.305835
@@ -2832,10 +2826,10 @@ x/Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app
 lSLF07#2@82"Touch /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app317708308#317708308#0(0"0(0#0#0"8619592672#156"    cd /Users/jeffreyvarner/Documents/dev_iOS/Translator    /usr/bin/touch -c /Users/jeffreyvarner/Documents/dev_iOS/Translator/build/Debug/Translator.app0#
 
 CTouch /Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/build/Debug/Translator.app
-s317780452.260444
-e317780452.292533
+s317969410.696752
+e317969410.699651
 r1
 xTouch
 x/Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/build/Debug/Translator.app
-lSLF07#2@81"Touch /Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/build/Debug/Translator.app317780452#317780452#0(0"0(0#0#0"8633504448#154"    cd /Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui    /usr/bin/touch -c /Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/build/Debug/Translator.app0#
+lSLF07#2@81"Touch /Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/build/Debug/Translator.app317969410#317969410#0(0"0(0#0#0"8613774496#154"    cd /Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui    /usr/bin/touch -c /Users/jeffreyvarner/Documents/dev_iOS/cocoa_gui/build/Debug/Translator.app0#
 
