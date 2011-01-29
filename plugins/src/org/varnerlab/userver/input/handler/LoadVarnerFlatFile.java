@@ -34,6 +34,7 @@ public class LoadVarnerFlatFile implements IInputHandler {
 	private Vector<Object> _rxnVector = new Vector<Object>();           // Reaction vector
 	private Vector<Object> _alphabetVector = new Vector<Object>();      // Alphabet vector
 	private Model _modelWrapper = null;                 				// Model wrapper -
+	//private SBMLDocument  _sbmlDoc = new SBMLDocument();
 
 	// rate constants and initial conditions array -
 	private double[] _dblRateConstant = null;         						// Rate constants
@@ -64,7 +65,7 @@ public class LoadVarnerFlatFile implements IInputHandler {
 		String strOrderFileName = (String)_propTable.get("SYMBOL_FILENAME");
 		String strOrderFileNamePath = (String)_propTable.get("SYMBOL_FILENAME_PATH");
 
-		System.out.println("What is going on ?? "+strOrderFileName+" what is the path "+strOrderFileNamePath);
+		//System.out.println("What is going on ?? "+strOrderFileName+" what is the path "+strOrderFileNamePath);
 		
 		// Ok, load the order file if we have a pointer
 		if (!strOrderFileName.isEmpty())
@@ -171,7 +172,7 @@ public class LoadVarnerFlatFile implements IInputHandler {
 		{
 			// Get the record
 			Record record = (Record)iterRecords.next();
-
+			
 			// Ok, so here I need to check if I have a forward or reversable reaction
 			String strReverseFlag = (String)record.getData(IReactionFile.REVERSE);
 			String strRxnNameTest = (String)record.getData(IReactionFile.RXNNAME);
@@ -314,11 +315,12 @@ public class LoadVarnerFlatFile implements IInputHandler {
 
 		// Load the sbml lib -
 		int counter;
-		System.out.println("New - "+System.getProperty("java.library.path"));
+		//System.out.println("New - "+System.getProperty("java.library.path"));
+		
 		System.loadLibrary("sbmlj");
 
 		// Create a new modelWrapper -
-		_modelWrapper = new Model();
+		_modelWrapper = new Model(2,4);
 
 		// Set the name of the model -
 		String strModelName = _propTable.get("MODEL_NAME");
@@ -332,7 +334,9 @@ public class LoadVarnerFlatFile implements IInputHandler {
 		}
 
 		// Ok, we need to set a default compartment -
-		_modelWrapper.addCompartment(new Compartment("model"));
+		Compartment tmpCompartment = _modelWrapper.createCompartment();
+		tmpCompartment.setName(strModelName);
+		_modelWrapper.addCompartment(tmpCompartment);
 
 		// Ok, get the iterator for species so I can add these to the model -
 		Iterator species_iter = this._alphabetVector.iterator();
@@ -341,12 +345,14 @@ public class LoadVarnerFlatFile implements IInputHandler {
 		while (species_iter.hasNext())
 		{
 			String spName = (String)species_iter.next();
+			
+			System.out.println("Processing "+spName);
 
 			// We need to check for - 
 			//spName = spName.replace('-', '_');
 
 			// Configure the species object -
-			Species newSpecies = new Species();
+			Species newSpecies = _modelWrapper.createSpecies();
 			newSpecies.setName(spName);
 			newSpecies.setId(spName);
 			newSpecies.setCompartment("model");
@@ -366,6 +372,9 @@ public class LoadVarnerFlatFile implements IInputHandler {
 			_modelWrapper.addSpecies(newSpecies);
 			counter++;
 		}
+		
+		// How many species are in the model?
+		//System.out.println("How many species are in the model? "+_modelWrapper.getNumSpecies());
 
 		// Get the iterator of FFReactionObjects -
 		Iterator rxn_iter = this._rxnVector.iterator();
@@ -375,7 +384,7 @@ public class LoadVarnerFlatFile implements IInputHandler {
 		while (rxn_iter.hasNext())
 		{
 			// Create a new SBML reaction object -
-			Reaction rxnSBML = new Reaction();
+			Reaction rxnSBML = _modelWrapper.createReaction();
 
 			// flat files always are irreversible -
 			rxnSBML.setReversible(false);
@@ -384,7 +393,7 @@ public class LoadVarnerFlatFile implements IInputHandler {
 			FFReactionObject ffRxnObj = (FFReactionObject)rxn_iter.next();
 
 			// Ok, so create a parameter object for the model -
-			Parameter parameterObj = new Parameter();
+			Parameter parameterObj = _modelWrapper.createParameter();
 
 			//naming the parameter the rxn string means I cannot refer to it later
 			//parameterObj.setName(ffRxnObj.getReactionString());
@@ -437,7 +446,7 @@ public class LoadVarnerFlatFile implements IInputHandler {
 				//strSymbol = strSymbol.replace('-', '_');
 
 				// Create a new SpeciesRef -
-				SpeciesReference specRef = new SpeciesReference();
+				SpeciesReference specRef = new SpeciesReference(2,4);
 				specRef.setSpecies(strSymbol);
 
 				if (!strSymbol.equalsIgnoreCase("[]"))
@@ -474,7 +483,7 @@ public class LoadVarnerFlatFile implements IInputHandler {
 				StateSymbol symbol = (StateSymbol)iter_products.next();
 
 				// Create a new SpeciesRef -
-				SpeciesReference specRef = new SpeciesReference();
+				SpeciesReference specRef = new SpeciesReference(2,4);
 				specRef.setSpecies(symbol.getSymbol());
 				specRef.setStoichiometry(ffRxnObj.getCoefficientValue(symbol.getSymbol()));
 
@@ -485,15 +494,13 @@ public class LoadVarnerFlatFile implements IInputHandler {
 			//create the rate law out of the string rate law
 			// law not made this way
 			//KineticLaw rateLaw = new KineticLaw(rateLawS);
-			KineticLaw rateLaw = new KineticLaw();
-			rateLaw.setFormula(rateLawS);
-
-
-
+			//KineticLaw rateLaw = _modelWrapper.createKineticLaw();
+			//rateLaw.setFormula(rateLawS);
+			
 			//rate not defined locally
 			//rateLaw.addParameter(parameterObj); // recall that we have defined this parameter already
 
-			rxnSBML.setKineticLaw(rateLaw); // add this rateLaw to the current rxn
+			//rxnSBML.setKineticLaw(rateLaw); // add this rateLaw to the current rxn
 			rxnSBML.setName(ffRxnObj.getReactionString());
 			rxnSBML.setId("R_"+counter);
 
