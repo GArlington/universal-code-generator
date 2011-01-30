@@ -76,10 +76,15 @@
 
     // For applications targeted for Panther or earlier systems, you should use the deprecated API -dataRepresentationOfType:. In this case you can also choose to override -fileWrapperRepresentationOfType: or -writeToFile:ofType: instead.
 
-    if ( outError != NULL ) {
-		*outError = [NSError errorWithDomain:NSOSStatusErrorDomain code:unimpErr userInfo:NULL];
+	// Ok, from my window controller I need to get the xmlTree -
+	NSXMLDocument *xmlDocument = [[translatorWindowController xmlTreeModel] xmlDocument];
+	if (xmlDocument!=nil)
+	{
+		return [xmlDocument XMLData];
 	}
-	return nil;
+	else {
+		return nil;
+	}
 }
 
 - (BOOL)readFromData:(NSData *)data ofType:(NSString *)typeName error:(NSError **)outError
@@ -97,9 +102,6 @@
 		if (translatorWindowController!=nil)
 		{
 			[translatorWindowController createXMLDocumentFromData:data];
-			
-			NSLog(@"Yes...I am getting called...");
-			
 		}
 		else {
 			// Ok, we need to alloc init our custom window controller -
@@ -111,10 +113,10 @@
 			// Create the document -
 			[translatorWindowController createXMLDocumentFromData:data];
 			
-			NSLog(@"Super spank ... Yes...I am getting called...%@ ",typeName);
 		}
 		
 	}
+	
 	
 	
 	if ( outError != NULL ) {
