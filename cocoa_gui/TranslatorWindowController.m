@@ -26,7 +26,9 @@
 -(void)executeCodeGenJob;
 -(void)checkSpecificationTree;
 -(void)alertDidEnd:(NSAlert *)alert returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo; 
--(NSString *)formulateCodeGenArgString;
+-(void)automaticallyPopulateTreePathData;
+-(NSMutableString *)formulateCodeGenArgString;
+
 
 @end
 
@@ -534,6 +536,125 @@
 	}
 }
 
+-(NSMutableString *)formulateCodeGenArgString
+{
+	// Method attributes -
+	NSMutableString *argsString = [[NSMutableString alloc] initWithCapacity:140];
+	NSMutableString *strXPath = [[NSMutableString alloc] initWithCapacity:140];
+	NSError *errObject = nil;
+	
+	// Ok, formulate thge xpath string -
+	[strXPath appendString:@".//ListOfArguments/argument/@symbol"];
+	NSArray *listOfArgs = [[[self xmlTreeModel] xmlDocument] nodesForXPath:strXPath error:&errObject];
+	for (NSXMLElement *node in listOfArgs)
+	{
+		// Ok, formulate the path string -
+		[argsString appendString:[node stringValue]];
+		[argsString appendString:@" "];
+	}
+	
+	NSLog(@"What is my args string? %@",argsString);
+	
+	// Ok, release the local mem -
+	[strXPath release];
+	
+	// Autorelease the args -
+	[argsString autorelease];
+	
+	// return -
+	return argsString;
+}
+
+-(void)automaticallyPopulateTreePathData
+{
+	// Ok, in this method we are going to populate some of the tree path info, using our best guess.
+	// Entering all these paths in was a pain, so this should make like easier -
+	
+	// Method attributes -
+	NSMutableString *strXPath = [[NSMutableString alloc] initWithCapacity:140];
+	NSError *errObject = nil;
+	
+	// Get the current path -
+	NSString *myPathWithApp = [[NSBundle mainBundle] bundlePath];
+	
+	// Ok, so this will include the *.app - cut that off -
+	NSString *rootPath = [myPathWithApp stringByDeletingLastPathComponent];
+	
+	// Ok, so we need to update the 
+	// <path required="YES" symbol="UNIVERSAL_SERVER_ROOT_DIRECTORY" path_location=""></path>
+	[strXPath appendString:@".//path[@symbol=\"UNIVERSAL_SERVER_ROOT_DIRECTORY\"]"];
+	NSArray *rootPathNodeArray = [[[self xmlTreeModel] xmlDocument] nodesForXPath:strXPath error:&errObject];
+	
+	// Get the node -
+	NSXMLElement *rootPathNode = [rootPathNodeArray lastObject];
+	[[rootPathNode attributeForName:@"path_location"] setStringValue:rootPath];
+	
+	// Ok, so lets populate the server jar dir -
+	[strXPath setString:@""];
+	[strXPath appendString:@".//path[@symbol=\"UNIVERSAL_SERVER_JAR_DIRECTORY\"]"];
+	NSArray *jarPathNodeArray = [[[self xmlTreeModel] xmlDocument] nodesForXPath:strXPath error:&errObject];
+	NSXMLElement *jarPathNode = [jarPathNodeArray lastObject];
+	NSMutableString *tmpString = [[NSMutableString alloc] initWithCapacity:140];
+	[tmpString appendString:rootPath];
+	[tmpString appendString:@"/dist"];	
+	[[jarPathNode attributeForName:@"path_location"] setStringValue:tmpString];
+	[tmpString setString:@""];
+	
+	// Ok, let's populate the plugins dir -
+	[strXPath setString:@""];
+	[strXPath appendString:@".//path[@symbol=\"UNIVERSAL_PLUGINS_JAR_DIRECTORY\"]"];
+	NSArray *pluginsPathNodeArray = [[[self xmlTreeModel] xmlDocument] nodesForXPath:strXPath error:&errObject];
+	NSXMLElement *pluginsPathNode = [pluginsPathNodeArray lastObject];
+	[tmpString appendString:rootPath];
+	[tmpString appendString:@"/plugins"];	
+	[[pluginsPathNode attributeForName:@"path_location"] setStringValue:tmpString];
+	[tmpString setString:@""];
+	
+	// Ok, let's populate the inputs dir -
+	[strXPath setString:@""];
+	[strXPath appendString:@".//path[@symbol=\"UNIVERSAL_INPUT_PATH\"]"];
+	NSArray *inputPathNodeArray = [[[self xmlTreeModel] xmlDocument] nodesForXPath:strXPath error:&errObject];
+	NSXMLElement *inputPathNode = [inputPathNodeArray lastObject];
+	[tmpString appendString:rootPath];
+	[tmpString appendString:@"/jobs"];	
+	[[inputPathNode attributeForName:@"path_location"] setStringValue:tmpString];
+	[tmpString setString:@""];
+	
+	// Ok, let's populate the outputs dir -
+	[strXPath setString:@""];
+	[strXPath appendString:@".//path[@symbol=\"UNIVERSAL_SOURCE_OUTPUT_PATH\"]"];
+	NSArray *outputPathNodeArray = [[[self xmlTreeModel] xmlDocument] nodesForXPath:strXPath error:&errObject];
+	NSXMLElement *outputPathNode = [outputPathNodeArray lastObject];
+	[tmpString appendString:rootPath];
+	[tmpString appendString:@"/jobs"];	
+	[[outputPathNode attributeForName:@"path_location"] setStringValue:tmpString];
+	[tmpString setString:@""];
+	
+	// Ok, let's populate the networks dir -
+	[strXPath setString:@""];
+	[strXPath appendString:@".//path[@symbol=\"UNIVERSAL_NETWORK_OUTPUT_PATH\"]"];
+	NSArray *networkPathNodeArray = [[[self xmlTreeModel] xmlDocument] nodesForXPath:strXPath error:&errObject];
+	NSXMLElement *networkPathNode = [networkPathNodeArray lastObject];
+	[tmpString appendString:rootPath];
+	[tmpString appendString:@"/jobs"];	
+	[[networkPathNode attributeForName:@"path_location"] setStringValue:tmpString];
+	[tmpString setString:@""];
+	
+	// Ok, let's populate the debug dir -
+	[strXPath setString:@""];
+	[strXPath appendString:@".//path[@symbol=\"UNIVERSAL_DEBUG_OUTPUT_PATH\"]"];
+	NSArray *debugPathNodeArray = [[[self xmlTreeModel] xmlDocument] nodesForXPath:strXPath error:&errObject];
+	NSXMLElement *debugPathNode = [debugPathNodeArray lastObject];
+	[tmpString appendString:rootPath];
+	[tmpString appendString:@"/jobs"];	
+	[[debugPathNode attributeForName:@"path_location"] setStringValue:tmpString];
+	[tmpString setString:@""];
+	
+	// release the xpath string -
+	[strXPath release];
+	[tmpString release];
+}
+
 -(void)executeCodeGenJob
 {
 	// Clear all -
@@ -600,11 +721,11 @@
 			
 			// Populate the arguments -
 			
-			//
+			// Args set in the list of args in gui -
+			[args addObject:[self formulateCodeGenArgString]];
 			
 			// Path to the specification file -
 			[args addObject:[[self window] title]];
-			
 			
 			
 			// Set the arguments (path to the control file -)
@@ -738,6 +859,9 @@
 	
 	// Ok, so now we need to figure which item is selected -
 	[[self fileTypePopupButton] selectItemWithTitle:[displayNode stringValue]];
+	
+	// lastly - try and populate some of the path information (makes it easier for the user)
+	[self automaticallyPopulateTreePathData];
 	
 	// release -
 	[strXPath release];
