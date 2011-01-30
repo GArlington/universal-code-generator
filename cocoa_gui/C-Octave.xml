@@ -46,6 +46,14 @@
 				<plugin_jar_directory required="YES" path_symbol="UNIVERSAL_PLUGIN_JAR_DIRECTORY" filename="UServer-v2.0.jar"></plugin_jar_directory>
 				<plugin_jar_directory required="YES" path_symbol="UNIVERSAL_PLUGIN_JAR_DIRECTORY" filename="libsbmlj.jar"></plugin_jar_directory>
 			</ListOfPlugins>
+			<ListOfArguments>
+				<argument required="YES" index="1" value="-Xmx2000M"></argument>
+				<argument required="YES" index="1" value=" -Djava.library.path=/sw/lib"></argument>
+				<argument required="YES" index="1" value=" -Djava.library.path=/sw/lib"></argument>
+				<argument required="YES" index="2" value="-classpath ./dist/LocalTransportLayer-v1.0.jar"></argument>
+				<argument required="YES" index="3" value="-classpath ./dist/LocalTransportLayer-v1.0.jar"></argument>
+
+			</ListOfArguments>
 		</ServerConfiguration>
 		
 	</Configuration>
