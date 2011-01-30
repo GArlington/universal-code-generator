@@ -3,10 +3,10 @@
 	
 	<Configuration>
 		<ListOfPackages>
-			<package symbol="DEFAULT_INPUT_HANDLER_PACKAGE" package_name="org.varnerlab.userver.input.handler"></package>
-			<package symbol="DEFAULT_OUTPUT_HANDLER_PACKAGE" package_name="org.varnerlab.userver.output.handler"></package>
-			<package symbol="DEFAULTT_LANGUAGE_PACKAGE" package_name="org.varnerlab.userver.language.handler"></package>
-			<package symbol="DEFAULTT_BCX_PACKAGE" package_name="org.varnerlab.userver.language.handler.bcx"></package>
+			<package symbol="INPUT_HANDLER_PACKAGE" package_name="org.varnerlab.userver.input.handler"></package>
+			<package symbol="OUTPUT_HANDLER_PACKAGE" package_name="org.varnerlab.userver.output.handler"></package>
+			<package symbol="DEFAULT_LANGUAGE_PACKAGE" package_name="org.varnerlab.userver.language.handler"></package>
+			<package symbol="DEFAULT_BCX_PACKAGE" package_name="org.varnerlab.userver.language.handler.bcx"></package>
 		</ListOfPackages>
 		<ListOfPaths>
 			<path symbol="UNIVERSAL_INPUT_PATH" path_location=""></path>
@@ -19,24 +19,24 @@
 		</ListOfPaths>
 		<ListOfClasses>
 			<InputHandlerClasses>
-				<class package="DEFAULT_INPUT_HANDLER_PACKAGE" classname="LoadSBMLFile"></class>
-				<class package="DEFAULT_INPUT_HANDLER_PACKAGE" classname="LoadVarnerFlatFile"></class>
-				<class package="DEFAULT_INPUT_HANDLER_PACKAGE" classname="LoadMOBCXFile"></class>
-				<class package="DEFAULT_INPUT_HANDLER_PACKAGE" classname="LoadBCXFile"></class>
+				<class package="INPUT_HANDLER_PACKAGE" classname="LoadSBMLFile"></class>
+				<class package="INPUT_HANDLER_PACKAGE" classname="LoadVarnerFlatFile"></class>
+				<class package="INPUT_HANDLER_PACKAGE" classname="LoadMOBCXFile"></class>
+				<class package="INPUT_HANDLER_PACKAGE" classname="LoadBCXFile"></class>
 			</InputHandlerClasses>
 			
 			<OutputHandlerClasses>
-				<class package="DEFAULT_OUTPUT_HANDLER_PACKAGE" classname="WriteOctaveMModel"></class>
-				<class package="DEFAULT_OUTPUT_HANDLER_PACKAGE" classname="WriteMatlabMModel"></class>
-				<class package="DEFAULT_OUTPUT_HANDLER_PACKAGE" classname="WriteOctaveCModel"></class>
-				<class package="DEFAULT_OUTPUT_HANDLER_PACKAGE" classname="WriteGSLModel"></class>
-				<class package="DEFAULT_OUTPUT_HANDLER_PACKAGE" classname="WriteSundialsModel"></class>
-				<class package="DEFAULT_OUTPUT_HANDLER_PACKAGE" classname="WriteScilabModel"></class>
-				<class package="DEFAULT_OUTPUT_HANDLER_PACKAGE" classname="WriteVarnerFlatFile"></class>
-				<class package="DEFAULT_OUTPUT_HANDLER_PACKAGE" classname="WriteGraphvizDotFile"></class>
-				<class package="DEFAULT_OUTPUT_HANDLER_PACKAGE" classname="WriteSBMLFile"></class>
-				<class package="DEFAULT_OUTPUT_HANDLER_PACKAGE" classname="WriteMOBCXFiles"></class>
-				<class package="DEFAULT_OUTPUT_HANDLER_PACKAGE" classname="WriteBCXFiles"></class>
+				<class package="OUTPUT_HANDLER_PACKAGE" classname="WriteOctaveMModel"></class>
+				<class package="OUTPUT_HANDLER_PACKAGE" classname="WriteMatlabMModel"></class>
+				<class package="OUTPUT_HANDLER_PACKAGE" classname="WriteOctaveCModel"></class>
+				<class package="OUTPUT_HANDLER_PACKAGE" classname="WriteGSLModel"></class>
+				<class package="OUTPUT_HANDLER_PACKAGE" classname="WriteSundialsModel"></class>
+				<class package="OUTPUT_HANDLER_PACKAGE" classname="WriteScilabModel"></class>
+				<class package="OUTPUT_HANDLER_PACKAGE" classname="WriteVarnerFlatFile"></class>
+				<class package="OUTPUT_HANDLER_PACKAGE" classname="WriteGraphvizDotFile"></class>
+				<class package="OUTPUT_HANDLER_PACKAGE" classname="WriteSBMLFile"></class>
+				<class package="OUTPUT_HANDLER_PACKAGE" classname="WriteMOBCXFiles"></class>
+				<class package="OUTPUT_HANDLER_PACKAGE" classname="WriteBCXFiles"></class>
 			</OutputHandlerClasses>
 		</ListOfClasses>
 		
@@ -51,8 +51,8 @@
 	</Configuration>
 	
 	<Handler>
-		<InputHandler input_classname="" package="DEFAULT_INPUT_HANDLER_PACKAGE"></InputHandler>
-		<OutputHandler output_classname="" package="DEFAULT_OUTPUT_HANDLER_PACKAGE"></OutputHandler>
+		<InputHandler input_classname="" package="INPUT_HANDLER_PACKAGE"></InputHandler>
+		<OutputHandler output_classname="" package="OUTPUT_HANDLER_PACKAGE"></OutputHandler>
 	</Handler>
 	
 	<InputOptions>

@@ -3,10 +3,10 @@
 	
 	<Configuration>
 		<ListOfPackages>
-			<package required="YES" symbol="DEFAULT_INPUT_HANDLER_PACKAGE" package_name="org.varnerlab.userver.input.handler"></package>
-			<package required="YES" symbol="DEFAULT_OUTPUT_HANDLER_PACKAGE" package_name="org.varnerlab.userver.output.handler"></package>
-			<package required="YES" symbol="DEFAULTT_LANGUAGE_PACKAGE" package_name="org.varnerlab.userver.language.handler"></package>
-			<package required="YES" symbol="DEFAULTT_BCX_PACKAGE" package_name="org.varnerlab.userver.language.handler.bcx"></package>
+			<package required="YES" symbol="INPUT_HANDLER_PACKAGE" package_name="org.varnerlab.userver.input.handler"></package>
+			<package required="YES" symbol="OUTPUT_HANDLER_PACKAGE" package_name="org.varnerlab.userver.output.handler"></package>
+			<package required="YES" symbol="DEFAULT_LANGUAGE_PACKAGE" package_name="org.varnerlab.userver.language.handler"></package>
+			<package required="YES" symbol="DEFAULT_BCX_PACKAGE" package_name="org.varnerlab.userver.language.handler.bcx"></package>
 		</ListOfPackages>
 		<ListOfPaths>
 			<path required="YES" symbol="UNIVERSAL_INPUT_PATH" path_location=""></path>
@@ -19,24 +19,24 @@
 		</ListOfPaths>
 		<ListOfClasses>
 			<InputHandlerClasses>
-				<class required="NO" package="DEFAULT_INPUT_HANDLER_PACKAGE" classname="LoadSBMLFile"></class>
-				<class required="NO" package="DEFAULT_INPUT_HANDLER_PACKAGE" classname="LoadVarnerFlatFile"></class>
-				<class required="NO" package="DEFAULT_INPUT_HANDLER_PACKAGE" classname="LoadMOBCXFile"></class>
-				<class required="NO" package="DEFAULT_INPUT_HANDLER_PACKAGE" classname="LoadBCXFile"></class>
+				<class required="NO" package="INPUT_HANDLER_PACKAGE" classname="LoadSBMLFile"></class>
+				<class required="NO" package="INPUT_HANDLER_PACKAGE" classname="LoadVarnerFlatFile"></class>
+				<class required="NO" package="INPUT_HANDLER_PACKAGE" classname="LoadMOBCXFile"></class>
+				<class required="NO" package="INPUT_HANDLER_PACKAGE" classname="LoadBCXFile"></class>
 			</InputHandlerClasses>
 			
 			<OutputHandlerClasses>
-				<class required="NO" package="DEFAULT_OUTPUT_HANDLER_PACKAGE" classname="WriteOctaveMModel"></class>
-				<class required="NO" package="DEFAULT_OUTPUT_HANDLER_PACKAGE" classname="WriteMatlabMModel"></class>
-				<class required="NO" package="DEFAULT_OUTPUT_HANDLER_PACKAGE" classname="WriteOctaveCModel"></class>
-				<class required="NO" package="DEFAULT_OUTPUT_HANDLER_PACKAGE" classname="WriteGSLModel"></class>
-				<class required="NO" package="DEFAULT_OUTPUT_HANDLER_PACKAGE" classname="WriteSundialsModel"></class>
-				<class required="NO" package="DEFAULT_OUTPUT_HANDLER_PACKAGE" classname="WriteScilabModel"></class>
-				<class required="NO" package="DEFAULT_OUTPUT_HANDLER_PACKAGE" classname="WriteVarnerFlatFile"></class>
-				<class required="NO" package="DEFAULT_OUTPUT_HANDLER_PACKAGE" classname="WriteGraphvizDotFile"></class>
-				<class required="NO" package="DEFAULT_OUTPUT_HANDLER_PACKAGE" classname="WriteSBMLFile"></class>
-				<class required="NO" package="DEFAULT_OUTPUT_HANDLER_PACKAGE" classname="WriteMOBCXFiles"></class>
-				<class required="NO" package="DEFAULT_OUTPUT_HANDLER_PACKAGE" classname="WriteBCXFiles"></class>
+				<class required="NO" package="OUTPUT_HANDLER_PACKAGE" classname="WriteOctaveMModel"></class>
+				<class required="NO" package="OUTPUT_HANDLER_PACKAGE" classname="WriteMatlabMModel"></class>
+				<class required="NO" package="OUTPUT_HANDLER_PACKAGE" classname="WriteOctaveCModel"></class>
+				<class required="NO" package="OUTPUT_HANDLER_PACKAGE" classname="WriteGSLModel"></class>
+				<class required="NO" package="OUTPUT_HANDLER_PACKAGE" classname="WriteSundialsModel"></class>
+				<class required="NO" package="OUTPUT_HANDLER_PACKAGE" classname="WriteScilabModel"></class>
+				<class required="NO" package="OUTPUT_HANDLER_PACKAGE" classname="WriteVarnerFlatFile"></class>
+				<class required="NO" package="OUTPUT_HANDLER_PACKAGE" classname="WriteGraphvizDotFile"></class>
+				<class required="NO" package="OUTPUT_HANDLER_PACKAGE" classname="WriteSBMLFile"></class>
+				<class required="NO" package="OUTPUT_HANDLER_PACKAGE" classname="WriteMOBCXFiles"></class>
+				<class required="NO" package="OUTPUT_HANDLER_PACKAGE" classname="WriteBCXFiles"></class>
 			</OutputHandlerClasses>
 		</ListOfClasses>
 		
@@ -51,8 +51,8 @@
 	</Configuration>
 
 	<Handler>
-		<InputHandler required="YES" input_classname="" package="DEFAULT_INPUT_HANDLER_PACKAGE"></InputHandler>
-		<OutputHandler required="YES" output_classname="" package="DEFAULT_OUTPUT_HANDLER_PACKAGE"></OutputHandler>
+		<InputHandler required="YES" input_classname="" package="INPUT_HANDLER_PACKAGE"></InputHandler>
+		<OutputHandler required="YES" output_classname="" package="OUTPUT_HANDLER_PACKAGE"></OutputHandler>
 	</Handler>
 	
 	<InputOptions>
