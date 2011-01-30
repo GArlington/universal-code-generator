@@ -653,6 +653,9 @@
 	// release the xpath string -
 	[strXPath release];
 	[tmpString release];
+	
+	// we want to persit this data -
+	self.xmlTreeModel.xmlDocument = [debugPathNode rootDocument];
 }
 
 -(void)executeCodeGenJob
