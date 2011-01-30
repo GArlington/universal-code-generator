@@ -48,10 +48,7 @@
 			</ListOfPlugins>
 			<ListOfArguments>
 				<argument required="YES" index="1" symbol="-Xmx2000M"></argument>
-				<argument required="YES" index="1" symbol=" -Djava.library.path=/sw/lib"></argument>
-				<argument required="YES" index="1" symbol=" -Djava.library.path=/sw/lib"></argument>
-				<argument required="YES" index="2" symbol="-classpath ./dist/LocalTransportLayer-v1.0.jar"></argument>
-				<argument required="YES" index="3" symbol="-classpath ./dist/LocalTransportLayer-v1.0.jar"></argument>
+				<argument required="YES" index="2" symbol=" -Djava.library.path=/sw/lib"></argument>
 			</ListOfArguments>
 		</ServerConfiguration>
 		
