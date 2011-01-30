@@ -1,6 +1,5 @@
 <?xml version="1.0"?>
 <Model username="" version="" name="" type="SBML" required="YES">
-	
 	<Configuration>
 		<ListOfPackages>
 			<package required="YES" symbol="INPUT_HANDLER_PACKAGE" package_name="org.varnerlab.userver.input.handler"></package>
@@ -10,12 +9,12 @@
 		</ListOfPackages>
 		<ListOfPaths>
 			<path required="YES" symbol="UNIVERSAL_INPUT_PATH" path_location=""></path>
-			<path required="YES" symbol="UNIVERSAL_OUTPUT_PATH" path_location=""></path>
+			<path required="YES" symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" path_location=""></path>
 			<path required="YES" symbol="UNIVERSAL_NETWORK_OUTPUT_PATH" path_location=""></path>
 			<path required="YES" symbol="UNIVERSAL_DEBUG_OUTPUT_PATH" path_location=""></path>
 			<path required="YES" symbol="UNIVERSAL_SERVER_ROOT_DIRECTORY" path_location=""></path>
 			<path required="YES" symbol="UNIVERSAL_SERVER_JAR_DIRECTORY" path_location=""></path>
-			<path required="YES" symbol="UNIVERSAL_PLUGIN_JAR_DIRECTORY" path_location=""></path>
+			<path required="YES" symbol="UNIVERSAL_PLUGINS_JAR_DIRECTORY" path_location=""></path>
 		</ListOfPaths>
 		<ListOfClasses>
 			<InputHandlerClasses>
@@ -43,13 +42,17 @@
 		<ServerConfiguration>
 			<server_jar_directory required="YES" path_symbol="UNIVERSAL_SERVER_JAR_DIRECTORY" filename=""></server_jar_directory>
 			<ListOfPlugins>
-				<plugin_jar_directory required="YES" path_symbol="UNIVERSAL_PLUGIN_JAR_DIRECTORY" filename="UServer-v2.0.jar"></plugin_jar_directory>
-				<plugin_jar_directory required="YES" path_symbol="UNIVERSAL_PLUGIN_JAR_DIRECTORY" filename="libsbmlj.jar"></plugin_jar_directory>
+				<plugin_jar_directory required="YES" path_symbol="UNIVERSAL_PLUGINS_JAR_DIRECTORY" filename="UServer-v2.0.jar"></plugin_jar_directory>
+				<plugin_jar_directory required="YES" path_symbol="UNIVERSAL_PLUGINS_JAR_DIRECTORY" filename="libsbmlj.jar"></plugin_jar_directory>
 			</ListOfPlugins>
+			<ListOfArguments>
+				<argument required="YES" index="1" symbol="-Xmx2000M"></argument>
+				<argument required="YES" index="2" symbol="-Djava.library.path=/sw/lib"></argument>
+			</ListOfArguments>
 		</ServerConfiguration>
 		
 	</Configuration>
-
+		
 	<Handler>
 		<InputHandler required="YES" input_classname="" package="INPUT_HANDLER_PACKAGE"></InputHandler>
 		<OutputHandler required="YES" output_classname="" package="OUTPUT_HANDLER_PACKAGE"></OutputHandler>
@@ -63,7 +66,7 @@
 	</InputOptions>	
 	
 	<OutputOptions>
-		<SBMLOutputFile required="YES" path_symbol="UNIVERSAL_OUTPUT_PATH" filename=""></SBMLOutputFile>
+		<SBMLOutputFile required="YES" path_symbol="UNIVERSAL_INPUT_PATH" filename=""></SBMLOutputFile>
 	</OutputOptions>
 
 </Model>
