@@ -26,7 +26,7 @@
 -(void)executeCodeGenJob;
 -(void)checkSpecificationTree;
 -(void)alertDidEnd:(NSAlert *)alert returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo; 
-
+-(NSString *)formulateCodeGenArgString;
 
 @end
 
