@@ -134,7 +134,7 @@
 	[[self popupButton] selectItemAtIndex:1];
 	
 	// Load 
-	[[self consoleTextField] setString:@"Loaded window controller ..."];
+	[[self consoleTextField] insertText:@"Loaded window controller ...\n"];
 	
 	// Set some attributes on the progress bar -
 	[[self progressIndicator] setIndeterminate:YES];
@@ -425,7 +425,7 @@
 	[[self bottomDisplayLabel] setStringValue:@"Translator loaded normally. Running ..."];
 	[progressWheel stopAnimation:nil];
 	
-	[[self consoleTextField] setString:@"Loaded project file ..."];
+	[[self consoleTextField] insertText:@"Loaded project file ..."];
 	
 	// Set the enabled state on the code gen button -
 	[[self codeGeneratorButton] setEnabled:YES];
@@ -551,8 +551,6 @@
 	NSFileHandle *readErrHandle = [errPipe fileHandleForReading];
 	NSMutableString *tmpBuffer = [[NSMutableString alloc] initWithCapacity:140];
 	
-	// Need to setup paths -
-	[args addObject:[[self window] title]];
 	
 	// From the tree model - we need to get the input dir -
 	NSMutableString *strXPath =  [[NSMutableString alloc] initWithCapacity:140];
@@ -598,6 +596,16 @@
 			
 			//NSLog(@"What is the launch path? %@",strXPath);
 			[aTask setLaunchPath:strXPath];
+			
+			
+			// Populate the arguments -
+			
+			//
+			
+			// Path to the specification file -
+			[args addObject:[[self window] title]];
+			
+			
 			
 			// Set the arguments (path to the control file -)
 			[aTask setArguments:args];
@@ -690,6 +698,11 @@
 	// Create a URL from the file string -
 	NSURL *fileURL = [NSURL fileURLWithPath:file];
 	NSError *errObject = nil;
+	
+	// What is my current dir?
+	NSString *myPath = [[NSBundle mainBundle] bundlePath];
+	[[self consoleTextField] insertText:myPath];
+	[[self consoleTextField] insertText:@"\n"];
 	
 	// Set the NSXMLDocument reference on the tree model 
 	self.xmlTreeModel.xmlDocument = [[NSXMLDocument alloc] initWithContentsOfURL:fileURL options:NSXMLNodeOptionsNone error:&errObject];
