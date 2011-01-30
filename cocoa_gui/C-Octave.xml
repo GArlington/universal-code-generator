@@ -10,12 +10,12 @@
 		</ListOfPackages>
 		<ListOfPaths>
 			<path required="YES" symbol="UNIVERSAL_INPUT_PATH" path_location=""></path>
-			<path required="YES" symbol="UNIVERSAL_OUTPUT_PATH" path_location=""></path>
+			<path required="YES" symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" path_location=""></path>
 			<path required="YES" symbol="UNIVERSAL_NETWORK_OUTPUT_PATH" path_location=""></path>
 			<path required="YES" symbol="UNIVERSAL_DEBUG_OUTPUT_PATH" path_location=""></path>
 			<path required="YES" symbol="UNIVERSAL_SERVER_ROOT_DIRECTORY" path_location=""></path>
 			<path required="YES" symbol="UNIVERSAL_SERVER_JAR_DIRECTORY" path_location=""></path>
-			<path required="YES" symbol="UNIVERSAL_PLUGIN_JAR_DIRECTORY" path_location=""></path>
+			<path required="YES" symbol="UNIVERSAL_PLUGINS_JAR_DIRECTORY" path_location=""></path>
 		</ListOfPaths>
 		<ListOfClasses>
 			<InputHandlerClasses>
@@ -43,12 +43,12 @@
 		<ServerConfiguration>
 			<server_jar_directory required="YES" path_symbol="UNIVERSAL_SERVER_JAR_DIRECTORY" filename=""></server_jar_directory>
 			<ListOfPlugins>
-				<plugin_jar_directory required="YES" path_symbol="UNIVERSAL_PLUGIN_JAR_DIRECTORY" filename="UServer-v2.0.jar"></plugin_jar_directory>
-				<plugin_jar_directory required="YES" path_symbol="UNIVERSAL_PLUGIN_JAR_DIRECTORY" filename="libsbmlj.jar"></plugin_jar_directory>
+				<plugin_jar_directory required="YES" path_symbol="UNIVERSAL_PLUGINS_JAR_DIRECTORY" filename="UServer-v2.0.jar"></plugin_jar_directory>
+				<plugin_jar_directory required="YES" path_symbol="UNIVERSAL_PLUGINS_JAR_DIRECTORY" filename="libsbmlj.jar"></plugin_jar_directory>
 			</ListOfPlugins>
 			<ListOfArguments>
 				<argument required="YES" index="1" symbol="-Xmx2000M"></argument>
-				<argument required="YES" index="2" symbol=" -Djava.library.path=/sw/lib"></argument>
+				<argument required="YES" index="2" symbol="-Djava.library.path=/sw/lib"></argument>
 			</ListOfArguments>
 		</ServerConfiguration>
 		
@@ -68,19 +68,19 @@
 	</InputOptions>	
 	
 	<OutputOptions>
-		<DataFile required="YES" path_symbol="UNIVERSAL_OUTPUT_PATH" filename="DataFile.m"></DataFile>
-		<MassBalanceFunction required="YES" path_symbol="UNIVERSAL_OUTPUT_PATH" filename="MassBalances.cc"></MassBalanceFunction>
-		<KineticsFunction required="YES" path_symbol="UNIVERSAL_OUTPUT_PATH" filename="Kinetics.cc"></KineticsFunction>
-		<JacobianMatrix required="YES" path_symbol="UNIVERSAL_OUTPUT_PATH" filename="Jacobian.cc"></JacobianMatrix>
-		<BMatrix required="YES" path_symbol="UNIVERSAL_OUTPUT_PATH" filename="BMatrix.cc"></BMatrix>
-		<DriverFile required="YES" path_symbol="UNIVERSAL_OUTPUT_PATH" filename="SolveMassBalances.m"></DriverFile>
+		<DataFile required="YES" path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="DataFile.m"></DataFile>
+		<MassBalanceFunction required="YES" path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="MassBalances.cc"></MassBalanceFunction>
+		<KineticsFunction required="YES" path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="Kinetics.cc"></KineticsFunction>
+		<JacobianMatrix required="YES" path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="Jacobian.cc"></JacobianMatrix>
+		<BMatrix required="YES" path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="BMatrix.cc"></BMatrix>
+		<DriverFile required="YES" path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="SolveMassBalances.m"></DriverFile>
 		<StoichiometricMatrix required="YES" path_symbol="UNIVERSAL_NETWORK_OUTPUT_PATH" filename="Network.dat"></StoichiometricMatrix>
 		<BoundsFile required="NO" path_symbol="UNIVERSAL_NETWORK_OUTPUT_PATH" filename="FB.dat"></BoundsFile>
 		<DebugOutputFile required="NO" path_symbol="UNIVERSAL_DEDUG_OUTPUT_PATH" filename="Debug.txt"></DebugOutputFile>
 		
 		<SensitivityAnalysis>
-			<AdjointDriver required="YES" path_symbol="UNIVERSAL_OUTPUT_PATH" filename="SolveADJBalances.m"></AdjointDriver>
-			<AdjointBalances required="YES" path_symbol="UNIVERSAL_OUTPUT_PATH" filename="ADJBalances.cc"></AdjointBalances>
+			<AdjointDriver required="YES" path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="SolveADJBalances.m"></AdjointDriver>
+			<AdjointBalances required="YES" path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="ADJBalances.cc"></AdjointBalances>
 		</SensitivityAnalysis>
 		
 	</OutputOptions>	
