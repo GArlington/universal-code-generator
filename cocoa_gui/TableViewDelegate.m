@@ -237,12 +237,17 @@
 
 - (void)tableView:(NSTableView *)aTableView willDisplayCell:(id)aCell forTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex
 {
+	
+	// This sets the background color on the drop down -
 	if (rowIndex%2 == 0)
-	{
+	{			
 		if ([[aTableColumn identifier] isEqual:@"value"])
 		{
+			// Set the background on this cell -
 			NSComboBoxCell *cell = (NSComboBoxCell *)aCell;
 			[cell setBackgroundColor:[NSColor whiteColor]];
+			
+			// Ok, so let's check to see if we are in the required row -
 		}
 	}
 	else {
@@ -252,10 +257,6 @@
 			[cell setBackgroundColor:[NSColor windowBackgroundColor]];
 		}		
 	}
-	
 }
-
-
-
 
 @end
