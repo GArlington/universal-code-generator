@@ -618,6 +618,17 @@
 			// We need to do 2 things, first, reset the state of the application so I can fix the problem and retry the job
 			// and second, fire up an NSAlert telling the user...
 			
+			// close the file -
+			[readHandle closeFile];
+			[readErrHandle closeFile];
+			
+			// release local stuff -
+			[aTask release];
+			[outPipe release];
+			[tmpBuffer release];
+			[strXPath release];
+			[errPipe release];
+			
 			// Shut down the animation -
 			[[self progressIndicator] stopAnimation:nil];
 						
@@ -627,7 +638,7 @@
 			[alert addButtonWithTitle:@"OK"];
 			[alert addButtonWithTitle:@"Cancel"];
 			[alert setMessageText:@"An error was encounter when contacting the code generation server."];
-			[alert setInformativeText:@"Please check your path settings in the specification tree and try again."];
+			[alert setInformativeText:@"Please check your server settings in the specification tree and try again."];
 			[alert setAlertStyle:NSWarningAlertStyle];
 			
 			// Fire up the alert 
@@ -654,46 +665,94 @@
 			[args addObject:[self formulateCodeGenArgString]];
 			
 			// Path to the specification file -
-			[args addObject:[[self window] title]];
+			//[args addObject:[[self window] title]];
+			// We need to get the full path from the tree -
+			[strXPath setString:@""];
+			[strXPath appendString:@".//ListOfPaths/path[@symbol='UNIVERSAL_INPUT_PATH']/@path_location"];
+			NSArray *pathStringNodeList = [[[self xmlTreeModel] xmlDocument] nodesForXPath:strXPath error:&errObject];
+			[strXPath setString:@""];
+			NSXMLElement *pathNode = [pathStringNodeList lastObject];
 			
+			NSLog(@"What is pathNode %@",[pathNode stringValue]);
 			
-			// Set the arguments (path to the control file -)
-			[aTask setArguments:args];
-			[aTask setStandardOutput:outPipe];
-			[aTask setStandardError:errPipe];
-			[aTask setCurrentDirectoryPath:tmpNameString];
-			
-			// Ok, so we at least have a 
-			[aTask launch];
-			
-			while ((inData = [readHandle availableData]) && ([inData length]))
+			if ([[pathNode stringValue] length]!=0)
 			{
-				NSString *aString = [[[NSString alloc] initWithData:inData encoding:NSUTF8StringEncoding] autorelease];
-				//[tmpBuffer appendString:aString];
-				[[self consoleTextField] insertText:aString];
+				// If I get here then I have a non-zero path string -
+				[strXPath appendString:[pathNode stringValue]];
+				[strXPath appendString:@"/"];
+				[strXPath appendString:[[[self window] title] lastPathComponent]];
+				[args addObject:strXPath];
+				
+				// Set the arguments (path to the control file -)
+				[aTask setArguments:args];
+				[aTask setStandardOutput:outPipe];
+				[aTask setStandardError:errPipe];
+				[aTask setCurrentDirectoryPath:tmpNameString];
+				
+				// Ok, so we at least have a 
+				[aTask launch];
+				
+				while ((inData = [readHandle availableData]) && ([inData length]))
+				{
+					NSString *aString = [[[NSString alloc] initWithData:inData encoding:NSUTF8StringEncoding] autorelease];
+					//[tmpBuffer appendString:aString];
+					[[self consoleTextField] insertText:aString];
+				}
+				
+				while ((errData = [readErrHandle availableData]) && ([errData length]))
+				{
+					NSString *errString = [[[NSString alloc] initWithData:errData encoding:NSUTF8StringEncoding] autorelease];
+					//[tmpBuffer appendString:errString];
+					[[self consoleTextField] insertText:errString];
+				}			
+				
+				// close the file -
+				[readHandle closeFile];
+				[readErrHandle closeFile];
+				
+				// release local stuff -
+				[aTask release];
+				[outPipe release];
+				[tmpBuffer release];
+				[strXPath release];
+				[errPipe release];
+			}
+			else {
+				
+				// close the file -
+				[readHandle closeFile];
+				[readErrHandle closeFile];
+				
+				// release local stuff -
+				[aTask release];
+				[outPipe release];
+				[tmpBuffer release];
+				[strXPath release];
+				[errPipe release];
+				
+				// Shut down the animation -
+				[[self progressIndicator] stopAnimation:nil];
+				
+				// First, fire up the Alert (reset the state when the user hits the button)
+				
+				NSAlert *alert = [[[NSAlert alloc] init] autorelease];
+				[alert addButtonWithTitle:@"OK"];
+				[alert addButtonWithTitle:@"Cancel"];
+				[alert setMessageText:@"An error was encounter when contacting the code generation server."];
+				[alert setInformativeText:@"Please check your path settings in the specification tree and try again."];
+				[alert setAlertStyle:NSWarningAlertStyle];
+				
+				// Fire up the alert 
+				[alert beginSheetModalForWindow:[self window] 
+								  modalDelegate:self didEndSelector:@selector(alertDidEnd:returnCode:contextInfo:) 
+									contextInfo:nil];
+		
 			}
 			
-			while ((errData = [readErrHandle availableData]) && ([errData length]))
-			{
-				NSString *errString = [[[NSString alloc] initWithData:errData encoding:NSUTF8StringEncoding] autorelease];
-				//[tmpBuffer appendString:errString];
-				[[self consoleTextField] insertText:errString];
-			}			
 		}
-		
-		
-		// close the file -
-		[readHandle closeFile];
-		[readErrHandle closeFile];
 		
 	}
 	
-	// release local stuff -
-	[aTask release];
-	[outPipe release];
-	[tmpBuffer release];
-	[strXPath release];
-	[errPipe release];
 }
 
 #pragma mark --------------------------------
