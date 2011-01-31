@@ -573,53 +573,15 @@
 	
 	// Ok, so we need to update the 
 	// <path required="YES" symbol="UNIVERSAL_SERVER_ROOT_DIRECTORY" path_location=""></path>
-	[self populatePathLocation:@".//path[@symbol=\"UNIVERSAL_SERVER_ROOT_DIRECTORY\"]"];
-	[self populatePathLocation:@".//path[@symbol=\"UNIVERSAL_PLUGINS_JAR_DIRECTORY\"]/@path_location"];
-	[self populatePathLocation:@".//path[@symbol=\"UNIVERSAL_SOURCE_OUTPUT_PATH\"]/@path_location"];
-	[self populatePathLocation:@".//path[@symbol=\"UNIVERSAL_DEBUG_OUTPUT_PATH\"]/@path_location"];
+	//[self populatePathLocation:@".//path[@symbol=\"UNIVERSAL_SERVER_ROOT_DIRECTORY\"]"];
+	//[self populatePathLocation:@".//path[@symbol=\"UNIVERSAL_PLUGINS_JAR_DIRECTORY\"]/@path_location"];
+	//[self populatePathLocation:@".//path[@symbol=\"UNIVERSAL_SOURCE_OUTPUT_PATH\"]/@path_location"];
+	//[self populatePathLocation:@".//path[@symbol=\"UNIVERSAL_DEBUG_OUTPUT_PATH\"]/@path_location"];
 }
 
 -(void)populatePathLocation:(NSString *)xpath
 {
-	// Method attributes -
-	NSMutableString *strXPath = [[NSMutableString alloc] initWithCapacity:140];
-	NSMutableString *tmpString = [[NSMutableString alloc] initWithCapacity:140];
-	NSError *errObject = nil;
 	
-	// Get the current path -
-	NSString *myPathWithApp = [[NSBundle mainBundle] bundlePath];
-	
-	// Ok, so this will include the *.app - cut that off -
-	NSString *rootPath = [myPathWithApp stringByDeletingLastPathComponent];
-	
-	// Ok, so lets populate the server jar dir -
-	NSArray *jarPathNodeArray = [[[self xmlTreeModel] xmlDocument] nodesForXPath:xpath error:&errObject];
-	NSXMLElement *jarPathNode = [jarPathNodeArray lastObject];
-	if (jarPathNode!=nil)
-	{
-		
-		[tmpString appendString:rootPath];
-		
-		NSString *pathValue = [jarPathNode stringValue];
-				
-		if ([pathValue length]==0)
-		{
-			if ([jarPathNode respondsToSelector:@selector(attributeForName:)])
-			{
-				NSLog(@"What is going on - %@",pathValue);
-				
-				[[jarPathNode attributeForName:@"path_location"] setStringValue:tmpString];
-				
-				// we want to persit this data -
-				self.xmlTreeModel.xmlDocument = [jarPathNode rootDocument];
-			}
-		}
-	}
-	
-	
-	// release the xpath string -
-	[strXPath release];
-	[tmpString release];
 }
 
 -(void)executeCodeGenJob
