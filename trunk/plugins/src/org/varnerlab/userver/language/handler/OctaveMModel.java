@@ -42,6 +42,32 @@ public class OctaveMModel {
         driver.append(strFunctionName);
         driver.append("(pDataFile,TSTART,TSTOP,Ts,DFIN)\n");
         driver.append("\n");
+        
+        driver.append("% ----------------------------------------------------------------------\n");
+        driver.append("% ");
+        driver.append(strFunctionName);
+        driver.append(".m was generated using the UNIVERSAL code generator system.\n");
+        driver.append("% Username: ");
+        driver.append(propTree.getProperty(".//Model/@username"));
+        driver.append("\n");
+        driver.append("% Type: ");
+        driver.append(propTree.getProperty(".//Model/@type"));
+        driver.append("\n");
+        driver.append("% Version: ");
+        driver.append(propTree.getProperty(".//Model/@version"));
+        driver.append("\n");
+        driver.append("% \n");
+        driver.append("% Arguments: \n");
+        driver.append("% pDataFile  - pointer to datafile \n");
+        driver.append("% TSTART  - Time start \n");
+        driver.append("% TSTOP  - Time stop \n");
+        driver.append("% Ts - Time step \n");
+        driver.append("% DFIN  - Custom data file instance \n");
+        driver.append("% TSIM - Simulation time vector \n");
+        driver.append("% X - Simulation state array (NTIME x NSPECIES) \n");
+        driver.append("% ----------------------------------------------------------------------\n");
+        driver.append("\n");
+        
         driver.append("% Check to see if I need to load the datafile\n");
         driver.append("if (~isempty(DFIN))\n");
         driver.append("\tDF = DFIN;\n");
@@ -111,9 +137,32 @@ public class OctaveMModel {
         massbalances.append("function [DXDT]=");
         massbalances.append(strMassBalanceFunctionName);
         massbalances.append("(x,t,S,kV,NRATES,NSTATES)\n");
-        massbalances.append("% This file is machine generated. Please don't change. I know who you are...\n");
+        
+        massbalances.append("% ----------------------------------------------------------------------\n");
+        massbalances.append("% ");
+        massbalances.append(strMassBalanceFunctionName);
+        massbalances.append(".m was generated using the UNIVERSAL code generator system.\n");
+        massbalances.append("% Username: ");
+        massbalances.append(propTree.getProperty(".//Model/@username"));
         massbalances.append("\n");
-        massbalances.append("% Call the kinetics\n");
+        massbalances.append("% Type: ");
+        massbalances.append(propTree.getProperty(".//Model/@type"));
+        massbalances.append("\n");
+        massbalances.append("% Version: ");
+        massbalances.append(propTree.getProperty(".//Model/@version"));
+        massbalances.append("\n");
+        massbalances.append("% \n");
+        massbalances.append("% Arguments: \n");
+        massbalances.append("% t  - current time \n");
+        massbalances.append("% x  - state vector \n");
+        massbalances.append("% S  - stoichiometric matrix \n");
+        massbalances.append("% kV - parameter vector \n");
+        massbalances.append("% NRATES - Number of rates \n");
+        massbalances.append("% NSTATES - Number of states \n");
+        massbalances.append("% DXDT - right hand side vector \n");
+        massbalances.append("% ----------------------------------------------------------------------\n");
+        massbalances.append("\n");
+        massbalances.append("% Call the kinetics function \n");
         
         // Setup the kinetics filename -
         //String strKineticesFunctionNameRaw = _xmlPropTree.getProperty("//KineticsFunction/kinetics_filename/text()");
@@ -167,10 +216,31 @@ public class OctaveMModel {
 		buffer.append("function [rV]=");
 		buffer.append(strKineticesFunctionName);
 		buffer.append("(t,x,kV)\n");
-        buffer.append("% Machine generated file. Edit on pain of death. You have been warned.\n");
+        buffer.append("% ---------------------------------------------------------------------\n");
+        buffer.append("% ");
+        buffer.append(strKineticesFunctionName);
+        buffer.append(".m was generated using the UNIVERSAL code generator system.\n");
+        buffer.append("% Username: ");
+        buffer.append(propTree.getProperty(".//Model/@username"));
         buffer.append("\n");
-        buffer.append("% Put the x's in terms of the symbols -- helps with debugging.\n");
-        
+        buffer.append("% Type: ");
+		buffer.append(propTree.getProperty(".//Model/@type"));
+        buffer.append("\n");
+        buffer.append("% Version: ");
+        buffer.append(propTree.getProperty(".//Model/@version"));
+        buffer.append("\n");
+        buffer.append("% \n");
+        buffer.append("% Arguments: \n");
+        buffer.append("% t  - current time \n");
+        buffer.append("% x  - state vector \n");
+        buffer.append("% kV - parameter vector \n");
+        buffer.append("% rV - rate vector \n");
+        buffer.append("% ---------------------------------------------------------------------\n");
+		
+        buffer.append("\n");
+        buffer.append("% ---------------------------------------------- \n");
+        buffer.append("% Convert x's to symbols -- helps with debugging.\n");
+        buffer.append("% ---------------------------------------------- \n");
         
         ListOf species_list_tmp = model_wrapper.getListOfSpecies();
         for (int scounter=0;scounter<NUMBER_OF_SPECIES;scounter++)
@@ -183,7 +253,9 @@ public class OctaveMModel {
             buffer.append(",1);\n");
         }
         buffer.append("\n");
-        
+        buffer.append("% --------------------------------------------- \n");
+        buffer.append("% Alias the parameters -- helps with dbugging.\n");
+        buffer.append("% --------------------------------------------- \n");
         // connect the parameter names to incoming parameter vector from datafile
         ListOf parameter_list_tmp = model_wrapper.getListOfParameters();
         long NUMBER_OF_PARAMETERS = model_wrapper.getNumParameters();
@@ -199,8 +271,9 @@ public class OctaveMModel {
                 
         buffer.append("\n");
         
-        buffer.append("\t% List of the rates -- \n");
-        
+        buffer.append("% ----------------------------------- \n");
+        buffer.append("% List of the rates -- \n");
+        buffer.append("% ----------------------------------- \n");
         // Ok, so I need to see if the rates have kinietc laws, if so use those. Otherwise
         // use mass action as the default
         ListOf rate_list = model_wrapper.getListOfReactions();
@@ -213,7 +286,7 @@ public class OctaveMModel {
             {
                 // If I get here then I already have a kinetic law -
                 KineticLaw law = rxn_obj.getKineticLaw();
-                buffer.append("\trV(");
+                buffer.append("rV(");
                 buffer.append(rcounter+1);
                 buffer.append(",1)\t=\t");
                 buffer.append(law.getFormula());
