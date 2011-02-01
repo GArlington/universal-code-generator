@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<Model username="" version="" name="" type="OCTAVE-C">
+<Model username="" version="" name="" type="OCTAVE-M">
 	
 	<Configuration>
 		<ListOfPackages>
@@ -70,7 +70,7 @@
 		<DataFile path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="DataFile.m"></DataFile>
 		<MassBalanceFunction path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="MassBalances.m"></MassBalanceFunction>
 		<KineticsFunction path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="Kinetics.m"></KineticsFunction>
-		<InputsFunction path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="Inputs.m"></InputsFunction>
+		<InputFunction path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="Inputs.m"></InputFunction>
 		<JacobianMatrix path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="Jacobian.cc"></JacobianMatrix>
 		<BMatrix path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="BMatrix.cc"></BMatrix>
 		<DriverFile path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="SolveMassBalances.m"></DriverFile>
