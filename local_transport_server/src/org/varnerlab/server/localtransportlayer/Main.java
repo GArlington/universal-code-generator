@@ -47,7 +47,7 @@ public class Main implements IConfigurable {
   	  	doc.getDocumentElement().normalize();
   	  	
   	  	// Load the plugin directory -
-  	  	XPathExpression expr = _xpath.compile("//path[@symbol='UNIVERSAL_PLUGIN_JAR_DIRECTORY']/@path_location");
+  	  	XPathExpression expr = _xpath.compile("//path[@symbol='UNIVERSAL_PLUGINS_JAR_DIRECTORY']/@path_location");
 	  	NodeList pluginNode = (NodeList)expr.evaluate(doc, XPathConstants.NODESET);
 	  	String pluginFilePath = pluginNode.item(0).getNodeValue();
 	  	
