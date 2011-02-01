@@ -56,7 +56,7 @@ public class Translator {
         
         // Ok, so when I get here I have to create the dirs in case they are not already there -
         ArrayList<String> arrList = new ArrayList<String>();
-        arrList.add(xmlProp.getProperty(".//path[@symbol='UNIVERSAL_OUTPUT_PATH']/@path_location"));
+        arrList.add(xmlProp.getProperty(".//path[@symbol='UNIVERSAL_SOURCE_OUTPUT_PATH']/@path_location"));
         arrList.add(xmlProp.getProperty(".//path[@symbol='UNIVERSAL_NETWORK_OUTPUT_PATH']/@path_location"));
         arrList.add(xmlProp.getProperty(".//path[@symbol='UNIVERSAL_DEBUG_OUTPUT_PATH']/@path_location"));
         int NUM_OF_DIRS = arrList.size();
