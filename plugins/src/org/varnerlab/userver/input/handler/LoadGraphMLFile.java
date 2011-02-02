@@ -1,7 +1,32 @@
 package org.varnerlab.userver.input.handler;
 
+/*
+ * Copyright (c) 2011 Varnerlab, 
+ * School of Chemical and Biomolecular Engineering, Cornell
+ * University, Ithaca NY 14853 USA.
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is 
+ * furnished to do so, subject to the following conditions:
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
+
 import java.io.File;
 import java.util.Hashtable;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -34,8 +59,9 @@ public class LoadGraphMLFile implements IInputHandler {
 
 	@Override
 	public Object getResource(Object object) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return (_model_wrapper);
+		
 	}
 
 	@Override
@@ -43,11 +69,16 @@ public class LoadGraphMLFile implements IInputHandler {
 		// Method attributes -
 		String strFilePath = "";
 		
+		System.loadLibrary("sbmlj");
+		
 		// Get the path from the propTree -
-		Hashtable<String,String> dictionary = _xmlPropTree.buildFilenameBlockDictionary("NetworkFileName");
+		Hashtable<String,String> dictionary = _xmlPropTree.buildFilenameBlockDictionary("NetworkFile");
 		
 		// Get the path -
 		strFilePath = dictionary.get(XMLPropTree.FullyQualifiedPath);
+		
+		System.out.println("What is going on ??? Do we have the key"+dictionary.containsKey(XMLPropTree.FullyQualifiedPath));
+		System.out.println("What is the GraphML path in the hastable - "+dictionary.get("FULLY_QUALIFIED_PATH"));
 		
 		// Ok, so graphML is just an xml file, so load it up ...
 		File graphFile = new File(strFilePath);
@@ -56,6 +87,7 @@ public class LoadGraphMLFile implements IInputHandler {
     	DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
     	_graphMLDocument = dBuilder.parse(graphFile);
     	_graphMLDocument.getDocumentElement().normalize();
+    	
     	
     	// Ok, so now we need to convert the graphML tree into an SBML tree -
 		// To do that, we need to instantiate the model -
@@ -71,6 +103,7 @@ public class LoadGraphMLFile implements IInputHandler {
     	populateSBMLReactionList();
     	
     	// populate the parameter list -
+    	populateSBMLParameterList();
 	}
 	
 	
@@ -158,7 +191,10 @@ public class LoadGraphMLFile implements IInputHandler {
 			
 			
 			// Ok, when I get here, I need to get the endpoints -
-			String strXPathEndpoints = ".//graph/hyperedge[@id='"+idNode.getNodeValue()+"']/endpoints/@node";
+			String strXPathEndpoints = ".//graph/hyperedge[@id='"+idNode.getNodeValue()+"']/endpoint/@node";
+			
+			System.out.println("What is the endpoints XPath - "+strXPathEndpoints);
+			
 			NodeList nodeEndpointsList = (NodeList)_xpath.evaluate(strXPathEndpoints,_graphMLDocument,XPathConstants.NODESET);
 			int NUMBER_OF_ENDPOINTS = nodeEndpointsList.getLength();
 			for (int endpoint_index=0;endpoint_index<NUMBER_OF_ENDPOINTS;endpoint_index++)
@@ -174,7 +210,10 @@ public class LoadGraphMLFile implements IInputHandler {
 				
 				
 				// is this a in or out?
-				String strTypeXPath = ".//graph/hyperedge[@id='"+idNode.getNodeValue()+"']/endpoints[@node='"+endpointNode.getNodeValue()+"']/@type";
+				String strTypeXPath = ".//graph/hyperedge[@id='"+idNode.getNodeValue()+"']/endpoint[@node='"+endpointNode.getNodeValue()+"']/@type";
+				
+				System.out.println("What is this the XPath - "+strTypeXPath);
+				
 				Node typeNode = (Node) _xpath.evaluate(strTypeXPath, _graphMLDocument, XPathConstants.NODE);
 				String strTypeString = typeNode.getNodeValue();
 				if (strTypeString.equalsIgnoreCase("out"))
@@ -205,9 +244,12 @@ public class LoadGraphMLFile implements IInputHandler {
 	private void populateSBMLSpeciesList() throws Exception
 	{
 		// Ok, so we need to populate the species list -
-		String strXPath = ".//graph/node/@id";
+		String strXPath = ".//node/@id";
 		NodeList nodeList = (NodeList)_xpath.evaluate(strXPath,_graphMLDocument,XPathConstants.NODESET);
 		int NUMBER_OF_NODES = nodeList.getLength();
+		
+		System.out.println("I have "+NUMBER_OF_NODES+" nodes.");
+		
 		for (int index=0;index<NUMBER_OF_NODES;index++)
 		{
 			// Ok, when I get here, I have the list of nodes - we need to put these into species -
@@ -222,6 +264,8 @@ public class LoadGraphMLFile implements IInputHandler {
 			
 			// Add the species to the model_wrapper and go around again -
 			_model_wrapper.addSpecies(tmpSpecies);
+			
+			_logger.log(Level.INFO,"Processed "+tmpSpecies.getName()+" in GraphML InputHandler");
 		}
 	}
 	
