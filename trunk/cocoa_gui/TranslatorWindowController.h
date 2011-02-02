@@ -33,6 +33,8 @@
 	IBOutlet NSTextView *consoleTextField;				// Text field 
 	IBOutlet NSProgressIndicator *progressIndicator;	// Pointer to the progress indicator -
 	IBOutlet NSPopUpButton *fileTypePopupButton;		// Pointer to the popup button -
+	IBOutlet NSButton *actionButton;					// Action button 
+	IBOutlet NSTableView *propTableView;				// Property table view -
 	
 	
 
@@ -56,6 +58,8 @@
 @property (retain) IBOutlet	NSTextView *consoleTextField;
 @property (retain) IBOutlet NSProgressIndicator *progressIndicator;
 @property (retain) IBOutlet NSPopUpButton *fileTypePopupButton;
+@property (retain) IBOutlet NSButton *actionButton;
+@property (retain) IBOutlet NSTableView *propTableView;
 
 
 
@@ -67,6 +71,7 @@
 -(IBAction)removeTreeNode:(NSButton *)sender;
 -(IBAction)runCodeGenerator:(NSButton *)sender;
 -(IBAction)checkTreeCompleteness:(NSButton *)sender;
+
 
 // Create XML document methods -
 -(void)createXMLDocumentFromFile:(NSString *)file;
