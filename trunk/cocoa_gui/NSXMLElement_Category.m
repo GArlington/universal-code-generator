@@ -41,9 +41,15 @@
 		// Get attribute name --
 		NSXMLNode *attributeNode = [tmpElementNode attributeForName:@"symbol"];
 		NSXMLNode *keyNameNode = [tmpElementNode attributeForName:@"filename"];
-		NSXMLNode *nameNode = [tmpElementNode attributeForName:@"classname"];
+		NSXMLNode *classNameNode = [tmpElementNode attributeForName:@"classname"];
 		NSXMLNode *inputClassNameNode = [tmpElementNode attributeForName:@"input_classname"];
 		NSXMLNode *outputClassNameNode = [tmpElementNode attributeForName:@"output_classname"];
+		NSXMLNode *idNameNode = [tmpElementNode attributeForName:@"id"];
+		NSXMLNode *speciesNode = [tmpElementNode attributeForName:@"species"];
+		NSXMLNode *nodeNameNode = [tmpElementNode attributeForName:@"node"];
+		NSXMLNode *sourceNameNode = [tmpElementNode attributeForName:@"source"];
+		NSXMLNode *targetNameNode = [tmpElementNode attributeForName:@"target"];
+		NSXMLNode *nameNameNode = [tmpElementNode attributeForName:@"name"];
 		
 		if (attributeNode!=nil)
 		{
@@ -51,6 +57,48 @@
 			labelText = [labelText stringByAppendingString:[self name]];
 			labelText = [labelText stringByAppendingString:@" ( "];
 			labelText = [labelText stringByAppendingString:[attributeNode stringValue]];
+			labelText = [labelText stringByAppendingString:@" )"];
+		}
+		else if (nameNameNode!=nil)
+		{
+			// Ok, If I get here I have a symbol attribute - create a new string with the name and the symbol
+			labelText = [labelText stringByAppendingString:[self name]];
+			labelText = [labelText stringByAppendingString:@" ( "];
+			labelText = [labelText stringByAppendingString:[nameNameNode stringValue]];
+			labelText = [labelText stringByAppendingString:@" )"];
+		}
+		else if (idNameNode!=nil)
+		{
+			// Ok, If I get here I have a symbol attribute - create a new string with the name and the symbol
+			labelText = [labelText stringByAppendingString:[self name]];
+			labelText = [labelText stringByAppendingString:@" ( "];
+			labelText = [labelText stringByAppendingString:[idNameNode stringValue]];
+			labelText = [labelText stringByAppendingString:@" )"];
+		}
+		else if ((sourceNameNode!=nil) && targetNameNode!=nil)
+		{
+			// Ok, If I get here I have a symbol attribute - create a new string with the name and the symbol
+			labelText = [labelText stringByAppendingString:[self name]];
+			labelText = [labelText stringByAppendingString:@" ( "];
+			labelText = [labelText stringByAppendingString:[sourceNameNode stringValue]];
+			labelText = [labelText stringByAppendingString:@" - "];
+			labelText = [labelText stringByAppendingString:[targetNameNode stringValue]];
+			labelText = [labelText stringByAppendingString:@" )"];
+		}
+		else if (nodeNameNode!=nil)
+		{
+			// Ok, If I get here I have a symbol attribute - create a new string with the name and the symbol
+			labelText = [labelText stringByAppendingString:[self name]];
+			labelText = [labelText stringByAppendingString:@" ( "];
+			labelText = [labelText stringByAppendingString:[nodeNameNode stringValue]];
+			labelText = [labelText stringByAppendingString:@" )"];
+		}
+		else if (speciesNode!=nil)
+		{
+			// Ok, If I get here I have a symbol attribute - create a new string with the name and the symbol
+			labelText = [labelText stringByAppendingString:[self name]];
+			labelText = [labelText stringByAppendingString:@" ( "];
+			labelText = [labelText stringByAppendingString:[speciesNode stringValue]];
 			labelText = [labelText stringByAppendingString:@" )"];
 		}
 		else if (keyNameNode!=nil)
@@ -61,12 +109,12 @@
 			labelText = [labelText stringByAppendingString:[keyNameNode stringValue]];
 			labelText = [labelText stringByAppendingString:@" )"];
 		}
-		else if (nameNode!=nil)
+		else if (classNameNode!=nil)
 		{
 			// Ok, If I get here I have a keyname attribute - create a new string with the name and the keyname
 			labelText = [labelText stringByAppendingString:[self name]];
 			labelText = [labelText stringByAppendingString:@" ( "];
-			labelText = [labelText stringByAppendingString:[nameNode stringValue]];
+			labelText = [labelText stringByAppendingString:[classNameNode stringValue]];
 			labelText = [labelText stringByAppendingString:@" )"];
 		}
 		
