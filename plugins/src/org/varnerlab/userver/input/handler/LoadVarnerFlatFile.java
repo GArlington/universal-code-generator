@@ -320,7 +320,7 @@ public class LoadVarnerFlatFile implements IInputHandler {
 		System.loadLibrary("sbmlj");
 
 		// Create a new modelWrapper -
-		_modelWrapper = new Model(2,4);
+		_modelWrapper = new Model(3,1);
 
 		// Set the name of the model -
 		String strModelName = _propTable.get("MODEL_NAME");
