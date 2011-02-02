@@ -35,7 +35,7 @@ public class XMLPropTree implements IInputHandler {
 	public static final String FileNameWithExtension = "FILENAME_WITH_EXTENSION";
 	public static final String FunctionName = "FUNCTION_NAME";
 	public static final String FilePath = "FILENAME_PATH";
-	public static final String FullyQualifiedPath = "FULLY_QUAIFIED_PATH";
+	public static final String FullyQualifiedPath = "FULLY_QUALIFIED_PATH";
 	
 
 	public Object getResource(Object object) throws Exception {
