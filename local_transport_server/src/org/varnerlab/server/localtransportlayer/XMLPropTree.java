@@ -31,6 +31,12 @@ public class XMLPropTree implements IInputHandler {
 	private Document _docPropTree = null;
 	private Logger _logger = null;
 	
+	// put some type strings here -
+	public static final String FileNameWithExtension = "FILENAME_WITH_EXTENSION";
+	public static final String FunctionName = "FUNCTION_NAME";
+	public static final String FilePath = "FILENAME_PATH";
+	public static final String FullyQualifiedPath = "FULLY_QUAIFIED_PATH";
+	
 
 	public Object getResource(Object object) throws Exception {
 		// TODO Auto-generated method stub
@@ -79,6 +85,54 @@ public class XMLPropTree implements IInputHandler {
 		
 		// return the path string -
 		return packageString;
+	}
+	
+	public Hashtable<String,String> buildFilenameBlockDictionary(String blockName) throws Exception
+	{
+		// Method attributes -
+		Hashtable<String,String> hashtable = new Hashtable<String,String>();
+		
+		// Get the filename for the data -
+		String strXPathFilename = ".//"+blockName+"/@filename";
+		Node filenameNode = (Node) _xpath.evaluate(strXPathFilename, _docPropTree, XPathConstants.NODE);
+		
+		// ok, the first element of ArrayList is the filename -
+		String tmpString = filenameNode.getNodeValue();
+		if (!tmpString.isEmpty())
+		{
+			// Get the filename -
+			hashtable.put("FILENAME_WITH_EXTENSION",tmpString);
+			
+			// Get the "function name"
+			int INDEX_OF_DOT = tmpString.indexOf(".");
+			hashtable.put("FUNCTION_NAME",tmpString.substring(0, INDEX_OF_DOT));
+		}
+		
+		// Ok, so we need to get path -
+		String strXPathPathKey = ".//"+blockName+"/@path_symbol";
+		Node pathSymbolKeyNode = (Node) _xpath.evaluate(strXPathPathKey, _docPropTree, XPathConstants.NODE);
+		String strPathKey = pathSymbolKeyNode.getNodeValue();
+		
+		// Formulate the xpath -
+		String strXPathPathString = ".//path[@symbol='"+strPathKey+"']/@path_location";
+		Node pathNode = (Node) _xpath.evaluate(strXPathPathString, _docPropTree, XPathConstants.NODE);
+		String strPath = pathNode.getNodeValue();
+		
+		// package the path in the last element of the array -
+		if (!strPath.isEmpty())
+		{
+			hashtable.put("FILENAME_PATH",strPath);
+		}
+		
+		if (!tmpString.isEmpty() && !strPath.isEmpty())
+		{
+		
+			// Lastly fully qualified path -
+			hashtable.put("FULLY_QUALIFIED_PATH",strPath+"/"+tmpString);
+		}
+		
+		// return -
+		return hashtable;
 	}
 	
 	public ArrayList<String> processFilenameBlock(String blockName) throws Exception
