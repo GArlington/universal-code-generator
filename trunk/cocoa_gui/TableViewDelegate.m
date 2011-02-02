@@ -13,6 +13,8 @@
 
 -(void)setup;
 -(void)treeSelectionChanged:(NSNotification *)notification;
+-(void)openPathLocationPanelDidEnd:(NSOpenPanel *)openPanel returnCode:(int)returnCode contextInfo:(void *)contextInfo;
+-(void)openFilenamePanelDidEnd:(NSOpenPanel *)openPanel returnCode:(int)returnCode contextInfo:(void *)contextInfo;
 
 @end
 
@@ -26,6 +28,7 @@
 @synthesize comboDataSource;
 @synthesize tableData;
 @synthesize selectedXMLNode;
+@synthesize window;
 
 #pragma mark --------------------------------
 #pragma mark init and dealloc
@@ -54,6 +57,7 @@
 	
 	// release my outlets -
 	self.tableView = nil;
+	self.window = nil;
 	
 	// deallocate my super ...
 	[super dealloc];
@@ -256,6 +260,194 @@
 			NSComboBoxCell *cell = (NSComboBoxCell *)aCell;
 			[cell setBackgroundColor:[NSColor windowBackgroundColor]];
 		}		
+	}
+}
+
+#pragma mark --------------------------------
+#pragma mark IBAction methods -
+#pragma mark --------------------------------
+
+-(IBAction)updateTableValues:(NSButton *)sender
+{
+	// Ok, when I get here, the user has pushed the "action" button for this table item. I need to get the current node and 
+	// try to populate attributes with some "auto" values -
+	
+	// Method attributes -
+	
+	
+	// Get the current selected node -
+	NSXMLElement *currentNode = [self selectedXMLNode];
+	if (currentNode!=nil)
+	{
+		// Ok, so if I get here, I have a non-nil selected node
+		
+		// Think about this ... but for now, lets populate path_location
+		NSXMLNode *attrPathLocationNode = [currentNode attributeForName:@"path_location"];
+		NSXMLNode *filenameNode = [currentNode attributeForName:@"filename"];
+		
+		// Process the attr for path_location -
+		if (attrPathLocationNode != nil)
+		{
+			// If I get here I have a path location - check to see is this gut is non-zero
+			NSString *tmpPathString = [attrPathLocationNode stringValue];
+			if ([tmpPathString length]==0)
+			{
+				// Ok, so I have an empty value here ..
+				// Open up the panel -
+				
+				int rowIndex = [[self tableView] selectedRow];
+				if (rowIndex != -1)
+				{
+				
+					// Get the array of file types and open the panel -
+					NSOpenPanel *openPanel = [NSOpenPanel openPanel];
+					
+					// Configure the panel -
+					[openPanel setAllowsMultipleSelection:NO];
+					[openPanel setCanChooseFiles:NO];
+					[openPanel setCanCreateDirectories:YES];
+					[openPanel setCanChooseDirectories:YES];
+					
+					// Get my current dir -
+					NSString *bundlePath = [[[NSBundle mainBundle] bundlePath] stringByDeletingLastPathComponent];
+					
+					// Run the panel as a sheet -
+					[openPanel beginSheetForDirectory:bundlePath
+												 file:nil 
+									   modalForWindow:[self window]
+										modalDelegate:self 
+									   didEndSelector:@selector(openPathLocationPanelDidEnd:returnCode:contextInfo:)
+										  contextInfo:NULL];
+					
+				
+				}
+			}
+		}
+		else if (filenameNode !=nil)
+		{
+			// If I get here I have a path location - check to see is this gut is non-zero
+			NSString *tmpPathString = [attrPathLocationNode stringValue];
+			if ([tmpPathString length]==0)
+			{
+				// Ok, so I have an empty value here ..
+				// Open up the panel -
+				
+				int rowIndex = [[self tableView] selectedRow];
+				if (rowIndex != -1)
+				{
+					
+					// Get the array of file types and open the panel -
+					NSOpenPanel *openPanel = [NSOpenPanel openPanel];
+					
+					// Configure the panel -
+					[openPanel setAllowsMultipleSelection:NO];
+					[openPanel setCanChooseFiles:YES];
+					[openPanel setCanCreateDirectories:YES];
+					
+					// Get my current dir -
+					NSString *bundlePath = [[[NSBundle mainBundle] bundlePath] stringByDeletingLastPathComponent];
+					
+					// Run the panel as a sheet -
+					[openPanel beginSheetForDirectory:bundlePath
+												 file:nil 
+									   modalForWindow:[self window]
+										modalDelegate:self 
+									   didEndSelector:@selector(openFilenamePanelDidEnd:returnCode:contextInfo:)
+										  contextInfo:NULL];
+				}
+			}
+		}
+	}
+}
+
+-(void)openFilenamePanelDidEnd:(NSOpenPanel *)openPanel returnCode:(int)returnCode contextInfo:(void *)contextInfo
+{
+	// Ok, check which button was pushed, get the path -
+	if (returnCode == NSOKButton)
+	{
+		NSXMLElement *currentNode = [self selectedXMLNode];
+		NSString *bundlePathString = [[openPanel filename] lastPathComponent];
+		
+		// Get the bundle path -
+		// NSString *bundlePathString = [[[NSBundle mainBundle] bundlePath] stringByDeletingLastPathComponent];
+		
+		// Create dictionary -
+		NSDictionary *tmpAttrTable = [[[NSDictionary alloc] initWithObjectsAndKeys:
+									   bundlePathString,@"filename",nil] autorelease];
+		
+		// Update the node w/this path -
+		[currentNode setAttributesAsDictionary:tmpAttrTable];
+		
+		// Ok, so we also need to update the GUI wrapper -
+		int rowIndex = [[self tableView] selectedRow];
+		
+		if (rowIndex != -1)
+		{
+			// Grab the object for this row -
+			XMLAttributeWrapper *wrapper = [[self tableData] objectAtIndex:rowIndex];
+			
+			// We need to update the wrapper value -
+			[wrapper setValue:bundlePathString forKey:@"value"];
+			
+			// Update the table -
+			[[self tableData] replaceObjectAtIndex:rowIndex withObject:wrapper];
+			
+			// reload the table -
+			[[self tableView] reloadData];
+			
+			// Fire an event -
+			NSString *MyNotificationName = @"TreeNodeDataChanged";
+			NSNotification *myNotification = [NSNotification notificationWithName:MyNotificationName object:nil]; 
+			[[NSNotificationQueue defaultQueue] enqueueNotification:myNotification postingStyle:NSPostNow coalesceMask:NSNotificationCoalescingOnName forModes:nil];
+		}
+		
+	}
+	
+}
+		
+-(void)openPathLocationPanelDidEnd:(NSOpenPanel *)openPanel returnCode:(int)returnCode contextInfo:(void *)contextInfo
+{
+	// Ok, check which button was pushed, get the path -
+	if (returnCode == NSOKButton)
+	{
+		NSXMLElement *currentNode = [self selectedXMLNode];
+		NSString *bundlePathString = [openPanel directory];
+		
+		// Get the bundle path -
+		// NSString *bundlePathString = [[[NSBundle mainBundle] bundlePath] stringByDeletingLastPathComponent];
+		
+		NSLog(@"What is the bundle path %@",bundlePathString);
+		
+		// Create dictionary -
+		NSDictionary *tmpAttrTable = [[[NSDictionary alloc] initWithObjectsAndKeys:
+									   bundlePathString,@"path_location",nil] autorelease];
+		
+		// Update the node w/this path -
+		[currentNode setAttributesAsDictionary:tmpAttrTable];
+		
+		// Ok, so we also need to update the GUI wrapper -
+		int rowIndex = [[self tableView] selectedRow];
+		
+		if (rowIndex != -1)
+		{
+			// Grab the object for this row -
+			XMLAttributeWrapper *wrapper = [[self tableData] objectAtIndex:rowIndex];
+			
+			// We need to update the wrapper value -
+			[wrapper setValue:bundlePathString forKey:@"value"];
+			
+			// Update the table -
+			[[self tableData] replaceObjectAtIndex:rowIndex withObject:wrapper];
+			
+			// reload the table -
+			[[self tableView] reloadData];
+			
+			// Fire an event -
+			NSString *MyNotificationName = @"TreeNodeDataChanged";
+			NSNotification *myNotification = [NSNotification notificationWithName:MyNotificationName object:nil]; 
+			[[NSNotificationQueue defaultQueue] enqueueNotification:myNotification postingStyle:NSPostNow coalesceMask:NSNotificationCoalescingOnName forModes:nil];
+		}
+		
 	}
 }
 
