@@ -383,6 +383,8 @@
 	
 	// Configure the panel -
 	[openPanel setAllowsMultipleSelection:NO];
+	[openPanel setCanChooseDirectories:NO];
+	[openPanel setExtensionHidden:NO];
 	
 	
 	// Run the panel as a sheet -
@@ -452,6 +454,10 @@
 	
 	/* create or get the shared instance of NSSavePanel */ 
 	savePanel = [NSSavePanel savePanel];
+	
+	// Set some attributes -
+	[savePanel setExtensionHidden:YES];
+	[savePanel setHasShadow:YES];
 	
 	// Run the panel as a sheet -
 	[savePanel beginSheetForDirectory:NSHomeDirectory() 
@@ -833,28 +839,35 @@
 	[strXPath appendString:@".//Model/@type"];
 	NSArray *listOfChildren = [[[self xmlTreeModel] xmlDocument] nodesForXPath:strXPath error:&errObject];
 	
-	// Get the type node -
-	NSXMLElement *typeNode = (NSXMLElement *)[listOfChildren lastObject];
-	
-	// OK, so now we need to look the string visible to the user -
-	[strXPath setString:@""];
-	[strXPath appendString:@".//mapping[@type='"];
-	[strXPath appendString:[typeNode stringValue]];
-	[strXPath appendString:@"']/display/@name"];
-	
-	//NSLog(@"What was the xpath %@",strXPath);
-	
-	NSArray *displayName = [[self xmlDocument] nodesForXPath:strXPath error:&errObject];
-	NSXMLElement *displayNode = (NSXMLElement *)[displayName lastObject];
+	if ([listOfChildren count]!=0) 
+	{
+		// Get the type node -
+		NSXMLElement *typeNode = (NSXMLElement *)[listOfChildren lastObject];
+		
+		// OK, so now we need to look the string visible to the user -
+		[strXPath setString:@""];
+		[strXPath appendString:@".//mapping[@type='"];
+		[strXPath appendString:[typeNode stringValue]];
+		[strXPath appendString:@"']/display/@name"];
+		
+		//NSLog(@"What was the xpath %@",strXPath);
+		
+		NSArray *displayName = [[self xmlDocument] nodesForXPath:strXPath error:&errObject];
+		NSXMLElement *displayNode = (NSXMLElement *)[displayName lastObject];
+		
+		//NSLog(@"What was selected %@",[displayNode stringValue]);
+		
+		// Ok, so now we need to figure which item is selected -
+		[[self fileTypePopupButton] selectItemWithTitle:[displayNode stringValue]];
+		
+	}
+	else {
+		// If I get here, then I have a "custom" file that is a generic xml file type -
+		[[self fileTypePopupButton] selectItemWithTitle:@"Load custom specification ..."]; 
+	}
 
-	//NSLog(@"What was selected %@",[displayNode stringValue]);
 	
-	// Ok, so now we need to figure which item is selected -
-	[[self fileTypePopupButton] selectItemWithTitle:[displayNode stringValue]];
-	
-	// lastly - try and populate some of the path information (makes it easier for the user)
-	//[self automaticallyPopulateTreePathData];
-	
+		
 	// release -
 	[strXPath release];
 }
