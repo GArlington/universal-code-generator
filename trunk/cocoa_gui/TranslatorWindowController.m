@@ -56,6 +56,8 @@
 @synthesize progressIndicator;
 @synthesize treeCheckButton;
 @synthesize fileTypePopupButton;
+@synthesize actionButton;
+@synthesize propTableView;
 
 
 #pragma mark --------------------------------
@@ -100,6 +102,8 @@
 	self.progressIndicator = nil;
 	self.treeCheckButton = nil;
 	self.fileTypePopupButton = nil;
+	self.actionButton = nil;
+	self.propTableView = nil;
 	
 	// deallocate the super -
 	[super dealloc];
