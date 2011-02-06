@@ -750,20 +750,12 @@ public class SBMLModelUtilities {
     public static void dumpInputFunctionToDisk(StringBuffer driver,XMLPropTree _xmlPropTree) throws Exception
     {
         // I have populated the string buffer, dump that mofo
-        String strWorkingDir = _xmlPropTree.getProperty("//working_directory/text()");
-        String strFileName = _xmlPropTree.getProperty("//InputFunction/input_function_filename/text()");
-        String strFilePath = _xmlPropTree.getProperty("//InputFunction/input_function_path/text()");
+        Hashtable<String,String> pathHashtable = _xmlPropTree.buildFilenameBlockDictionary("InputFunction");
         
-        String strSBMLFile = "";
-        if (strFilePath.isEmpty())
-        {
-        	strSBMLFile = strWorkingDir+"/"+strFileName;
-        }
-        else
-        {
-        	strSBMLFile = strWorkingDir+"/"+strFilePath+"/"+strFileName;
-        }
+        // Get the fully qualified name -
+        String strSBMLFile = pathHashtable.get("FULLY_QUALIFIED_PATH");
         
+        // Dump to disk -
         GIOL.write(strSBMLFile,driver);
     }
     
@@ -1121,15 +1113,10 @@ public class SBMLModelUtilities {
                     // Get the species reference -
                     SpeciesReference species_ref = rxn_obj.getReactant(reactant_index);
                     String strReactant = species_ref.getSpecies();
-                    
-                    // //System.out.println("Checking - "+strReactant+" against "+strSpecies);
-                    
-                    
+                          
                     if (strReactant.equalsIgnoreCase(strSpecies))
                     {       
-                    	             	
                     	double tmp = species_ref.getStoichiometry();
-                    	//System.out.println("Reactant "+strReactant+" has a st.coeff of "+tmp+" in reaction "+rcounter);
                         if (tmp>=0.0)
                         {
                             dblSTMatrix[scounter][rcounter]=-1.0*tmp;
@@ -1148,9 +1135,7 @@ public class SBMLModelUtilities {
                     // Get the species reference -
                     SpeciesReference species_ref = rxn_obj.getProduct(product_index);
                     String strProduct = species_ref.getSpecies();
-                    
-                    ////System.out.println("Comparing NP="+NUMBER_OF_PRODUCTS+" to "+strProduct+"="+strSpecies+"?");
-                    
+                     
                     if (strProduct.equalsIgnoreCase(strSpecies))
                     {
                         dblSTMatrix[scounter][rcounter]=species_ref.getStoichiometry();
