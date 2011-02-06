@@ -347,7 +347,7 @@
 		// First thing - stop editing
 		[[self tableView] abortEditing];
 		
-		// First what wrapper has been selected?
+		// What wrapper has been selected?
 		XMLAttributeWrapper *tmpWrapper = [[self tableData] objectAtIndex:intSelectedRow];
 		NSString *tmpAttributeName = [tmpWrapper attribute];
 		
