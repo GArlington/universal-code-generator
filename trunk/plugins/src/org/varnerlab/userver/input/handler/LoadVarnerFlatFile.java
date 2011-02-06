@@ -325,56 +325,32 @@ public class LoadVarnerFlatFile implements IInputHandler {
 		}
 	}
 
-
-
-	// Ok, so when I get here I need to translate the FF object model to the SBML obj model -
-	public Object getResource(Object object) throws Exception {
-		// Class/instance attributs -
-
-
-		// Load the sbml lib -
-		int counter;
-		//System.out.println("New - "+System.getProperty("java.library.path"));
+	private void addSpeciesToModel() throws Exception
+	{
+		// Method attributes -
+		int counter = 0;
 		
-		System.loadLibrary("sbmlj");
-
-		// Create a new modelWrapper -
-		_modelWrapper = new Model(3,1);
-
-		// Set the name of the model -
-		String strModelName = _propTable.get("MODEL_NAME");
-		if (strModelName.isEmpty())
-		{
-			_modelWrapper.setName("TEST_MODEL");
-		}
-		else
-		{
-			_modelWrapper.setName(strModelName);
-		}
-
-		// Ok, we need to set a default compartment -
-		Compartment tmpCompartment = _modelWrapper.createCompartment();
-		tmpCompartment.setName(strModelName);
-		_modelWrapper.addCompartment(tmpCompartment);
-
 		// Ok, get the iterator for species so I can add these to the model -
 		Iterator species_iter = this._alphabetVector.iterator();
 
-		counter = 0;
+		// Process each species -
 		while (species_iter.hasNext())
 		{
-			String spName = (String)species_iter.next();
 			
-			System.out.println("Processing "+spName);
+			// Get the species -
+			String spName = (String)species_iter.next();
 
 			// We need to check for - 
-			//spName = spName.replace('-', '_');
+			spName = spName.replace('-', '_');
 
 			// Configure the species object -
 			Species newSpecies = _modelWrapper.createSpecies();
 			newSpecies.setName(spName);
 			newSpecies.setId(spName);
-			newSpecies.setCompartment("model");
+			
+			// Get the model name -
+			String strModelName = _propTable.get("MODEL_NAME");
+			newSpecies.setCompartment(strModelName);
 
 			// if the initial condition is there, use it
 			// we are assuming the ic file is in same order as this
@@ -391,31 +367,26 @@ public class LoadVarnerFlatFile implements IInputHandler {
 			_modelWrapper.addSpecies(newSpecies);
 			counter++;
 		}
-		
-		// How many species are in the model?
-		//System.out.println("How many species are in the model? "+_modelWrapper.getNumSpecies());
+	}
 
-		// Get the iterator of FFReactionObjects -
+	private void addParametersToModel() throws Exception
+	{
+		// Method attributes -
+		int counter = 0;
+		
+		// Get list of reactions -
 		Iterator rxn_iter = this._rxnVector.iterator();
-		counter = 0; // reinitalize
-		String rateLawS; // used to make up the rate law
-		Double temp; // used below 
+
+		// Go through each reaction and get the parameter information -
 		while (rxn_iter.hasNext())
 		{
-			// Create a new SBML reaction object -
-			Reaction rxnSBML = _modelWrapper.createReaction();
-
-			// flat files always are irreversible -
-			rxnSBML.setReversible(false);
-
 			// Get the ffRxnObj -
 			FFReactionObject ffRxnObj = (FFReactionObject)rxn_iter.next();
-
+			
 			// Ok, so create a parameter object for the model -
 			Parameter parameterObj = _modelWrapper.createParameter();
 
-			//naming the parameter the rxn string means I cannot refer to it later
-			//parameterObj.setName(ffRxnObj.getReactionString());
+			// Naming the parameter the rxn string means I cannot refer to it late
 			String strRxnNameTest = (String)(ffRxnObj.getRecord()).getData(IReactionFile.RXNNAME);
 			parameterObj.setName("k_"+counter);
 			parameterObj.setId(strRxnNameTest);
@@ -447,53 +418,60 @@ public class LoadVarnerFlatFile implements IInputHandler {
 
 			// Add the parameter to the model -
 			_modelWrapper.addParameter(parameterObj);
+		}
+	}
+	
+	private void addReactionsToModel() throws Exception
+	{
+		// Method attributes -
+		int counter = 0;
+		
+		// Get the iterator of FFReactionObjects -
+		Iterator rxn_iter = this._rxnVector.iterator();
+		
+		// Iterate through the list of VFF reactions and populate the SBML 
+		while (rxn_iter.hasNext())
+		{
+			// Get the ffRxnObj -
+			FFReactionObject ffRxnObj = (FFReactionObject)rxn_iter.next();
+			
+			// Create a new SBML reaction object -
+			Reaction rxnSBML = _modelWrapper.createReaction();
 
-			// Configure the reaction rate - add the reactants -
-			rxnSBML.setName((String)rec.getData(IReactionFile.RXNNAME));
+			// flat files always are irreversible -
+			rxnSBML.setReversible(false);
+			
+			// Process the reactants -
 			Iterator iter_reactants = ffRxnObj.getReactants();
-
-			// create a kinetic law formula using mass action
-			rateLawS = new String(parameterObj.getName()); // recall this rxn is with previous param
-			// it is assumed that each new parameter is matched one to one with new rxn
 			while (iter_reactants.hasNext())
 			{
 				// Get the state symbol -
 				StateSymbol symbol = (StateSymbol)iter_reactants.next();
-
-				// we need to check this symbol -
+				
+				// Get the symbol -
 				String strSymbol = symbol.getSymbol();
-				//strSymbol = strSymbol.replace('-', '_');
-
-				// Create a new SpeciesRef -
-				SpeciesReference specRef = new SpeciesReference(2,4);
-				specRef.setSpecies(strSymbol);
-
-				if (!strSymbol.equalsIgnoreCase("[]"))
-				{	
-					// add this to rate law
-					rateLawS = new String(rateLawS +"*"+strSymbol); 		// add reactant to rate law
+				
+				// Create and configure species reference -
+				SpeciesReference specRef = rxnSBML.createReactant();
+				
+				// Check to see if we have a [] -
+				if (strSymbol.equalsIgnoreCase("[]"))
+				{
+					specRef.setSpecies("[]");
 				}
 				else
 				{
-					rateLawS = new String(rateLawS);
+					specRef.setSpecies(strSymbol);
 				}
-
-				temp = ffRxnObj.getCoefficientValue(strSymbol);
-
-				// We need the st. coeff w/no sign because SBMLUtil generates the stmatix => the signs are determined from membership
-				// in the reactant or product lists -
-				specRef.setStoichiometry(Math.abs(temp));
-
-				if (temp!=0.0 && temp!=-1.0)
-				{
-					rateLawS = new String(rateLawS +"^"+String.valueOf(-1*temp)); 	// add exponent to rate law (is neg)
-				}
-
-
-				// Add the species ref -
+				
+				// We need to check VFF puts negatives in -
+				double tmpCoeff = Math.abs(ffRxnObj.getCoefficientValue(strSymbol));
+				specRef.setStoichiometry(tmpCoeff);
+				
+				// Add the configured species reference -
 				rxnSBML.addReactant(specRef);
 			}
-
+			
 			// Configure the reaction rate - add the products -
 			Iterator iter_products = ffRxnObj.getProducts();
 			while (iter_products.hasNext())
@@ -502,35 +480,70 @@ public class LoadVarnerFlatFile implements IInputHandler {
 				StateSymbol symbol = (StateSymbol)iter_products.next();
 
 				// Create a new SpeciesRef -
-				SpeciesReference specRef = new SpeciesReference(2,4);
+				SpeciesReference specRef = rxnSBML.createProduct();
 				specRef.setSpecies(symbol.getSymbol());
 				specRef.setStoichiometry(ffRxnObj.getCoefficientValue(symbol.getSymbol()));
 
 				// Add the species ref -
 				rxnSBML.addProduct(specRef);
 			}
-
-			//create the rate law out of the string rate law
-			// law not made this way
-			//KineticLaw rateLaw = new KineticLaw(rateLawS);
-			//KineticLaw rateLaw = _modelWrapper.createKineticLaw();
-			//rateLaw.setFormula(rateLawS);
 			
-			//rate not defined locally
-			//rateLaw.addParameter(parameterObj); // recall that we have defined this parameter already
-
-			//rxnSBML.setKineticLaw(rateLaw); // add this rateLaw to the current rxn
+			// Get the reaction string and add as the name -
 			rxnSBML.setName(ffRxnObj.getReactionString());
 			rxnSBML.setId("R_"+counter);
 
 			// add the reaction to the model -
 			_modelWrapper.addReaction(rxnSBML);
-
+			
 			// update the counter -
-			counter++;
-
+			counter++;			
+		}	
+	}
+	
+	private void addCompartmentToModel() throws Exception
+	{
+		
+		// Set the name of the model -
+		String strModelName = _propTable.get("MODEL_NAME");
+		if (strModelName.isEmpty())
+		{
+			_modelWrapper.setName("TEST_MODEL");
 		}
+		else
+		{
+			_modelWrapper.setName(strModelName);
+		}
+		
+		// Ok, we need to set a default compartment -
+		Compartment tmpCompartment = _modelWrapper.createCompartment();
+		tmpCompartment.setName(strModelName);
+		_modelWrapper.addCompartment(tmpCompartment);
+	}
 
+	// Ok, so when I get here I need to translate the FF object model to the SBML obj model -
+	public Object getResource(Object object) throws Exception {
+		// Method attributes
+		int counter;	
+
+		// Load the sbml lib -
+		System.loadLibrary("sbmlj");
+
+		// Create a new modelWrapper -
+		_modelWrapper = new Model(3,1);
+
+		// Add compartment to model -
+		addCompartmentToModel();
+
+		// Add the species to the model -
+		addSpeciesToModel();
+		
+		// Add the parameters to the model -
+		addParametersToModel();
+		
+		// Add the reactions to the model -
+		addReactionsToModel();
+		
+		// return the model -
 		return(_modelWrapper);
 	}
 

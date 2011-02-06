@@ -60,6 +60,8 @@ public class LoadGraphMLFile implements IInputHandler {
 	@Override
 	public Object getResource(Object object) throws Exception {
 		
+		System.out.println(_model_wrapper.toSBML());
+		
 		return (_model_wrapper);
 		
 	}
@@ -160,15 +162,15 @@ public class LoadGraphMLFile implements IInputHandler {
 			tmpEdgeReaction.setName(strReactionName);
 			
 			// Source -
-			SpeciesReference sourceReference = new SpeciesReference(3,1);
+			SpeciesReference sourceReference = tmpEdgeReaction.createReactant();
 			sourceReference.setSpecies(sourceNode.getNodeValue());
 			sourceReference.setStoichiometry(1.0);
 			tmpEdgeReaction.addReactant(sourceReference);
 			
 			// Target -
-			SpeciesReference targetReference = new SpeciesReference(3,1);
-			sourceReference.setSpecies(targetNode.getNodeValue());
-			sourceReference.setStoichiometry(1.0);
+			SpeciesReference targetReference = tmpEdgeReaction.createProduct();
+			targetReference.setSpecies(targetNode.getNodeValue());
+			targetReference.setStoichiometry(1.0);
 			tmpEdgeReaction.addProduct(targetReference);
 			
 			// set the reaction in the model_wrapper -
@@ -220,7 +222,7 @@ public class LoadGraphMLFile implements IInputHandler {
 				{
 					// If we get here, then I have a reactant -
 					// Source -
-					SpeciesReference sourceReference = new SpeciesReference(3,1);
+					SpeciesReference sourceReference = tmpEdgeReaction.createReactant();
 					sourceReference.setSpecies(endpointNode.getNodeValue());
 					sourceReference.setStoichiometry(1.0);
 					tmpEdgeReaction.addReactant(sourceReference);
@@ -229,7 +231,7 @@ public class LoadGraphMLFile implements IInputHandler {
 				{
 					// If I get here I have a product -
 					// Target -
-					SpeciesReference sourceReference = new SpeciesReference(3,1);
+					SpeciesReference sourceReference = tmpEdgeReaction.createProduct();
 					sourceReference.setSpecies(endpointNode.getNodeValue());
 					sourceReference.setStoichiometry(1.0);
 					tmpEdgeReaction.addProduct(sourceReference);
