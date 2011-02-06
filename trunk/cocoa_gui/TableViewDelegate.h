@@ -51,5 +51,8 @@
 
 // Ok, so let's setup an action -
 -(IBAction)updateTableValues:(NSButton *)sender;
+-(IBAction)addAttribute:(id)sender;
+-(IBAction)removeAttribute:(id)sender;
+
 
 @end
