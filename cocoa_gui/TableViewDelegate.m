@@ -21,7 +21,8 @@
 //
 //  TableViewDelegate.m
 //  Translator
-
+//
+//  Created by Jeffrey Varner on 1/21/11.
 
 #import "TableViewDelegate.h"
 
