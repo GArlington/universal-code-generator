@@ -30,6 +30,7 @@
 package org.varnerlab.userver.language.handler;
 
 // import statements -
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Properties;
 import java.util.StringTokenizer;
@@ -72,17 +73,40 @@ public class MatlabModel {
     public void buildInputsBuffer(StringBuffer inputs) throws Exception
     {
         // Ok, so the build the input buffer -
-		// Setup the kinetics filename -
-        String strInputFunctionNameRaw = _xmlPropTree.getProperty("//InputFunction/input_function_filename/text()");
-        int INT_2_DOT = strInputFunctionNameRaw.indexOf(".");
-        String strInputFunctionName = strInputFunctionNameRaw.substring(0, INT_2_DOT);
 		
+    	ArrayList<String> arrList = _xmlPropTree.processFilenameBlock("InputFunction");
+    	String strInputFunctionName = arrList.get(1);
+        
         // Away we go...
         inputs.append("function uV=");
         inputs.append(strInputFunctionName);
         inputs.append("(t,x,DF);\n");
+        
+        // header information -
+        inputs.append("% ----------------------------------------------------------------------\n");
+        inputs.append("% ");
+        inputs.append(strInputFunctionName);
+        inputs.append(".m was generated using the UNIVERSAL code generator system.\n");
+        inputs.append("% Username: ");
+        inputs.append(_xmlPropTree.getProperty(".//Model/@username"));
+        inputs.append("\n");
+        inputs.append("% Type: ");
+        inputs.append(_xmlPropTree.getProperty(".//Model/@type"));
+        inputs.append("\n");
+        inputs.append("% Version: ");
+        inputs.append(_xmlPropTree.getProperty(".//Model/@version"));
+        inputs.append("\n");
+        inputs.append("% \n");
+        inputs.append("% Arguments: \n");
+        inputs.append("% t	-	current time\n");
+        inputs.append("% x	-	state vector (M x 1) at the current time point\n");
+        inputs.append("% DF	-	Instance of the data file struct (get parameters etc)\n");
+        inputs.append("% uV -	M x 1 inputs vector\n");
+        inputs.append("\n");
         inputs.append("% The default is to return a vector of zeros.\n");
         inputs.append("% Override with specific logic.\n");
+        inputs.append("% ----------------------------------------------------------------------\n");
+        inputs.append("\n");
         inputs.append("nR=length(x);\n");
         inputs.append("uV = zeros(nR,1);\n");
         inputs.append("return;\n");
@@ -90,15 +114,39 @@ public class MatlabModel {
     
     public void buildDriverBuffer(StringBuffer driver,XMLPropTree propTree) throws Exception {
         
-        // Put in the header and go -
-    	String strFunctionNameRaw = propTree.getProperty("//DriverFile/driver_filename/text()");
-    	int INT_2_DOT = strFunctionNameRaw.indexOf(".");
-    	String strFunctionName = strFunctionNameRaw.substring(0, INT_2_DOT);
+    	ArrayList<String> arrList = propTree.processFilenameBlock("DriverFile");
+    	String strFunctionName = arrList.get(1);
     	
-        driver.append("function [TSIM,X]=");
+        driver.append("function [TSIM,X] = ");
         driver.append(strFunctionName);
         driver.append("(pDataFile,TSTART,TSTOP,Ts,DFIN)\n");
         driver.append("\n");
+        
+        driver.append("% ----------------------------------------------------------------------\n");
+        driver.append("% ");
+        driver.append(strFunctionName);
+        driver.append(".m was generated using the UNIVERSAL code generator system.\n");
+        driver.append("% Username: ");
+        driver.append(propTree.getProperty(".//Model/@username"));
+        driver.append("\n");
+        driver.append("% Type: ");
+        driver.append(propTree.getProperty(".//Model/@type"));
+        driver.append("\n");
+        driver.append("% Version: ");
+        driver.append(propTree.getProperty(".//Model/@version"));
+        driver.append("\n");
+        driver.append("% \n");
+        driver.append("% Arguments: \n");
+        driver.append("% pDataFile  - pointer to datafile \n");
+        driver.append("% TSTART  - Time start \n");
+        driver.append("% TSTOP  - Time stop \n");
+        driver.append("% Ts - Time step \n");
+        driver.append("% DFIN  - Custom data file instance \n");
+        driver.append("% TSIM - Simulation time vector \n");
+        driver.append("% X - Simulation state array (NTIME x NSPECIES) \n");
+        driver.append("% ----------------------------------------------------------------------\n");
+        driver.append("\n");
+        
         driver.append("% Check to see if I need to load the datafile\n");
         driver.append("if (~isempty(DFIN))\n");
         driver.append("\tDF = DFIN;\n");
@@ -109,205 +157,81 @@ public class MatlabModel {
         driver.append("% Get reqd stuff from data struct -\n");
         driver.append("IC = DF.INITIAL_CONDITIONS;\n");
         driver.append("TSIM = TSTART:Ts:TSTOP;\n");
+        driver.append("S = DF.STOICHIOMETRIC_MATRIX;\n");
+        driver.append("kV = DF.PARAMETER_VECTOR;\n");
+        driver.append("NRATES = DF.NUMBER_PARAMETERS;\n");
+        driver.append("NSTATES = DF.NUMBER_OF_STATES;\n"); 
         driver.append("\n");
-        driver.append("% Call the ODE solver - the default is ODE15s\n");
         
-        //@todo should use the name the user passed in..
-        String strMassBalanceFunctionNameRaw = propTree.getProperty("//MassBalanceFunction/massbalance_filename/text()");
-        INT_2_DOT = strMassBalanceFunctionNameRaw.indexOf(".");
-        String strMassBalanceFunctionName = strMassBalanceFunctionNameRaw.substring(0, INT_2_DOT);
+        // Call to the ODE solver -
+        ArrayList<String> arrList2 = propTree.processFilenameBlock("MassBalanceFunction");
+        String strMassBalanceFunctionName = arrList2.get(1);
         
         driver.append("% Call the ODE solver - the default is ODE15s\n");
         driver.append("[T,X]=ode15s(@");
         driver.append(strMassBalanceFunctionName);
-        driver.append(",TSIM,IC,[],DF);\n");
+        driver.append(",TSIM,IC,[],DF,S,kV);\n");
         driver.append("return;\n");
     }
     
-    public void buildKineticsBuffer(StringBuffer buffer,Model model_wrapper,Vector rate_list) throws Exception
+    public void buildKineticsBuffer(StringBuffer buffer,Model model_wrapper) throws Exception
     {
-		
-		// First things first - get the size of the system -
-        int NUMBER_OF_SPECIES = (int)model_wrapper.getNumSpecies(); 
-        int NUMBER_OF_RATES = (int)rate_list.size();
-		
-		// Setup the kinetics filename -
-        String strKineticesFunctionNameRaw = _xmlPropTree.getProperty("//KineticsFunction/kinetics_filename/text()");
-        int INT_2_DOT = strKineticesFunctionNameRaw.indexOf(".");
-        String strKineticesFunctionName = strKineticesFunctionNameRaw.substring(0, INT_2_DOT);
-		
-		
-		buffer.append("function [rV]=");
-		buffer.append(strKineticesFunctionName);
-		buffer.append("(t,x,DF)\n");
-        buffer.append("% Machine generated file. Edit on pain of death. You have been warned.\n");
-        buffer.append("\n");
-        buffer.append("% Get the parameter vector\n");
-        buffer.append("kV = DF.RATE_CONSTANT_VECTOR;\n");
-        buffer.append("\n");
-        buffer.append("% Put the x's in terms of the symbols -- helps with debugging.\n");
-        
-        
-        ListOf species_list_tmp = model_wrapper.getListOfSpecies();
-        for (int scounter=0;scounter<NUMBER_OF_SPECIES;scounter++)
-        {
-            Species species_tmp = (Species)species_list_tmp.get(scounter);
-            buffer.append(species_tmp.getName());
-            buffer.append("\t = \t");
-            buffer.append("x(");
-            buffer.append(scounter+1);
-            buffer.append(",1);\n");
-        }
-        buffer.append("\n");
-        
-        // connect the parameter names to incoming parameter vector from datafile
-        ListOf parameter_list_tmp = model_wrapper.getListOfParameters();
-        long NUMBER_OF_PARAMETERS = model_wrapper.getNumParameters();
-        for (int scounter=0;scounter<NUMBER_OF_PARAMETERS;scounter++)
-        {
-            Parameter param_tmp = (Parameter)parameter_list_tmp.get(scounter);
-            buffer.append(param_tmp.getName());
-            buffer.append("\t = \t");
-            buffer.append("kV(");
-            buffer.append(scounter+1);
-            buffer.append(",1);\n");
-        }
-                
-        buffer.append("\n");
-        
-        buffer.append("\t% List of the rates -- \n");
-        
-        // Ok, so I need to see if the rates have kinietc laws, if so use those. Otherwise
-        // use mass action as the default
-        //ListOf rate_list = model_wrapper.getListOfReactions();
-        for (int rcounter=0;rcounter<NUMBER_OF_RATES;rcounter++)
-        {
-            // Get the reaction object 
-            Reaction rxn_obj = (Reaction)rate_list.get(rcounter);
-            
-            if (rxn_obj.isSetKineticLaw())
-            {
-                // If I get here then I already have a kinetic law -
-                KineticLaw law = rxn_obj.getKineticLaw();
-                buffer.append("\trV(");
-                buffer.append(rcounter+1);
-                buffer.append(",1)\t=\t");
-                buffer.append(law.getFormula());
-                buffer.append(";");
-                buffer.append("\n");
-            }
-            else
-            {
-                // Ok, so If I get here then I have no rate, so I need to 
-                // formulate the mass action rate -
-                buffer.append("\trV(");
-                buffer.append(rcounter+1);
-                buffer.append(",1)\t=\t");
-                
-                // Get the 'radius' of this rate -
-                int NUMBER_OF_REACTANTS = (int)rxn_obj.getNumReactants();
-             
-                
-                // Get the list of reactants and products -
-                ListOf reactant_list = rxn_obj.getListOfReactants();
-                  
-                // Ok, so if this rate is 
-                buffer.append("kV(");
-                buffer.append(rcounter+1);
-                buffer.append(",1)");
-                buffer.append("*");
-                
-                // Get the number of modifiers -
-                long NUMBER_OF_MODIFIERS = rxn_obj.getNumModifiers();
-                for (long mod_index=0;mod_index<NUMBER_OF_MODIFIERS;mod_index++)
-                {
-                    // Get the species reference -
-                    ModifierSpeciesReference mSpecRef = rxn_obj.getModifier(mod_index);
-                    String strTmp = mSpecRef.getSpecies();
-                    
-                    // put the mod species -
-                    buffer.append(strTmp);
-                    buffer.append("*");
-                }
-                
-                
-                for (int reactant_index=0;reactant_index<NUMBER_OF_REACTANTS;reactant_index++)
-                {
-                    SpeciesReference srTmp = (SpeciesReference)reactant_list.get(reactant_index);
-                    String strTmp = srTmp.getSpecies();
-                    
-                    // Ok, I need to check to see if there is a stoichiometric coefficient
-                    // that is not 1
-                    double dblTmp = srTmp.getStoichiometry();
-                    //System.out.println("What the f*ck - Species "+strTmp+" has a coeff of "+dblTmp+" in rxn "+reactant_index);
-                    
-                    if (dblTmp!=1.0)
-                    {
-                        
-                        //System.out.println("Why is "+(-1*dblTmp)+" equal to 1.0");
-                        
-                        buffer.append("pow(");
-                        buffer.append(strTmp);
-                        buffer.append(",");
-                        buffer.append(-1*dblTmp);
-                        buffer.append(")");
-                    }
-                    else
-                    {
-                        buffer.append(strTmp); 
-                    }
-                    
-                    if (reactant_index<NUMBER_OF_REACTANTS-1)
-                    {
-                        buffer.append("*");
-                    }
-                    else
-                    {
-                        buffer.append(";");
-                    }
-                }
-                
-                buffer.append("\n");
-                
-            }
-        }
-        
-        buffer.append("\n");
-        buffer.append("return;\n");
+    	// Method attributes -
+    	OctaveMModel octaveMModel = new OctaveMModel();
+    	
+    	// Ok, just call the octaveMModel impl for this (they are the same)
+    	octaveMModel.buildKineticsBuffer(buffer, model_wrapper, _xmlPropTree);
     }
     
     public void buildMassBalanceBuffer(StringBuffer massbalances) throws Exception
     {
         
 		// Get the massbalance name -
-		String strMassBalanceFunctionNameRaw = _xmlPropTree.getProperty("//MassBalanceFunction/massbalance_filename/text()");
-        int INT_2_DOT = strMassBalanceFunctionNameRaw.indexOf(".");
-        String strMassBalanceFunctionName = strMassBalanceFunctionNameRaw.substring(0, INT_2_DOT);
+    	ArrayList<String> arrList2 = _xmlPropTree.processFilenameBlock("MassBalanceFunction");
+        String strMassBalanceFunctionName = arrList2.get(1);
         
         // Put the header -
-        massbalances.append("function [DXDT]=");
+        massbalances.append("function [DXDT] = ");
         massbalances.append(strMassBalanceFunctionName);
-        massbalances.append("(t,x,DF)\n");
-        massbalances.append("% This file is machine generated. Please don't change. I know who you are...\n");
+        massbalances.append("(t,x,DF,S,kV)\n");
+        massbalances.append("% ----------------------------------------------------------------------\n");
+        massbalances.append("% ");
+        massbalances.append(strMassBalanceFunctionName);
+        massbalances.append(".m was generated using the UNIVERSAL code generator system.\n");
+        massbalances.append("% Username: ");
+        massbalances.append(_xmlPropTree.getProperty(".//Model/@username"));
         massbalances.append("\n");
-        massbalances.append("% Call the kinetics\n");
+        massbalances.append("% Type: ");
+        massbalances.append(_xmlPropTree.getProperty(".//Model/@type"));
+        massbalances.append("\n");
+        massbalances.append("% Version: ");
+        massbalances.append(_xmlPropTree.getProperty(".//Model/@version"));
+        massbalances.append("\n");
+        massbalances.append("% \n");
+        massbalances.append("% Arguments: \n");
+        massbalances.append("% t  - current time \n");
+        massbalances.append("% x  - state vector \n");
+        massbalances.append("% S  - stoichiometric matrix \n");
+        massbalances.append("% kV - parameter vector \n");
+        massbalances.append("% NRATES - Number of rates \n");
+        massbalances.append("% NSTATES - Number of states \n");
+        massbalances.append("% DXDT - right hand side vector \n");
+        massbalances.append("% ----------------------------------------------------------------------\n");
+        massbalances.append("\n");
+        massbalances.append("% Call the kinetics function \n");
         
-        // Setup the kinetics filename -
-        String strKineticesFunctionNameRaw = _xmlPropTree.getProperty("//KineticsFunction/kinetics_filename/text()");
-        INT_2_DOT = strKineticesFunctionNameRaw.indexOf(".");
-        String strKineticesFunctionName = strKineticesFunctionNameRaw.substring(0, INT_2_DOT);
+        // Call the kinetics function -
+        ArrayList<String> arrList = _xmlPropTree.processFilenameBlock("KineticsFunction");
+        String strKineticesFunctionName = arrList.get(1);
         
         massbalances.append("[rV]=");
         massbalances.append(strKineticesFunctionName);
-        massbalances.append("(t,x,DF);\n");
+        massbalances.append("(t,x,kV);\n");
         massbalances.append("\n");
         massbalances.append("% Calculate the input vector\n");
         
-        
-        // Setup the kinetics filename -
-        String strInputFunctionNameRaw = _xmlPropTree.getProperty("//InputFunction/input_function_filename/text()");
-        INT_2_DOT = strInputFunctionNameRaw.indexOf(".");
-        String strInputFunctionName = strInputFunctionNameRaw.substring(0, INT_2_DOT);
+        ArrayList<String> arrList3 = _xmlPropTree.processFilenameBlock("InputFunction");
+        String strInputFunctionName = arrList3.get(1);
         
         massbalances.append("[uV]=");
         massbalances.append(strInputFunctionName);

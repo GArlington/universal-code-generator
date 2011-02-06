@@ -139,8 +139,32 @@ public class OctaveMModel {
         inputs.append("function uV=");
         inputs.append(strInputFunctionName);
         inputs.append("(t,x,DF);\n");
+        
+        // header information -
+        inputs.append("% ----------------------------------------------------------------------\n");
+        inputs.append("% ");
+        inputs.append(strInputFunctionName);
+        inputs.append(".m was generated using the UNIVERSAL code generator system.\n");
+        inputs.append("% Username: ");
+        inputs.append(propTree.getProperty(".//Model/@username"));
+        inputs.append("\n");
+        inputs.append("% Type: ");
+        inputs.append(propTree.getProperty(".//Model/@type"));
+        inputs.append("\n");
+        inputs.append("% Version: ");
+        inputs.append(propTree.getProperty(".//Model/@version"));
+        inputs.append("\n");
+        inputs.append("% \n");
+        inputs.append("% Arguments: \n");
+        inputs.append("% t	-	current time\n");
+        inputs.append("% x	-	state vector (M x 1) at the current time point\n");
+        inputs.append("% DF	-	Instance of the data file struct (get parameters etc)\n");
+        inputs.append("% uV -	M x 1 inputs vector\n");
+        inputs.append("\n");
         inputs.append("% The default is to return a vector of zeros.\n");
         inputs.append("% Override with specific logic.\n");
+        inputs.append("% ----------------------------------------------------------------------\n");
+        inputs.append("\n");
         inputs.append("nR=length(x);\n");
         inputs.append("uV = zeros(nR,1);\n");
         inputs.append("return;\n");
