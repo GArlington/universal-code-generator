@@ -321,78 +321,71 @@ public class OctaveMModel {
             {
                 // Ok, so If I get here then I have no rate, so I need to 
                 // formulate the mass action rate -
-                buffer.append("\trV(");
+                buffer.append("rV(");
                 buffer.append(rcounter+1);
                 buffer.append(",1)\t=\t");
-                
-                // Get the 'radius' of this rate -
-                int NUMBER_OF_REACTANTS = (int)rxn_obj.getNumReactants();
-             
-                
+                         
                 // Get the list of reactants and products -
                 ListOf reactant_list = rxn_obj.getListOfReactants();
                   
                 // Ok, so if this rate is 
-                buffer.append("kV(");
-                buffer.append(rcounter+1);
-                buffer.append(",1)");
+                buffer.append("k_");
+                buffer.append(rcounter);
                 buffer.append("*");
+          
+                // Get the number of reactants -
+                int NUMBER_OF_REACTANTS = (int)rxn_obj.getNumReactants();
                 
-                // Get the number of modifiers -
-                long NUMBER_OF_MODIFIERS = rxn_obj.getNumModifiers();
-                for (long mod_index=0;mod_index<NUMBER_OF_MODIFIERS;mod_index++)
+                // Ok, process the reactants -
+                for (int species_index=0;species_index<NUMBER_OF_REACTANTS;species_index++)
                 {
-                    // Get the species reference -
-                    ModifierSpeciesReference mSpecRef = rxn_obj.getModifier(mod_index);
-                    String strTmp = mSpecRef.getSpecies();
-                    
-                    // put the mod species -
-                    buffer.append(strTmp);
-                    buffer.append("*");
-                }
-                
-                
-                for (int reactant_index=0;reactant_index<NUMBER_OF_REACTANTS;reactant_index++)
-                {
-                    SpeciesReference srTmp = (SpeciesReference)reactant_list.get(reactant_index);
-                    String strTmp = srTmp.getSpecies();
-                    
-                    // Ok, I need to check to see if there is a stoichiometric coefficient
-                    // that is not 1
-                    double dblTmp = srTmp.getStoichiometry();
-                    //System.out.println("What the f*ck - Species "+strTmp+" has a coeff of "+dblTmp+" in rxn "+reactant_index);
-                    
-                    if (dblTmp!=1.0)
+                	// Ok, get the species -
+                	SpeciesReference srTmp = (SpeciesReference)reactant_list.get(species_index);
+                	String strTmpRaw = srTmp.getSpecies();
+                    String strTmp = strTmpRaw.replaceAll("-", "_");
+                      
+                    // Check to see if we have [];
+                    if (strTmp.isEmpty())
                     {
-                        
-                        //System.out.println("Why is "+(-1*dblTmp)+" equal to 1.0");
-                        
-                        buffer.append("pow(");
-                        buffer.append(strTmp);
-                        buffer.append(",");
-                        buffer.append(-1*dblTmp);
-                        buffer.append(")");
+                    	// If we get here, then I have a [] - put 1
+                    	buffer.append("1.0");
                     }
                     else
                     {
-                        buffer.append(strTmp); 
+                    	      	
+                    	// Ok, so we need to put in the st coeff -
+                    	double dblTmp = srTmp.getStoichiometry();
+                    	
+                    	// handle the non-one coefficients --
+                    	if (dblTmp!=1.0)
+	                    {
+	                        // Put the pow statement to capture the st coeff -
+	                        buffer.append("pow(");
+	                        buffer.append(strTmp);
+	                        buffer.append(",");
+	                        buffer.append(dblTmp);
+	                        buffer.append(")");
+	                    }
+	                    else
+	                    {
+	                        buffer.append(strTmp); 
+	                    }
                     }
                     
-                    if (reactant_index<NUMBER_OF_REACTANTS-1)
+                    // Ok, we need to check to make sure that we either continue or add a ;
+                    if (species_index<NUMBER_OF_REACTANTS-1)
                     {
-                        buffer.append("*");
+                    	buffer.append("*");
                     }
                     else
                     {
-                        buffer.append(";");
+                    	buffer.append(";\n");
                     }
-                }
-                
-                buffer.append("\n");
-                
+                }       
             }
         }
         
+        // add the return -
         buffer.append("\n");
         buffer.append("return;\n");
     }
