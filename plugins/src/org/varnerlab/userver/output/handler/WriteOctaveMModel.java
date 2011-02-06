@@ -152,6 +152,7 @@ public class WriteOctaveMModel implements IOutputHandler {
         SBMLModelUtilities.dumpStoichiometricMatrixToDisk(dblSTMatrix,_xmlPropTree,model_wrapper,vecReactions);
         SBMLModelUtilities.dumpDataFileToDisk(data_buffer,_xmlPropTree);
         SBMLModelUtilities.dumpKineticsToDisk(kinetics_buffer, _xmlPropTree);
+        SBMLModelUtilities.dumpInputFunctionToDisk(inputs_buffer, _xmlPropTree);
 	}
 
 	public void setLogger(Logger log) {
