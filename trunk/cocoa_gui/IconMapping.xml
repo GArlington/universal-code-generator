@@ -7,18 +7,25 @@
 		<icon symbol="themes" key="LEAF"></icon>
 		<icon symbol="bubbly" key="ROOT"></icon>
 		<icon symbol="settings" key="CONFIGURATION"></icon>
-		<icon symbol="pin-green" key="ATTRIBUTED_LEAF_GREEN"></icon>
-		<icon symbol="pin-red" key="ATTRIBUTED_LEAF_RED"></icon>
 		<icon symbol="themes" key="ATTRIBUTED_FOLDER"></icon>
 		<icon symbol="organization" key="LIST_OF_FOLDER"></icon>
 		<icon symbol="library" key="LIBRARY"></icon>
+		<icon symbol="home" key="HOME"></icon>
 		<icon symbol="autoship" key="HANDLER"></icon>
 		<icon symbol="question-type-drag-drop" key="NETWORK"></icon>
+		<icon symbol="Ball-logoff" key="BALL_CONFIGURATION"></icon>
+		<icon symbol="Transmit-256" key="ARCHIVE_TRUCK"></icon>
+		<icon symbol="AdminNetwork-256" key="ADMIN_NETWORK"></icon>
+		<icon symbol="backup-restore" key="CLASSES"></icon>
 	</ListOfIcons>
 	
 	<!-- Mapping of tag types to icons -->
 	<ListOfTagIconMapping>
 		<mapping tag_name="Configuration" icon_key="CONFIGURATION"></mapping>
+		<mapping tag_name="ListOfPackages" icon_key="ARCHIVE_TRUCK"></mapping>
+		<mapping tag_name="ServerConfiguration" icon_key="ADMIN_NETWORK"></mapping>
+		<mapping tag_name="ListOfClasses" icon_key="CLASSES"></mapping>
+		<mapping tag_name="ListOfPaths" icon_key="HOME"></mapping>
 	</ListOfTagIconMapping>
 	
 </IconMapping>
