@@ -23,8 +23,6 @@
 //  CCMLEditor
 //
 //  Created by Jeffrey Varner on 12/25/10.
-//  Copyright 2010 Chemical and Biomolecular Engineering. All rights reserved.
-//
 
 #import "NSXMLElement_Category.h"
 
