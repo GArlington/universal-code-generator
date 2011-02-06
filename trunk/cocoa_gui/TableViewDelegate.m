@@ -34,7 +34,8 @@
 -(void)openPathLocationPanelDidEnd:(NSOpenPanel *)openPanel returnCode:(int)returnCode contextInfo:(void *)contextInfo;
 -(void)openFilenamePanelDidEnd:(NSOpenPanel *)openPanel returnCode:(int)returnCode contextInfo:(void *)contextInfo;
 -(void)removeAttributeAlertEnded:(NSAlert *)alert returnCode:(int)code contextInfo:(void *)contextInfo;
-
+-(void)repopulatePathString:(NSAlert *)alert returnCode:(int)code contextInfo:(void *)contextInfo;
+-(void)openDirectoryPanel;
 
 @end
 
@@ -321,6 +322,29 @@
 	}
 }
 
+-(void)openDirectoryPanel
+{
+	// Get the array of file types and open the panel -
+	NSOpenPanel *openPanel = [NSOpenPanel openPanel];
+	
+	// Configure the panel -
+	[openPanel setAllowsMultipleSelection:NO];
+	[openPanel setCanChooseFiles:NO];
+	[openPanel setCanCreateDirectories:YES];
+	[openPanel setCanChooseDirectories:YES];
+	
+	// Get my current dir -
+	NSString *bundlePath = [[[NSBundle mainBundle] bundlePath] stringByDeletingLastPathComponent];
+	
+	// Run the panel as a sheet -
+	[openPanel beginSheetForDirectory:bundlePath
+								 file:nil 
+					   modalForWindow:[self window]
+						modalDelegate:self 
+					   didEndSelector:@selector(openPathLocationPanelDidEnd:returnCode:contextInfo:)
+						  contextInfo:NULL];
+}
+
 // Remove an attribute from the list --
 -(IBAction)removeAttribute:(id)sender
 {
@@ -403,6 +427,7 @@
 	if (currentNode!=nil)
 	{
 		// Ok, so if I get here, I have a non-nil selected node
+		// I need to figure out what has been selected -
 		
 		// Think about this ... but for now, lets populate path_location
 		NSXMLNode *attrPathLocationNode = [currentNode attributeForName:@"path_location"];
@@ -421,29 +446,30 @@
 				int rowIndex = [[self tableView] selectedRow];
 				if (rowIndex != -1)
 				{
-				
-					// Get the array of file types and open the panel -
-					NSOpenPanel *openPanel = [NSOpenPanel openPanel];
-					
-					// Configure the panel -
-					[openPanel setAllowsMultipleSelection:NO];
-					[openPanel setCanChooseFiles:NO];
-					[openPanel setCanCreateDirectories:YES];
-					[openPanel setCanChooseDirectories:YES];
-					
-					// Get my current dir -
-					NSString *bundlePath = [[[NSBundle mainBundle] bundlePath] stringByDeletingLastPathComponent];
-					
-					// Run the panel as a sheet -
-					[openPanel beginSheetForDirectory:bundlePath
-												 file:nil 
-									   modalForWindow:[self window]
-										modalDelegate:self 
-									   didEndSelector:@selector(openPathLocationPanelDidEnd:returnCode:contextInfo:)
-										  contextInfo:NULL];
-					
-				
+					[self openDirectoryPanel];
 				}
+			}
+			else 
+			{
+				
+				int rowIndex = [[self tableView] selectedRow];
+				if (rowIndex != -1)
+				{
+					// Ok, so If we get here I *already* have path data - ask the user if they would like to reset?
+					// Popup the alert panel as a sheet - 
+					NSAlert *alertPanel = [NSAlert alertWithMessageText:@"The path has already been specified." 
+														  defaultButton:@"Yes"
+														alternateButton:@"No" 
+															otherButton:nil 
+											  informativeTextWithFormat:@"Do you want to overwrite %@ ?",tmpPathString]; 
+					
+					// Pop-up that mofo - when the user selects a button, the didEndSelector gets called
+					[alertPanel beginSheetModalForWindow:[self window] 
+										   modalDelegate:self 
+										  didEndSelector:@selector(repopulatePathString:returnCode:contextInfo:) 
+											 contextInfo:NULL];	
+				}
+				
 			}
 		}
 		else if (filenameNode !=nil)
@@ -480,6 +506,20 @@
 				}
 			}
 		}
+	}
+}
+
+-(void)repopulatePathString:(NSAlert *)alert returnCode:(int)code contextInfo:(void *)contextInfo
+{
+	// Check to see what button has been pushed - the default is overwite (yes) 
+	if (code==NSAlertDefaultReturn)
+	{
+		// Let's create a timer have it fire in a couple of seconds -
+		[NSTimer scheduledTimerWithTimeInterval:1.0 
+										 target:self 
+									   selector:@selector(openDirectoryPanel) 
+									   userInfo:nil 
+										repeats:NO];
 	}
 }
 
