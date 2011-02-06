@@ -1,4 +1,4 @@
-// Copyright (c) 2011 Varner Lab
+// Copyright (c) 2011 Varner Lab, Cornell University
 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -35,6 +35,8 @@
 -(void)treeSelectionChanged:(NSNotification *)notification;
 -(void)openPathLocationPanelDidEnd:(NSOpenPanel *)openPanel returnCode:(int)returnCode contextInfo:(void *)contextInfo;
 -(void)openFilenamePanelDidEnd:(NSOpenPanel *)openPanel returnCode:(int)returnCode contextInfo:(void *)contextInfo;
+-(void)removeAttributeAlertEnded:(NSAlert *)alert returnCode:(int)code contextInfo:(void *)contextInfo;
+
 
 @end
 
@@ -286,6 +288,109 @@
 #pragma mark --------------------------------
 #pragma mark IBAction methods -
 #pragma mark --------------------------------
+
+// =========================================================//
+// Methods to add/remove items from the attribute table
+// =========================================================//
+// Add an attribute to the list of attributes --
+-(IBAction)addAttribute:(id)sender
+{
+	
+	// Need to make sure a tree node is selected -
+	if ([self selectedXMLNode]!=nil)
+	{
+	
+		// Method attributes -
+		XMLAttributeWrapper *wrapper = [[XMLAttributeWrapper alloc] init];
+		
+		// Set some default mumbo jumbo on the wrapper -
+		wrapper.attribute = @"<insert attribute name>";
+		wrapper.value = @"<insert attribute value>";
+		
+		// Add the wrapper to the array -
+		[[self tableData] addObject:wrapper];
+		
+		// Ok, we need to get the IndexSet that has been selected -
+		NSIndexSet *newSelectedRow = [NSIndexSet indexSetWithIndex:([[self tableData] count] - 1)];
+		
+		// Reload the table -
+		[[self tableView] reloadData];
+		[[self tableView] selectRowIndexes:newSelectedRow byExtendingSelection:NO];
+		[[self tableView] editColumn:0 row:([[self tableData] count] - 1) withEvent:nil select:YES];
+		
+		// release the wrapper object - retain count is 2!
+		[wrapper release];
+	}
+}
+
+// Remove an attribute from the list --
+-(IBAction)removeAttribute:(id)sender
+{
+	// Method attributes -
+	int intSelectedRow = 0;
+	int intNumberOfRows = 0;
+	
+	// Get the row that is currently selected in the table -
+	intSelectedRow = [[self tableView] selectedRow];
+	
+	// How many rows does the table have?
+	intNumberOfRows = [[self tableData] count];
+	
+	if (intSelectedRow < 0 || intSelectedRow>intNumberOfRows)
+	{
+		return;
+	}
+	else {
+		
+		// Ok, If I get here, the user has selected a valid row and pushed the delete button ... popup an alert to warn them?
+		
+		// First thing - stop editing
+		[[self tableView] abortEditing];
+		
+		// First what wrapper has been selected?
+		XMLAttributeWrapper *tmpWrapper = [[self tableData] objectAtIndex:intSelectedRow];
+		NSString *tmpAttributeName = [tmpWrapper attribute];
+		
+		// Popup the alert panel as a sheet - 
+		NSAlert *alertPanel = [NSAlert alertWithMessageText:@"Delete attribute?" 
+											  defaultButton:@"Delete"
+											alternateButton:@"Cancel" 
+												otherButton:nil 
+								  informativeTextWithFormat:@"Do you really want to delete the %@ attribute?",tmpAttributeName]; 
+		
+		// Pop-up that mofo - when the user selects a button, the didEndSelector gets called
+		[alertPanel beginSheetModalForWindow:[self window] 
+							   modalDelegate:self 
+							  didEndSelector:@selector(removeAttributeAlertEnded:returnCode:contextInfo:) 
+								 contextInfo:NULL];	
+	}
+}
+
+-(void)removeAttributeAlertEnded:(NSAlert *)alert returnCode:(int)code contextInfo:(void *)contextInfo
+{
+	
+	// Method attributes -
+	int intSelectedRow = 0;
+	
+	// Check to see what button has been pushed - the default is delete 
+	if (code==NSAlertDefaultReturn)
+	{
+		
+		// Get the row that is currently selected in the table -
+		intSelectedRow = [[self tableView] selectedRow];
+		
+		// Get the name of the attribute that I'm going to nuke -
+		XMLAttributeWrapper *tmpWrapper = [[self tableData] objectAtIndex:intSelectedRow];
+		NSString *tmpAttributeName = [tmpWrapper attribute];
+		
+		// remove the row from the table -
+		[[self tableData] removeObjectAtIndex:intSelectedRow];
+		[[self tableView] reloadData];
+		
+		// We also need to remove that attribute from the xmlTree ...
+		[[self selectedXMLNode] removeAttributeForName:tmpAttributeName];
+	}	
+}
 
 -(IBAction)updateTableValues:(NSButton *)sender
 {
