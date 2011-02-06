@@ -21,10 +21,7 @@
 //
 //  TableViewDelegate.m
 //  Translator
-//
-//  Created by Jeffrey Varner on 1/21/11.
-//  Copyright 2011 Chemical and Biomolecular Engineering. All rights reserved.
-//
+
 
 #import "TableViewDelegate.h"
 
