@@ -397,11 +397,14 @@ public class LoadVarnerFlatFile implements IInputHandler {
 			String rType = (String)rec.getData(IReactionFile.TYPE);
 
 			double rValue = Math.random();
+			
 			// if the rate constant is known use it
-			if (_dblRateConstant != null){
+			if (_dblRateConstant != null)
+			{
 				parameterObj.setValue(_dblRateConstant[counter]);
 			}
-			else{
+			else
+			{
 				if (rType.equals("ON-RATE"))
 				{
 					parameterObj.setValue((10*rValue));
@@ -418,6 +421,9 @@ public class LoadVarnerFlatFile implements IInputHandler {
 
 			// Add the parameter to the model -
 			_modelWrapper.addParameter(parameterObj);
+			
+			// update the counter -
+			counter++;
 		}
 	}
 	
