@@ -23,8 +23,6 @@
 //  XMLTreeView
 //
 //  Created by Jeffrey Varner on 12/17/10.
-//  Copyright 2010 Chemical and Biomolecular Engineering. All rights reserved.
-//
 
 #import "NSXMLNode_Category.h"
 

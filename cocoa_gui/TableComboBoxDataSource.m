@@ -23,8 +23,7 @@
 //  CCMLEditor
 //
 //  Created by Jeffrey Varner on 1/9/11.
-//  Copyright 2011 Chemical and Biomolecular Engineering. All rights reserved.
-//
+
 
 #import "TableComboBoxDataSource.h"
 
