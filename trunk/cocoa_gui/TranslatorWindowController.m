@@ -179,6 +179,7 @@
     
     // Load the window controller -
     self.customSheetController = [[MyCustomSheetController alloc] initWithWindow:[self window]];
+    [[self customSheetController] setApplicationWindow:[self window]];
 }
 
 #pragma mark --------------------------------
