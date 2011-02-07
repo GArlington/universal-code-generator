@@ -92,6 +92,7 @@
 -(IBAction)removeTreeNode:(NSButton *)sender;
 -(IBAction)runCodeGenerator:(NSButton *)sender;
 -(IBAction)checkTreeCompleteness:(NSButton *)sender;
+-(IBAction)loadNameChangePanel:(NSButton *)sender;
 
 
 // Create XML document methods -

@@ -353,6 +353,11 @@
 
 }
 
+-(IBAction)loadNameChangePanel:(NSButton *)sender
+{
+    [self launchCustomSheet];
+}
+
 -(void)launchCustomSheet
 {
     // Add the currently selected node to the window controller -
@@ -804,6 +809,13 @@
 		}
 		
 	}
+    
+    // release local stuff -
+    [aTask release];
+    [outPipe release];
+    [tmpBuffer release];
+    [strXPath release];
+    [errPipe release];
 	
 }
 
@@ -975,7 +987,11 @@
 		// Check to see if we call representedObject?
 		if ([node respondsToSelector:@selector(representedObject)])
 		{
-			self.selectedXMLNode = (NSXMLElement *)[node representedObject];
+			// Set my pointer to currently selected node -
+            self.selectedXMLNode = (NSXMLElement *)[node representedObject];
+            
+            // Update the pointer on the cutsom sheet -
+            [[self customSheetController] setSelectedXMLNode:[self selectedXMLNode]];
 		}
 	}
 }
