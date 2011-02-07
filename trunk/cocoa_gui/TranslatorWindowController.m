@@ -43,6 +43,7 @@
 -(void)removeTreeNodeAlertEnded:(NSAlert *)alert code:(int)choice context:(void *)v;
 -(void)savePanelDidEnd:(NSSavePanel *)savePanel returnCode:(int)returnCode contextInfo:(void *)contextInfo;
 -(void)executeCodeGenJob;
+-(void)launchCustomSheet;
 -(void)checkSpecificationTree;
 -(void)alertDidEnd:(NSAlert *)alert returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo; 
 -(void)automaticallyPopulateTreePathData;
@@ -77,6 +78,7 @@
 @synthesize fileTypePopupButton;
 @synthesize actionButton;
 @synthesize propTableView;
+@synthesize customSheetController;
 
 
 #pragma mark --------------------------------
@@ -109,6 +111,7 @@
 	[strFilePath release];
 	[xmlDocument release];
 	[selectedXMLNode release];
+    [customSheetController release];
 	
 	// IBOutlet
 	self.bottomDisplayLabel = nil;
@@ -173,6 +176,9 @@
 	
 	// Ok, so we need to have the window pop-up when I start -
 	[[self window] makeKeyAndOrderFront:nil];
+    
+    // Load the window controller -
+    self.customSheetController = [[MyCustomSheetController alloc] initWithWindow:[self window]];
 }
 
 #pragma mark --------------------------------
@@ -318,8 +324,6 @@
 // Adds a node of the same type as the selected node -
 -(IBAction)addTreeNode:(NSButton *)sender
 {
-	// Ok, so we need to add a node to the tree -
-	
 	// Get my current node and copy it -
 	if ([self selectedXMLNode]!=nil)
 	{
@@ -337,6 +341,25 @@
 		// Ok, I need to release copy - since I'm sure the parent has a retain -
 		[copy release];
 	}
+    
+    // Let's create a timer have it fire in a couple of seconds -
+	[NSTimer scheduledTimerWithTimeInterval:1.0 
+									 target:self 
+								   selector:@selector(launchCustomSheet) 
+								   userInfo:nil 
+									repeats:NO];
+
+    
+
+}
+
+-(void)launchCustomSheet
+{
+    // Add the currently selected node to the window controller -
+    [[self customSheetController] setSelectedXMLNode:[self selectedXMLNode]];
+    
+    // Ok, launch the node info -
+	[[self customSheetController] showCustomSheet:[self window]];
 }
 
 -(IBAction)removeTreeNode:(NSButton *)sender
