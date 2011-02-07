@@ -98,6 +98,17 @@
     {
         //Check the myCustomSheet instance variable to make sure the custom sheet does not already exist.
         [NSBundle loadNibNamed: @"MyCustomSheet" owner: self];
+        
+        
+        /*
+        // Ok, so we want this window to act as a sheet -
+        [NSApp beginSheet: [self window]
+           modalForWindow: [self applicationWindow]
+            modalDelegate: self
+           didEndSelector: NULL
+              contextInfo: nil];
+         */
+         
     }
     
     // Sheet is up here.
@@ -121,10 +132,26 @@
         // Set the text -
         [[self selectedXMLNode] setName:strNewName];
         
+        // Set the dirty button -
+        //[[self applicationWindow] setDocumentEdited:YES];
+        
+        // Have the tree reload data -
+        NSString *MyNotificationName = @"TreeNodeDataChanged";
+        NSNotification *myNotification = [NSNotification notificationWithName:MyNotificationName object:nil]; 
+        
+        // Send an update -
+        [[NSNotificationQueue defaultQueue] enqueueNotification:myNotification postingStyle:NSPostNow coalesceMask:NSNotificationCoalescingOnName forModes:nil];
+
+        
         // Close me -
         [[self localWindow] orderOut:nil];
         [NSApp endSheet:[self localWindow]];
     }
+}
+
+- (void)sheetDidEnd:(NSWindow *)sheet returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo
+{
+    
 }
 
 
