@@ -48,6 +48,7 @@
 
 // Action methods -
 - (IBAction)closeCustomSheet:(NSButton *)sender;
+- (IBAction)changeNodeName:(NSButton *)sender;
 - (IBAction)showCustomSheet:(NSWindow *)window;
 
 @end
