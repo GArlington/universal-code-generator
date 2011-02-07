@@ -31,7 +31,6 @@
 @interface MyCustomSheetController (hidden)
 
 - (void)setup;
-- (void)didEndSheet:(NSWindow *)sheet returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo;
 
 @end
 
@@ -99,7 +98,6 @@
     {
         //Check the myCustomSheet instance variable to make sure the custom sheet does not already exist.
         [NSBundle loadNibNamed: @"MyCustomSheet" owner: self];
-    
     }
     
     // Sheet is up here.
@@ -110,12 +108,24 @@
 {
     [[self localWindow] orderOut:nil];
     [NSApp endSheet:[self localWindow]];
-    NSLog(@"Monkey");
 }
 
-- (void)didEndSheet:(NSWindow *)sheet returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo
+- (IBAction)changeNodeName:(NSButton *)sender
 {
-    NSLog(@"didEndSelect");
+    // Ok, so when I get here, I need to grab the text from label and set the name on the node -
+    NSString *strNewName = [[self textLabel] stringValue];
+    
+    // Ok, set the name on the selected XML node -
+    if ([strNewName length]!=0)
+    {
+        // Set the text -
+        [[self selectedXMLNode] setName:strNewName];
+        
+        // Close me -
+        [[self localWindow] orderOut:nil];
+        [NSApp endSheet:[self localWindow]];
+    }
 }
+
 
 @end
