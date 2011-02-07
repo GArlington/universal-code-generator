@@ -34,6 +34,11 @@
 		<display name="Sundials model (*.c)" filename="C-Octave"></display>
 	</mapping>
 	
+    <mapping type="C-GSL" working_dir="./templates/">
+		<display name="GSL model (*.c)" filename="C-GSL"></display>
+	</mapping>
+
+    
 	<mapping type="BCX" working_dir="./templates/">
 		<display name="Biochemical experiment specification file (*.xml)" filename="C-Octave"></display>
 	</mapping>
