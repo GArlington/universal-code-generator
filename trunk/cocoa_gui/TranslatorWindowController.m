@@ -355,7 +355,13 @@
 
 -(IBAction)loadNameChangePanel:(NSButton *)sender
 {
-    [self launchCustomSheet];
+    // Need to check to see if we have a selected node -
+    if ([self selectedXMLNode]!=nil)
+    {
+        // If we get here, then I have a non-nil selected node. 
+        // Open up the custom sheet 
+        [self launchCustomSheet];
+    }
 }
 
 -(void)launchCustomSheet
