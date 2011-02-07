@@ -28,6 +28,7 @@
 #import "XMLTreeModel.h"
 #import "TreeIconModel.h"
 #import "TreeNodeNamingModel.h"
+#import "MyCustomSheetController.h"
 
 
 
@@ -39,6 +40,7 @@
 	NSString *strFilePath;								// Pointer to the path to the file -
 	NSXMLDocument *xmlDocument;							// Pointer to the xml document w/the tag children relationships -
 	NSXMLElement *selectedXMLNode;						// Node currently selected on the tree -
+    MyCustomSheetController *customSheetController;     // Pointer to sheer controller -
 	
 	
 	IBOutlet NSTextField *bottomDisplayLabel;			// Bottom label to update user on status -
@@ -64,6 +66,7 @@
 @property (retain) NSString *strFilePath;
 @property (retain) NSXMLDocument *xmlDocument;
 @property (retain) NSXMLElement *selectedXMLNode;
+@property (retain) MyCustomSheetController *customSheetController;
 
 
 @property (retain) IBOutlet NSTextField *bottomDisplayLabel;
