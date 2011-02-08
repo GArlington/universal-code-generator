@@ -36,6 +36,8 @@
 -(void)removeAttributeAlertEnded:(NSAlert *)alert returnCode:(int)code contextInfo:(void *)contextInfo;
 -(void)repopulatePathString:(NSAlert *)alert returnCode:(int)code contextInfo:(void *)contextInfo;
 -(void)openDirectoryPanel;
+-(void)openFilenamePanel;
+-(void)repopulateFilename:(NSAlert *)alert returnCode:(int)code contextInfo:(void *)contextInfo;
 
 @end
 
@@ -322,6 +324,28 @@
 	}
 }
 
+-(void)openFilenamePanel
+{
+    // Get the array of file types and open the panel -
+    NSOpenPanel *openPanel = [NSOpenPanel openPanel];
+    
+    // Configure the panel -
+    [openPanel setAllowsMultipleSelection:NO];
+    [openPanel setCanChooseFiles:YES];
+    [openPanel setCanCreateDirectories:YES];
+    
+    // Get my current dir -
+    NSString *bundlePath = [[[NSBundle mainBundle] bundlePath] stringByDeletingLastPathComponent];
+    
+    // Run the panel as a sheet -
+    [openPanel beginSheetForDirectory:bundlePath
+                                 file:nil 
+                       modalForWindow:[self window]
+                        modalDelegate:self 
+                       didEndSelector:@selector(openFilenamePanelDidEnd:returnCode:contextInfo:)
+                          contextInfo:NULL];
+}
+
 -(void)openDirectoryPanel
 {
 	// Get the array of file types and open the panel -
@@ -475,7 +499,7 @@
 		else if (filenameNode !=nil)
 		{
 			// If I get here I have a path location - check to see is this gut is non-zero
-			NSString *tmpPathString = [attrPathLocationNode stringValue];
+			NSString *tmpPathString = [filenameNode stringValue];
 			if ([tmpPathString length]==0)
 			{
 				// Ok, so I have an empty value here ..
@@ -484,30 +508,47 @@
 				int rowIndex = [[self tableView] selectedRow];
 				if (rowIndex != -1)
 				{
-					
-					// Get the array of file types and open the panel -
-					NSOpenPanel *openPanel = [NSOpenPanel openPanel];
-					
-					// Configure the panel -
-					[openPanel setAllowsMultipleSelection:NO];
-					[openPanel setCanChooseFiles:YES];
-					[openPanel setCanCreateDirectories:YES];
-					
-					// Get my current dir -
-					NSString *bundlePath = [[[NSBundle mainBundle] bundlePath] stringByDeletingLastPathComponent];
-					
-					// Run the panel as a sheet -
-					[openPanel beginSheetForDirectory:bundlePath
-												 file:nil 
-									   modalForWindow:[self window]
-										modalDelegate:self 
-									   didEndSelector:@selector(openFilenamePanelDidEnd:returnCode:contextInfo:)
-										  contextInfo:NULL];
+                    [self openFilenamePanel];
 				}
 			}
+            else
+            {
+                int rowIndex = [[self tableView] selectedRow];
+				if (rowIndex != -1)
+				{
+					// Ok, so If we get here I *already* have path data - ask the user if they would like to reset?
+					// Popup the alert panel as a sheet - 
+					NSAlert *alertPanel = [NSAlert alertWithMessageText:@"The filename has already been specified." 
+														  defaultButton:@"Yes"
+														alternateButton:@"No" 
+															otherButton:nil 
+											  informativeTextWithFormat:@"Do you want to overwrite %@ ?",tmpPathString]; 
+					
+					// Pop-up that mofo - when the user selects a button, the didEndSelector gets called
+					[alertPanel beginSheetModalForWindow:[self window] 
+										   modalDelegate:self 
+										  didEndSelector:@selector(repopulateFilename:returnCode:contextInfo:) 
+											 contextInfo:NULL];	
+				}
+            }
 		}
 	}
 }
+
+-(void)repopulateFilename:(NSAlert *)alert returnCode:(int)code contextInfo:(void *)contextInfo
+{
+	// Check to see what button has been pushed - the default is overwite (yes) 
+	if (code==NSAlertDefaultReturn)
+	{
+		// Let's create a timer have it fire in a couple of seconds -
+		[NSTimer scheduledTimerWithTimeInterval:1.0 
+										 target:self 
+									   selector:@selector(openFilenamePanel) 
+									   userInfo:nil 
+										repeats:NO];
+	}
+}
+
 
 -(void)repopulatePathString:(NSAlert *)alert returnCode:(int)code contextInfo:(void *)contextInfo
 {
