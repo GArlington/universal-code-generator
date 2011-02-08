@@ -66,21 +66,9 @@ public class WriteVarnerFlatFile implements IOutputHandler {
         _buffer = new StringBuffer();
         populateStringBuffer(model_wrapper);
         
-        // Ok, dump the buffer to disk -
-        String strFileName = (String)_xmlPropTree.getProperty("//Model/OutputFileName/output_filename/text()");
-        String strFilePath = (String)_xmlPropTree.getProperty("//Model/OutputFileName/output_file_path/text()");
-        String strWorkingDir = (String)_xmlPropTree.getProperty("//Model/working_directory/text()");
-        String strPath = "";
-        
-        // check to see if path is empty -
-        if (strFilePath.isEmpty())
-        {
-        	strPath = strWorkingDir+"/"+strFileName;
-        }
-        else
-        {
-        	strPath = strWorkingDir+"/"+strFilePath+"/"+strFileName;
-        }
+        // Get the path to where I'm going to dump the VFF file -
+        Hashtable<String,String> pathTable = _xmlPropTree.buildFilenameBlockDictionary("OutputFile");
+        String strPath = pathTable.get("FULLY_QUALIFIED_PATH");
         
         // Dump the buffer to disk -
         GIOL.write(strPath,_buffer);
@@ -104,7 +92,7 @@ public class WriteVarnerFlatFile implements IOutputHandler {
             Reaction reaction = (Reaction)list_reactions.get(reaction_index);
             
             // put the name in the buffer -
-            String strReactionName = reaction.getName();
+            String strReactionName = "R_"+reaction_index;
             _buffer.append(strReactionName);
             _buffer.append(",");
             
@@ -137,8 +125,17 @@ public class WriteVarnerFlatFile implements IOutputHandler {
                         _buffer.append(dblStoichiometry);
                         _buffer.append("*");
                     }
-                    _buffer.append(strSymbol);
-                    _buffer.append("+");
+                    
+                    if (strSymbol.isEmpty())
+                    {
+                    	_buffer.append("[]");
+                    	_buffer.append("+");
+                    }
+                    else
+                    {
+                    	_buffer.append(strSymbol);
+                    	_buffer.append("+");
+                    }
                 }
                 else
                 {
@@ -147,8 +144,17 @@ public class WriteVarnerFlatFile implements IOutputHandler {
                         _buffer.append(dblStoichiometry);
                         _buffer.append("*");
                     }
-                    _buffer.append(strSymbol);
-                    _buffer.append(",");
+                    
+                    if (strSymbol.isEmpty())
+                    {
+                    	_buffer.append("[]");
+                    	_buffer.append(",");
+                    }
+                    else
+                    {
+                    	_buffer.append(strSymbol);
+                    	_buffer.append(",");
+                    }
                 }
             }
             
@@ -179,8 +185,20 @@ public class WriteVarnerFlatFile implements IOutputHandler {
                         _buffer.append(dblStoichiometryProduct);
                         _buffer.append("*");
                     }
-                    _buffer.append(strSymbolProduct);
-                    _buffer.append("+");
+                    
+                    if (strSymbolProduct.isEmpty())
+                    {
+                    	_buffer.append("[]");
+                    	_buffer.append("+");
+                    }
+                    else
+                    {
+                    	_buffer.append(strSymbolProduct);
+                    	_buffer.append("+");
+                    }
+                    
+                    //_buffer.append(strSymbolProduct);
+                    //_buffer.append("+");
                 }
                 else
                 {
@@ -189,8 +207,20 @@ public class WriteVarnerFlatFile implements IOutputHandler {
                         _buffer.append(dblStoichiometryProduct);
                         _buffer.append("*");
                     }
-                    _buffer.append(strSymbolProduct);
-                    _buffer.append(",");
+                    
+                    if (strSymbolProduct.isEmpty())
+                    {
+                    	_buffer.append("[]");
+                    	_buffer.append(",");
+                    }
+                    else
+                    {
+                    	_buffer.append(strSymbolProduct);
+                    	_buffer.append(",");
+                    }
+                    
+                    //_buffer.append(strSymbolProduct);
+                    //_buffer.append(",");
                 }
             }
             

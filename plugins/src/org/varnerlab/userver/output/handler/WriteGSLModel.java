@@ -24,6 +24,7 @@ package org.varnerlab.userver.output.handler;
  */
 
 
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Vector;
 import java.util.logging.Level;
@@ -34,6 +35,7 @@ import org.varnerlab.server.localtransportlayer.*;
 import org.varnerlab.userver.input.handler.OrderFileReader;
 import org.varnerlab.userver.language.handler.CodeGenUtilMethods;
 import org.varnerlab.userver.language.handler.GSLModel;
+import org.varnerlab.userver.language.handler.OctaveMModel;
 import org.varnerlab.userver.language.handler.SBMLModelUtilities;
 import org.varnerlab.userver.language.handler.SUNDIALSModel;
 
@@ -53,42 +55,33 @@ public class WriteGSLModel implements IOutputHandler {
 
 	public void writeResource(Object object) throws Exception {
 		// Method attributes -
-		StringBuffer massbalances_buffer = new StringBuffer();
+        StringBuffer massbalances_buffer = new StringBuffer();
         StringBuffer shell_buffer = new StringBuffer();
         StringBuffer compile_buffer = new StringBuffer();
+        double[][] dblSTMatrix = null;
+        GSLModel gslModel = new GSLModel();
         Vector<Reaction> vecReactions = new Vector<Reaction>();
         Vector<Species> vecSpecies = new Vector<Species>();
-        Vector vecSpeciesOrder = new Vector();
+        Vector<Species> vecSpeciesOrder = new Vector<Species>();
         
-		GSLModel gslModel = new GSLModel();
-		double[][] dblSTMatrix = null;
-		
-		// Get the resource type (sbml model) -
+        // Get the resource type (SBML model tree)
         Model model_wrapper = (Model)object;
         
-     // Ok get the order file -
-        // Need to check to see if order file is there -
-		String strOrderFileName = _xmlPropTree.getProperty("//OrderFileName/orderfile_filename/text()");
-		String strOrderFileNamePath = _xmlPropTree.getProperty("//OrderFileName/orderfile_path/text()");
-		String strWorkingDir = _xmlPropTree.getProperty("//working_directory/text()");
-		
-		// Ok, load the order file if we have a pointer
-		if (!strOrderFileName.isEmpty())
-		{
-			String strTmp = "";
-			OrderFileReader orderReader = new OrderFileReader();
-			if (!strOrderFileNamePath.isEmpty())
-			{
-				// Create a tmp path string -
-				strTmp = strWorkingDir+"/"+strOrderFileNamePath+"/"+strOrderFileName;
-			}
-			else
-			{
-				// Create a tmp path string -
-				strTmp = strWorkingDir+"/"+strOrderFileName;
-			}
-
-			// Log that we are going to load the order file -
+        // Grab some names - mass balances
+        ArrayList<String> arrOrderFileList = _xmlPropTree.processFilenameBlock("OrderFile");
+        
+        String strOrderFileName = arrOrderFileList.get(0);
+        String strOrderFileNamePath = arrOrderFileList.get(2);
+        String strTmp = "";
+        if (!strOrderFileName.equalsIgnoreCase("EMPTY") && !strOrderFileNamePath.equalsIgnoreCase("EMPTY"))
+        {
+        	// Create order file instance -
+        	OrderFileReader orderReader = new OrderFileReader();
+        	
+        	// Get a path to the order file -
+        	strTmp = strOrderFileNamePath+"/"+strOrderFileName;
+        	
+        	// Log that we are going to load the order file -
 			_logger.log(Level.INFO,"Going to load the following order file: "+strTmp);
 			
 			// read the symbol file name -
@@ -96,7 +89,7 @@ public class WriteGSLModel implements IOutputHandler {
 			
 			// generate the new species *ordered* species list -
 			SBMLModelUtilities.reorderSpeciesVector(model_wrapper,vecSpeciesOrder,vecSpecies);	
-		}
+        }
 		else
 		{
 			// I have no order file, but I need to populate to the vecSpecies
