@@ -14,6 +14,7 @@
 		8D15AC310486D014006FF6A4 /* MyDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A37F4ACFDCFA73011CA2CEA /* MyDocument.m */; settings = {ATTRIBUTES = (); }; };
 		8D15AC320486D014006FF6A4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A37F4B0FDCFA73011CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D15AC340486D014006FF6A4 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
+		AD0235231300744700B59B51 /* VFF.xml in Resources */ = {isa = PBXBuildFile; fileRef = AD0235221300744700B59B51 /* VFF.xml */; };
 		AD2BE9D312EE6F7900D8972D /* SBML.xml in Resources */ = {isa = PBXBuildFile; fileRef = AD2BE9D212EE6F7900D8972D /* SBML.xml */; };
 		AD2BEA5912EFB47B00D8972D /* M-Octave.xml in Resources */ = {isa = PBXBuildFile; fileRef = AD2BEA5812EFB47B00D8972D /* M-Octave.xml */; };
 		AD2BEA7912EFCCE800D8972D /* close.icns in Resources */ = {isa = PBXBuildFile; fileRef = AD2BEA7812EFCCE800D8972D /* close.icns */; };
@@ -100,6 +101,7 @@
 		2A37F4C5FDCFA73011CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		8D15AC360486D014006FF6A4 /* Translator-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Translator-Info.plist"; sourceTree = "<group>"; };
 		8D15AC370486D014006FF6A4 /* Translator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Translator.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AD0235221300744700B59B51 /* VFF.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = VFF.xml; sourceTree = "<group>"; };
 		AD2BE9D212EE6F7900D8972D /* SBML.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = SBML.xml; sourceTree = "<group>"; };
 		AD2BEA5812EFB47B00D8972D /* M-Octave.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "M-Octave.xml"; sourceTree = "<group>"; };
 		AD2BEA7812EFCCE800D8972D /* close.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = close.icns; sourceTree = "<group>"; };
@@ -325,6 +327,7 @@
 				AD2BE9D212EE6F7900D8972D /* SBML.xml */,
 				AD2BEA5812EFB47B00D8972D /* M-Octave.xml */,
 				AD8408A712FF274D00B2A270 /* C-GSL.xml */,
+				AD0235221300744700B59B51 /* VFF.xml */,
 			);
 			name = templates;
 			sourceTree = "<group>";
@@ -499,6 +502,7 @@
 				ADF2758112FDAB8D00767C75 /* Ball-logoff.icns in Resources */,
 				AD8408A812FF274D00B2A270 /* C-GSL.xml in Resources */,
 				AD8408AA12FF7BC400B2A270 /* MyCustomSheet.xib in Resources */,
+				AD0235231300744700B59B51 /* VFF.xml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
