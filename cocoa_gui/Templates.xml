@@ -26,8 +26,7 @@
 	</mapping>
 	
 	<mapping type="VFF" working_dir="./templates/">
-		<display name="File type translation (SBML to flatfile conversion)" filename="C-Octave"></display>
-		<filename>Varnerlab.xml</filename>
+		<display name="File type translation (SBML to flatfile conversion)" filename="VFF"></display>
 	</mapping>
 	
 	<mapping type="SUNDIALS" working_dir="./templates/">
