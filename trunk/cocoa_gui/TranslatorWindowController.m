@@ -816,14 +816,6 @@
 		}
 		
 	}
-    
-    // release local stuff -
-    [aTask release];
-    [outPipe release];
-    [tmpBuffer release];
-    [strXPath release];
-    [errPipe release];
-	
 }
 
 #pragma mark --------------------------------
