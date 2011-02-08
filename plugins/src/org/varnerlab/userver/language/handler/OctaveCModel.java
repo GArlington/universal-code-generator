@@ -183,7 +183,7 @@ public class OctaveCModel {
                     String strTmpRaw = srTmp.getSpecies();
                     String strTmp = strTmpRaw.replaceAll("-", "_");
                     
-                    if (!strTmpRaw.equalsIgnoreCase("[]"))
+                    if (!strTmpRaw.isEmpty())
                     {
                     
 	                    // Ok, I need to check to see if there is a stoichiometric coefficient
@@ -318,7 +318,33 @@ public class OctaveCModel {
     }
     
     public void buildMassBalanceBuffer(StringBuffer buffer,XMLPropTree propTree) throws Exception {
-        buffer.append("#include <octave/oct.h>\n");
+        
+    	ArrayList<String> arrList = propTree.processFilenameBlock("MassBalanceFunction");
+        String strMassBalanceFunctionName = arrList.get(1);
+    	
+    	buffer.append("/* ----------------------------------------------------------------------\n");
+        buffer.append(" * ");
+        buffer.append(strMassBalanceFunctionName);
+        buffer.append(".c was generated using the UNIVERSAL code generator system.\n");
+        buffer.append(" * Username: ");
+        buffer.append(propTree.getProperty(".//Model/@username"));
+        buffer.append("\n");
+        buffer.append(" * Type: ");
+        buffer.append(propTree.getProperty(".//Model/@type"));
+        buffer.append("\n");
+        buffer.append(" * Version: ");
+        buffer.append(propTree.getProperty(".//Model/@version"));
+        buffer.append("\n");
+        
+        buffer.append(" *\n");
+        buffer.append(" * \n");
+        buffer.append(" * Template designed by JDV \n");
+        buffer.append(" * ---------------------------------------------------------------------- */\n");
+        buffer.append("\n");
+
+    	
+    	
+    	buffer.append("#include <octave/oct.h>\n");
         buffer.append("#include <ov-struct.h>\n");
         buffer.append("#include <iostream>\n");
         buffer.append("#include <math.h>\n");
@@ -332,8 +358,7 @@ public class OctaveCModel {
         //String strMassBalanceFunctionNameRaw = propTree.getProperty("//MassBalanceFunction/massbalance_filename/text()");
         //int INT_2_DOT = strMassBalanceFunctionNameRaw.indexOf(".");
         //String strMassBalanceFunctionName = strMassBalanceFunctionNameRaw.substring(0, INT_2_DOT);
-        ArrayList<String> arrList = propTree.processFilenameBlock("MassBalanceFunction");
-        String strMassBalanceFunctionName = arrList.get(1);
+        
         
         buffer.append("DEFUN_DLD(");
         buffer.append(strMassBalanceFunctionName);
@@ -375,6 +400,32 @@ public class OctaveCModel {
         driver.append(strFunctionName);
         driver.append("(pDataFile,TSTART,TSTOP,Ts,DFIN)\n");
         driver.append("\n");
+        
+        driver.append("% ----------------------------------------------------------------------\n");
+        driver.append("% ");
+        driver.append(strFunctionName);
+        driver.append(".m was generated using the UNIVERSAL code generator system.\n");
+        driver.append("% Username: ");
+        driver.append(propTree.getProperty(".//Model/@username"));
+        driver.append("\n");
+        driver.append("% Type: ");
+        driver.append(propTree.getProperty(".//Model/@type"));
+        driver.append("\n");
+        driver.append("% Version: ");
+        driver.append(propTree.getProperty(".//Model/@version"));
+        driver.append("\n");
+        driver.append("% \n");
+        driver.append("% Arguments: \n");
+        driver.append("% pDataFile  - pointer to datafile \n");
+        driver.append("% TSTART  - Time start \n");
+        driver.append("% TSTOP  - Time stop \n");
+        driver.append("% Ts - Time step \n");
+        driver.append("% DFIN  - Custom data file instance \n");
+        driver.append("% TSIM - Simulation time vector \n");
+        driver.append("% X - Simulation state array (NTIME x NSPECIES) \n");
+        driver.append("% ----------------------------------------------------------------------\n");
+        driver.append("\n");
+        
         driver.append("% Check to see if I need to load the datafile\n");
         driver.append("if (~isempty(DFIN))\n");
         driver.append("\tDF = DFIN;\n");

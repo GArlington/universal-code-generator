@@ -836,21 +836,11 @@ public class SBMLModelUtilities {
     
     public static void dumpShellCommandToDisk(StringBuffer driver,XMLPropTree _xmlPropTree) throws Exception
     {
-        // I have populated the string buffer, dump that mofo
-        String strWorkingDir = _xmlPropTree.getProperty("//working_directory/text()");
-        String strFileName = _xmlPropTree.getProperty("//DriverFile/driver_filename/text()");
-        String strFilePath = _xmlPropTree.getProperty("//DriverFile/driver_path/text()");
+        // I have populated the string buffer, dump to disk -
+        Hashtable<String,String> pathHashtable = _xmlPropTree.buildFilenameBlockDictionary("SimulationDriverFile");
+        String strSBMLFile = pathHashtable.get("FULLY_QUALIFIED_PATH");
         
-        String strSBMLFile = "";
-        if (strFilePath.isEmpty())
-        {
-        	strSBMLFile = strWorkingDir+"/"+strFileName;
-        }
-        else
-        {
-        	strSBMLFile = strWorkingDir+"/"+strFilePath+"/"+strFileName;
-        }
-        
+        // Write to disk -
         GIOL.write(strSBMLFile,driver);
     }
     
