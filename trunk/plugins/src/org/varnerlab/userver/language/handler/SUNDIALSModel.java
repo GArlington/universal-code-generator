@@ -28,6 +28,8 @@
 
 package org.varnerlab.userver.language.handler;
 
+import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Properties;
 import java.util.StringTokenizer;
@@ -44,6 +46,7 @@ import org.varnerlab.server.localtransportlayer.XMLPropTree;
  */
 public class SUNDIALSModel {
     // Class/instance members -
+	XMLPropTree _xmlPropTree = null;
     
     /** Creates a new instance of SUNDIALSModel */
     public SUNDIALSModel() {
@@ -51,7 +54,11 @@ public class SUNDIALSModel {
         System.loadLibrary("sbmlj");     
     }
 
-
+    public void setPropertyTree(XMLPropTree prop)
+	{
+		_xmlPropTree = prop;
+	}
+	
     public void buildMassBalanceEquations(StringBuffer buffer) throws Exception {
         // Ok, so we need to build the buffer with the mass balance equations in it -
 
@@ -663,12 +670,29 @@ public class SUNDIALSModel {
     public void buildMassBalanceBuffer(StringBuffer buffer,Model model_wrapper) throws Exception {
         //this contains the main part of the SUNDIALS code.
 
-		buffer.append("/*\n");
+    	ArrayList<String> arrList = _xmlPropTree.processFilenameBlock("MassBalanceFunction");
+    	String strInputFunctionName = arrList.get(1);
+    	
+    	buffer.append("/* ----------------------------------------------------------------------\n");
+        buffer.append(" * ");
+        buffer.append(strInputFunctionName);
+        buffer.append(".c was generated using the UNIVERSAL code generator system.\n");
+        buffer.append(" * Username: ");
+        buffer.append(_xmlPropTree.getProperty(".//Model/@username"));
+        buffer.append("\n");
+        buffer.append(" * Type: ");
+        buffer.append(_xmlPropTree.getProperty(".//Model/@type"));
+        buffer.append("\n");
+        buffer.append(" * Version: ");
+        buffer.append(_xmlPropTree.getProperty(".//Model/@version"));
+        buffer.append("\n");
+        buffer.append(" *\n");
 		buffer.append(" * Template written by Robert Dromms. Edited by JV\n");
 		buffer.append(" * Created 2009-06-19 15:32\n");
 		buffer.append(" * Based off example code provided in SUNDIALS documentation: cvRoberts_dns.c\n");
-		buffer.append(" */\n\n");
-
+		buffer.append(" * ---------------------------------------------------------------------- */\n");
+		buffer.append("\n");
+	
 		buffer.append("#include <stdio.h>\n");
 		buffer.append("#include <stdarg.h>\n");
 		buffer.append("#include <stdlib.h>\n");
@@ -1139,8 +1163,15 @@ public class SUNDIALSModel {
 //      driver.append("gcc -std=c99 -pedantic -Wall -Wextra -O2 -o sensitivityCode Sensitivity.c -L/usr/local/lib -lsundials_cvode -lsundials_nvecserial -lm\n");
         
     	// Ok, so we need to get the exename from the modelname -
-    	String strModelName = getFullFileName("//MassBalanceFunction/massbalance_filename/text()",xmlPropTree);
-    	String strExeName = getFileName("//MassBalanceFunction/massbalance_filename/text()",xmlPropTree);
+    	//String strModelName = getFullFileName("//MassBalanceFunction/massbalance_filename/text()",xmlPropTree);
+    	//String strExeName = getFileName("//MassBalanceFunction/massbalance_filename/text()",xmlPropTree);
+    	
+    	// Get path/function information 
+    	Hashtable<String,String> pathHashtable = xmlPropTree.buildFilenameBlockDictionary("MassBalanceFunction");
+    	
+    	// Get the info -
+    	String strExeName = pathHashtable.get("FUNCTION_NAME");
+    	String strModelName = pathHashtable.get("FILENAME_WITH_EXTENSION");
     	
     	driver.append("gcc -o ");
     	driver.append(strExeName);
@@ -1272,11 +1303,36 @@ public class SUNDIALSModel {
     public void buildShellCommand(StringBuffer buffer,XMLPropTree xmlPropTree) throws Exception {
         
     	// Ok, so we need to get a bunch of stuff from the propfile -
-    	String strExeName = getFileName("//MassBalanceFunction/massbalance_filename/text()",xmlPropTree);
-    	String strParameters = getFullFileName("//KineticParametersFileName/kineticparameters_filename/text()",xmlPropTree);
-    	String strInitialCondtions = getFullFileName("//InitialConditionFileName/initialcondition_filename/text()",xmlPropTree);
-    	String strSTMatrix = getFullFileName("//StoichiometricMatrix/stoichiometric_matrix_filename/text()",xmlPropTree);
-    	String strOutputName = getFullFileName("//OutputFileName/output_filename/text()",xmlPropTree);
+    	// String strExeName = getFileName("//MassBalanceFunction/massbalance_filename/text()",xmlPropTree);
+    	// String strParameters = getFullFileName("//KineticParametersFileName/kineticparameters_filename/text()",xmlPropTree);
+    	// String strInitialCondtions = getFullFileName("//InitialConditionFileName/initialcondition_filename/text()",xmlPropTree);
+    	// String strSTMatrix = getFullFileName("//StoichiometricMatrix/stoichiometric_matrix_filename/text()",xmlPropTree);
+    	// String strOutputName = getFullFileName("//OutputFileName/output_filename/text()",xmlPropTree);
+    	
+    	// Process info for the mass balances -
+    	Hashtable<String,String> pathMassBalances = xmlPropTree.buildFilenameBlockDictionary("MassBalanceFunction");
+    	String strExeName = pathMassBalances.get("FUNCTION_NAME");
+    	
+    	// Process info for the output file -
+    	// Hashtable<String,String> pathOutput = xmlPropTree.buildFilenameBlockDictionary("OutputFile");
+    	// String strOutputName = pathOutput.get("FILENAME_WITH_EXTENSION");
+    	
+    	// Process info for the time file -
+    	// Hashtable<String,String> pathTimeOutput = xmlPropTree.buildFilenameBlockDictionary("TimeFile");
+    	// String strTimeFileName = pathTimeOutput.get("FILENAME_WITH_EXTENSION");
+    	
+    	// Process info for the parameters file -
+    	Hashtable<String,String> pathParameters = xmlPropTree.buildFilenameBlockDictionary("KineticParameterFile");
+    	String strParameters = pathParameters.get("FILENAME_WITH_EXTENSION");
+    	
+    	// Process info for the ic file -
+    	Hashtable<String,String> pathICFile = xmlPropTree.buildFilenameBlockDictionary("InitialConditionFile");
+    	String strInitialCondtions = pathICFile.get("FILENAME_WITH_EXTENSION");
+    	
+    	// Process the st matrix file -
+    	Hashtable<String,String> pathSTM = xmlPropTree.buildFilenameBlockDictionary("StoichiometricMatrix");
+    	String strSTMatrix = pathSTM.get("FILENAME_WITH_EXTENSION");
+    	
     	
     	// Dumps RunModel.sh command
     	buffer.append("./");
@@ -1320,9 +1376,21 @@ public class SUNDIALSModel {
     public void buildLSODECallWrapper(StringBuffer buffer,XMLPropTree xmlPropTree) throws Exception
     {
     	// Get the name of the output, kV and IC files -
-    	String strOutputName = xmlPropTree.getProperty("//OutputFileName/output_filename/text()");
-    	String strICFileName = xmlPropTree.getProperty("//InitialConditionFileName/initialcondition_filename/text()");
-    	String strKineticFileName = xmlPropTree.getProperty("//KineticParametersFileName/kineticparameters_filename/text()");
+    	//String strOutputName = xmlPropTree.getProperty("//OutputFileName/output_filename/text()");
+    	//String strICFileName = xmlPropTree.getProperty("//InitialConditionFileName/initialcondition_filename/text()");
+    	//String strKineticFileName = xmlPropTree.getProperty("//KineticParametersFileName/kineticparameters_filename/text()");
+    	
+    	Hashtable<String,String> pathOutput = xmlPropTree.buildFilenameBlockDictionary("OutputFile");
+    	String strOutputName = pathOutput.get("FILENAME_WITH_EXTENSION");
+    	
+    	// Process info for the parameters file -
+    	Hashtable<String,String> pathParameters = xmlPropTree.buildFilenameBlockDictionary("KineticParameterFile");
+    	String strParameters = pathParameters.get("FILENAME_WITH_EXTENSION");
+    	
+    	// Process info for the ic file -
+    	Hashtable<String,String> pathICFile = xmlPropTree.buildFilenameBlockDictionary("InitialConditionFile");
+    	String strInitialCondtions = pathICFile.get("FILENAME_WITH_EXTENSION");
+    	
     	
     	// Populate the buffer -
     	buffer.append("function [TSIM,X]=LSODECallWrapper(TSTART,TSTOP,Ts,DF,OUTNAME)\n");
@@ -1330,12 +1398,12 @@ public class SUNDIALSModel {
     	buffer.append("\t% Get the parameters and the ICs from the DF and dump them to disk -- \n");
         buffer.append("\tkV = DF.RATE_CONSTANT_VECTOR;\n");
         buffer.append("\tsave -ascii ");
-        buffer.append(strKineticFileName);
+        buffer.append(strParameters);
         buffer.append(" kV;\n");
     	buffer.append("\n");
     	buffer.append("\tIC = DF.INITIAL_CONDITIONS;\n");
         buffer.append("\tsave -ascii ");
-        buffer.append(strICFileName);
+        buffer.append(strInitialCondtions);
         buffer.append(" IC;\n");
     	buffer.append("\n");
     	
