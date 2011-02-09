@@ -30,7 +30,7 @@
 	</mapping>
 	
 	<mapping type="SUNDIALS" working_dir="./templates/">
-		<display name="Sundials model (*.c)" filename="C-Octave"></display>
+		<display name="Sundials model (*.c)" filename="SUNDIALS"></display>
 	</mapping>
 	
     <mapping type="C-GSL" working_dir="./templates/">
