@@ -847,41 +847,31 @@ public class SBMLModelUtilities {
     public static void dumpSunsialsPluginToDisk(StringBuffer driver,XMLPropTree _xmlPropTree) throws Exception
     {
         // I have populated the string buffer, dump that mofo
-        String strWorkingDir = _xmlPropTree.getProperty("//working_directory/text()");
-        String strFilePath = _xmlPropTree.getProperty("//MassBalanceFunction/massbalance_path/text()");
+        //String strWorkingDir = _xmlPropTree.getProperty("//working_directory/text()");
+        //String strFilePath = _xmlPropTree.getProperty("//MassBalanceFunction/massbalance_path/text()");
         String strFileName = "SolveSundialsModel.m";
      
-        
-        String strSBMLFile = "";
-        if (strFilePath.isEmpty())
-        {
-        	strSBMLFile = strWorkingDir+"/"+strFileName;
-        }
-        else
-        {
-        	strSBMLFile = strWorkingDir+"/"+strFilePath+"/"+strFileName;
-        }
-        
+        // Process info for the parameters file -
+    	Hashtable<String,String> pathParameters = _xmlPropTree.buildFilenameBlockDictionary("MassBalanceFunction");
+    	String strParameters = pathParameters.get("FILENAME_PATH");
+    	String strSBMLFile = strParameters+"/"+strFileName;
+               
         GIOL.write(strSBMLFile,driver);
     }
     
     public static void dumpLSODECallWrapperSundialsToDisk(StringBuffer driver,XMLPropTree _xmlPropTree) throws Exception
     {
         // I have populated the string buffer, dump that mofo
-        String strWorkingDir = _xmlPropTree.getProperty("//working_directory/text()");
-        String strFilePath = _xmlPropTree.getProperty("//MassBalanceFunction/massbalance_path/text()");
+        //String strWorkingDir = _xmlPropTree.getProperty("//working_directory/text()");
+        //String strFilePath = _xmlPropTree.getProperty("//MassBalanceFunction/massbalance_path/text()");
         String strFileName = "LSODECallWrapper.m";
         
-        String strSBMLFile = "";
-        if (strFilePath.isEmpty())
-        {
-        	strSBMLFile = strWorkingDir+"/"+strFileName;
-        }
-        else
-        {
-        	strSBMLFile = strWorkingDir+"/"+strFilePath+"/"+strFileName;
-        }
+        // Process info for the parameters file -
+    	Hashtable<String,String> pathParameters = _xmlPropTree.buildFilenameBlockDictionary("MassBalanceFunction");
+    	String strParameters = pathParameters.get("FILENAME_PATH");
+    	String strSBMLFile = strParameters+"/"+strFileName;
         
+        // Dump to disk -
         GIOL.write(strSBMLFile,driver);
     }
     
