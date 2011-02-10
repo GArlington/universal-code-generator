@@ -62,57 +62,10 @@ public class WriteGraphvizDotFile implements IOutputHandler {
         Vector<Reaction> vecReactions = new Vector<Reaction>();
         GraphvizModel graphiz_model = new GraphvizModel();
         Vector<Species> vecSpecies = new Vector<Species>();
-        Vector vecSpeciesOrder = new Vector();
-	
-        
+	    
         // Get the resource type (sbml model) -
         Model model_wrapper = (Model)object;
-        
-        // Ok get the order file -
-        // Need to check to see if order file is there -
-		String strOrderFileName = _xmlPropTree.getProperty("//OrderFileName/orderfile_filename/text()");
-		String strOrderFileNamePath = _xmlPropTree.getProperty("//OrderFileName/orderfile_path/text()");
-		String strWorkingDir = _xmlPropTree.getProperty("//working_directory/text()");
-		
-		// Ok, load the order file if we have a pointer
-		if (!strOrderFileName.isEmpty())
-		{
-			String strTmp = "";
-			OrderFileReader orderReader = new OrderFileReader();
-			if (!strOrderFileNamePath.isEmpty())
-			{
-				// Create a tmp path string -
-				strTmp = strWorkingDir+"/"+strOrderFileNamePath+"/"+strOrderFileName;
-			}
-			else
-			{
-				// Create a tmp path string -
-				strTmp = strWorkingDir+"/"+strOrderFileName;
-			}
-
-			// Log that we are going to load the order file -
-			_logger.log(Level.INFO,"Going to load the following order file: "+strTmp);
-			
-			// read the symbol file name -
-			orderReader.readFile(strTmp,vecSpeciesOrder);
-			
-			// generate the new species *ordered* species list -
-			SBMLModelUtilities.reorderSpeciesVector(model_wrapper,vecSpeciesOrder,vecSpecies);	
-		}
-		else
-		{
-			// I have no order file, but I need to populate to the vecSpecies
-			
-			// Transfer the SBML species list into a vector -
-			ListOf species_list_tmp = model_wrapper.getListOfSpecies();
-	        long NUMBER_OF_SPECIES = model_wrapper.getNumSpecies();
-	        for (int scounter=0;scounter<NUMBER_OF_SPECIES;scounter++)
-	        {
-	            Species species_tmp = (Species)species_list_tmp.get(scounter);
-	            vecSpecies.add(species_tmp);
-	        }
-		}
-              
+                  
         // Check to make sure all the reversible rates are 0,inf
         SBMLModelUtilities.convertReversibleRates(model_wrapper,vecReactions);
         
