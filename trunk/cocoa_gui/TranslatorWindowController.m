@@ -617,12 +617,11 @@
 		[argsString appendString:[node stringValue]];
 		[argsString appendString:@" "];
 	}
-	
-	NSLog(@"What is my args string? %@",argsString);
-	
+    
+   	
 	// Ok, release the local mem -
 	[strXPath release];
-	
+    
 	// Autorelease the args -
 	[argsString autorelease];
 	
