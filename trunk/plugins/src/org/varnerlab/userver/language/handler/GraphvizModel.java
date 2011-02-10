@@ -48,7 +48,6 @@ public class GraphvizModel {
 	public GraphvizModel()
 	{
 		// load the sbml?
-		System.out.println("New - "+System.getProperty("java.library.path"));
 		System.loadLibrary("sbmlj");    
 	}
 
