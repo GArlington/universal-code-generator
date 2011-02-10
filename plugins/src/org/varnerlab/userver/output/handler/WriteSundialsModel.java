@@ -71,6 +71,9 @@ public class WriteSundialsModel implements IOutputHandler {
 		// Get the resource type (sbml model) -
         Model model_wrapper = (Model)object;
         
+        // Set the _xmlPropTree reference -
+        sundialsModel.setPropertyTree(_xmlPropTree);
+        
         // Grab some names - mass balances
         ArrayList<String> arrMassBalanceList = _xmlPropTree.processFilenameBlock("MassBalanceFunction");
         ArrayList<String> arrOrderFileList = _xmlPropTree.processFilenameBlock("OrderFile");
