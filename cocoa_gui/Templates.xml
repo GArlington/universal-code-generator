@@ -18,7 +18,7 @@
 	</mapping>
 	
 	<mapping type="GRAPHVIZ-DOT" working_dir="./templates/">
-		<display name="Graphviz dot-file (*.dot)" filename="C-Octave"></display>
+		<display name="Graphviz dot-file (*.dot)" filename="GRAPHVIZ"></display>
 	</mapping>
 	
 	<mapping type="SBML" working_dir="./templates/">

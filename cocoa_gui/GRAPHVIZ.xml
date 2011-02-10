@@ -48,9 +48,9 @@
 	
     <OutputOptions>
         <OutputFile required="YES" path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename=""></OutputFile>
-        <GraphProperties size=""></GraphProperties>
-        <EdgeProperties color="" style=""></EdgeProperties>
-        <NodeProperties style="" text_color="" color="" shape=""></NodeProperties>
+        <GraphProperties required="YES" size="" name=""></GraphProperties>
+        <EdgeProperties required="YES" color="" style=""></EdgeProperties>
+        <NodeProperties required="YES" style="" text_color="" color="" shape=""></NodeProperties>
     </OutputOptions>
     
 </Model>
