@@ -49,6 +49,7 @@
 				<argument required="YES" index="1" symbol="-Xmx2000M"></argument>
 				<argument required="YES" index="2" symbol="-Djava.library.path=/sw/lib"></argument>
                 <argument required="YES" index="3" symbol="-classpath ./dist/CGEGateway-v1.0.jar"></argument>
+                <argument required="YES" index="4" symbol="org.varnerlab.server.localtransportlayer.Main"></argument>
 			</ListOfArguments>
 		</ServerConfiguration>
 		
