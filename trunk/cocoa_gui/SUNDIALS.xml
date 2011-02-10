@@ -29,7 +29,6 @@
 		</ListOfClasses>
 		
 		<ServerConfiguration>
-			<server_jar_directory required="YES" path_symbol="UNIVERSAL_SERVER_JAR_DIRECTORY" filename="CGEGateway-v1.0.jar"></server_jar_directory>
 			<ListOfPlugins>
 				<plugin_jar_directory required="YES" path_symbol="UNIVERSAL_PLUGINS_JAR_DIRECTORY" filename="UServer-v2.0.jar"></plugin_jar_directory>
 				<plugin_jar_directory required="YES" path_symbol="UNIVERSAL_PLUGINS_JAR_DIRECTORY" filename="libsbmlj.jar"></plugin_jar_directory>
@@ -37,6 +36,7 @@
 			<ListOfArguments>
 				<argument required="YES" index="1" symbol="-Xmx2000M"></argument>
 				<argument required="YES" index="2" symbol="-Djava.library.path=/sw/lib"></argument>
+                <argument required="YES" index="3" symbol="-classpath ./dist/CGEGateway-v1.0.jar"></argument>
 			</ListOfArguments>
 		</ServerConfiguration>
 	</Configuration>
