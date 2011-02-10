@@ -56,28 +56,25 @@
 	</Configuration>
 	
 	<Handler>
-		<InputHandler input_classname="" package="INPUT_HANDLER_PACKAGE"></InputHandler>
-		<OutputHandler output_classname="" package="OUTPUT_HANDLER_PACKAGE"></OutputHandler>
+		<InputHandler required="YES" input_classname="" package="INPUT_HANDLER_PACKAGE"></InputHandler>
+		<OutputHandler required="YES" output_classname="" package="OUTPUT_HANDLER_PACKAGE"></OutputHandler>
 	</Handler>
 	
 	<InputOptions>
-		<NetworkFile path_symbol="UNIVERSAL_INPUT_PATH" filename=""></NetworkFile>
-		<OrderFile path_symbol="UNIVERSAL_INPUT_PATH" filename=""></OrderFile>
-		<KineticParameterFile path_symbol="UNIVERSAL_INPUT_PATH" filename=""></KineticParameterFile>
-		<InitialConditionFile path_symbol="UNIVERSAL_INPUT_PATH" filename=""></InitialConditionFile>
+		<NetworkFile required="YES" path_symbol="UNIVERSAL_INPUT_PATH" filename=""></NetworkFile>
+		<OrderFile required="NO" path_symbol="UNIVERSAL_INPUT_PATH" filename=""></OrderFile>
+		<KineticParameterFile required="NO" path_symbol="UNIVERSAL_INPUT_PATH" filename=""></KineticParameterFile>
+		<InitialConditionFile required="NO" path_symbol="UNIVERSAL_INPUT_PATH" filename=""></InitialConditionFile>
 	</InputOptions>	
 	
 	<OutputOptions>
-		<DataFile path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="DataFile.m"></DataFile>
-		<MassBalanceFunction path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="MassBalances.m"></MassBalanceFunction>
-		<KineticsFunction path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="Kinetics.m"></KineticsFunction>
-		<InputFunction path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="Inputs.m"></InputFunction>
-		<JacobianMatrix path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="Jacobian.cc"></JacobianMatrix>
-		<BMatrix path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="BMatrix.cc"></BMatrix>
-		<DriverFile path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="SolveMassBalances.m"></DriverFile>
-		<StoichiometricMatrix path_symbol="UNIVERSAL_NETWORK_OUTPUT_PATH" filename="Network.dat"></StoichiometricMatrix>
-		<BoundsFile path_symbol="UNIVERSAL_NETWORK_OUTPUT_PATH" filename="FB.dat"></BoundsFile>
-		<DebugOutputFile path_symbol="UNIVERSAL_DEDUG_OUTPUT_PATH" filename="Debug.txt"></DebugOutputFile>
+		<DataFile required="YES" path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="DataFile.m"></DataFile>
+		<MassBalanceFunction required="YES" path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="MassBalances.m"></MassBalanceFunction>
+		<KineticsFunction required="YES" path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="Kinetics.m"></KineticsFunction>
+		<InputFunction required="YES" path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="Inputs.m"></InputFunction>
+        <DriverFile required="YES" path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="SolveMassBalances.m"></DriverFile>
+		<StoichiometricMatrix required="YES" path_symbol="UNIVERSAL_NETWORK_OUTPUT_PATH" filename="Network.dat"></StoichiometricMatrix>
+		<DebugOutputFile required="YES" path_symbol="UNIVERSAL_DEDUG_OUTPUT_PATH" filename="Debug.txt"></DebugOutputFile>
 	</OutputOptions>	
 	
 </Model>
