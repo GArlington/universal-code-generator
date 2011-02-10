@@ -24,7 +24,7 @@
 			</InputHandlerClasses>
 			
 			<OutputHandlerClasses>
-				<class required="NO" package="OUTPUT_HANDLER_PACKAGE" classname="WriteGSLModel"></class>
+				<class required="NO" package="OUTPUT_HANDLER_PACKAGE" classname="WriteGraphvizDotFile"></class>
             </OutputHandlerClasses>
 		</ListOfClasses>
 		
@@ -42,4 +42,15 @@
 		</ServerConfiguration>
 	</Configuration>
 
+    <InputOptions>
+		<NetworkFile required="YES" path_symbol="UNIVERSAL_INPUT_PATH" filename=""></NetworkFile>
+    </InputOptions>
+	
+    <OutputOptions>
+        <OutputFile required="YES" path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename=""></OutputFile>
+        <GraphProperties size=""></GraphProperties>
+        <EdgeProperties color="" style=""></EdgeProperties>
+        <NodeProperties style="" text_color="" color="" shape=""></NodeProperties>
+    </OutputOptions>
+    
 </Model>
