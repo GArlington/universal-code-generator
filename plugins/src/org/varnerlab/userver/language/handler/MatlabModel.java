@@ -1,5 +1,4 @@
 /*
- * /*
  * Copyright (c) 2011 Varnerlab, 
  * School of Chemical and Biomolecular Engineering, 
  * Cornell University, Ithaca NY 14853 USA.

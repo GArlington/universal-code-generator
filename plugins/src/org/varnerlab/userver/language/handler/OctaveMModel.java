@@ -25,11 +25,11 @@ package org.varnerlab.userver.language.handler;
 
 
 import java.util.ArrayList;
+import java.util.Vector;
 
 import org.sbml.libsbml.KineticLaw;
 import org.sbml.libsbml.ListOf;
 import org.sbml.libsbml.Model;
-import org.sbml.libsbml.ModifierSpeciesReference;
 import org.sbml.libsbml.Parameter;
 import org.sbml.libsbml.Reaction;
 import org.sbml.libsbml.Species;
@@ -59,7 +59,7 @@ public class OctaveMModel {
     	//int INT_2_DOT = strFunctionNameRaw.indexOf(".");
     	///String strFunctionName = strFunctionNameRaw.substring(0, INT_2_DOT);
     	
-	ArrayList<String> arrList = propTree.processFilenameBlock("DriverFile");
+		ArrayList<String> arrList = propTree.processFilenameBlock("DriverFile");
     	String strFunctionName = arrList.get(1);
     	
         driver.append("function [TSIM,X]=");
@@ -125,17 +125,15 @@ public class OctaveMModel {
     }
 
 
-
-
-
-        public void buildSolveAdjBalBuffer(StringBuffer driver,XMLPropTree propTree) throws Exception {
+  public void buildSolveAdjBalBuffer(StringBuffer driver,XMLPropTree propTree) throws Exception 
+  {
 
         // Put in the header and go -
     	//String strFunctionNameRaw = propTree.getProperty("//DriverFile/driver_filename/text()");
     	//int INT_2_DOT = strFunctionNameRaw.indexOf(".");
     	///String strFunctionName = strFunctionNameRaw.substring(0, INT_2_DOT);
 
-	ArrayList<String> arrList = propTree.processFilenameBlock("AdjointDriver");
+	  	ArrayList<String> arrList = propTree.processFilenameBlock("AdjointDriver");
     	String strFunctionName = arrList.get(1);
 
         driver.append("function [TSIM,X,S]=");
@@ -498,13 +496,21 @@ public class OctaveMModel {
         buffer.append("return;\n");
     }
 
-            public void buildAdjBalFntBuffer(StringBuffer buffer,Vector vecReactions,Vector<Species> vecSpecies,XMLPropTree propTree) throws Exception {
-                MModelUtilities.buildAdjBalFntBuffer(buffer,vecReactions, vecSpecies, model_wrapper, propTree);
-            }
+    public void buildAdjBalFntBuffer(StringBuffer buffer,Vector vecReactions,Vector<Species> vecSpecies,XMLPropTree propTree) throws Exception 
+    {
+    	// Call the utility class and populate the buffer -
+    	MModelUtilities.buildAdjBalFntBuffer(buffer,vecReactions, vecSpecies, model_wrapper, propTree);
+    }
 
-            public void buildJacobianBuffer(StringBuffer buffer,Vector vecReactions,Vector vecSpecies,XMLPropTree propTree) throws Exception
-             {
-                MModelUtilities.buildJacobianBuffer(buffer, vecReactions, vecSpecies, model_wrapper, propTree);
-
-            }
+    public void buildJacobianBuffer(StringBuffer buffer,Vector vecReactions,Vector vecSpecies,XMLPropTree propTree) throws Exception
+    {
+    	// Call the utility class and populate the buffer -
+    	MModelUtilities.buildJacobianBuffer(buffer, vecReactions, vecSpecies, model_wrapper, propTree);
+    }
+    
+    public void buildPMatrixBuffer(StringBuffer buffer,Vector vecReactions,Vector vecSpecies,XMLPropTree propTree) throws Exception
+    {
+    	// Call the utility class and populate the buffer -
+    	MModelUtilities.buildPMatrixBuffer(buffer, vecReactions, vecSpecies, model_wrapper, propTree);
+    }
 }
