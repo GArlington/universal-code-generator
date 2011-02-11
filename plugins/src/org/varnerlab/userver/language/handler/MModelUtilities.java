@@ -106,6 +106,10 @@ public static void buildPMatrixBuffer(StringBuffer buffer,Vector vecReactions,Ve
     buffer.append("PM = zeros(NSTATES,NRATES);\n");
     buffer.append("\n");
     
+    buffer.append("% ---------------------------------------------------------------------\n");
+    buffer.append("% - Populate non-zero elements of PM - \n");
+    buffer.append("% ---------------------------------------------------------------------\n");
+    
     // Go through the matrix -
     for (int state_counter_outer=0;state_counter_outer<NROWS;state_counter_outer++)
     {
@@ -194,6 +198,9 @@ public static void buildJacobianBuffer(StringBuffer buffer,Vector vecReactions,V
         buffer.append("n = length(x);\n");
         buffer.append("JM = zeros(n,n);\n");
         buffer.append("\n");
+        buffer.append("% ---------------------------------------------------------------------\n");
+        buffer.append("% - Populate non-zero elements of JM - \n");
+        buffer.append("% ---------------------------------------------------------------------\n");
         for (int state_counter_outer=0;state_counter_outer<NROWS;state_counter_outer++)
         {
             for (int state_counter_inner=0;state_counter_inner<NROWS;state_counter_inner++)
@@ -395,16 +402,22 @@ public static void buildAdjBalFntBuffer(StringBuffer buffer,Vector vecReactions,
         buffer.append("% Arguments: \n");
         buffer.append("% x  - adjoint state vector and sensitivity for parameter pIndex vector \n");
         buffer.append("% kV - parameter vector \n");
-        buffer.append("% DSDT - vector of delta sensitivity for parameter pIndex  wrt time \n");
+        buffer.append("% t - current time \n");
+        buffer.append("% STM - stoichiometric maxtrix \n");
+        buffer.append("% NRATES - number of rates \n");
+        buffer.append("% NSTATES - number of states \n");
+        buffer.append("% pIndex - parameter index that we are looking at \n");
+        buffer.append("% DXDT - vector of delta sensitivity for parameter pIndex  wrt time \n");
         buffer.append("% ---------------------------------------------------------------------\n");
     	buffer.append("\n");
         buffer.append("% Decompose x into the concentration vector c and the sensitivity vector s \n");
         buffer.append("n = NSTATES;\n");
         buffer.append("m = NRATES;\n");
-        buffer.append("c = x(1:n);");
-        buffer.append("s = x(n+1:end);");
+        buffer.append("c = x(1:n);\n");
+        buffer.append("s = x(n+1:end);\n");
+        buffer.append("\n");
         buffer.append("% ---------------------------------------------------------------------\n");
-        buffer.append("% Calculate the Jacobiean Matrix \n");
+        buffer.append("% Calculate the Jacobian Matrix \n");
         buffer.append("% ---------------------------------------------------------------------\n");
         buffer.append("JM = ");
         buffer.append(strJacobianFunctionName);
@@ -414,9 +427,8 @@ public static void buildAdjBalFntBuffer(StringBuffer buffer,Vector vecReactions,
 
         // Convert into string buffer -
         buffer.append("% ---------------------------------------------------------------------\n");
-        buffer.append("calculate the P matrix\n");
+        buffer.append("% Calculate the P matrix\n");
         buffer.append("% ---------------------------------------------------------------------\n");
-        buffer.append("\n");
         buffer.append("PM = ");
         buffer.append(strPMatrixFileName);
         buffer.append("(c,kV);\n");
@@ -427,8 +439,7 @@ public static void buildAdjBalFntBuffer(StringBuffer buffer,Vector vecReactions,
         buffer.append("% ---------------------------------------------------------------------\n");
         buffer.append("% Calculate dsdt vector \n");
         buffer.append("% ---------------------------------------------------------------------\n");
-        buffer.append("\n");
-        buffer.append("dsdt \t=\t JM*s+PM(:,pIndex);\n");
+        buffer.append("dsdt = JM*s+PM(:,pIndex);\n");
         buffer.append("\n");
         buffer.append("% ---------------------------------------------------------------------\n");
         buffer.append("% Calculate dcdt vector \n");
@@ -438,9 +449,11 @@ public static void buildAdjBalFntBuffer(StringBuffer buffer,Vector vecReactions,
         buffer.append("(c,t,STM,kV,NRATES,NSTATES);\n");
         buffer.append("\n");
         buffer.append("% ---------------------------------------------------------------------\n");
-        buffer.append("% Construct dxdt vector \n");
+        buffer.append("% Construct DXDT vector \n");
         buffer.append("% ---------------------------------------------------------------------\n");
-        buffer.append("dxdt = [dcdt;dsdt]\n");
+        buffer.append("DXDT = [dcdt;dsdt];\n");
+        buffer.append("\n");
+        buffer.append("return;\n");
         buffer.append("\n");
     }
 
@@ -477,7 +490,7 @@ public static void buildAdjBalFntBuffer(StringBuffer buffer,Vector vecReactions,
                     // check to see if exponent is 1
                     else if(tempStmElement>(1-1E-6)&&tempStmElement<(1+1E-6)){
                         // no need to raise to a power
-                        buffer.append("c(");
+                        buffer.append("x(");
                         buffer.append(state_counter+1);
                         buffer.append(")*");
                     }
