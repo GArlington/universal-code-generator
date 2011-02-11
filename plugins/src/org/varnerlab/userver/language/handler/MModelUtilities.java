@@ -266,7 +266,7 @@ private static String formulateJacobianElement(double[][] matrix,int massbalance
                     buffer.append("*");
                     buffer.append(tempStmElement);
                     buffer.append("*");
-                    buffer.append("k(");
+                    buffer.append("kV(");
                     buffer.append(test_index+1);
                     buffer.append(")");
                 }
