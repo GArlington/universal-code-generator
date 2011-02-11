@@ -149,15 +149,11 @@ public class WriteOctaveMModel implements IOutputHandler {
         octave.buildInputsBuffer(inputs_buffer,_xmlPropTree);
         octave.buildKineticsBuffer(kinetics_buffer,model_wrapper,_xmlPropTree);
         
+        // Build the code needed to do sensitivity analysis 
         octave.buildAdjBalFntBuffer(adj_balances, vecReactions, vecSpecies, _xmlPropTree);
         octave.buildJacobianBuffer(jacobian_buffer, vecReactions, vecSpecies, _xmlPropTree);
         octave.buildPMatrixBuffer(pmatrix_buffer, vecReactions, vecSpecies, _xmlPropTree);
         octave.buildSolveAdjBalBuffer(adj_driver, _xmlPropTree);
-
-        // Ok, build adj buffer -
-        octave.buildSolveAdjBalBuffer(adj_driver_buffer, _xmlPropTree);
-        octave.buildAdjBalFntBuffer(adj_buffer,vecReactions,vecSpecies, _xmlPropTree);
-        octave.buildJacobianBuffer(jacobian_buffer,vecReactions,vecSpecies, _xmlPropTree);
 
         
         // Call out to the octave class and have it build the driver buffer -
@@ -175,11 +171,6 @@ public class WriteOctaveMModel implements IOutputHandler {
         SBMLModelUtilities.dumpJacobianToDisk(jacobian_buffer, _xmlPropTree);
         SBMLModelUtilities.dumpAdjFunctionFileToDisk(adj_balances, _xmlPropTree);
         SBMLModelUtilities.dumpAdjDriverFileToDisk(adj_driver, _xmlPropTree);
-
-        // Dump the sensitivity analysis -
-        SBMLModelUtilities.dumpAdjDriverFileToDisk(adj_driver_buffer,_xmlPropTree);
-        SBMLModelUtilities.dumpAdjFunctionFileToDisk(adj_buffer, _xmlPropTree);
-        SBMLModelUtilities.dumpJacobianToDisk(driver_buffer, _xmlPropTree);
 	}
 
 	public void setLogger(Logger log) {
