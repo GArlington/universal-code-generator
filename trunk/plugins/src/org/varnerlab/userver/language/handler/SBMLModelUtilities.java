@@ -460,28 +460,6 @@ public class SBMLModelUtilities {
         } 	
     }
 
-    public static void dumpJacobianFunctionFileToDisk(StringBuffer data_buffer,XMLPropTree _xmlPropTree) throws Exception {
-
-    	ArrayList<String> arrList = _xmlPropTree.processFilenameBlock("JacobianFunction");
-        String strFileName = arrList.get(0);
-        String strFilePath = arrList.get(2);
-        
-        // Check to make sure we have data in the string -
-        String strSBMLFile = "";
-        if (!strFileName.equalsIgnoreCase("EMPTY") && !strFilePath.equalsIgnoreCase("EMPTY"))
-        {
-        	// Path information for stoichiometric matrix -
-        	strSBMLFile = strFilePath+"/"+strFileName;
-        	GIOL.write(strSBMLFile,data_buffer);
-        }
-        else
-        {
-        	// OK, there was some malfunction -
-        	throw new Exception("ERROR: We have some issue writing the Jacobian files. Check the Jacobian settings.");
-        }
-    }
-    	
-    
     public static void dumpDataFileToDisk(StringBuffer data_buffer,XMLPropTree _xmlPropTree) throws Exception {
     	// I have populated the string buffer, dump that mofo
         
@@ -749,7 +727,7 @@ public class SBMLModelUtilities {
     public static void dumpBMatrixToDisk(StringBuffer driver,XMLPropTree _xmlPropTree) throws Exception
     {
         
-    	ArrayList<String> arrList = _xmlPropTree.processFilenameBlock("BMatrix");
+    	ArrayList<String> arrList = _xmlPropTree.processFilenameBlock("PMatrix");
         String strFileName = arrList.get(0);
         String strFilePath = arrList.get(2);
         

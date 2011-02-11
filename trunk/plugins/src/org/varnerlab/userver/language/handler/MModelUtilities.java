@@ -1,23 +1,38 @@
 /*
- * To change this template, choose Tools | Templates
+ * Copyright (c) 2011 Varnerlab, 
+ * School of Chemical and Biomolecular Engineering, 
+ * Cornell University, Ithaca NY 14853 USA.
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is 
+ * furnished to do so, subject to the following conditions:
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
+ * Created on December 29, 2006, 3:44 PM
+ *
+ * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
  */
 
-package plugins.src.org.varnerlab.userver.language.handler;
-import org.sbml.libsbml.KineticLaw;
-import org.sbml.libsbml.ListOf;
-import org.sbml.libsbml.Model;
-import org.sbml.libsbml.ModifierSpeciesReference;
-import org.sbml.libsbml.Parameter;
-import org.sbml.libsbml.Reaction;
-import org.sbml.libsbml.Species;
-import org.sbml.libsbml.SpeciesReference;
-import org.varnerlab.server.localtransportlayer.XMLPropTree;
+package org.varnerlab.userver.language.handler;
 
+import org.sbml.libsbml.Model;
+import org.sbml.libsbml.Species;
+import org.varnerlab.server.localtransportlayer.XMLPropTree;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Properties;
-import java.util.StringTokenizer;
+import java.util.Hashtable;
 import java.util.Vector;
 /**
  *
@@ -25,13 +40,102 @@ import java.util.Vector;
  */
 public class MModelUtilities {
 
+public static void buildPMatrixBuffer(StringBuffer buffer,Vector vecReactions,Vector vecSpecies, Model model_wrapper,XMLPropTree propTree) throws Exception
+{
+	// Method attributes -
+	Hashtable<String,String> pathTable = propTree.buildFilenameBlockDictionary("PMatrix");
+	String strPMatrixFunctionName = pathTable.get("FUNCTION_NAME");
+	
+	// Get the dimension of the system -
+    int NROWS = (int)vecSpecies.size();
+    int NCOLS = (int)vecReactions.size();
+    
+    // Create a local copy of the stoichiometric matrix -
+    double[][] matrix = new double[NROWS][NCOLS];
+    SBMLModelUtilities.buildStoichiometricMatrix(matrix, model_wrapper,vecReactions,vecSpecies);
+
+    // Ok, when I get here I have the stoichiometric matrix -
+    // Initialize the pmatrix array -
+    String[][] strPMatrix = new String[NROWS][NCOLS];
+    for (int counter_outer=0;counter_outer<NROWS;counter_outer++)
+    {
+        for (int counter_inner=0;counter_inner<(NCOLS);counter_inner++)
+        {
+            strPMatrix[counter_outer][counter_inner]="0.0";
+        }
+    }
+    
+    // Ok, figure out the PMatrix -
+    for (int counter_outer=0;counter_outer<NROWS;counter_outer++)
+    {
+        for (int counter_inner=0;counter_inner<NCOLS;counter_inner++)
+        {
+            strPMatrix[counter_outer][counter_inner]=formulatePMatrixElement(matrix,counter_outer,counter_inner,vecReactions,vecSpecies);
+        }
+    }
+    
+    
+    // Ok, so when I get here I have the Jacobian - we need to convert it into a string buffer
+    buffer.append("function PM = ");
+    buffer.append(strPMatrixFunctionName);
+    buffer.append("(x,kV)\n");
+    buffer.append("\n");
+    buffer.append("% ---------------------------------------------------------------------\n");
+    buffer.append("% ");
+    buffer.append(strPMatrixFunctionName);
+    buffer.append(".m was generated using the UNIVERSAL code generator system.\n");
+    buffer.append("% Username: ");
+    buffer.append(propTree.getProperty(".//Model/@username"));
+    buffer.append("\n");
+    buffer.append("% Type: ");
+	buffer.append(propTree.getProperty(".//Model/@type"));
+    buffer.append("\n");
+    buffer.append("% Version: ");
+    buffer.append(propTree.getProperty(".//Model/@version"));
+    buffer.append("\n");
+    buffer.append("% \n");
+    buffer.append("% Arguments: \n");
+    buffer.append("% x  - state vector \n");
+    buffer.append("% kV - parameter vector \n");
+    buffer.append("% PM - Partial derivative parameter matrix \n");
+    buffer.append("% ---------------------------------------------------------------------\n");
+
+    buffer.append("\n");
+    buffer.append("NSTATES = length(x);\n");
+    buffer.append("NRATES = length(kV);\n");
+    buffer.append("PM = zeros(NSTATES,NRATES);\n");
+    buffer.append("\n");
+    
+    // Go through the matrix -
+    for (int state_counter_outer=0;state_counter_outer<NROWS;state_counter_outer++)
+    {
+        for (int state_counter_inner=0;state_counter_inner<NCOLS;state_counter_inner++)
+        {
+            // if it is a zero entry, just skip it
+            if(!strPMatrix[state_counter_outer][state_counter_inner].equals("0.0")){
+                // put the entries in the string buffer -
+                buffer.append("PM(");
+                buffer.append(state_counter_outer+1);
+                buffer.append(",");
+                buffer.append(state_counter_inner+1);
+                buffer.append(")\t=\t");
+                buffer.append(strPMatrix[state_counter_outer][state_counter_inner]);
+                buffer.append(";\n");
+            }
+        }
+    }
+    
+    // Return statement -
+    buffer.append("return;\n");
+}
 
 public static void buildJacobianBuffer(StringBuffer buffer,Vector vecReactions,Vector vecSpecies, Model model_wrapper,XMLPropTree propTree) throws Exception
-    {
-        ArrayList<String> arrList = propTree.processFilenameBlock("JacobianFunction");
+{
+        ArrayList<String> arrList = propTree.processFilenameBlock("JacobianMatrix");
         String strJacobianFunctionName = arrList.get(1);
-    	// Get the dimension of the system -
-        int NROWS = (int)model_wrapper.getNumSpecies();
+    	
+        // Get the dimension of the system -
+        int NROWS = (int)vecSpecies.size();
         int NCOLS = (int)vecReactions.size();
 
         // Create a local copy of the stoichiometric matrix -
@@ -83,7 +187,7 @@ public static void buildJacobianBuffer(StringBuffer buffer,Vector vecReactions,V
         buffer.append("% Arguments: \n");
         buffer.append("% x  - state vector \n");
         buffer.append("% kV - parameter vector \n");
-        buffer.append("% JM - jacpbian Matrix \n");
+        buffer.append("% JM - Jacobian Matrix \n");
         buffer.append("% ---------------------------------------------------------------------\n");
 
         buffer.append("\n");
@@ -252,19 +356,18 @@ private static String formulateJacobianElement(double[][] matrix,int massbalance
     }
 
 
-
-
-
-
-
-
 public static void buildAdjBalFntBuffer(StringBuffer buffer,Vector vecReactions,Vector<Species> vecSpecies, Model model_wrapper,XMLPropTree propTree) throws Exception
-    {
+{
         ArrayList<String> arrList = propTree.processFilenameBlock("AdjointBalances");
         String strSensitivityBalanceFunctionName = arrList.get(1);
-
-        arrList = propTree.processFilenameBlock("JacobianFunction");
+        
+        // Get info for the Jacobian matrix -
+        arrList = propTree.processFilenameBlock("JacobianMatrix");
         String strJacobianFunctionName = arrList.get(1);
+        
+        // Get info for the PMatrix -
+        Hashtable<String,String> pathTable = propTree.buildFilenameBlockDictionary("PMatrix");
+        String strPMatrixFileName = pathTable.get("FUNCTION_NAME");
 
         ArrayList<String> arrList2 = propTree.processFilenameBlock("MassBalanceFunction");
         String strMassBalanceFunctionName = arrList2.get(1);
@@ -308,60 +411,18 @@ public static void buildAdjBalFntBuffer(StringBuffer buffer,Vector vecReactions,
         buffer.append("(c,kV);\n");
         buffer.append("\n");
 
-    	// Get the dimension of the system -
-        int NROWS = (int)vecSpecies.size();
-        int NCOLS = (int)vecReactions.size();
-
-        // Create a local copy of the stoichiometric matrix -
-        double[][] matrix = new double[NROWS][NCOLS];
-        SBMLModelUtilities.buildStoichiometricMatrix(matrix, model_wrapper,vecReactions,vecSpecies);
-
-        // Ok, when I get here I have the stoichiometric matrix -
-        // Initialize the pmatrix array -
-        String[][] strPMatrix = new String[NROWS][NROWS+NCOLS];
-        for (int counter_outer=0;counter_outer<NROWS;counter_outer++)
-        {
-            for (int counter_inner=0;counter_inner<(NROWS+NCOLS);counter_inner++)
-            {
-                strPMatrix[counter_outer][counter_inner]="0.0";
-            }
-        }
-
-        // Ok, figure out the PMatrix -
-        for (int counter_outer=0;counter_outer<NROWS;counter_outer++)
-        {
-            for (int counter_inner=0;counter_inner<NCOLS;counter_inner++)
-            {
-                strPMatrix[counter_outer][counter_inner]=formulatePMatrixElement(matrix,counter_outer,counter_inner,vecReactions,vecSpecies);
-            }
-        }
 
         // Convert into string buffer -
         buffer.append("% ---------------------------------------------------------------------\n");
         buffer.append("calculate the P matrix\n");
         buffer.append("% ---------------------------------------------------------------------\n");
         buffer.append("\n");
-        
-        buffer.append("PM = zeros(n,m);\n");
+        buffer.append("PM = ");
+        buffer.append(strPMatrixFileName);
+        buffer.append("(c,kV);\n");
         buffer.append("\n");
+   
 
-        for (int state_counter_outer=0;state_counter_outer<NROWS;state_counter_outer++)
-        {
-            for (int state_counter_inner=0;state_counter_inner<(NROWS+NCOLS);state_counter_inner++)
-            {
-                // if it is a zero entry, just skip it
-                if(!strPMatrix[state_counter_outer][state_counter_inner].equals("0.0")){
-                    // put the entries in the string buffer -
-                    buffer.append("PM(");
-                    buffer.append(state_counter_outer+1);
-                    buffer.append(",");
-                    buffer.append(state_counter_inner+1);
-                    buffer.append(")\t=\t");
-                    buffer.append(strPMatrix[state_counter_outer][state_counter_inner]);
-                    buffer.append(";\n");
-                }
-            }
-        }
         buffer.append("\n");
         buffer.append("% ---------------------------------------------------------------------\n");
         buffer.append("% Calculate dsdt vector \n");
