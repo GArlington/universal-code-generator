@@ -40,6 +40,10 @@
                 <argument required="YES" index="4" symbol="org.varnerlab.server.localtransportlayer.Main"></argument>
 			</ListOfArguments>
 		</ServerConfiguration>
+    
+        
+        
+        
 	</Configuration>
 
     <InputOptions>
@@ -48,9 +52,9 @@
 	
     <OutputOptions>
         <OutputFile required="YES" path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename=""></OutputFile>
-        <GraphProperties required="YES" size="" name=""></GraphProperties>
-        <EdgeProperties required="YES" color="" style=""></EdgeProperties>
-        <NodeProperties required="YES" style="" text_color="" color="" shape=""></NodeProperties>
+        <GraphProperties required="YES" graph_size="" graph_name=""></GraphProperties>
+        <EdgeProperties required="YES" edge_color="" edge_style=""></EdgeProperties>
+        <NodeProperties required="YES" node_style="" text_color="" text_size="" node_color="" node_shape=""></NodeProperties>
     </OutputOptions>
     
 </Model>
