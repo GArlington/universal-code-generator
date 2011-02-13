@@ -116,7 +116,7 @@ public class MatlabModel {
     	ArrayList<String> arrList = propTree.processFilenameBlock("DriverFile");
     	String strFunctionName = arrList.get(1);
     	
-        driver.append("function [TSIM,X] = ");
+        driver.append("function [TSIM,OUTPUT] = ");
         driver.append(strFunctionName);
         driver.append("(pDataFile,TSTART,TSTOP,Ts,DFIN)\n");
         driver.append("\n");
@@ -160,6 +160,7 @@ public class MatlabModel {
         driver.append("kV = DF.PARAMETER_VECTOR;\n");
         driver.append("NRATES = DF.NUMBER_PARAMETERS;\n");
         driver.append("NSTATES = DF.NUMBER_OF_STATES;\n"); 
+        driver.append("MEASUREMENT_INDEX_VECTOR = DF.MEASUREMENT_SELECTION_VECTOR;\n");
         driver.append("\n");
         
         // Call to the ODE solver -
@@ -170,6 +171,11 @@ public class MatlabModel {
         driver.append("[T,X]=ode15s(@");
         driver.append(strMassBalanceFunctionName);
         driver.append(",TSIM,IC,[],DF,S,kV);\n");
+        driver.append("\n");
+        driver.append("% Calculate the output - \n");
+        driver.append("OUTPUT = X(:,MEASUREMENT_INDEX_VECTOR);\n");
+        driver.append("\n");
+        driver.append("% return to caller -");
         driver.append("return;\n");
     }
     
