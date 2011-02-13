@@ -72,9 +72,16 @@
 		<MassBalanceFunction required="YES" path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="MassBalances.m"></MassBalanceFunction>
 		<KineticsFunction required="YES" path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="Kinetics.m"></KineticsFunction>
 		<InputFunction required="YES" path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="Inputs.m"></InputFunction>
+        <JacobianMatrix required="YES" path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="Jacobian.m"></JacobianMatrix>
+		<PMatrix required="YES" path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="BMatrix.m"></PMatrix>
         <DriverFile required="YES" path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="SolveMassBalances.m"></DriverFile>
 		<StoichiometricMatrix required="YES" path_symbol="UNIVERSAL_NETWORK_OUTPUT_PATH" filename="Network.dat"></StoichiometricMatrix>
 		<DebugOutputFile required="YES" path_symbol="UNIVERSAL_DEDUG_OUTPUT_PATH" filename="Debug.txt"></DebugOutputFile>
+        
+        <SensitivityAnalysis>
+			<AdjointDriver required="YES" path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="SolveADJBalances.m"></AdjointDriver>
+			<AdjointBalances required="YES" path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="ADJBalances.cc"></AdjointBalances>
+		</SensitivityAnalysis>
 	</OutputOptions>	
 	
 </Model>
