@@ -30,7 +30,7 @@
 @interface TableComboBoxDataSource (hiiden)
 
 - (void)setup;
-- (void)updateDataArray;
+- (void)updateDataArray:(NSArray *)listOfOptions tableView:(NSTableView *)tableViewPointer;
 - (void)tableSelectionChanged:(NSNotification *)notification;
 - (void)treeSelectionChanged:(NSNotification *)notification;
 
@@ -124,6 +124,8 @@
 	{
 		// Ok, I have a legit selection, clear out the dataArray - the rest of the code 
 		// is about repopulating the array - 
+        
+        // There *must* be a totaly better way to do this ...
 	
 		// Try and get the wrapper -
 		id notSureWhatThisIs =	[[view dataSource] tableView:view 
@@ -155,6 +157,115 @@
 			[view reloadData];
 			[strXPath release];
 		}
+        
+        // Ok, these blocks of code deal with graphviz options -
+        else if ([notSureWhatThisIs isEqual:@"edge_color"])
+        {
+            // Ok, so If I get here, then I have a compartment key - we need to get the root document -
+			NSXMLDocument *document = [[self selectedXMLNode] rootDocument];
+			
+			// Run XPath on this bitch to figure out what the available keys are ...
+			NSMutableString *strXPath = [[NSMutableString alloc] initWithCapacity:140];
+			[strXPath appendString:@".//ListOfEdgeColors/edge_color/@symbol"];
+            
+            // populate the array with the current data -
+			NSError *err=nil; 
+			NSArray *listOfOptions = [document nodesForXPath:strXPath error:&err];
+            [self updateDataArray:listOfOptions tableView:view];
+            
+            // cleanup -
+            [strXPath release];
+        }
+        else if ([notSureWhatThisIs isEqual:@"edge_style"])
+        {
+            // Ok, so If I get here, then I have a compartment key - we need to get the root document -
+			NSXMLDocument *document = [[self selectedXMLNode] rootDocument];
+			
+			// Run XPath on this bitch to figure out what the available keys are ...
+			NSMutableString *strXPath = [[NSMutableString alloc] initWithCapacity:140];
+			[strXPath appendString:@".//ListOfEdgeStyles/edge_style/@symbol"];
+            
+            // populate the array with the current data -
+			NSError *err=nil; 
+			NSArray *listOfOptions = [document nodesForXPath:strXPath error:&err];
+            [self updateDataArray:listOfOptions tableView:view];
+            
+            // cleanup -
+            [strXPath release];
+        }
+        else if ([notSureWhatThisIs isEqual:@"text_color"])
+        {
+            // Ok, so If I get here, then I have a compartment key - we need to get the root document -
+			NSXMLDocument *document = [[self selectedXMLNode] rootDocument];
+			
+			// Run XPath on this bitch to figure out what the available keys are ...
+			NSMutableString *strXPath = [[NSMutableString alloc] initWithCapacity:140];
+			[strXPath appendString:@".//ListOfTextColors/text_color/@symbol"];
+            
+            // populate the array with the current data -
+			NSError *err=nil; 
+			NSArray *listOfOptions = [document nodesForXPath:strXPath error:&err];
+            [self updateDataArray:listOfOptions tableView:view];
+            
+            // cleanup -
+            [strXPath release];
+        }
+
+        else if ([notSureWhatThisIs isEqual:@"node_shape"])
+        {
+            // Ok, so If I get here, then I have a compartment key - we need to get the root document -
+			NSXMLDocument *document = [[self selectedXMLNode] rootDocument];
+			
+			// Run XPath on this bitch to figure out what the available keys are ...
+			NSMutableString *strXPath = [[NSMutableString alloc] initWithCapacity:140];
+			[strXPath appendString:@".//ListOfNodeShapes/node_shape/@symbol"];
+            
+            // populate the array with the current data -
+			NSError *err=nil; 
+			NSArray *listOfOptions = [document nodesForXPath:strXPath error:&err];
+            [self updateDataArray:listOfOptions tableView:view];
+            
+            // cleanup -
+            [strXPath release];
+        }
+
+        else if ([notSureWhatThisIs isEqual:@"node_style"])
+        {
+            // Ok, so If I get here, then I have a compartment key - we need to get the root document -
+			NSXMLDocument *document = [[self selectedXMLNode] rootDocument];
+			
+			// Run XPath on this bitch to figure out what the available keys are ...
+			NSMutableString *strXPath = [[NSMutableString alloc] initWithCapacity:140];
+			[strXPath appendString:@".//ListOfNodeStyles/node_style/@symbol"];
+            
+            // populate the array with the current data -
+			NSError *err=nil; 
+			NSArray *listOfOptions = [document nodesForXPath:strXPath error:&err];
+            [self updateDataArray:listOfOptions tableView:view];
+            
+            // cleanup -
+            [strXPath release];
+        }
+
+        else if ([notSureWhatThisIs isEqual:@"node_color"])
+        {
+            // Ok, so If I get here, then I have a compartment key - we need to get the root document -
+			NSXMLDocument *document = [[self selectedXMLNode] rootDocument];
+			
+			// Run XPath on this bitch to figure out what the available keys are ...
+			NSMutableString *strXPath = [[NSMutableString alloc] initWithCapacity:140];
+			[strXPath appendString:@".//ListOfNodeColors/node_color/@symbol"];
+            
+            // populate the array with the current data -
+			NSError *err=nil; 
+			NSArray *listOfOptions = [document nodesForXPath:strXPath error:&err];
+            [self updateDataArray:listOfOptions tableView:view];
+            
+            // cleanup -
+            [strXPath release];
+        }
+
+        
 		else if ([notSureWhatThisIs isEqual:@"path_symbol"])
 		{
 			[[self dataArray] removeAllObjects];
@@ -267,6 +378,28 @@
 			}
 		}
 	} 	
+}
+
+
+#pragma mark -------------------------------------------
+#pragma mark private helper method to update array -
+#pragma mark -------------------------------------------
+
+- (void)updateDataArray:(NSArray *)listOfOptions tableView:(NSTableView *)tableViewPointer
+{
+    // Remove the data from the array -
+    [[self dataArray] removeAllObjects];
+    
+    // Populate the array with the new data -
+    for (NSXMLNode *node in listOfOptions)
+    {
+        // Ok, **finally** so now we can add this to the dataArray -
+        [[self dataArray] addObject:[node stringValue]];
+    }
+    
+    // Ok, so now I need to have the view reLoad the data -
+    [tableViewPointer reloadData];
+
 }
 
 @end
