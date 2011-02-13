@@ -73,7 +73,7 @@
 		<MassBalanceFunction required="YES" path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="MassBalances.cc"></MassBalanceFunction>
 		<KineticsFunction required="YES" path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="Kinetics.cc"></KineticsFunction>
 		<JacobianMatrix required="YES" path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="Jacobian.cc"></JacobianMatrix>
-		<BMatrix required="YES" path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="BMatrix.cc"></BMatrix>
+		<PMatrix required="YES" path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="BMatrix.cc"></PMatrix>
 		<DriverFile required="YES" path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="SolveMassBalances.m"></DriverFile>
 		<StoichiometricMatrix required="YES" path_symbol="UNIVERSAL_NETWORK_OUTPUT_PATH" filename="Network.dat"></StoichiometricMatrix>
 		<BoundsFile required="NO" path_symbol="UNIVERSAL_NETWORK_OUTPUT_PATH" filename="FB.dat"></BoundsFile>
