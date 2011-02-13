@@ -71,7 +71,7 @@ public class GraphvizModel {
 		buffer.append("size=\"");
 
 		// Get the graph size -
-		String strGraphSize = _xmlPropTree.getProperty("//graph_size/text()");
+		String strGraphSize = _xmlPropTree.getProperty(".//GraphProperties/@graph_size");
 
 		buffer.append(strGraphSize);
 		buffer.append(",");
@@ -83,14 +83,14 @@ public class GraphvizModel {
 		buffer.append("color=");
 
 		// Get the terminal node color -
-		String strTerminalNodeColor = _xmlPropTree.getProperty("//TerminalNodeProperties/terminal_node_color/text()");
+		String strTerminalNodeColor = _xmlPropTree.getProperty(".//TerminalNodeProperties/@node_color");
 
 		buffer.append(strTerminalNodeColor);
 		buffer.append(",");
 		buffer.append("fontcolor=");
 
 		// Get the terminal node font color -
-		String strTerminalNodeFontColor = _xmlPropTree.getProperty("//TerminalNodeProperties/terminal_node_font_color/text()");
+		String strTerminalNodeFontColor = _xmlPropTree.getProperty(".//TerminalNodeProperties/@text_color");
 
 		buffer.append(strTerminalNodeFontColor);
 		buffer.append(",");
@@ -98,7 +98,7 @@ public class GraphvizModel {
 		buffer.append("shape=");
 
 		// Get the terminal node shape -
-		String strTerminalNodeShape = _xmlPropTree.getProperty("//TerminalNodeProperties/terminal_node_shape/text()");
+		String strTerminalNodeShape = _xmlPropTree.getProperty(".//TerminalNodeProperties/@node_shape");
 
 		buffer.append(strTerminalNodeShape);
 		buffer.append("]\n");
@@ -117,8 +117,8 @@ public class GraphvizModel {
 	public void buildGraphvizReactionList(StringBuffer buffer,Model model_wrapper,Vector<Reaction> vecReactions) throws Exception
 	{
 		// Get the edge properties -
-		String strEdgeStyle = _xmlPropTree.getProperty("//EdgeProperties/edge_style/text()");
-		String strEdgeColor = _xmlPropTree.getProperty("//EdgeProperties/edge_color/text()");
+		String strEdgeStyle = _xmlPropTree.getProperty(".//EdgeProperties/@edge_style");
+		String strEdgeColor = _xmlPropTree.getProperty(".//EdgeProperties/@edge_color");
 
 		// Get the reactions -
 		int NUMBER_OF_REACTIONS = vecReactions.size();
@@ -195,6 +195,10 @@ public class GraphvizModel {
 		// Get the list of species -
 		ListOf listOfSpecies = (ListOf)model_wrapper.getListOfSpecies();
 		int NUMBER_OF_SPECIES = (int)listOfSpecies.size();
+		
+		System.out.println("What is the number of SPECIES? "+NUMBER_OF_SPECIES);
+		System.out.println("What is the length of the STM? "+matrix.length);
+		
 		for (int index=0;index<NUMBER_OF_SPECIES;index++)
 		{
 			// Get the reference -
@@ -206,16 +210,16 @@ public class GraphvizModel {
 			buffer.append(" [style=");
 
 			// Get the graph size -
-			String strNodeStyle = _xmlPropTree.getProperty("//NodeProperties/node_style/text()");     
+			String strNodeStyle = _xmlPropTree.getProperty(".//NodeProperties/@node_style");     
 			buffer.append(strNodeStyle);
 			buffer.append(",");
 
-			String strNodeFontSize = _xmlPropTree.getProperty("//NodeProperties/node_font_size/text()");
+			String strNodeFontSize = _xmlPropTree.getProperty(".//NodeProperties/@text_size");
 			buffer.append("fontsize=");
 			buffer.append(strNodeFontSize);
 			buffer.append(",");
 
-			String strNodeShape = _xmlPropTree.getProperty("//NodeProperties/node_shape/text()");
+			String strNodeShape = _xmlPropTree.getProperty(".//NodeProperties/@node_shape");
 			buffer.append("shape=");
 			buffer.append(strNodeShape);
 			buffer.append(",");
@@ -224,19 +228,19 @@ public class GraphvizModel {
 			dblValue = countConnections(matrix,index,NCOLS);
 			buffer.append("color=\"");
 
-			String strGradDirection = _xmlPropTree.getProperty("//GradientProperties/gradient_direction/text()");
+			String strGradDirection = _xmlPropTree.getProperty(".//GradientProperties/@gradient_direction");
 			if (strGradDirection.equalsIgnoreCase("DECREASING"))
 			{
 				dblValue = 1.0 - dblValue;
 			}
 
 			// Get the default gradient color -
-			String strGradRed = _xmlPropTree.getProperty("//GradientProperties/gradient_default_color/red/text()");
-			String strGradGreen = _xmlPropTree.getProperty("//GradientProperties/gradient_default_color/green/text()");
-			String strGradBlue = _xmlPropTree.getProperty("//GradientProperties/gradient_default_color/blue/text()");
+			String strGradRed = _xmlPropTree.getProperty(".//GradientProperties/@gradient_default_color_red");
+			String strGradGreen = _xmlPropTree.getProperty(".//GradientProperties/@gradient_default_color_green");
+			String strGradBlue = _xmlPropTree.getProperty(".//GradientProperties/@gradient_default_color_blue");
 
 			// Figure out what color to change -
-			String gradFlag = _xmlPropTree.getProperty("//GradientProperties/gradient_color/text()");
+			String gradFlag = _xmlPropTree.getProperty(".//GradientProperties/@gradient_colormap");
 			if (gradFlag.equalsIgnoreCase("RED"))
 			{
 				buffer.append(dblValue);
@@ -266,7 +270,7 @@ public class GraphvizModel {
 
 			buffer.append("\",");
 
-			String strNodeTextColor = _xmlPropTree.getProperty("//NodeProperties/node_text_color/text()");
+			String strNodeTextColor = _xmlPropTree.getProperty(".//NodeProperties/@text_color");
 			buffer.append("fontcolor=");
 			buffer.append(strNodeTextColor);
 			buffer.append("];\n");
@@ -278,7 +282,8 @@ public class GraphvizModel {
 		double dblValue = 0.0;
 
 		// Ok,I need to compute the fraction of connections that this node has -
-
+		System.out.println("What is the NCOLS "+NUMBER_OF_COLS);
+		
 		// count the number of nonzero elements 
 		for (int col_index=0;col_index<NUMBER_OF_COLS;col_index++)
 		{
