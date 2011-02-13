@@ -69,6 +69,15 @@ public class WriteGraphvizDotFile implements IOutputHandler {
         // Check to make sure all the reversible rates are 0,inf
         SBMLModelUtilities.convertReversibleRates(model_wrapper,vecReactions);
         
+        // Transfer the SBML species list into a vector -
+		ListOf species_list_tmp = model_wrapper.getListOfSpecies();
+        long NUMBER_OF_SPECIES_TMP = model_wrapper.getNumSpecies();
+        for (int scounter=0;scounter<NUMBER_OF_SPECIES_TMP;scounter++)
+        {
+            Species species_tmp = (Species)species_list_tmp.get(scounter);
+            vecSpecies.add(species_tmp);
+        }
+        
         // set the model_wrapper -
         graphiz_model.setModel(model_wrapper);
         graphiz_model.setProperties(_xmlPropTree);
