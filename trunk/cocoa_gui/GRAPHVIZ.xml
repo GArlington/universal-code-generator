@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<Model username="" version="" name="" type="SUNDIALS" required="YES">
+<Model username="" version="" name="" type="GRAPHVIZ-DOT" required="YES">
 	
 	<Configuration>
 		<ListOfPackages>
@@ -46,6 +46,33 @@
         
 	</Configuration>
 
+    <ShapeAndColorOptions>
+        
+        <ListOfEdgeColors>
+            <edge_color symbol="Red"></edge_color>
+            <edge_color symbol="Green"></edge_color>
+            <edge_color symbol="Blue"></edge_color>
+        </ListOfEdgeColors>
+        <ListOfEdgeStyles>
+            <edge_style symbol="style 1"></edge_style>
+            <edge_style symbol="style 2"></edge_style>
+        </ListOfEdgeStyles>
+        <ListOfTextColors>
+            <text_color symbol="Red"></text_color>
+            <text_color symbol="Green"></text_color>
+            <text_color symbol="Blue"></text_color>
+        </ListOfTextColors>
+        <ListOfNodeShapes>
+            <node_shape symbol="Square"></node_shape>
+        </ListOfNodeShapes>
+        <ListOfNodeStyles>
+            <node_style symbol="Filled"></node_style>
+        </ListOfNodeStyles>
+        <ListOfNodeColors>
+            <node_color symbol="Black"></node_color>
+        </ListOfNodeColors>
+    </ShapeAndColorOptions>
+    
     <InputOptions>
 		<NetworkFile required="YES" path_symbol="UNIVERSAL_INPUT_PATH" filename=""></NetworkFile>
     </InputOptions>
@@ -55,6 +82,11 @@
         <GraphProperties required="YES" graph_size="" graph_name=""></GraphProperties>
         <EdgeProperties required="YES" edge_color="" edge_style=""></EdgeProperties>
         <NodeProperties required="YES" node_style="" text_color="" text_size="" node_color="" node_shape=""></NodeProperties>
+        <TerminalNodeProperties required="YES" node_style="" text_color="" text_size="" node_color="" node_shape=""></TerminalNodeProperties>
+        <GradientProperties gradient_direction="" gradient_default_color_red="" 
+            gradient_default_color_blue="" 
+            gradient_default_color_green="" gradient_colormap="">
+        </GradientProperties>
     </OutputOptions>
     
 </Model>
