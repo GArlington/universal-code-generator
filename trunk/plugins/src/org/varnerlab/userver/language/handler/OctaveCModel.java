@@ -439,7 +439,8 @@ public class OctaveCModel {
         driver.append("S = DF.STOICHIOMETRIC_MATRIX;\n");
         driver.append("kV = DF.PARAMETER_VECTOR;\n");
         driver.append("NRATES = DF.NUMBER_PARAMETERS;\n");
-        driver.append("NSTATES = DF.NUMBER_OF_STATES;\n"); 
+        driver.append("NSTATES = DF.NUMBER_OF_STATES;\n");
+        driver.append("MEASUREMENT_INDEX_VECTOR = DF.MEASUREMENT_SELECTION_VECTOR;\n");
         driver.append("\n");
         driver.append("% Call the ODE solver - the default is LSODE\n");
         
@@ -454,6 +455,10 @@ public class OctaveCModel {
         driver.append(strMassBalanceFunctionName);
         driver.append("(x,t,S,kV,NRATES,NSTATES);\n");
         driver.append("[X]=lsode(f,IC,TSIM);\n");
+        driver.append("% Calculate the output - \n");
+        driver.append("OUTPUT = X(MEASUREMENT_INDEX_VECTOR,:);\n");
+        driver.append("\n");
+        driver.append("% return to caller -");
         driver.append("return;\n");
     }
     
