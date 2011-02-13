@@ -513,22 +513,16 @@ public class SBMLModelUtilities {
         GIOL.write(strSBMLFile,data_buffer);
     }
     
-    public static void dumpGeneralBufferToDisk(StringBuffer data_buffer,XMLPropTree _xmlPropTree) throws Exception
+    public static void dumpGeneralBufferToDisk(StringBuffer data_buffer,XMLPropTree xmlPropTree) throws Exception
     {
     	// I have populated the string buffer, dump that mofo
-    	String strWorkingDir = _xmlPropTree.getProperty("//working_directory/text()");
-        String strDotFileName = _xmlPropTree.getProperty("//OutputFileName/output_filename/text()");
-        String strDotFilePath = _xmlPropTree.getProperty("//OutputFileName/output_file_path/text()");
+    	//String strWorkingDir = _xmlPropTree.getProperty("//working_directory/text()");
+        //String strDotFileName = _xmlPropTree.getProperty("//OutputFileName/output_filename/text()");
+        //String strDotFilePath = _xmlPropTree.getProperty("//OutputFileName/output_file_path/text()");
         
-        String strSBMLFile = "";
-        if (strDotFilePath.isEmpty())
-        {
-        	strSBMLFile = strWorkingDir+"/"+strDotFileName;
-        }
-        else
-        {
-        	strSBMLFile = strWorkingDir+"/"+strDotFilePath+"/"+strDotFileName;
-        }
+    	// Get the output name -
+    	Hashtable<String,String> pathTable = xmlPropTree.buildFilenameBlockDictionary("OutputFile");
+    	String strSBMLFile = pathTable.get("FULLY_QUALIFIED_PATH");
         
         GIOL.write(strSBMLFile,data_buffer);
     }
@@ -1066,7 +1060,7 @@ public class SBMLModelUtilities {
         NUMBER_OF_SPECIES = (int)listSpecies.size();
         NUMBER_OF_RATES = (int)listRates.size(); 
         
-        // //System.out.println("Dimension "+NUMBER_OF_SPECIES+" by "+NUMBER_OF_RATES);
+        System.out.println("Dimension "+NUMBER_OF_SPECIES+" by "+NUMBER_OF_RATES);
         
         // Go through and put everything as zeros by default -
         for (int scounter=0;scounter<NUMBER_OF_SPECIES;scounter++)
