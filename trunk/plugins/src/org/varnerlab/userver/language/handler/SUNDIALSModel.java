@@ -1411,7 +1411,7 @@ public class SUNDIALSModel {
         // Code the try catch block -
     	buffer.append("\ttry\n");
     	buffer.append("\t\t% Call the SUNDIALS code -\n");
-    	buffer.append("\t\t[TSIM,X]=SolveSundialsModel(TSTART,TSTOP,Ts,OUTNAME);\n");
+    	buffer.append("\t\t[TSIM,X]=SolveSundialsModel(TSTART,TSTOP,Ts,OUTNAME);\n");	
     	buffer.append("\tcatch\n");
     	buffer.append("\t\t% Do populate the return arrays w/zeros -\n");
     	buffer.append("\t\tNS = DF.NUMBER_OF_STATES;\n");	
