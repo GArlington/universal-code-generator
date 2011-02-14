@@ -45,24 +45,18 @@ public class LoadBioPAXFile implements IInputHandler {
 	private Logger _logger = null;
 	private XMLPropTree _xmlPropTree = null;
 	private org.biopax.paxtools.model.Model _bioPaxModel = null;
-	private Model _model_wrapper = null;
 	
 	@Override
 	public Object getResource(Object object) throws Exception {
 		// Method attributes -
-		
-		// Load the SBML lib -
-		System.loadLibrary("sbmlj");
-		
-		// Create a new sbml model instance -
-		_model_wrapper = new Model(3,1);
+	
 		
 		// Ok, so when I get here I need to be populate the SBML model object from the 
 		// the biopax model -
 		
 		
 		// return the model -
-		return (_model_wrapper);
+		return (_bioPaxModel);
 	}
 
 	@Override
@@ -71,10 +65,12 @@ public class LoadBioPAXFile implements IInputHandler {
 		Hashtable<String,String> pathDictionary = null;
 		
 		// Ok, so we need to get the path for the biopax file -
-		pathDictionary = _xmlPropTree.buildFilenameBlockDictionary("NetworkFileName");
+		pathDictionary = _xmlPropTree.buildFilenameBlockDictionary("NetworkFile");
 		
 		// Get the path -
-		String strPath = pathDictionary.get(XMLPropTree.FullyQualifiedPath);
+		String strPath = pathDictionary.get("FULLY_QUALIFIED_PATH");
+		
+		System.out.println("Tyring to load - "+strPath);
 		
 		// Load the biopax file and create a biopax model 
 		// Note we need to use the full package name to avoid conflict
