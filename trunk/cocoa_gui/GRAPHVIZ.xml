@@ -49,43 +49,116 @@
     <ShapeAndColorOptions>
         
         <ListOfEdgeColors>
-            <edge_color symbol="Red"></edge_color>
-            <edge_color symbol="Green"></edge_color>
-            <edge_color symbol="Blue"></edge_color>
+            <edge_color symbol="red"></edge_color>
+            <edge_color symbol="green"></edge_color>
+            <edge_color symbol="blue"></edge_color>
+            <edge_color symbol="black"></edge_color>
+            <edge_color symbol="grey"></edge_color>
+            <edge_color symbol="dimgrey"></edge_color>
+            <edge_color symbol="white"></edge_color>
         </ListOfEdgeColors>
         <ListOfEdgeStyles>
-            <edge_style symbol="style 1"></edge_style>
-            <edge_style symbol="style 2"></edge_style>
+            <edge_style symbol="box"></edge_style>
+            <edge_style symbol="dot"></edge_style>
+            <edge_style symbol="normal"></edge_style>
+            <edge_style symbol="crow"></edge_style>
+            <edge_style symbol="inv"></edge_style>
+            <edge_style symbol="tee"></edge_style>
+            <edge_style symbol="diamond"></edge_style>
+            <edge_style symbol="none"></edge_style>
+            <edge_style symbol="vee"></edge_style>
+            
+            <edge_style symbol="obox"></edge_style>
+            <edge_style symbol="odot"></edge_style>
+            <edge_style symbol="onormal"></edge_style>
+            <edge_style symbol="ocrow"></edge_style>
+            <edge_style symbol="oinv"></edge_style>
+            <edge_style symbol="otee"></edge_style>
+            <edge_style symbol="odiamond"></edge_style>
+            <edge_style symbol="onone"></edge_style>
+            <edge_style symbol="ovee"></edge_style>
         </ListOfEdgeStyles>
         <ListOfTextColors>
-            <text_color symbol="Red"></text_color>
-            <text_color symbol="Green"></text_color>
-            <text_color symbol="Blue"></text_color>
+            <text_color symbol="red"></text_color>
+            <text_color symbol="green"></text_color>
+            <text_color symbol="blue"></text_color>
+            <text_color symbol="black"></text_color>
+            <text_color symbol="grey"></text_color>
+            <text_color symbol="dimgrey"></text_color>
+            <text_color symbol="white"></text_color>
         </ListOfTextColors>
         <ListOfNodeShapes>
-            <node_shape symbol="Square"></node_shape>
+            <node_shape symbol="box"></node_shape>
+            <node_shape symbol="box3d"></node_shape>
+            <node_shape symbol="rect"></node_shape>
+            <node_shape symbol="square"></node_shape>
+            <node_shape symbol="folder"></node_shape>
+            <node_shape symbol="tab"></node_shape>
+            <node_shape symbol="component"></node_shape>
+            <node_shape symbol="point"></node_shape>
+            <node_shape symbol="ellipse"></node_shape>
+            <node_shape symbol="egg"></node_shape>
+            <node_shape symbol="circle"></node_shape>
+            <node_shape symbol="Mcircle"></node_shape>
+            <node_shape symbol="doublecircle"></node_shape>
+            <node_shape symbol="triangle"></node_shape>
+            <node_shape symbol="invtriangle"></node_shape>
+            <node_shape symbol="diamond"></node_shape>
+            <node_shape symbol="trapezium"></node_shape>
+            <node_shape symbol="invtrapezium"></node_shape>
+            <node_shape symbol="parallelogram"></node_shape>
+            <node_shape symbol="house"></node_shape>
+            <node_shape symbol="invhouse"></node_shape>
+            <node_shape symbol="pentagon"></node_shape>
+            <node_shape symbol="hexagon"></node_shape>
+            <node_shape symbol="septagon"></node_shape>
+            <node_shape symbol="octagon"></node_shape>
+            <node_shape symbol="doubleoctagon"></node_shape>
+            <node_shape symbol="tripleoctagon"></node_shape>
+            <node_shape symbol="plaintext"></node_shape>
+            <node_shape symbol="none"></node_shape>
         </ListOfNodeShapes>
         <ListOfNodeStyles>
-            <node_style symbol="Filled"></node_style>
+            <node_style symbol="filled"></node_style>
+            <node_style symbol="invisible"></node_style>
+            <node_style symbol="diagonals"></node_style>
+            <node_style symbol="rounded"></node_style>
         </ListOfNodeStyles>
         <ListOfNodeColors>
-            <node_color symbol="Black"></node_color>
+            <node_color symbol="black"></node_color>
+            <node_color symbol="grey"></node_color>
+            <node_color symbol="dimgrey"></node_color>
+            <node_color symbol="blue"></node_color>
+            <node_color symbol="red"></node_color>
+            <node_color symbol="green"></node_color>
+            <node_color symbol="white"></node_color>
         </ListOfNodeColors>
     </ShapeAndColorOptions>
     
+    <Handler>
+		<InputHandler required="YES" input_classname="" package="INPUT_HANDLER_PACKAGE"></InputHandler>
+		<OutputHandler required="YES" output_classname="" package="OUTPUT_HANDLER_PACKAGE"></OutputHandler>
+	</Handler>
+    
     <InputOptions>
 		<NetworkFile required="YES" path_symbol="UNIVERSAL_INPUT_PATH" filename=""></NetworkFile>
+        <OrderFile required="NO" path_symbol="UNIVERSAL_INPUT_PATH" filename=""></OrderFile>
+		<KineticParameterFile required="NO" path_symbol="UNIVERSAL_INPUT_PATH" filename=""></KineticParameterFile>
+		<InitialConditionFile required="NO" path_symbol="UNIVERSAL_INPUT_PATH" filename=""></InitialConditionFile>
     </InputOptions>
 	
     <OutputOptions>
         <OutputFile required="YES" path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename=""></OutputFile>
-        <GraphProperties required="YES" graph_size="" graph_name=""></GraphProperties>
-        <EdgeProperties required="YES" edge_color="" edge_style=""></EdgeProperties>
-        <NodeProperties required="YES" node_style="" text_color="" text_size="" node_color="" node_shape=""></NodeProperties>
-        <TerminalNodeProperties required="YES" node_style="" text_color="" text_size="" node_color="" node_shape=""></TerminalNodeProperties>
-        <GradientProperties gradient_direction="" gradient_default_color_red="" 
-            gradient_default_color_blue="" 
-            gradient_default_color_green="" gradient_colormap="">
+        <GraphProperties required="YES" graph_size="10" graph_name=""></GraphProperties>
+        <EdgeProperties required="YES" edge_color="black" edge_style="" edge_weight="5"></EdgeProperties>
+        <NodeProperties required="YES" node_style="rounded" text_color="white" text_size="1" node_color="black" node_shape="egg"></NodeProperties>
+        <TerminalNodeProperties required="YES" node_style="rounded" text_color="white" text_size="10" node_color="black" node_shape="invhouse"></TerminalNodeProperties>
+        <GradientProperties 
+            gradient_direction="DECREASING" 
+            gradient_default_color_red="1.0" 
+            gradient_default_color_blue="1.0" 
+            gradient_default_color_green="1.0" 
+            gradient_colormap="BLUE">
         </GradientProperties>
     </OutputOptions>
     
