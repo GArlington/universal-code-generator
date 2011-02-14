@@ -35,6 +35,7 @@ import org.sbml.libsbml.Species;
 import org.sbml.libsbml.SpeciesReference;
 import org.varnerlab.server.localtransportlayer.XMLPropTree;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Properties;
 import java.util.StringTokenizer;
@@ -65,10 +66,37 @@ public class GraphvizModel {
 		// Method attributes -
 		double dblValue = 0.0;
 
+		ArrayList<String> arrList = _xmlPropTree.processFilenameBlock("OutputFile");
+    	String strInputFunctionName = arrList.get(1);
+		
+		// Put header in there -
+		buffer.append("/* ----------------------------------------------------------------------\n");
+        buffer.append(" * ");
+        buffer.append(strInputFunctionName);
+        buffer.append(".dot was generated using the UNIVERSAL code generator system.\n");
+        buffer.append(" * Username: ");
+        buffer.append(_xmlPropTree.getProperty(".//Model/@username"));
+        buffer.append("\n");
+        buffer.append(" * Type: ");
+        buffer.append(_xmlPropTree.getProperty(".//Model/@type"));
+        buffer.append("\n");
+        buffer.append(" * Version: ");
+        buffer.append(_xmlPropTree.getProperty(".//Model/@version"));
+        buffer.append("\n");
+        buffer.append(" * Name: ");
+        buffer.append(_xmlPropTree.getProperty(".//Model/@name"));
+        buffer.append("\n");
+        buffer.append(" * ---------------------------------------------------------------------- */\n");
+        buffer.append("\n");
+
+		
+		
+		
 		// First line -
+        
 		buffer.append("digraph G {\n");
-		buffer.append("\t");
-		buffer.append("size=\"");
+		buffer.append("\t// Set global properties -\n");
+		buffer.append("\tsize=\"");
 
 		// Get the graph size -
 		String strGraphSize = _xmlPropTree.getProperty(".//GraphProperties/@graph_size");
@@ -119,7 +147,11 @@ public class GraphvizModel {
 		// Get the edge properties -
 		String strEdgeStyle = _xmlPropTree.getProperty(".//EdgeProperties/@edge_style");
 		String strEdgeColor = _xmlPropTree.getProperty(".//EdgeProperties/@edge_color");
-
+		String strEdgeWeight = _xmlPropTree.getProperty(".//EdgeProperties/@edge_weight");
+		
+		buffer.append("\n");
+		buffer.append("\t// Build edge list and set some properties -- \n");
+		
 		// Get the reactions -
 		int NUMBER_OF_REACTIONS = vecReactions.size();
 		for (int index=0;index<NUMBER_OF_REACTIONS;index++)
@@ -137,10 +169,12 @@ public class GraphvizModel {
 
 				// Check to see if this is the []
 				String strTestReactant = speciesReactant.getSpecies();
-
-				if (!strTestReactant.equalsIgnoreCase("[]"))
+				
+				System.out.println("Processing reactant - "+strTestReactant+" with length = "+strTestReactant.length());
+				
+				
+				if (strTestReactant.length()!=0)
 				{
-
 					// Get the productsList -
 					ListOf productsList = rxn.getListOfProducts();
 					int NUMBER_OF_PRODUCTS = (int)productsList.size();
@@ -150,29 +184,81 @@ public class GraphvizModel {
 						{
 							SpeciesReference speciesProduct = (SpeciesReference)productsList.get(product_index);
 							String strTestProduct = speciesProduct.getSpecies();
-							if (!strTestProduct.equalsIgnoreCase("[]"))
+							if (!strTestProduct.isEmpty())
 							{
+								buffer.append("\t");
 								buffer.append(speciesReactant.getSpecies());
 								buffer.append("->");
 								buffer.append(speciesProduct.getSpecies());
-								buffer.append(" [style=");
+								buffer.append(" [arrowhead=");
 								buffer.append(strEdgeStyle);
 								buffer.append(",color=");
 								buffer.append(strEdgeColor);
+								buffer.append(",weight=");
+								buffer.append(strEdgeWeight);
+
+								// close the  tag -
+								buffer.append("];\n");
+							}
+							else
+							{
+								buffer.append("\t");
+								buffer.append(speciesReactant.getSpecies());
+								buffer.append("->");
+								buffer.append("NULL");
+								buffer.append(" [arrowhead=");
+								buffer.append(strEdgeStyle);
+								buffer.append(",color=");
+								buffer.append(strEdgeColor);
+								buffer.append(",weight=");
+								buffer.append(strEdgeWeight);
 								buffer.append("];\n");
 							}
 						}
 					}
 					else
 					{
-						buffer.append(speciesReactant.getSpecies());
+						System.out.println("EMPTY Reactant ...an product?");
+						
+						buffer.append("\t");
+						buffer.append("NULL");
 						buffer.append("->");
 						buffer.append("NULL");
-						buffer.append(" [style=");
+						buffer.append(" [arrowhead=");
 						buffer.append(strEdgeStyle);
 						buffer.append(",color=");
 						buffer.append(strEdgeColor);
+						buffer.append(",weight=");
+						buffer.append(strEdgeWeight);
 						buffer.append("];\n");
+					}
+				}
+				else
+				{
+					// If I get here then I have a [] -
+					ListOf productsList = rxn.getListOfProducts();
+					int NUMBER_OF_PRODUCTS = (int)productsList.size();
+					if (NUMBER_OF_PRODUCTS>0)
+					{
+						for (int product_index=0;product_index<NUMBER_OF_PRODUCTS;product_index++)
+						{
+							SpeciesReference speciesProduct = (SpeciesReference)productsList.get(product_index);
+							String strTestProduct = speciesProduct.getSpecies();
+							if (!strTestProduct.isEmpty())
+							{
+								buffer.append("\t");
+								buffer.append("NULL");
+								buffer.append("->");
+								buffer.append(speciesProduct.getSpecies());
+								buffer.append(" [arrowhead=");
+								buffer.append(strEdgeStyle);
+								buffer.append(",color=");
+								buffer.append(strEdgeColor);
+								buffer.append(",weight=");
+								buffer.append(strEdgeWeight);
+								buffer.append("];\n");
+							}
+						}
 					}
 				}
 			}
@@ -198,6 +284,9 @@ public class GraphvizModel {
 		
 		System.out.println("What is the number of SPECIES? "+NUMBER_OF_SPECIES);
 		System.out.println("What is the length of the STM? "+matrix.length);
+		
+		buffer.append("\n");
+		buffer.append("\t// Build node list and set some properties -- \n");
 		
 		for (int index=0;index<NUMBER_OF_SPECIES;index++)
 		{
