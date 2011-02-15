@@ -15,6 +15,8 @@
 		8D15AC320486D014006FF6A4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A37F4B0FDCFA73011CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D15AC340486D014006FF6A4 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
 		AD0235231300744700B59B51 /* VFF.xml in Resources */ = {isa = PBXBuildFile; fileRef = AD0235221300744700B59B51 /* VFF.xml */; };
+		AD2B9632130AD29200168F12 /* BIOPAX-SIF.xml in Resources */ = {isa = PBXBuildFile; fileRef = AD2B9631130AD29100168F12 /* BIOPAX-SIF.xml */; };
+		AD2B9634130B470D00168F12 /* MyTranslator.xib in Resources */ = {isa = PBXBuildFile; fileRef = AD2B9633130B470C00168F12 /* MyTranslator.xib */; };
 		AD2BE9D312EE6F7900D8972D /* SBML.xml in Resources */ = {isa = PBXBuildFile; fileRef = AD2BE9D212EE6F7900D8972D /* SBML.xml */; };
 		AD2BEA5912EFB47B00D8972D /* M-Octave.xml in Resources */ = {isa = PBXBuildFile; fileRef = AD2BEA5812EFB47B00D8972D /* M-Octave.xml */; };
 		AD2BEA7912EFCCE800D8972D /* close.icns in Resources */ = {isa = PBXBuildFile; fileRef = AD2BEA7812EFCCE800D8972D /* close.icns */; };
@@ -25,6 +27,8 @@
 		AD2BEA9C12EFD24D00D8972D /* down.icns in Resources */ = {isa = PBXBuildFile; fileRef = AD2BEA9B12EFD24D00D8972D /* down.icns */; };
 		AD2BEA9E12EFD2AD00D8972D /* download.icns in Resources */ = {isa = PBXBuildFile; fileRef = AD2BEA9D12EFD2AD00D8972D /* download.icns */; };
 		AD37E52612F0B6F300151864 /* Automator.icns in Resources */ = {isa = PBXBuildFile; fileRef = AD37E52512F0B6F300151864 /* Automator.icns */; };
+		AD3D350D13030FB100F7D2F5 /* SUNDIALS.xml in Resources */ = {isa = PBXBuildFile; fileRef = AD3D350C13030FB100F7D2F5 /* SUNDIALS.xml */; };
+		AD6B1BDB1304A62D00E464D7 /* GRAPHVIZ.xml in Resources */ = {isa = PBXBuildFile; fileRef = AD6B1BDA1304A62D00E464D7 /* GRAPHVIZ.xml */; };
 		AD8408A812FF274D00B2A270 /* C-GSL.xml in Resources */ = {isa = PBXBuildFile; fileRef = AD8408A712FF274D00B2A270 /* C-GSL.xml */; };
 		AD8408AA12FF7BC400B2A270 /* MyCustomSheet.xib in Resources */ = {isa = PBXBuildFile; fileRef = AD8408A912FF7BC400B2A270 /* MyCustomSheet.xib */; };
 		AD8408B312FF7F5600B2A270 /* MyCustomSheetController.m in Sources */ = {isa = PBXBuildFile; fileRef = AD8408B212FF7F5500B2A270 /* MyCustomSheetController.m */; };
@@ -102,6 +106,8 @@
 		8D15AC360486D014006FF6A4 /* Translator-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Translator-Info.plist"; sourceTree = "<group>"; };
 		8D15AC370486D014006FF6A4 /* Translator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Translator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AD0235221300744700B59B51 /* VFF.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = VFF.xml; sourceTree = "<group>"; };
+		AD2B9631130AD29100168F12 /* BIOPAX-SIF.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "BIOPAX-SIF.xml"; sourceTree = "<group>"; };
+		AD2B9633130B470C00168F12 /* MyTranslator.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyTranslator.xib; sourceTree = "<group>"; };
 		AD2BE9D212EE6F7900D8972D /* SBML.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = SBML.xml; sourceTree = "<group>"; };
 		AD2BEA5812EFB47B00D8972D /* M-Octave.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "M-Octave.xml"; sourceTree = "<group>"; };
 		AD2BEA7812EFCCE800D8972D /* close.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = close.icns; sourceTree = "<group>"; };
@@ -112,6 +118,8 @@
 		AD2BEA9B12EFD24D00D8972D /* down.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = down.icns; sourceTree = "<group>"; };
 		AD2BEA9D12EFD2AD00D8972D /* download.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = download.icns; sourceTree = "<group>"; };
 		AD37E52512F0B6F300151864 /* Automator.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Automator.icns; sourceTree = "<group>"; };
+		AD3D350C13030FB100F7D2F5 /* SUNDIALS.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = SUNDIALS.xml; sourceTree = "<group>"; };
+		AD6B1BDA1304A62D00E464D7 /* GRAPHVIZ.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = GRAPHVIZ.xml; sourceTree = "<group>"; };
 		AD8408A712FF274D00B2A270 /* C-GSL.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "C-GSL.xml"; sourceTree = "<group>"; };
 		AD8408A912FF7BC400B2A270 /* MyCustomSheet.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyCustomSheet.xib; sourceTree = "<group>"; };
 		AD8408B112FF7F5400B2A270 /* MyCustomSheetController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyCustomSheetController.h; sourceTree = "<group>"; };
@@ -266,6 +274,7 @@
 				1DDD58280DA1D0D100B32029 /* MyDocument.xib */,
 				AD8408A912FF7BC400B2A270 /* MyCustomSheet.xib */,
 				1DDD582A0DA1D0D100B32029 /* MainMenu.xib */,
+				AD2B9633130B470C00168F12 /* MyTranslator.xib */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -328,6 +337,9 @@
 				AD2BEA5812EFB47B00D8972D /* M-Octave.xml */,
 				AD8408A712FF274D00B2A270 /* C-GSL.xml */,
 				AD0235221300744700B59B51 /* VFF.xml */,
+				AD3D350C13030FB100F7D2F5 /* SUNDIALS.xml */,
+				AD6B1BDA1304A62D00E464D7 /* GRAPHVIZ.xml */,
+				AD2B9631130AD29100168F12 /* BIOPAX-SIF.xml */,
 			);
 			name = templates;
 			sourceTree = "<group>";
@@ -503,6 +515,10 @@
 				AD8408A812FF274D00B2A270 /* C-GSL.xml in Resources */,
 				AD8408AA12FF7BC400B2A270 /* MyCustomSheet.xib in Resources */,
 				AD0235231300744700B59B51 /* VFF.xml in Resources */,
+				AD3D350D13030FB100F7D2F5 /* SUNDIALS.xml in Resources */,
+				AD6B1BDB1304A62D00E464D7 /* GRAPHVIZ.xml in Resources */,
+				AD2B9632130AD29200168F12 /* BIOPAX-SIF.xml in Resources */,
+				AD2B9634130B470D00168F12 /* MyTranslator.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
