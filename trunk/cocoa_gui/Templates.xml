@@ -29,6 +29,11 @@
 		<display name="File type translation (SBML to flatfile conversion)" filename="VFF"></display>
 	</mapping>
 	
+    <mapping type="BIOPAX-SIF" working_dir="./templates/">
+		<display name="Convert to SIF format" filename="BIOPAX-SIF"></display>
+	</mapping>
+    
+    
 	<mapping type="SUNDIALS" working_dir="./templates/">
 		<display name="Sundials model (*.c)" filename="SUNDIALS"></display>
 	</mapping>
