@@ -10,7 +10,7 @@
 	</mapping>
 	
 	<mapping type="MATLAB-M" working_dir="./templates/">
-		<display name="Matlab M-code (*.m)" filename="C-Octave"></display>
+		<display name="Matlab M-code (*.m)" filename="M-Matlab"></display>
 	</mapping>
 	
 	<mapping type="SCILAB" working_dir="./templates/">
