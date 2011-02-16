@@ -700,7 +700,7 @@
 			NSAlert *alert = [[[NSAlert alloc] init] autorelease];
 			[alert addButtonWithTitle:@"OK"];
 			[alert addButtonWithTitle:@"Cancel"];
-			[alert setMessageText:@"An error was encounter when contacting the code generation server."];
+			[alert setMessageText:@"An error was encountered when contacting the code generation server."];
 			[alert setInformativeText:@"Please check your server settings in the specification tree and try again."];
 			[alert setAlertStyle:NSWarningAlertStyle];
 			
