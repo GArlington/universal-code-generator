@@ -710,6 +710,40 @@
 								contextInfo:nil];
 			
 		}
+        else if ([[self window] isDocumentEdited])
+        {
+            // Ok, if I get here, then I'm trying to run the code generator with *unsaved* changes. Prompt the user to save?
+            // close the file -
+			[readHandle closeFile];
+			[readErrHandle closeFile];
+			
+			// release local stuff -
+			[aTask release];
+			[outPipe release];
+			[tmpBuffer release];
+			[strXPath release];
+			[errPipe release];
+			
+			// Shut down the animation -
+			[[self progressIndicator] stopAnimation:nil];
+            
+			// First, fire up the Alert (reset the state when the user hits the button)
+			
+			NSAlert *alert = [[[NSAlert alloc] init] autorelease];
+			[alert addButtonWithTitle:@"OK"];
+			[alert addButtonWithTitle:@"Cancel"];
+			[alert setMessageText:@"You have unsaved changes in the specification tree."];
+			[alert setInformativeText:@"Please save the specification tree and try again."];
+			[alert setAlertStyle:NSInformationalAlertStyle];
+			
+			// Fire up the alert 
+			[alert beginSheetModalForWindow:[self window] 
+							  modalDelegate:self 
+                             didEndSelector:NULL 
+								contextInfo:nil];
+
+            
+        }
 		else
 		{
 			// Clearout the string - we are going to reuse ..
