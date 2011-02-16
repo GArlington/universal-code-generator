@@ -731,10 +731,9 @@
 			
 			NSAlert *alert = [[[NSAlert alloc] init] autorelease];
 			[alert addButtonWithTitle:@"OK"];
-			[alert addButtonWithTitle:@"Cancel"];
-			[alert setMessageText:@"You have unsaved changes in the specification tree."];
+            [alert setMessageText:@"You have unsaved changes in the specification tree!"];
 			[alert setInformativeText:@"Please save the specification tree and try again."];
-			[alert setAlertStyle:NSInformationalAlertStyle];
+			[alert setAlertStyle:NSCriticalAlertStyle];
 			
 			// Fire up the alert 
 			[alert beginSheetModalForWindow:[self window] 
