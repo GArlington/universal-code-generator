@@ -276,7 +276,7 @@
 	
 	// Get the selected item -
 	NSString *tmpString = [sender title];
-	
+    	
 	if (tmpString!=nil)
 	{
 		// Ok, so when I get here I have a non-nil string title -
@@ -312,7 +312,10 @@
 					[self createXMLDocumentFromFile:templateName];
 				}
 			}
-			
+            
+            // Set the selected item?
+            [[self fileTypePopupButton] selectItemWithTitle:tmpString];
+           			
 			// Release the path -
 			[strXPath release];
 		}
