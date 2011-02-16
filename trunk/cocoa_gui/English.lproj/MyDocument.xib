@@ -202,28 +202,29 @@
 												<string key="NSKeyEquivalent"/>
 												<int key="NSPeriodicDelay">400</int>
 												<int key="NSPeriodicInterval">75</int>
-												<nil key="NSMenuItem"/>
+												<object class="NSMenuItem" key="NSMenuItem" id="891629521">
+													<reference key="NSMenu" ref="79257516"/>
+													<string key="NSTitle">Select transformation type ...</string>
+													<string key="NSKeyEquiv"/>
+													<int key="NSMnemonicLoc">2147483647</int>
+													<int key="NSState">1</int>
+													<object class="NSCustomResource" key="NSOnImage" id="299637530">
+														<string key="NSClassName">NSImage</string>
+														<string key="NSResourceName">NSMenuCheckmark</string>
+													</object>
+													<object class="NSCustomResource" key="NSMixedImage" id="38561517">
+														<string key="NSClassName">NSImage</string>
+														<string key="NSResourceName">NSMenuMixedState</string>
+													</object>
+													<string key="NSAction">_popUpItemAction:</string>
+													<reference key="NSTarget" ref="1094471"/>
+												</object>
 												<bool key="NSMenuItemRespectAlignment">YES</bool>
 												<object class="NSMenu" key="NSMenu" id="79257516">
 													<string key="NSTitle">OtherViews</string>
 													<object class="NSMutableArray" key="NSMenuItems">
 														<bool key="EncodedWithXMLCoder">YES</bool>
-														<object class="NSMenuItem" id="891629521">
-															<reference key="NSMenu" ref="79257516"/>
-															<string key="NSTitle">Select transformation type ...</string>
-															<string key="NSKeyEquiv"/>
-															<int key="NSMnemonicLoc">2147483647</int>
-															<object class="NSCustomResource" key="NSOnImage" id="299637530">
-																<string key="NSClassName">NSImage</string>
-																<string key="NSResourceName">NSMenuCheckmark</string>
-															</object>
-															<object class="NSCustomResource" key="NSMixedImage" id="38561517">
-																<string key="NSClassName">NSImage</string>
-																<string key="NSResourceName">NSMenuMixedState</string>
-															</object>
-															<string key="NSAction">_popUpItemAction:</string>
-															<reference key="NSTarget" ref="1094471"/>
-														</object>
+														<reference ref="891629521"/>
 														<object class="NSMenuItem" id="778673892">
 															<reference key="NSMenu" ref="79257516"/>
 															<string key="NSTitle">Sundials model (*.c)</string>
@@ -351,6 +352,8 @@
 																		<int key="NSMnemonicLoc">2147483647</int>
 																		<reference key="NSOnImage" ref="299637530"/>
 																		<reference key="NSMixedImage" ref="38561517"/>
+																		<string key="NSAction">_popUpItemAction:</string>
+																		<reference key="NSTarget" ref="1094471"/>
 																	</object>
 																</object>
 															</object>
@@ -436,7 +439,7 @@
 															<string key="NSFrameSize">{422, 404}</string>
 															<reference key="NSSuperview" ref="539916517"/>
 															<reference key="NSWindow"/>
-															<reference key="NSNextKeyView" ref="117658187"/>
+															<reference key="NSNextKeyView" ref="281395756"/>
 															<int key="NSViewLayerContentsRedrawPolicy">2</int>
 															<bool key="NSEnabled">YES</bool>
 															<object class="NSTableHeaderView" key="NSHeaderView" id="371936123">
@@ -594,7 +597,7 @@
 											<string key="NSFrame">{{0, 21}, {424, 422}}</string>
 											<reference key="NSSuperview" ref="781317716"/>
 											<reference key="NSWindow"/>
-											<reference key="NSNextKeyView" ref="281395756"/>
+											<reference key="NSNextKeyView" ref="539916517"/>
 											<int key="NSViewLayerContentsRedrawPolicy">2</int>
 											<int key="NSsFlags">562</int>
 											<reference key="NSVScroller" ref="117658187"/>
@@ -738,7 +741,7 @@
 																			<string key="NSFrameSize">{366, 263}</string>
 																			<reference key="NSSuperview" ref="956405173"/>
 																			<reference key="NSWindow"/>
-																			<reference key="NSNextKeyView" ref="426037918"/>
+																			<reference key="NSNextKeyView" ref="646983855"/>
 																			<int key="NSViewLayerContentsRedrawPolicy">2</int>
 																			<bool key="NSEnabled">YES</bool>
 																			<object class="NSTableHeaderView" key="NSHeaderView" id="992174241">
@@ -894,7 +897,7 @@
 															<string key="NSFrameSize">{368, 281}</string>
 															<reference key="NSSuperview" ref="254701927"/>
 															<reference key="NSWindow"/>
-															<reference key="NSNextKeyView" ref="646983855"/>
+															<reference key="NSNextKeyView" ref="956405173"/>
 															<int key="NSViewLayerContentsRedrawPolicy">2</int>
 															<int key="NSsFlags">562</int>
 															<reference key="NSVScroller" ref="426037918"/>
@@ -1148,7 +1151,6 @@
 							<string key="NSFrame">{{41, 20}, {398, 17}}</string>
 							<reference key="NSSuperview" ref="568628114"/>
 							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView"/>
 							<bool key="NSViewIsLayerTreeHost">YES</bool>
 							<int key="NSViewLayerContentsRedrawPolicy">2</int>
 							<bool key="NSEnabled">YES</bool>
@@ -2404,31 +2406,39 @@
 					<string>100164.IBPluginDependency</string>
 					<string>100165.IBPluginDependency</string>
 					<string>100166.IBPluginDependency</string>
+					<string>100168.IBAttributePlaceholdersKey</string>
 					<string>100168.IBPluginDependency</string>
 					<string>100168.IBViewBoundsToFrameTransform</string>
 					<string>100169.IBPluginDependency</string>
+					<string>100170.IBAttributePlaceholdersKey</string>
 					<string>100170.IBPluginDependency</string>
 					<string>100170.IBViewBoundsToFrameTransform</string>
 					<string>100171.IBPluginDependency</string>
+					<string>100172.IBAttributePlaceholdersKey</string>
 					<string>100172.IBPluginDependency</string>
 					<string>100172.IBViewBoundsToFrameTransform</string>
 					<string>100173.IBPluginDependency</string>
+					<string>100177.IBAttributePlaceholdersKey</string>
 					<string>100177.IBPluginDependency</string>
 					<string>100177.IBViewBoundsToFrameTransform</string>
 					<string>100178.IBPluginDependency</string>
+					<string>100182.IBAttributePlaceholdersKey</string>
 					<string>100182.IBPluginDependency</string>
 					<string>100182.IBViewBoundsToFrameTransform</string>
 					<string>100183.IBPluginDependency</string>
+					<string>100184.IBAttributePlaceholdersKey</string>
 					<string>100184.IBPluginDependency</string>
 					<string>100184.IBViewBoundsToFrameTransform</string>
 					<string>100185.IBPluginDependency</string>
 					<string>100195.IBPluginDependency</string>
 					<string>100195.IBViewBoundsToFrameTransform</string>
+					<string>100197.IBAttributePlaceholdersKey</string>
 					<string>100197.IBPluginDependency</string>
 					<string>100197.IBViewBoundsToFrameTransform</string>
 					<string>100198.IBPluginDependency</string>
 					<string>100201.IBPluginDependency</string>
 					<string>100202.IBPluginDependency</string>
+					<string>100206.IBAttributePlaceholdersKey</string>
 					<string>100206.IBPluginDependency</string>
 					<string>100206.IBViewBoundsToFrameTransform</string>
 					<string>100207.IBPluginDependency</string>
@@ -2437,12 +2447,15 @@
 					<string>100212.IBPluginDependency</string>
 					<string>100212.IBViewBoundsToFrameTransform</string>
 					<string>100213.IBPluginDependency</string>
+					<string>100220.IBAttributePlaceholdersKey</string>
 					<string>100220.IBPluginDependency</string>
 					<string>100220.IBViewBoundsToFrameTransform</string>
 					<string>100221.IBPluginDependency</string>
+					<string>100222.IBAttributePlaceholdersKey</string>
 					<string>100222.IBPluginDependency</string>
 					<string>100222.IBViewBoundsToFrameTransform</string>
 					<string>100223.IBPluginDependency</string>
+					<string>100226.IBAttributePlaceholdersKey</string>
 					<string>100226.IBPluginDependency</string>
 					<string>100227.IBPluginDependency</string>
 					<string>100239.IBPluginDependency</string>
@@ -2530,31 +2543,79 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<object class="NSMutableDictionary">
+						<string key="NS.key.0">ToolTip</string>
+						<object class="IBToolTipAttribute" key="NS.object.0">
+							<string key="name">ToolTip</string>
+							<reference key="object" ref="536417497"/>
+							<string key="toolTip">Open specification file ...</string>
+						</object>
+					</object>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<object class="NSAffineTransform">
 						<bytes key="NSTransformStruct">P4AAAL+AAABBmAAAxAvAAA</bytes>
 					</object>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<object class="NSMutableDictionary">
+						<string key="NS.key.0">ToolTip</string>
+						<object class="IBToolTipAttribute" key="NS.object.0">
+							<string key="name">ToolTip</string>
+							<reference key="object" ref="948563747"/>
+							<string key="toolTip">Save specification file ...</string>
+						</object>
+					</object>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<object class="NSAffineTransform">
 						<bytes key="NSTransformStruct">P4AAAL+AAABCTAAAxAvAAA</bytes>
 					</object>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<object class="NSMutableDictionary">
+						<string key="NS.key.0">ToolTip</string>
+						<object class="IBToolTipAttribute" key="NS.object.0">
+							<string key="name">ToolTip</string>
+							<reference key="object" ref="1033507461"/>
+							<string key="toolTip">Execute code generation job ...</string>
+						</object>
+					</object>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<object class="NSAffineTransform">
 						<bytes key="NSTransformStruct">P4AAAL+AAABDBQAAxAvAAA</bytes>
 					</object>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<object class="NSMutableDictionary">
+						<string key="NS.key.0">ToolTip</string>
+						<object class="IBToolTipAttribute" key="NS.object.0">
+							<string key="name">ToolTip</string>
+							<reference key="object" ref="561292487"/>
+							<string key="toolTip">Shutdown</string>
+						</object>
+					</object>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<object class="NSAffineTransform">
 						<bytes key="NSTransformStruct">P4AAAL+AAABDPAAAxAwAAA</bytes>
 					</object>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<object class="NSMutableDictionary">
+						<string key="NS.key.0">ToolTip</string>
+						<object class="IBToolTipAttribute" key="NS.object.0">
+							<string key="name">ToolTip</string>
+							<reference key="object" ref="382568324"/>
+							<string key="toolTip">Add specification tree node</string>
+						</object>
+					</object>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<object class="NSAffineTransform">
 						<bytes key="NSTransformStruct">P4AAAL+AAABDrQAAwiQAAA</bytes>
 					</object>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<object class="NSMutableDictionary">
+						<string key="NS.key.0">ToolTip</string>
+						<object class="IBToolTipAttribute" key="NS.object.0">
+							<string key="name">ToolTip</string>
+							<reference key="object" ref="173779617"/>
+							<string key="toolTip">Delete specification tree node</string>
+						</object>
+					</object>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<object class="NSAffineTransform">
 						<bytes key="NSTransformStruct">P4AAAL+AAABBoAAAwaAAAA</bytes>
@@ -2564,6 +2625,14 @@
 					<object class="NSAffineTransform">
 						<bytes key="NSTransformStruct">P4AAAL+AAADAAAAAwWAAAA</bytes>
 					</object>
+					<object class="NSMutableDictionary">
+						<string key="NS.key.0">ToolTip</string>
+						<object class="IBToolTipAttribute" key="NS.object.0">
+							<string key="name">ToolTip</string>
+							<reference key="object" ref="1016235405"/>
+							<string key="toolTip">Check the tree ...</string>
+						</object>
+					</object>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<object class="NSAffineTransform">
 						<bytes key="NSTransformStruct">P4AAAL+AAABCsAAAxAuAAA</bytes>
@@ -2571,6 +2640,14 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<object class="NSMutableDictionary">
+						<string key="NS.key.0">ToolTip</string>
+						<object class="IBToolTipAttribute" key="NS.object.0">
+							<string key="name">ToolTip</string>
+							<reference key="object" ref="415859261"/>
+							<string key="toolTip">Automation ...</string>
+						</object>
+					</object>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<object class="NSAffineTransform">
 						<bytes key="NSTransformStruct">P4AAAL+AAAAAAAAAwaAAAA</bytes>
@@ -2583,16 +2660,40 @@
 						<bytes key="NSTransformStruct">P4AAAL+AAABDxgAAwiQAAA</bytes>
 					</object>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<object class="NSMutableDictionary">
+						<string key="NS.key.0">ToolTip</string>
+						<object class="IBToolTipAttribute" key="NS.object.0">
+							<string key="name">ToolTip</string>
+							<reference key="object" ref="929595811"/>
+							<string key="toolTip">Add attribute</string>
+						</object>
+					</object>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<object class="NSAffineTransform">
 						<bytes key="NSTransformStruct">P4AAAL+AAABBoAAAwaAAAA</bytes>
 					</object>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<object class="NSMutableDictionary">
+						<string key="NS.key.0">ToolTip</string>
+						<object class="IBToolTipAttribute" key="NS.object.0">
+							<string key="name">ToolTip</string>
+							<reference key="object" ref="93444038"/>
+							<string key="toolTip">Delete attribute</string>
+						</object>
+					</object>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<object class="NSAffineTransform">
 						<bytes key="NSTransformStruct">P4AAAL+AAABCTAAAwaAAAA</bytes>
 					</object>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<object class="NSMutableDictionary">
+						<string key="NS.key.0">ToolTip</string>
+						<object class="IBToolTipAttribute" key="NS.object.0">
+							<string key="name">ToolTip</string>
+							<reference key="object" ref="505183877"/>
+							<string key="toolTip">Change node name</string>
+						</object>
+					</object>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
