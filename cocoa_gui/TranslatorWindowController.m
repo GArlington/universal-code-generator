@@ -502,7 +502,8 @@
 {
 	// Methods attributes -
 	NSSavePanel *savePanel; 
-	
+	NSArray *array = [[[NSArray alloc] initWithObjects:@"uxml",nil] autorelease];
+    
 	// Update the bottom label -
 	[[self bottomDisplayLabel] setStringValue:@"Saving xml file ..."];
 	
@@ -510,8 +511,13 @@
 	savePanel = [NSSavePanel savePanel];
 	
 	// Set some attributes -
-	[savePanel setExtensionHidden:YES];
 	[savePanel setHasShadow:YES];
+    [savePanel setExtensionHidden:YES];
+    [savePanel setCanCreateDirectories:YES];
+    [savePanel setAllowedFileTypes:array];
+    [savePanel setAllowsOtherFileTypes:YES];
+    
+
 	
 	// Run the panel as a sheet -
 	[savePanel beginSheetForDirectory:NSHomeDirectory() 
@@ -527,6 +533,8 @@
 	
 	/* display the NSSavePanel */ 
 	// runResult = [sp runModalForDirectory:NSHomeDirectory() file:@""];
+    
+    
 }
 
 -(void)savePanelDidEnd:(NSSavePanel *)savePanel returnCode:(int)returnCode contextInfo:(void *)contextInfo
