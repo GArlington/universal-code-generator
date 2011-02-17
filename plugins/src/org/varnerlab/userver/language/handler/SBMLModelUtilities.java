@@ -448,6 +448,141 @@ public class SBMLModelUtilities {
 			throw new Exception("ERROR: Missing DataFile information. Please check your DataFile settings.");
 		}
     }
+
+
+    // Build the data file for the case when the reactions were expanded (and we are assming mass action kinetics)
+    // also we do not want to include the STM (for large models)
+	public static void buildDataFileBufferNoSTM(StringBuffer datafile,Model model,XMLPropTree propTree,Vector<Reaction> vecReactions,Vector<Species> vecSpecies) throws Exception
+	{
+		// Method attributes -
+		ArrayList<String> arrList = propTree.processFilenameBlock("DataFile");
+		String strDataFileNameRaw = arrList.get(0);
+		String strDataFileName = arrList.get(1);
+
+		// Check to make sure we have content -
+		if (!strDataFileNameRaw.equalsIgnoreCase("EMPTY") && !strDataFileName.equalsIgnoreCase("EMPTY"))
+		{
+
+			//String strDataFileNameRaw = (String)propTree.getProperty("//DataFile/datafile_filename/text()");
+	    	//int INT_TO_DOT = strDataFileNameRaw.indexOf(".");
+	    	//String strDataFileName = strDataFileNameRaw.substring(0, INT_TO_DOT);
+
+	    	// Put in the header and go forward my undercover brotha...
+	        datafile.append("function DF=");
+	        datafile.append(strDataFileName);
+	        datafile.append("(TSTART,TSTOP,Ts,INDEX)\n");
+
+	        datafile.append("% ----------------------------------------------------------------------\n");
+	        datafile.append("% ");
+	        datafile.append(strDataFileName);
+	        datafile.append(".m was generated using the UNIVERSAL code generator system.\n");
+	        datafile.append("% Username: ");
+	        datafile.append(propTree.getProperty(".//Model/@username"));
+	        datafile.append("\n");
+	        datafile.append("% Type: ");
+	        datafile.append(propTree.getProperty(".//Model/@type"));
+	        datafile.append("\n");
+	        datafile.append("% Version: ");
+	        datafile.append(propTree.getProperty(".//Model/@version"));
+	        datafile.append("\n");
+	        datafile.append("% \n");
+	        datafile.append("% Arguments: \n");
+	        datafile.append("% TSTART  - Time start \n");
+	        datafile.append("% TSTOP  - Time stop \n");
+	        datafile.append("% Ts - Time step \n");
+	        datafile.append("% INDEX - Parameter set index (for ensemble calculations) \n");
+	        datafile.append("% DF  - Data file instance \n");
+	        datafile.append("% ----------------------------------------------------------------------\n");
+	        datafile.append("\n");
+
+
+	        // Put the initial values of parameters -
+	        Vector vecOut = new Vector();
+	        SBMLModelUtilities.buildReactionStringVector(model, vecReactions, vecOut);
+	        datafile.append("k=[\n");
+	        ListOf parameter_list = model.getListOfParameters();
+	        int NUMBER_OF_PARAMETERS = (int)model.getNumParameters();
+                datafile.append("% Formulate the rate constant vector k --\n");
+	        datafile.append("k=zeros(");
+                datafile.append(String.valueOf(NUMBER_OF_PARAMETERS));
+                datafile.append(",1);\n");
+	        datafile.append("\n");
+	        datafile.append("% Parameter vector --");
+	        datafile.append("\n");
+	        for (int pindex=0;pindex<NUMBER_OF_PARAMETERS;pindex++)
+	        {
+
+	        	Parameter parameter = (Parameter)parameter_list.get(pindex);
+	            Reaction rate = (Reaction)vecReactions.get(pindex);
+
+	            datafile.append("\t");
+	            datafile.append(parameter.getValue());
+	            datafile.append("\t;\t%\t");
+	            datafile.append(pindex+1);
+	            datafile.append("\t");
+	            datafile.append(rate.getName());
+	            datafile.append("\t");
+	            datafile.append(vecOut.get(pindex));
+	            datafile.append("\n");
+	        }
+	        datafile.append("];\n");
+	        datafile.append("\n");
+	        datafile.append("% Initial conditions --\n");
+
+	        // Put the initial condition -
+	        datafile.append("IC=[\n");
+	        //ListOf species_list = model.getListOfSpecies();
+	        int NUMBER_OF_SPECIES = (int)vecSpecies.size();
+	        for (int pindex=0;pindex<NUMBER_OF_SPECIES;pindex++)
+	        {
+	            Species species = (Species)vecSpecies.get(pindex);
+	            datafile.append("\t");
+	            datafile.append(species.getInitialAmount());
+	            datafile.append("\t;%\t");
+	            datafile.append(pindex+1);
+	            datafile.append("\t");
+	            datafile.append(species.getId());
+	            datafile.append("\t");
+	            datafile.append(species.getName());
+	            datafile.append("\n");
+	        }
+
+	        datafile.append("];\n");
+	        datafile.append("\n");
+	        datafile.append("% Load parameter sets from disk -\n");
+	        datafile.append("NPARAMETERS=length(k);\n");
+	        datafile.append("NSTATES=length(IC);\n");
+	        datafile.append("kV = [k ; IC];\n");
+	        datafile.append("% Ok, override the choice of parameters above, load from disk -\n");
+	        datafile.append("if (~isempty(INDEX))\n");
+	        datafile.append("\tcmd=['load PSET_',num2str(INDEX),'.mat'];\n");
+	        datafile.append("\teval(cmd);\n");
+	        datafile.append("\tkV = kP;\n");
+	        datafile.append("\t% get k and IC -\n");
+	        datafile.append("\tk=kV(1:NPARAMETERS);\n");
+	        datafile.append("\tIC=kV((NPARAMETERS+1):end);\n");
+	        datafile.append("end;\n");
+	        datafile.append("\n");
+
+	        // Populate the measurement selection matrix -
+	        datafile.append("% Initialize tehg measurement selection matrix. Default is the identity matrix \n");
+	        datafile.append("MEASUREMENT_MATRIX = eye(NSTATES,NSTATES);\n");
+
+	        datafile.append("% =========== DO NOT EDIT BELOW THIS LINE ==============\n");
+	        datafile.append("DF.RATE_CONSTANT_VECTOR=k;\n");
+	        datafile.append("DF.INITIAL_CONDITIONS=IC;\n");
+	        datafile.append("DF.NUMBER_PARAMETERS=NPARAMETERS;\n");
+	        datafile.append("DF.NUMBER_OF_STATES=NSTATES;\n");
+	        datafile.append("DF.PARAMETER_VECTOR=kV;\n");
+	        datafile.append("DF.MEASUREMENT_SELECTION_MATRIX = MEASUREMENT_MATRIX;\n");
+	        datafile.append("% ======================================================\n");
+	        datafile.append("return;\n");
+		}
+		else
+		{
+			throw new Exception("ERROR: Missing DataFile information. Please check your DataFile settings.");
+		}
+	}
     
     public static void dumpKineticsToDisk(StringBuffer data_buffer,XMLPropTree _xmlPropTree) throws Exception {
     	
