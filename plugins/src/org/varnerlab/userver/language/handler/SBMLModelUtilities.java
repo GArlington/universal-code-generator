@@ -494,6 +494,8 @@ public class SBMLModelUtilities {
 	        datafile.append("% DF  - Data file instance \n");
 	        datafile.append("% ----------------------------------------------------------------------\n");
 	        datafile.append("\n");
+                datafile.append("% Loading a null stoichiometric matrix for consistance --\n");
+	        datafile.append("S=[0];");
 
 
 	        // Put the initial values of parameters -
@@ -529,10 +531,15 @@ public class SBMLModelUtilities {
 	        datafile.append("\n");
 	        datafile.append("% Initial conditions --\n");
 
-	        // Put the initial condition -
-	        datafile.append("IC=[\n");
 	        //ListOf species_list = model.getListOfSpecies();
 	        int NUMBER_OF_SPECIES = (int)vecSpecies.size();
+                datafile.append("IC=zeros(");
+                datafile.append(String.valueOf(NUMBER_OF_SPECIES));
+                datafile.append(",1);\n");
+	        datafile.append("\n");
+
+	        // Put the initial condition -
+	        datafile.append("IC=[\n");
 	        for (int pindex=0;pindex<NUMBER_OF_SPECIES;pindex++)
 	        {
 	            Species species = (Species)vecSpecies.get(pindex);
@@ -569,6 +576,7 @@ public class SBMLModelUtilities {
 	        datafile.append("MEASUREMENT_MATRIX = eye(NSTATES,NSTATES);\n");
 
 	        datafile.append("% =========== DO NOT EDIT BELOW THIS LINE ==============\n");
+                datafile.append("DF.STOICHIOMETRIC_MATRIX=S;\n");
 	        datafile.append("DF.RATE_CONSTANT_VECTOR=k;\n");
 	        datafile.append("DF.INITIAL_CONDITIONS=IC;\n");
 	        datafile.append("DF.NUMBER_PARAMETERS=NPARAMETERS;\n");
