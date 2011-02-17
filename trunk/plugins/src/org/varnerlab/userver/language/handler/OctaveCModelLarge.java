@@ -261,7 +261,7 @@ public class OctaveCModelLarge {
         buffer.append("\n");
         buffer.append("// Function prototypes - \n");
         buffer.append("void calculateKinetics(ColumnVector&,ColumnVector&,ColumnVector&);\n");
-        buffer.append("void calculateMassBalances(int,int,ColumnVector&,ColumnVector&);\n");
+        buffer.append("void calculateMassBalances(int,int,Matrix&,ColumnVector&,ColumnVector&);\n");
         buffer.append("\n");
 
 
@@ -276,9 +276,10 @@ public class OctaveCModelLarge {
         buffer.append("{\n");
         buffer.append("\t//Initialize variables\n");
         buffer.append("\tColumnVector xV(args(0).vector_value());\t// Get the state vector (index 0);\n");
-        buffer.append("\tColumnVector kVM(args(2).vector_value());	\t// Rate constant vector;\n");
-        buffer.append("\tconst int NRATES = args(3).int_value();\t// Number of rates\n");
-        buffer.append("\tconst int NSTATES = args(4).int_value();\t// Number of states\n");
+        buffer.append("\tMatrix STMATRIX(args(2).matrix_value());\t// Get the stoichiometric matrix;\n");
+        buffer.append("\tColumnVector kVM(args(3).vector_value());	\t// Rate constant vector;\n");
+        buffer.append("\tconst int NRATES = args(4).int_value();\t// Number of rates\n");
+        buffer.append("\tconst int NSTATES = args(5).int_value();\t// Number of states\n");
         buffer.append("\tColumnVector rV=ColumnVector(NRATES);\t// Setup the rate vector;\n");
         buffer.append("\tColumnVector dx = ColumnVector(NSTATES);\t// dxdt vector;\n");
         buffer.append("\t//Call the methods to calc the kinetic, massbalances and etc\n");
@@ -287,7 +288,7 @@ public class OctaveCModelLarge {
         buffer.append("\tcalculateKinetics(kVM,xV,rV);\n");
         buffer.append("\n");
         buffer.append("\t// Calculate the mass balance equations - \n");
-        buffer.append("\tcalculateMassBalances(NRATES,NSTATES,rV,dx);\n");
+        buffer.append("\tcalculateMassBalances(NRATES,NSTATES,STMATRIX,rV,dx);\n");
         buffer.append("\n");
         buffer.append("\t// return the mass balances\n");
         buffer.append("\treturn octave_value(dx);\n");
@@ -346,6 +347,7 @@ public class OctaveCModelLarge {
         driver.append("IC = DF.INITIAL_CONDITIONS;\n");
         driver.append("TSIM = TSTART:Ts:TSTOP;\n");
         driver.append("kV = DF.PARAMETER_VECTOR;\n");
+        driver.append("S = DF.STOICHIOMETRIC_MATRIX;\n");
         driver.append("NRATES = DF.NUMBER_PARAMETERS;\n");
         driver.append("NSTATES = DF.NUMBER_OF_STATES;\n");
         driver.append("MEASUREMENT_INDEX_VECTOR = DF.MEASUREMENT_SELECTION_VECTOR;\n");
@@ -361,7 +363,7 @@ public class OctaveCModelLarge {
 
         driver.append("f = @(x,t)");
         driver.append(strMassBalanceFunctionName);
-        driver.append("(x,t,kV,NRATES,NSTATES);\n");
+        driver.append("(x,t,S,kV,NRATES,NSTATES);\n");
         driver.append("[X]=lsode(f,IC,TSIM);\n");
         driver.append("% Calculate the output - \n");
         driver.append("OUTPUT = X(MEASUREMENT_INDEX_VECTOR,:);\n");
