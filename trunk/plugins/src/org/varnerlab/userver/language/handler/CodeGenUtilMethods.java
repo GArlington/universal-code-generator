@@ -48,6 +48,57 @@ public class CodeGenUtilMethods extends Object {
     
     
     // Ok, some methods that are static so I can call them from anywhere -
+
+     public static void buildHardCodeMassBalanceEquations(StringBuffer buffer,Model model_wrapper) throws Exception {
+         // Get the dimension of the system -
+    	int NUMBER_OF_SPECIES = (int)model_wrapper.getNumSpecies();
+        int NUMBER_OF_RATES = (int)model_wrapper.getNumReactions();
+
+        int NROWS = NUMBER_OF_SPECIES;
+        int NCOLS = NUMBER_OF_RATES;
+        double[][] matrix = null;				// Create a local copy of the stoichiometric matrix -
+
+
+        // Initialize the stoichiometric matrix -
+        matrix = new double[NUMBER_OF_SPECIES][NUMBER_OF_RATES];
+
+        // Build the matrix -
+        CodeGenUtilMethods.buildStoichiometricMatrix(matrix,model_wrapper);
+
+        double stm = 0;
+        boolean firstTime = false;
+
+        buffer.append("void calculateMassBalances(int NRATES,int NSTATES,ColumnVector& rV,ColumnVector& dx)\n");
+        buffer.append("{\n");
+        // Changing this line: buffer.append("\tdx=STMATRIX*rV;\n"); -
+		for (int i=0;i<NROWS;i++) // Loop through the species
+       		 {
+			for (int j=0;j<NCOLS;j++) // Loop through the reactions
+			{
+				if(j==0) // If not the first reaction, append a plus sign in between the rates
+				{
+                                    buffer.append("dx("+String.valueOf(i)+")=");
+                                    firstTime = true;
+                                }
+                                if(matrix[i][j] != 0)
+				{
+                                    if(j!=0 && firstTime != true) // If not the first reaction, append a plus sign in between the rates
+                                    {
+					buffer.append("+");
+                                    }
+                                    stm = matrix[i][j]; // Grab the value from the stoich. matrix
+                                    buffer.append(String.valueOf(stm)+"*rV("+String.valueOf(j)+")");
+                                    firstTime = false;
+				}
+			}
+			if(i!=NROWS) // If not the last species, enter new line
+			{
+				buffer.append(";\n");
+			}
+		}
+        buffer.append("}\n");
+    }
+
     public static void buildJacobianBuffer_2(StringBuffer buffer,Model model_wrapper) throws Exception
     {
         
