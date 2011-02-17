@@ -68,7 +68,7 @@ public class CodeGenUtilMethods extends Object {
         double stm = 0;
         boolean firstTime = false;
 
-        buffer.append("void calculateMassBalances(int NRATES,int NSTATES,ColumnVector& rV,ColumnVector& dx)\n");
+        buffer.append("void calculateMassBalances(int NRATES,int NSTATES,Matrix& STMATRIX,ColumnVector& rV,ColumnVector& dx)\n");
         buffer.append("{\n");
         // Changing this line: buffer.append("\tdx=STMATRIX*rV;\n"); -
 		for (int i=0;i<NROWS;i++) // Loop through the species
