@@ -80,6 +80,9 @@ public class WriteOctaveCModel implements IOutputHandler {
         // Grab some names - mass balances
         ArrayList<String> arrMassBalanceList = _xmlPropTree.processFilenameBlock("MassBalanceFunction");
         ArrayList<String> arrOrderFileList = _xmlPropTree.processFilenameBlock("OrderFile");
+        
+        // Is this model going to use large-scale?
+        String strLargeScaleFlag = _xmlPropTree.getProperty(".//Model/@large_scale_optimized");
       
         String strOrderFileName = arrOrderFileList.get(0);
         String strOrderFileNamePath = arrOrderFileList.get(2);
@@ -139,7 +142,21 @@ public class WriteOctaveCModel implements IOutputHandler {
 	        SBMLModelUtilities.buildStoichiometricMatrix(dblSTMatrix, model_wrapper,vecReactions,vecSpecies);
 	            
 	        // Ok, so lets start spanking my monkey ...
-	        octave.buildMassBalanceBuffer(massbalances_buffer,_xmlPropTree);
+	        if (strLargeScaleFlag.equalsIgnoreCase("NO"))
+	        {
+	        	octave.buildMassBalanceBuffer(massbalances_buffer,_xmlPropTree);
+	        }
+	        else if (strLargeScaleFlag.equalsIgnoreCase("YES"))
+	        {
+	        	octave.buildHardCodeMassBalanceEquations(massbalances_buffer, model_wrapper, vecReactions, vecSpecies);
+	        }
+	        else
+	        {
+	        	// Default is non-optimized -
+	        	octave.buildMassBalanceBuffer(massbalances_buffer,_xmlPropTree);
+	        }
+	        
+	        // Ok, keep spanking ...
 	        octave.buildMassBalanceEquations(massbalances_buffer);
 	        octave.buildKineticsBuffer(massbalances_buffer,model_wrapper,vecReactions,vecSpecies);
 	        octave.buildDriverBuffer(driver_buffer,_xmlPropTree);
