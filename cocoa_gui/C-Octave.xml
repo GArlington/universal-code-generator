@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<Model username="" version="" name="" type="OCTAVE-C" required="YES">
+<Model username="" version="" name="" type="OCTAVE-C" required="YES" large_scale_optimized="YES">
 	
 	<Configuration>
 		<ListOfPackages>

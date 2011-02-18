@@ -33,6 +33,9 @@
 		<display name="Convert to SIF format" filename="BIOPAX-SIF"></display>
 	</mapping>
     
+    <mapping type="FBA" working_dir="./templates/">
+		<display name="Generate FBA code (*.m)" filename="FBA"></display>
+	</mapping>
     
 	<mapping type="SUNDIALS" working_dir="./templates/">
 		<display name="Sundials model (*.c)" filename="SUNDIALS"></display>
