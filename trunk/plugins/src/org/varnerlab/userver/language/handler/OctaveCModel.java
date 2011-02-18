@@ -85,9 +85,11 @@ public class OctaveCModel {
         double stm = 0;
         boolean firstTime = false;
 
+        buffer.append("\n");
         buffer.append("void calculateMassBalances(int NRATES,int NSTATES,Matrix& STMATRIX,ColumnVector& rV,ColumnVector& dx)\n");
         buffer.append("{\n");
         
+        buffer.append("\t// Formulate the mass balance equations -- use sparse representation \n");
         // Changing this line: buffer.append("\tdx=STMATRIX*rV;\n"); -
 		for (int i=0;i<NROWS;i++) // Loop through the species
 		{
@@ -95,7 +97,7 @@ public class OctaveCModel {
 			{
 				if (j==0) // If not the first reaction, append a plus sign in between the rates
 				{
-					buffer.append("dx("+String.valueOf(i)+")=");
+					buffer.append("\t dx("+String.valueOf(i)+")=");
                     firstTime = true;
                 }
                 if (matrix[i][j] != 0)
@@ -123,7 +125,8 @@ public class OctaveCModel {
  
     public void buildMassBalanceEquations(StringBuffer buffer) throws Exception {
         // Ok, so we need to build the buffer with the mass balance equations in it -
-        buffer.append("void calculateMassBalances(int NRATES,int NSTATES,Matrix& STMATRIX,ColumnVector& rV,ColumnVector& dx)\n");
+        buffer.append("\n");
+    	buffer.append("void calculateMassBalances(int NRATES,int NSTATES,Matrix& STMATRIX,ColumnVector& rV,ColumnVector& dx)\n");
         buffer.append("{\n");
         buffer.append("\tdx=STMATRIX*rV;\n");
         buffer.append("}\n");
@@ -289,6 +292,9 @@ public class OctaveCModel {
         buffer.append("#include <iostream>\n");
         buffer.append("#include <math.h>\n");
         buffer.append("\n");
+        
+   
+        
         buffer.append("// Function prototypes - \n");
         buffer.append("void calculateKinetics(ColumnVector&,ColumnVector&,ColumnVector&);\n");
         buffer.append("void calculateInputs();\n");
@@ -305,6 +311,27 @@ public class OctaveCModel {
         ArrayList<String> arrList = propTree.processFilenameBlock("AdjointBalances");
         String strAdjFunctionName = arrList.get(1);
   
+        buffer.append("/* ----------------------------------------------------------------------\n");
+        buffer.append(" * ");
+        buffer.append(strAdjFunctionName);
+        buffer.append(".c was generated using the UNIVERSAL code generator system.\n");
+        buffer.append(" * Username: ");
+        buffer.append(propTree.getProperty(".//Model/@username"));
+        buffer.append("\n");
+        buffer.append(" * Type: ");
+        buffer.append(propTree.getProperty(".//Model/@type"));
+        buffer.append("\n");
+        buffer.append(" * Version: ");
+        buffer.append(propTree.getProperty(".//Model/@version"));
+        buffer.append("\n");
+        
+        buffer.append(" *\n");
+        buffer.append(" * \n");
+        buffer.append(" * Template designed by rat44@cornell.edu (R to the T) \n");
+        buffer.append(" * ---------------------------------------------------------------------- */\n");
+        buffer.append("\n");
+        
+        
         buffer.append("DEFUN_DLD(");
         buffer.append(strAdjFunctionName);
         buffer.append(",args,nargout,\"Calculate the adjoined mass and sensitivity balances.\")\n");
@@ -508,10 +535,11 @@ public class OctaveCModel {
         driver.append(strMassBalanceFunctionName);
         driver.append("(x,t,S,kV,NRATES,NSTATES);\n");
         driver.append("[X]=lsode(f,IC,TSIM);\n");
+        driver.append("\n");
         driver.append("% Calculate the output - \n");
         driver.append("OUTPUT = X(MEASUREMENT_INDEX_VECTOR,:);\n");
         driver.append("\n");
-        driver.append("% return to caller -");
+        driver.append("% return to caller - \n");
         driver.append("return;\n");
     }
     
@@ -525,13 +553,32 @@ public class OctaveCModel {
     	ArrayList<String> arrList = propTree.processFilenameBlock("AdjointDriver");
     	String strFunctionName = arrList.get(1);
     	
+    	
+    	driver.append("% * ----------------------------------------------------------------------\n");
+        driver.append("% * ");
+        driver.append(strFunctionName);
+        driver.append(".m was generated using the UNIVERSAL code generator system.\n");
+        driver.append("% * Username: ");
+        driver.append(propTree.getProperty(".//Model/@username"));
+        driver.append("\n");
+        driver.append("% * Type: ");
+        driver.append(propTree.getProperty(".//Model/@type"));
+        driver.append("\n");
+        driver.append("% * Version: ");
+        driver.append(propTree.getProperty(".//Model/@version"));
+        driver.append("\n");
+        
+        driver.append("% *\n");
+        driver.append("% * \n");
+        driver.append("% * Template designed by R \"my main man\" T \n");
+        driver.append("% * ---------------------------------------------------------------------- */\n");
+        driver.append("\n");
+    	
+    	
         // Go -
         driver.append("function [eT]=");
         driver.append(strFunctionName);
         driver.append("(DataFile,TSTART,TSTOP,Ts,DFIN)\n");
-        driver.append("% ========= Original template rat44@cornell.edu @ 20080103 ========= \n");
-        driver.append("% Solves both the concentration, C, and the Sensitivity, S. balances \n");
-        driver.append("% ================================================================== \n");
         driver.append("\n");
         driver.append("startTime = clock();\n");
         driver.append("\n");
@@ -641,7 +688,8 @@ public class OctaveCModel {
     {
 
         // Convert into string buffer -
-        buffer.append("void calculateDSDT(int NSTATES, int NRATES, ColumnVector& SC,ColumnVector& k, ColumnVector& x, ColumnVector& DSDT, int ode_index)\n");
+        buffer.append("\n");
+    	buffer.append("void calculateDSDT(int NSTATES, int NRATES, ColumnVector& SC,ColumnVector& k, ColumnVector& x, ColumnVector& DSDT, int ode_index)\n");
         buffer.append("{\n");
         buffer.append("\t// Machine generated matrix to solve for time\n");
         buffer.append("\t// derivative of the sensitivity matrix.\n");
@@ -696,6 +744,7 @@ public class OctaveCModel {
         }
         
         // Ok, so when I get here I have the Jacobian - we need to convert it into a string buffer
+        buffer.append("\n");
         buffer.append("void calculateJacobian(int NSTATES, ColumnVector& k, ColumnVector& x, Matrix& JM)\n");
         buffer.append("{\n");
         buffer.append("\t// Machine generated dfdx matrix (Jacobian).\n");
@@ -761,6 +810,7 @@ public class OctaveCModel {
         }
         
         // Convert into string buffer -
+        buffer.append("\n");
         buffer.append("void calculatePMatrix(int NSTATES, int NRATES, ColumnVector& k, ColumnVector& x, Matrix& PM)\n");
         buffer.append("{\n");
         buffer.append("\t// Machine generated dfdp matrix.\n");
