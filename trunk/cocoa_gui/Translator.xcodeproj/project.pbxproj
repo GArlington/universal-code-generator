@@ -29,6 +29,7 @@
 		AD2BEA9E12EFD2AD00D8972D /* download.icns in Resources */ = {isa = PBXBuildFile; fileRef = AD2BEA9D12EFD2AD00D8972D /* download.icns */; };
 		AD37E52612F0B6F300151864 /* Automator.icns in Resources */ = {isa = PBXBuildFile; fileRef = AD37E52512F0B6F300151864 /* Automator.icns */; };
 		AD3D350D13030FB100F7D2F5 /* SUNDIALS.xml in Resources */ = {isa = PBXBuildFile; fileRef = AD3D350C13030FB100F7D2F5 /* SUNDIALS.xml */; };
+		AD41297F130E347A00C5F0E8 /* FBA.xml in Resources */ = {isa = PBXBuildFile; fileRef = AD41297E130E347A00C5F0E8 /* FBA.xml */; };
 		AD6B1BDB1304A62D00E464D7 /* GRAPHVIZ.xml in Resources */ = {isa = PBXBuildFile; fileRef = AD6B1BDA1304A62D00E464D7 /* GRAPHVIZ.xml */; };
 		AD8408A812FF274D00B2A270 /* C-GSL.xml in Resources */ = {isa = PBXBuildFile; fileRef = AD8408A712FF274D00B2A270 /* C-GSL.xml */; };
 		AD8408AA12FF7BC400B2A270 /* MyCustomSheet.xib in Resources */ = {isa = PBXBuildFile; fileRef = AD8408A912FF7BC400B2A270 /* MyCustomSheet.xib */; };
@@ -121,6 +122,7 @@
 		AD2BEA9D12EFD2AD00D8972D /* download.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = download.icns; sourceTree = "<group>"; };
 		AD37E52512F0B6F300151864 /* Automator.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Automator.icns; sourceTree = "<group>"; };
 		AD3D350C13030FB100F7D2F5 /* SUNDIALS.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = SUNDIALS.xml; sourceTree = "<group>"; };
+		AD41297E130E347A00C5F0E8 /* FBA.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = FBA.xml; sourceTree = "<group>"; };
 		AD6B1BDA1304A62D00E464D7 /* GRAPHVIZ.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = GRAPHVIZ.xml; sourceTree = "<group>"; };
 		AD8408A712FF274D00B2A270 /* C-GSL.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "C-GSL.xml"; sourceTree = "<group>"; };
 		AD8408A912FF7BC400B2A270 /* MyCustomSheet.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyCustomSheet.xib; sourceTree = "<group>"; };
@@ -343,6 +345,7 @@
 				AD6B1BDA1304A62D00E464D7 /* GRAPHVIZ.xml */,
 				AD2B9631130AD29100168F12 /* BIOPAX-SIF.xml */,
 				AD2B9635130B58E800168F12 /* M-Matlab.xml */,
+				AD41297E130E347A00C5F0E8 /* FBA.xml */,
 			);
 			name = templates;
 			sourceTree = "<group>";
@@ -523,6 +526,7 @@
 				AD2B9632130AD29200168F12 /* BIOPAX-SIF.xml in Resources */,
 				AD2B9634130B470D00168F12 /* MyPathWindow.xib in Resources */,
 				AD2B9636130B58E900168F12 /* M-Matlab.xml in Resources */,
+				AD41297F130E347A00C5F0E8 /* FBA.xml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
