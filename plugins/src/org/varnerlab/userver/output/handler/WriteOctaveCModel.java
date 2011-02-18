@@ -140,11 +140,14 @@ public class WriteOctaveCModel implements IOutputHandler {
 	        
 	        // Build the matrix -
 	        SBMLModelUtilities.buildStoichiometricMatrix(dblSTMatrix, model_wrapper,vecReactions,vecSpecies);
-	            
-	        // Ok, so lets start spanking my monkey ...
+	         
+	        // Ok, build the buffer -
+	        octave.buildMassBalanceBuffer(massbalances_buffer,_xmlPropTree);
+	        
+	        // Ok, so lets start spanking my monkey large-scale ...
 	        if (strLargeScaleFlag.equalsIgnoreCase("NO"))
 	        {
-	        	octave.buildMassBalanceBuffer(massbalances_buffer,_xmlPropTree);
+	        	octave.buildMassBalanceEquations(massbalances_buffer);
 	        }
 	        else if (strLargeScaleFlag.equalsIgnoreCase("YES"))
 	        {
@@ -153,11 +156,10 @@ public class WriteOctaveCModel implements IOutputHandler {
 	        else
 	        {
 	        	// Default is non-optimized -
-	        	octave.buildMassBalanceBuffer(massbalances_buffer,_xmlPropTree);
+	        	octave.buildMassBalanceEquations(massbalances_buffer);
 	        }
 	        
 	        // Ok, keep spanking ...
-	        octave.buildMassBalanceEquations(massbalances_buffer);
 	        octave.buildKineticsBuffer(massbalances_buffer,model_wrapper,vecReactions,vecSpecies);
 	        octave.buildDriverBuffer(driver_buffer,_xmlPropTree);
 	        
@@ -169,7 +171,23 @@ public class WriteOctaveCModel implements IOutputHandler {
 	        octave.buildAdjBalFntBuffer(adj_buffer, _xmlPropTree);
 	        octave.buildKineticsBuffer(adj_buffer,model_wrapper,vecReactions,vecSpecies);
 	        octave.buildDSDTBuffer(adj_buffer);
-	        octave.buildMassBalanceEquations(adj_buffer);
+	        //octave.buildMassBalanceBuffer(adj_buffer,_xmlPropTree);
+	        
+	        // We need to check to see if we are used 
+	        if (strLargeScaleFlag.equalsIgnoreCase("NO"))
+	        {
+	        	octave.buildMassBalanceEquations(adj_buffer);
+	        }
+	        else if (strLargeScaleFlag.equalsIgnoreCase("YES"))
+	        {
+	        	octave.buildHardCodeMassBalanceEquations(adj_buffer, model_wrapper, vecReactions, vecSpecies);
+	        }
+	        else
+	        {
+	        	// Default is non-optimized -
+	        	octave.buildMassBalanceEquations(adj_buffer);
+	        }
+	        
 	        octave.buildJacobianBuffer(adj_buffer,vecReactions,vecSpecies);
 	        octave.buildPMatrixBuffer(adj_buffer,vecReactions,vecSpecies);
 	        octave.buildInputsBuffer(adj_buffer);
