@@ -289,8 +289,8 @@ public class SBMLModelUtilities {
 	        
 	        // Populate the measurement selection matrix -
 	        datafile.append("% Initialize tehg measurement selection matrix. Default is the identity matrix \n");
-	        datafile.append("MEASUREMENT_MATRIX = eye(NSTATES,NSTATES);\n");
-	        
+	        datafile.append("MEASUREMENT_INDEX_VECTOR = [1:NSTATES];\n");
+	        datafile.append("\n");
 	        datafile.append("% =========== DO NOT EDIT BELOW THIS LINE ==============\n");
 	        datafile.append("DF.STOICHIOMETRIC_MATRIX=S;\n");
 	        datafile.append("DF.RATE_CONSTANT_VECTOR=k;\n");
@@ -298,7 +298,7 @@ public class SBMLModelUtilities {
 	        datafile.append("DF.NUMBER_PARAMETERS=NPARAMETERS;\n");
 	        datafile.append("DF.NUMBER_OF_STATES=NSTATES;\n");
 	        datafile.append("DF.PARAMETER_VECTOR=kV;\n");
-	        datafile.append("DF.MEASUREMENT_SELECTION_MATRIX = MEASUREMENT_MATRIX;\n");
+	        datafile.append("DF.MEASUREMENT_SELECTION_VECTOR = MEASUREMENT_INDEX_VECTOR;\n");
 	        datafile.append("% ======================================================\n");
 	        datafile.append("return;\n");
 		}
@@ -431,7 +431,7 @@ public class SBMLModelUtilities {
 	        // Populate the measurement selection matrix -
 	        datafile.append("% Initialize tehg measurement selection matrix. Default is the identity matrix \n");
 	        datafile.append("MEASUREMENT_INDEX_VECTOR = [1:NSTATES];\n");
-	        
+	        datafile.append("\n");
 	        datafile.append("% =========== DO NOT EDIT BELOW THIS LINE ==============\n");
 	        datafile.append("DF.STOICHIOMETRIC_MATRIX=S;\n");
 	        datafile.append("DF.RATE_CONSTANT_VECTOR=k;\n");
