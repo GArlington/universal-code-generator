@@ -124,11 +124,16 @@ public class XMLPropTree implements IInputHandler {
 			hashtable.put("FILENAME_PATH",strPath);
 		}
 		
+			
 		if (!tmpString.isEmpty() && !strPath.isEmpty())
 		{
 		
+			System.out.println("WTF I'm inside the if - "+strPath+" is the path and "+tmpString+" is the filename.");
+			
 			// Lastly fully qualified path -
-			hashtable.put("FULLY_QUALIFIED_PATH",strPath+"/"+tmpString);
+			hashtable.put(XMLPropTree.FullyQualifiedPath,strPath+"/"+tmpString);
+			
+			System.out.println("What is in the hashatble? - "+hashtable.get(XMLPropTree.FullyQualifiedPath));
 		}
 		
 		// return -
@@ -142,6 +147,7 @@ public class XMLPropTree implements IInputHandler {
 		
 		// Get the filename for the data -
 		String strXPathFilename = ".//"+blockName+"/@filename";
+		
 		Node filenameNode = (Node) _xpath.evaluate(strXPathFilename, _docPropTree, XPathConstants.NODE);
 		
 		// ok, the first element of ArrayList is the filename -
