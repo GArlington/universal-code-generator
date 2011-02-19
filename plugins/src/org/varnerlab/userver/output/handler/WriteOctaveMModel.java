@@ -93,6 +93,9 @@ public class WriteOctaveMModel implements IOutputHandler {
         ArrayList<String> arrMassBalanceList = _xmlPropTree.processFilenameBlock("MassBalanceFunction");
         ArrayList<String> arrOrderFileList = _xmlPropTree.processFilenameBlock("OrderFile");
         
+        // Is this model going to use large-scale?
+        String strLargeScaleFlag = _xmlPropTree.getProperty(".//Model/@large_scale_optimized");
+        
         String strOrderFileName = arrOrderFileList.get(0);
         String strOrderFileNamePath = arrOrderFileList.get(2);
         String strTmp = "";
@@ -145,7 +148,23 @@ public class WriteOctaveMModel implements IOutputHandler {
         SBMLModelUtilities.buildStoichiometricMatrix(dblSTMatrix, model_wrapper,vecReactions,vecSpecies);
              
         // Ok, so let's start building the different parts of the octave m program -
-        octave.buildMassBalanceBuffer(massbalances_buffer,_xmlPropTree);
+        // Ok, so lets start spanking my monkey large-scale ...
+        if (strLargeScaleFlag.equalsIgnoreCase("NO"))
+        {
+        	octave.buildMassBalanceBuffer(massbalances_buffer,_xmlPropTree);
+        }
+        else if (strLargeScaleFlag.equalsIgnoreCase("YES"))
+        {
+        	octave.buildLargeScaleMassBalanceBuffer(massbalances_buffer, model_wrapper, vecReactions, vecSpecies,_xmlPropTree);
+        }
+        else
+        {
+        	// Default is non-optimized -
+        	octave.buildMassBalanceBuffer(massbalances_buffer,_xmlPropTree);
+        }
+        
+        
+        //octave.buildMassBalanceBuffer(massbalances_buffer,_xmlPropTree);
         octave.buildInputsBuffer(inputs_buffer,_xmlPropTree);
         octave.buildKineticsBuffer(kinetics_buffer,model_wrapper,_xmlPropTree);
         

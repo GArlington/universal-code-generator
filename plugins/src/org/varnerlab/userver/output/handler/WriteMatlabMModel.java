@@ -76,6 +76,9 @@ public class WriteMatlabMModel implements IOutputHandler {
         ArrayList<String> arrMassBalanceList = _xmlPropTree.processFilenameBlock("MassBalanceFunction");
         ArrayList<String> arrOrderFileList = _xmlPropTree.processFilenameBlock("OrderFile");
         
+        // Is this model going to use large-scale?
+        String strLargeScaleFlag = _xmlPropTree.getProperty(".//Model/@large_scale_optimized");
+        
         String strOrderFileName = arrOrderFileList.get(0);
         String strOrderFileNamePath = arrOrderFileList.get(2);
         String strTmp = "";
@@ -126,9 +129,25 @@ public class WriteMatlabMModel implements IOutputHandler {
         
         // Build the matrix -
         SBMLModelUtilities.buildStoichiometricMatrix(dblSTMatrix, model_wrapper,vecReactions,vecSpecies);
+        
+        // Ok, so lets start spanking my monkey large-scale style ...
+        if (strLargeScaleFlag.equalsIgnoreCase("NO"))
+        {
+        	matlab.buildMassBalanceBuffer(massbalances_buffer);
+        }
+        else if (strLargeScaleFlag.equalsIgnoreCase("YES"))
+        {
+        	matlab.buildLargeScaleMassBalanceBuffer(massbalances_buffer, model_wrapper, vecReactions, vecSpecies,_xmlPropTree);
+        }
+        else
+        {
+        	// Default is non-optimized -
+        	matlab.buildMassBalanceBuffer(massbalances_buffer);
+        }
+        
              
         // Ok, so let's start building the different parts of the matlab m program -
-        matlab.buildMassBalanceBuffer(massbalances_buffer);
+        //matlab.buildMassBalanceBuffer(massbalances_buffer);
         matlab.buildInputsBuffer(inputs_buffer);
         matlab.buildKineticsBuffer(kinetics_buffer,model_wrapper);
         
