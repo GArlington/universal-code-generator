@@ -68,6 +68,11 @@ public class MatlabModel {
     public MatlabModel() {
     }
     
+    public void buildLargeScaleMassBalanceBuffer(StringBuffer massbalances,Model model_wrapper,Vector<Reaction> vecReactions,Vector<Species> vecSpecies,XMLPropTree propTree) throws Exception
+	{
+		// Populate the large scale mass balances -
+		MModelUtilities.buildLargeScaleMatlabMassBalanceBuffer(massbalances,model_wrapper,vecReactions,vecSpecies,propTree);
+	}
    
     public void buildInputsBuffer(StringBuffer inputs) throws Exception
     {

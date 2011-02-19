@@ -29,6 +29,7 @@
 package org.varnerlab.userver.language.handler;
 
 import org.sbml.libsbml.Model;
+import org.sbml.libsbml.Reaction;
 import org.sbml.libsbml.Species;
 import org.varnerlab.server.localtransportlayer.XMLPropTree;
 import java.util.ArrayList;
@@ -40,6 +41,235 @@ import java.util.Vector;
  */
 public class MModelUtilities {
 
+
+	
+public static void buildLargeScaleMatlabMassBalanceBuffer(StringBuffer massbalances,Model model_wrapper,Vector<Reaction> vecReactions,Vector<Species> vecSpecies,XMLPropTree propTree) throws Exception
+{
+		// Method attributes -
+		StringBuffer tmpBuffer = new StringBuffer();
+		
+		// Get the dimension of the system -
+	    int NROWS = (int)vecSpecies.size();
+	    int NCOLS = (int)vecReactions.size();
+	    
+	    double[][] matrix = new double[NROWS][NCOLS];
+	    SBMLModelUtilities.buildStoichiometricMatrix(matrix, model_wrapper,vecReactions,vecSpecies);
+	    
+	    // Ok, so I need to populate the species balances -
+	    ArrayList<String> arrList2 = propTree.processFilenameBlock("MassBalanceFunction");
+	    String strMassBalanceFunctionName = arrList2.get(1);
+		
+	    // Put the header -
+	    massbalances.append("function [DXDT]=");
+	    massbalances.append(strMassBalanceFunctionName);
+	    massbalances.append("(t,x,DF,S,kV)\n");
+	    massbalances.append("% ----------------------------------------------------------------------\n");
+	    massbalances.append("% ");
+	    massbalances.append(strMassBalanceFunctionName);
+	    massbalances.append(".m was generated using the UNIVERSAL code generator system.\n");
+	    massbalances.append("% Username: ");
+	    massbalances.append(propTree.getProperty(".//Model/@username"));
+	    massbalances.append("\n");
+	    massbalances.append("% Type: ");
+	    massbalances.append(propTree.getProperty(".//Model/@type"));
+	    massbalances.append("\n");
+	    massbalances.append("% Version: ");
+	    massbalances.append(propTree.getProperty(".//Model/@version"));
+	    massbalances.append("\n");
+	    massbalances.append("% \n");
+	    massbalances.append("% Arguments: \n");
+	    massbalances.append("% t  - current time \n");
+	    massbalances.append("% x  - state vector \n");
+	    massbalances.append("% S  - stoichiometric matrix \n");
+	    massbalances.append("% kV - parameter vector \n");
+	    massbalances.append("% NRATES - Number of rates \n");
+	    massbalances.append("% NSTATES - Number of states \n");
+	    massbalances.append("% DXDT - right hand side vector \n");
+	    massbalances.append("% ----------------------------------------------------------------------\n");
+	    massbalances.append("\n");
+	    massbalances.append("% Call the kinetics function \n");
+	    
+	    // Setup the kinetics filename -
+	    ArrayList<String> arrList = propTree.processFilenameBlock("KineticsFunction");
+	    String strKineticesFunctionName = arrList.get(1);
+	    
+	    massbalances.append("[rV]=");
+	    massbalances.append(strKineticesFunctionName);
+	    massbalances.append("(t,x,kV);\n");
+	    massbalances.append("\n");
+	    massbalances.append("% Calculate the input vector\n");
+	    
+	    // Setup the kinetics filename -
+	    ArrayList<String> arrList3 = propTree.processFilenameBlock("InputFunction");
+	    String strInputFunctionName = arrList3.get(1);
+	    
+	    massbalances.append("[uV]=");
+	    massbalances.append(strInputFunctionName);
+	    massbalances.append("(t,x,DF);\n");
+	    massbalances.append("\n");
+	    massbalances.append("% Calculate DXDT\n");
+	    
+	    // Ok, go through the species and reactions -
+	    for (int species_index=0;species_index<NROWS;species_index++)
+	    {
+	    	// populate the dxdt --
+	    	massbalances.append("DXDT(");
+	    	massbalances.append(species_index+1);
+	    	massbalances.append(",1) = ");
+	    	
+	   
+	    	// Ok, go through the rates --
+	    	for (int rate_index=0;rate_index<NCOLS;rate_index++)
+	    	{
+	    		// Ok, get the stoichiometric matrix -
+	    		double tmpValue = matrix[species_index][rate_index];
+	    		
+	    		// Check to see, if we have a non-zero
+	    		if (tmpValue!=0.0)
+	    		{
+	    			// Build a term -
+	    			tmpBuffer.append(tmpValue);
+	    			tmpBuffer.append("*rV(");
+	    			tmpBuffer.append(rate_index+1);
+	    			tmpBuffer.append(",1)+");
+	    		}
+	    		
+	    	}
+	    	
+	    	// Grab the contents of the buffer -
+	    	String tmpString = tmpBuffer.toString();
+	    	
+	    	// Clear out the buffer -
+	    	tmpBuffer.delete(0, tmpBuffer.length());
+	    	
+	    	// Ok, so when I get here, I'll have a trailing +
+	    	int INDEX_OF_TRAILING_PLUS = tmpString.lastIndexOf("+");
+	    	
+	    	// replace the + with a ;
+	    	massbalances.append(tmpString.substring(0,INDEX_OF_TRAILING_PLUS));
+	    	massbalances.append(";\n");
+	    }
+	    
+	    // add a new line -
+	    massbalances.append("\n");
+	    massbalances.append("return;\n");
+}	
+	
+	
+public static void buildLargeScaleOctaveMassBalanceBuffer(StringBuffer massbalances,Model model_wrapper,Vector<Reaction> vecReactions,Vector<Species> vecSpecies,XMLPropTree propTree) throws Exception
+{
+	// Method attributes -
+	StringBuffer tmpBuffer = new StringBuffer();
+	
+	// Get the dimension of the system -
+    int NROWS = (int)vecSpecies.size();
+    int NCOLS = (int)vecReactions.size();
+    
+    double[][] matrix = new double[NROWS][NCOLS];
+    SBMLModelUtilities.buildStoichiometricMatrix(matrix, model_wrapper,vecReactions,vecSpecies);
+    
+    // Ok, so I need to populate the species balances -
+    ArrayList<String> arrList2 = propTree.processFilenameBlock("MassBalanceFunction");
+    String strMassBalanceFunctionName = arrList2.get(1);
+	
+    // Put the header -
+    massbalances.append("function [DXDT]=");
+    massbalances.append(strMassBalanceFunctionName);
+    massbalances.append("(x,t,S,kV,NRATES,NSTATES)\n");
+    
+    massbalances.append("% ----------------------------------------------------------------------\n");
+    massbalances.append("% ");
+    massbalances.append(strMassBalanceFunctionName);
+    massbalances.append(".m was generated using the UNIVERSAL code generator system.\n");
+    massbalances.append("% Username: ");
+    massbalances.append(propTree.getProperty(".//Model/@username"));
+    massbalances.append("\n");
+    massbalances.append("% Type: ");
+    massbalances.append(propTree.getProperty(".//Model/@type"));
+    massbalances.append("\n");
+    massbalances.append("% Version: ");
+    massbalances.append(propTree.getProperty(".//Model/@version"));
+    massbalances.append("\n");
+    massbalances.append("% \n");
+    massbalances.append("% Arguments: \n");
+    massbalances.append("% t  - current time \n");
+    massbalances.append("% x  - state vector \n");
+    massbalances.append("% S  - stoichiometric matrix \n");
+    massbalances.append("% kV - parameter vector \n");
+    massbalances.append("% NRATES - Number of rates \n");
+    massbalances.append("% NSTATES - Number of states \n");
+    massbalances.append("% DXDT - right hand side vector \n");
+    massbalances.append("% ----------------------------------------------------------------------\n");
+    massbalances.append("\n");
+    massbalances.append("% Call the kinetics function \n");
+    
+    // Setup the kinetics filename -
+    ArrayList<String> arrList = propTree.processFilenameBlock("KineticsFunction");
+    String strKineticesFunctionName = arrList.get(1);
+    
+    massbalances.append("[rV]=");
+    massbalances.append(strKineticesFunctionName);
+    massbalances.append("(t,x,kV);\n");
+    massbalances.append("\n");
+    massbalances.append("% Calculate the input vector\n");
+    
+    // Setup the kinetics filename -
+    ArrayList<String> arrList3 = propTree.processFilenameBlock("InputFunction");
+    String strInputFunctionName = arrList3.get(1);
+    
+    massbalances.append("[uV]=");
+    massbalances.append(strInputFunctionName);
+    massbalances.append("(t,x,DF);\n");
+    massbalances.append("\n");
+    massbalances.append("% Calculate DXDT\n");
+    
+    // Ok, go through the species and reactions -
+    for (int species_index=0;species_index<NROWS;species_index++)
+    {
+    	// populate the dxdt --
+    	massbalances.append("DXDT(");
+    	massbalances.append(species_index+1);
+    	massbalances.append(",1) = ");
+    	
+   
+    	// Ok, go through the rates --
+    	for (int rate_index=0;rate_index<NCOLS;rate_index++)
+    	{
+    		// Ok, get the stoichiometric matrix -
+    		double tmpValue = matrix[species_index][rate_index];
+    		
+    		// Check to see, if we have a non-zero
+    		if (tmpValue!=0.0)
+    		{
+    			// Build a term -
+    			tmpBuffer.append(tmpValue);
+    			tmpBuffer.append("*rV(");
+    			tmpBuffer.append(rate_index+1);
+    			tmpBuffer.append(",1)+");
+    		}
+    		
+    	}
+    	
+    	// Grab the contents of the buffer -
+    	String tmpString = tmpBuffer.toString();
+    	
+    	// Clear out the buffer -
+    	tmpBuffer.delete(0, tmpBuffer.length());
+    	
+    	// Ok, so when I get here, I'll have a trailing +
+    	int INDEX_OF_TRAILING_PLUS = tmpString.lastIndexOf("+");
+    	
+    	// replace the + with a ;
+    	massbalances.append(tmpString.substring(0,INDEX_OF_TRAILING_PLUS));
+    	massbalances.append(";\n");
+    }
+    
+    // add a new line -
+    massbalances.append("\n");
+    massbalances.append("return;\n");
+
+}	
+	
 public static void buildPMatrixBuffer(StringBuffer buffer,Vector vecReactions,Vector vecSpecies, Model model_wrapper,XMLPropTree propTree) throws Exception
 {
 	// Method attributes -

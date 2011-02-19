@@ -17,13 +17,16 @@ public class OctaveMMetabolicModel {
 	public void buildDriverBuffer(StringBuffer buffer,Properties propTable) throws Exception
 	{
 		// Get the name of the function name -
-		String fileName = propTable.getProperty("DRIVER_FILENAME");
+		String fileNameRaw = propTable.getProperty("DRIVER_FILENAME");
+		int INT_DOT = fileNameRaw.indexOf(".");
+		String fileName = fileNameRaw.substring(0,INT_DOT);
+		
 		
 		// Populate the buffer -
 		buffer.append("% =========================================================================== %\n");
 		buffer.append("% ");
-		buffer.append(fileName);
-		buffer.append(".m - Solves the LP problem associated with an FBA calculation. \n");
+		buffer.append(fileNameRaw);
+		buffer.append(" - Solves the LP problem associated with an FBA calculation. \n");
 		buffer.append("%\n");
 		buffer.append("% Input Args:\n");
 		buffer.append("% pDataFile		-	Pointer to the DataFile function (@DataFile)\n");
@@ -77,10 +80,13 @@ public class OctaveMMetabolicModel {
 		buffer.append("\n");
 		buffer.append("\t% Setup the bV and the constraint types required by the solver -\n");
 		buffer.append("\tSTM_BALANCED_BLOCK = DF.BALANCED_MATRIX;\n");
+		buffer.append("\n");
 		buffer.append("\t% Get the dimension of the balanced block -\n");
 		buffer.append("\t[NUM_BALANCED,NUM_RATES] = size(STM_BALANCED_BLOCK);\n");
+		buffer.append("\n");
 		buffer.append("\t% Formulate the bV -\n");
 		buffer.append("\tbV = zeros(NUM_BALANCED,1);\n");
+		buffer.append("\n");
 		buffer.append("\t% Formulate the CTYPE vector -\n");
 		buffer.append("\tfor species_index=1:NUM_BALANCED\n");
 		buffer.append("\t\tCTYPE(species_index,1) = 'S';\n");
@@ -98,6 +104,7 @@ public class OctaveMMetabolicModel {
 		buffer.append("\t\t% Setup -\n");
 		buffer.append("\t\tAC=DF.SPECIES_CONSTRAINTS;\n");
 		buffer.append("\t\tCM = [STM_BALANCED_BLOCK ; AC ; AC];\n");
+		buffer.append("\n");
 		buffer.append("\t\tN=size(SBA,1);\n");
 		buffer.append("\t\tfor species_index=1:N\n");
 		buffer.append("\t\t\tCTYPE(species_index+NUM_BALANCED,1) = 'U';\n");
@@ -118,6 +125,7 @@ public class OctaveMMetabolicModel {
 		buffer.append("\tPARAM.msglev = 3;\n");
 		buffer.append("\n");
 		buffer.append("\t% Type of LPSOLVE -\n");
+		buffer.append("\n");
 		buffer.append("\tLPSOLVER = 1;\n");
 		buffer.append("\t% Call GLPK -\n");
 		buffer.append("\t[FLOW,fmin,status,extra]=glpk(OBJVECTOR,CM,bV,LB,UB,CTYPE,VARTYPE,SENSE,PARAM);\n");

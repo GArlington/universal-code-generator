@@ -48,13 +48,27 @@ public class SBMLMetabolicModelUtilities {
     }
 	
 	
+	public static void dumpDataFileToDisk(StringBuffer buffer,Properties propTable) throws Exception
+	{
+		// Method attributes -
+		String strPath = "";
+		
+		// Get the path -
+		strPath = propTable.getProperty("PATH_SRC_DIRECTORY")+"/"+propTable.getProperty("OUTPUT_DATAFILE_FILENAME");
+        
+		// Dump buffer to disk -
+		GIOL.write(strPath,buffer);
+	}
+	
 	public static void dumpDriverFileToDisk(StringBuffer buffer,Properties propTable) throws Exception
 	{
 		// Method attributes -
 		String strPath = "";
 		
 		// Get the path -
-		strPath = propTable.getProperty("PATH_SRC_DIRECTORY")+"/"+propTable.getProperty("OUTPUT_STM_FILENAME");
+		strPath = propTable.getProperty("PATH_SRC_DIRECTORY")+"/"+propTable.getProperty("DRIVER_FILENAME");
+		
+		System.out.println("Going to dump driver - "+strPath);
         
 		// Dump buffer to disk -
 		GIOL.write(strPath,buffer);

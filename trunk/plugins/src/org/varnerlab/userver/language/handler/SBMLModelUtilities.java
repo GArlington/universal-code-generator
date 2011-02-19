@@ -1186,7 +1186,7 @@ public class SBMLModelUtilities {
 		
 		// Get the path and dump -2- disk 
 		// Create the path string -
-		String strPath = "./"+_propTable.getProperty("PATH_NETWORK_DIRECTORY")+"/"+_propTable.getProperty("OUTPUT_SPECIES_FILENAME");
+		String strPath = _propTable.getProperty("PATH_NETWORK_DIRECTORY")+"/"+_propTable.getProperty("OUTPUT_SPECIES_FILENAME");
         GIOL.write(strPath,buffer);
 	}
 		
