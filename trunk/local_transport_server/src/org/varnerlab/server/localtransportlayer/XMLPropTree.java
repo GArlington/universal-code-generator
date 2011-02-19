@@ -38,11 +38,20 @@ public class XMLPropTree implements IInputHandler {
 	public static final String FullyQualifiedPath = "FULLY_QUALIFIED_PATH";
 	
 
+	/*
+	 * Returns an instance of the XML document edited in the GUI
+	 * @param null
+	 */
 	public Object getResource(Object object) throws Exception {
 		// TODO Auto-generated method stub
 		return (_docPropTree);
 	}
 
+	/*
+	 * Return the string value obtained from executing the XPath query passed in as an argument
+	 * @param String strXPath
+	 * @return String - get property from uxml tree by executing string in strXPath
+	 */
 	public String getProperty(String strXPath)
 	{
 		// Method attributes -
@@ -61,6 +70,16 @@ public class XMLPropTree implements IInputHandler {
 		return(strProp);
 	}
 	
+	/*
+	 * Return the path for the keyname passed in as an argument. Executes a xpath lookup in the path
+	 * block of the specification tree:
+	 * 
+	 * ".//ListOfPaths/path[@symbol='"+keyName+"']/@path_location"
+	 *
+	 * @param String keyName
+	 * @throws Exception
+	 * @return - Get path for keyName
+	 */
 	public String getPathForKey(String keyName) throws Exception
 	{
 		// Method attributes --
@@ -74,6 +93,16 @@ public class XMLPropTree implements IInputHandler {
 		return pathString;
 	}
 	
+	/*
+	 * Return the package name for the keyName. Executes a xpath lookup in the package block
+	 * of the specification tree:
+	 * 
+	 * ".//ListOfPackages/package[@symbol='"+keyName+"']/@package_name";
+	 * 
+	 * @param String keyName
+	 * @throws Exception
+	 * @return String - Package name
+	 */
 	public String getPackageForKey(String keyName) throws Exception
 	{
 		// Method attributes --
@@ -87,6 +116,19 @@ public class XMLPropTree implements IInputHandler {
 		return packageString;
 	}
 	
+	/*
+	 * Returns a Hashatble<String,String> with path and file name information for a specific blockname.
+	 * 
+	 * Hashtable keys:
+	 * FILENAME_WITH_EXTENSION	-	Returns a filename with the extension
+	 * FUNCTION_NAME			-	Returns the function name (filename w/no extension)
+	 * FILENAME_PATH			-	Returns the path of the file (lookup on the path block)
+	 * FULLY_QUALIFIED_PATH		-	Returns the fully qualified filename w/path
+	 * 
+	 * @param String blockName
+	 * @throws Exception
+	 * @Hashtable<String,String> - Hashtable holding path information
+	 */
 	public Hashtable<String,String> buildFilenameBlockDictionary(String blockName) throws Exception
 	{
 		// Method attributes -
@@ -140,6 +182,19 @@ public class XMLPropTree implements IInputHandler {
 		return hashtable;
 	}
 	
+	/*
+	 * Returns information held in the block with name blockName
+	 * 
+	 * Index 0: Holds filename
+	 * Index 1: Holds the path to the file
+	 * Index 2: Fully qualified path
+	 * 
+	 * My advice: Use the hashtable based method. We may yank this ...
+	 * 
+	 * @param String blockName 
+	 * @throws Exception
+	 * @return ArrayList<String> - List of path information
+	 */
 	public ArrayList<String> processFilenameBlock(String blockName) throws Exception
 	{
 		// Method attributes -
@@ -192,6 +247,13 @@ public class XMLPropTree implements IInputHandler {
 		return arrList;
 	}
 	
+	/*
+	 * Load the uxnml specification file from disk
+	 * 
+	 * @param object - Path to the uxml file (called internally by UNIVERSAL)
+	 * @throws Exception
+	 * @return void
+	 */
 	public void loadResource(Object object) throws Exception {
 	
 		try {
@@ -236,6 +298,9 @@ public class XMLPropTree implements IInputHandler {
 		
 	}
 
+	/*
+	 * 
+	 */
 	public void setLogger(Logger log) {
 		_logger = log;
 	}
