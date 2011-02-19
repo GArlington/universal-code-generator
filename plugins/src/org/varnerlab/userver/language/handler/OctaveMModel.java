@@ -126,7 +126,7 @@ public class OctaveMModel {
         driver.append("% Calculate the output - \n");
         driver.append("OUTPUT = X(MEASUREMENT_INDEX_VECTOR,:);\n");
         driver.append("\n");
-        driver.append("% return to caller -");
+        driver.append("% return to caller - \n");
         driver.append("return;\n");
     }
 
@@ -257,6 +257,12 @@ public class OctaveMModel {
         inputs.append("uV = zeros(nR,1);\n");
         inputs.append("return;\n");
     }
+	
+	public void buildLargeScaleMassBalanceBuffer(StringBuffer massbalances,Model model_wrapper,Vector<Reaction> vecReactions,Vector<Species> vecSpecies,XMLPropTree propTree) throws Exception
+	{
+		// Populate the large scale mass balances -
+		MModelUtilities.buildLargeScaleOctaveMassBalanceBuffer(massbalances,model_wrapper,vecReactions,vecSpecies,propTree);
+	}
 	
 	public void buildMassBalanceBuffer(StringBuffer massbalances,XMLPropTree propTree) throws Exception
     {
