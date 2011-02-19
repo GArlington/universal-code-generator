@@ -75,11 +75,14 @@ public class WriteMetabolicFiles implements IOutputHandler {
         octave.populateDataFileBuffer(model_wrapper,stbDataFile,_propTable,vecSpecies);
         octave.buildBoundsArray(model_wrapper,buffer);
         octave.buildDriverBuffer(calcFluxBuffer,_propTable);
-       
+        
+    
 		// Dump stuff to disk -
 		SBMLModelUtilities.dumpSpeciesToDisk(_propTable, model_wrapper);
 		SBMLMetabolicModelUtilities.dumpBoundsFileToDisk(_propTable,buffer);
 		SBMLMetabolicModelUtilities.dumpStoichiometricMatrixToDisk(_propTable, NUMBER_OF_SPECIES, NUMBER_OF_REACTIONS, dblArr);
+		SBMLMetabolicModelUtilities.dumpDriverFileToDisk(calcFluxBuffer, _propTable);
+		SBMLMetabolicModelUtilities.dumpDataFileToDisk(stbDataFile, _propTable);
 	}
 	
 	@Override
@@ -111,7 +114,7 @@ public class WriteMetabolicFiles implements IOutputHandler {
 		String strDFFileName = propTree.getProperty(".//DataFile/@filename");
 		String strSpeciesFileName = propTree.getProperty(".//DebugOutputFile/@filename");
 		String strTagName = propTree.getProperty(".//ExtracellularTagName/@name");
-		String strDriverName = propTree.getProperty(".//DataFile/@filename");
+		String strDriverName = propTree.getProperty(".//DriverFile/@filename");
 		
 		String strProject = propTree.getProperty(".//path[@symbol=\"UNIVERSAL_SOURCE_OUTPUT_PATH\"]/@path_location");
 		String strNetworkDir = propTree.getProperty(".//path[@symbol=\"UNIVERSAL_NETWORK_OUTPUT_PATH\"]/@path_location");
