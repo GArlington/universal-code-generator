@@ -620,7 +620,7 @@
 		// Get the bundle path -
 		// NSString *bundlePathString = [[[NSBundle mainBundle] bundlePath] stringByDeletingLastPathComponent];
 		
-		NSLog(@"What is the bundle path %@",bundlePathString);
+		// NSLog(@"What is the bundle path %@",bundlePathString);
 		
 		// Create dictionary -
 		NSDictionary *tmpAttrTable = [[[NSDictionary alloc] initWithObjectsAndKeys:
