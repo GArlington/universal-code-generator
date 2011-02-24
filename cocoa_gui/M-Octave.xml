@@ -37,6 +37,8 @@
 				<class required="NO" package="OUTPUT_HANDLER_PACKAGE" classname="WriteSBMLFile"></class>
 				<class required="NO" package="OUTPUT_HANDLER_PACKAGE" classname="WriteMOBCXFiles"></class>
 				<class required="NO" package="OUTPUT_HANDLER_PACKAGE" classname="WriteBCXFiles"></class>
+                <class required="NO" package="OUTPUT_HANDLER_PACKAGE" classname="WriteSIFFileFromBioPAX"></class>
+                <class required="NO" package="OUTPUT_HANDLER_PACKAGE" classname="WriteMetabolicFiles"></class>
 			</OutputHandlerClasses>
 		</ListOfClasses>
 		
@@ -57,7 +59,7 @@
 	
 	<Handler>
 		<InputHandler required="YES" input_classname="" package="INPUT_HANDLER_PACKAGE"></InputHandler>
-		<OutputHandler required="YES" output_classname="" package="OUTPUT_HANDLER_PACKAGE"></OutputHandler>
+		<OutputHandler required="YES" output_classname="WriteOctaveMModel" package="OUTPUT_HANDLER_PACKAGE"></OutputHandler>
 	</Handler>
 	
 	<InputOptions>

@@ -48,8 +48,7 @@
 -(void)alertDidEnd:(NSAlert *)alert returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo; 
 -(void)automaticallyPopulateTreePathData;
 -(NSMutableString *)formulateCodeGenArgString;
--(void)populatePathLocation:(NSString *)xpath;
-
+-(void)populateServerPathLocation:(NSString *)xpath suffix:(NSString *)strSuffix;
 
 @end
 
@@ -647,15 +646,66 @@
 	
 	// Ok, so we need to update the 
 	// <path required="YES" symbol="UNIVERSAL_SERVER_ROOT_DIRECTORY" path_location=""></path>
-	//[self populatePathLocation:@".//path[@symbol=\"UNIVERSAL_SERVER_ROOT_DIRECTORY\"]"];
-	//[self populatePathLocation:@".//path[@symbol=\"UNIVERSAL_PLUGINS_JAR_DIRECTORY\"]/@path_location"];
-	//[self populatePathLocation:@".//path[@symbol=\"UNIVERSAL_SOURCE_OUTPUT_PATH\"]/@path_location"];
-	//[self populatePathLocation:@".//path[@symbol=\"UNIVERSAL_DEBUG_OUTPUT_PATH\"]/@path_location"];
+	[self populateServerPathLocation:@".//path[@symbol=\"UNIVERSAL_SERVER_ROOT_DIRECTORY\"]/@path_location" suffix:@""];
+	[self populateServerPathLocation:@".//path[@symbol=\"UNIVERSAL_SERVER_JAR_DIRECTORY\"]/@path_location"  suffix:@"/dist"];
+    [self populateServerPathLocation:@".//path[@symbol=\"UNIVERSAL_PLUGINS_JAR_DIRECTORY\"]/@path_location" suffix:@"/plugins"];
 }
 
--(void)populatePathLocation:(NSString *)xpath
+
+-(void)populateServerPathLocation:(NSString *)xpath suffix:(NSString *)strSuffix
 {
-	
+    // Method attributes -
+    NSError *errObject = nil;
+    
+    // Ok, so a XPath string was passed in -
+    // We need to check if this item is already populated?
+    
+    // Run the XPath -
+    NSArray *pathLocationList = [[[self xmlTreeModel] xmlDocument] nodesForXPath:xpath error:&errObject];
+    
+        
+    // Ok, so when I get here I need to check how many items came back -
+    if ([pathLocationList count]!=0)
+    {
+        // Ok, I have one item -
+        id pathNode = [pathLocationList lastObject];
+        
+        // Ok, so I need to check if this pathNode responds to name?
+        if ([pathNode respondsToSelector:@selector(stringValue)])
+        {
+            // Ok, pathNode responds to stringValue -
+            NSString *stringNodeValue = [pathNode stringValue];
+            
+            // What is stringNodeValue? --
+            if ([stringNodeValue isEqualToString:@""])
+            {
+                // Ok, so if I get here, I have an empty string -
+                NSString *myPath = [[NSBundle mainBundle] bundlePath];
+                
+                // Get the path -
+                NSString *pathStringMinusApp = [myPath stringByDeletingLastPathComponent];
+                
+                // Ok, we need to check to see if we have a suffix -
+                if ([strSuffix isEqualToString:@""])
+                {
+                    // Ok, let's put this in path block of the tree -
+                    // Populate the SERVER_ROOT -
+                    [pathNode setStringValue:pathStringMinusApp];
+                }
+                else
+                {
+                    // Create a new string w/the suffix -
+                    NSMutableString *tmpPathString = [NSMutableString stringWithString:pathStringMinusApp];
+                    
+                    // Add the suffix -
+                    [tmpPathString appendString:strSuffix];
+                    
+                    // Add to the node -
+                    [pathNode setStringValue:tmpPathString];
+                }
+            }
+        }
+    }
 }
 
 -(void)executeCodeGenJob
@@ -868,6 +918,9 @@
 {
 	NSError *errObject = nil;
 	self.xmlTreeModel.xmlDocument = [[NSXMLDocument alloc] initWithData:data options:NSXMLNodeOptionsNone error:&errObject];
+    
+    // Autopopulate tree entries?
+    [self automaticallyPopulateTreePathData];
 	
 	// Send a message to the notification center to let folks know that I've loaded an xml file -
 	NSNotification *myNotification = [NSNotification notificationWithName:@"TreeDidLoad" object:nil]; 
@@ -922,6 +975,10 @@
 	// Set the NSXMLDocument reference on the tree model 
 	self.xmlTreeModel.xmlDocument = [[NSXMLDocument alloc] initWithContentsOfURL:fileURL options:NSXMLNodeOptionsNone error:&errObject];
 	
+    // Try and populate some fields -
+    [self automaticallyPopulateTreePathData];
+    
+    
 	// Send a message to the notification center to let folks know that I've loaded an xml file -
 	NSNotification *myNotification = [NSNotification notificationWithName:@"TreeDidLoad" object:nil]; 
 	[[NSNotificationQueue defaultQueue] enqueueNotification:myNotification postingStyle:NSPostNow coalesceMask:NSNotificationCoalescingOnName forModes:nil];
