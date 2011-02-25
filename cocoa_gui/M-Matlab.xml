@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<Model username="" version="" name="" type="MATLAB-M" large_scale_optimized="YES">
+<Model username="" version="v1.0" name="" type="MATLAB-M" large_scale_optimized="YES">
 	
 	<Configuration>
 		<ListOfPackages>

@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<Model username="" version="" name="" type="VFF" required="YES">
+<Model username="" version="v1.0" name="" type="VFF" required="YES">
 	
 	<Configuration>
 		<ListOfPackages>

@@ -49,6 +49,7 @@
 -(void)automaticallyPopulateTreePathData;
 -(NSMutableString *)formulateCodeGenArgString;
 -(void)populateServerPathLocation:(NSString *)xpath suffix:(NSString *)strSuffix;
+-(void)populatUsernameInSpecificationTree:(NSString *)xpath suffix:(NSString *)strSuffix;
 
 @end
 
@@ -649,8 +650,64 @@
 	[self populateServerPathLocation:@".//path[@symbol=\"UNIVERSAL_SERVER_ROOT_DIRECTORY\"]/@path_location" suffix:@""];
 	[self populateServerPathLocation:@".//path[@symbol=\"UNIVERSAL_SERVER_JAR_DIRECTORY\"]/@path_location"  suffix:@"/dist"];
     [self populateServerPathLocation:@".//path[@symbol=\"UNIVERSAL_PLUGINS_JAR_DIRECTORY\"]/@path_location" suffix:@"/plugins"];
+    
+    // Update the username -
+    [self populatUsernameInSpecificationTree:@".//Model/@username" suffix:@""];
 }
 
+
+-(void)populatUsernameInSpecificationTree:(NSString *)xpath suffix:(NSString *)strSuffix
+{
+    // Method attributes -
+    NSError *errObject = nil;
+    
+    // Ok, so a XPath string was passed in -
+    // We need to check if this item is already populated?
+    
+    // Run the XPath -
+    NSArray *pathLocationList = [[[self xmlTreeModel] xmlDocument] nodesForXPath:xpath error:&errObject];
+    
+    
+    // Ok, so when I get here I need to check how many items came back -
+    if ([pathLocationList count]!=0)
+    {
+        // Ok, I have one item -
+        id pathNode = [pathLocationList lastObject];
+        
+        // Ok, so I need to check if this pathNode responds to name?
+        if ([pathNode respondsToSelector:@selector(stringValue)])
+        {
+            // Ok, pathNode responds to stringValue -
+            NSString *stringNodeValue = [pathNode stringValue];
+            
+            // What is stringNodeValue? --
+            if ([stringNodeValue isEqualToString:@""])
+            {
+                // Ok, so if I get here, I have an empty string -
+                NSString *myName = NSUserName();
+                
+                // Ok, we need to check to see if we have a suffix -
+                if ([strSuffix isEqualToString:@""])
+                {
+                    // Ok, let's put this in path block of the tree -
+                    // Populate the SERVER_ROOT -
+                    [pathNode setStringValue:myName];
+                }
+                else
+                {
+                    // Create a new string w/the suffix -
+                    NSMutableString *tmpPathString = [NSMutableString stringWithString:myName];
+                    
+                    // Add the suffix -
+                    [tmpPathString appendString:strSuffix];
+                    
+                    // Add to the node -
+                    [pathNode setStringValue:tmpPathString];
+                }
+            }
+        }
+    }
+}
 
 -(void)populateServerPathLocation:(NSString *)xpath suffix:(NSString *)strSuffix
 {
