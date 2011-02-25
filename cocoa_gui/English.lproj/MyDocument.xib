@@ -1759,6 +1759,14 @@
 					</object>
 					<int key="connectionID">100251</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">tableClicked:</string>
+						<reference key="source" ref="696691796"/>
+						<reference key="destination" ref="96862584"/>
+					</object>
+					<int key="connectionID">100252</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -2794,7 +2802,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">100251</int>
+			<int key="maxID">100252</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -2816,10 +2824,12 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>addAttribute:</string>
 							<string>removeAttribute:</string>
+							<string>tableClicked:</string>
 							<string>updateTableValues:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>NSButton</string>
@@ -2831,6 +2841,7 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>addAttribute:</string>
 							<string>removeAttribute:</string>
+							<string>tableClicked:</string>
 							<string>updateTableValues:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
@@ -2841,6 +2852,10 @@
 							</object>
 							<object class="IBActionInfo">
 								<string key="name">removeAttribute:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">tableClicked:</string>
 								<string key="candidateClassName">id</string>
 							</object>
 							<object class="IBActionInfo">
