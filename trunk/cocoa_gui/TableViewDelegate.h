@@ -52,6 +52,6 @@
 -(IBAction)tableClicked:(id)sender;
 -(IBAction)addAttribute:(id)sender;
 -(IBAction)removeAttribute:(id)sender;
-
+-(void)tableView:(NSTableView *)tableView didClickTableColumn:(NSTableColumn *)tableColumn;
 
 @end
