@@ -189,11 +189,7 @@
 #pragma mark --------------------------------
 -(void)tableView:(NSTableView *)tableView didClickTableColumn:(NSTableColumn *)tableColumn
 {
-    // Get the selected_row -
-    int selected_row = [[self tableView] selectedRow];
-    
-    // Force a click on the row -
-    [[self tableView] performClickOnCellAtColumn:0 row:selected_row];
+    NSLog(@"Monkey ...");
 }
 
 -(NSInteger)numberOfRowsInTableView:(NSTableView *)aTableView

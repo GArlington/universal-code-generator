@@ -99,7 +99,6 @@
 
 - (id)comboBoxCell:(NSComboBoxCell *)aComboBoxCell objectValueForItemAtIndex:(NSInteger)index
 {
-	    
     return [[self dataArray] objectAtIndex:index];
 }
 
@@ -152,6 +151,10 @@
         
         // Force a click?
         [view performClickOnCellAtColumn:0 row:rowIndex];
+        
+        // Enable the cell -
+        // NSComboBoxCell *cell = (NSComboBoxCell *)[view preparedCellAtColumn:1 row:rowIndex];
+        // [cell setEnabled:YES];
         
         // There *must* be a totaly better way to do this ...
 	
