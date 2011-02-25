@@ -396,7 +396,7 @@ public class OctaveMModel {
         }
         buffer.append("\n");
         buffer.append("% --------------------------------------------- \n");
-        buffer.append("% Alias the parameters -- helps with dbugging.\n");
+        buffer.append("% Alias the parameters -- helps with debugging.\n");
         buffer.append("% --------------------------------------------- \n");
         // connect the parameter names to incoming parameter vector from datafile
         ListOf parameter_list_tmp = model_wrapper.getListOfParameters();
