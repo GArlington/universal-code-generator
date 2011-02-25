@@ -1073,7 +1073,8 @@
 	
 	// Get the selected object and xml node -
 	NSOutlineView *view = (NSOutlineView *)[notification object];
-	
+	[view abortEditing];
+    
 	// Get the selected row -
 	int selectedRow = [view selectedRow];
 	
