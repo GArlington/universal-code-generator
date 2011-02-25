@@ -33,6 +33,7 @@
 - (void)updateDataArray:(NSArray *)listOfOptions tableView:(NSTableView *)tableViewPointer;
 - (void)tableSelectionChanged:(NSNotification *)notification;
 - (void)treeSelectionChanged:(NSNotification *)notification;
+- (void)tableSelectionWillChange:(NSNotification *)notification;
 
 @end
 
@@ -98,21 +99,45 @@
 
 - (id)comboBoxCell:(NSComboBoxCell *)aComboBoxCell objectValueForItemAtIndex:(NSInteger)index
 {
-	return [[self dataArray] objectAtIndex:index];
+	    
+    return [[self dataArray] objectAtIndex:index];
 }
 
 - (NSInteger)numberOfItemsInComboBoxCell:(NSComboBoxCell *)aComboBoxCell
 {
-	return [[self dataArray] count];
+    int number_of_items = [[self dataArray] count];
+    
+    return number_of_items;
 }
 
 #pragma mark -------------------------------------------
 #pragma mark - Tree/Table xml methods (populate list) -
 #pragma mark -------------------------------------------
+- (void)tableSelectionWillChange:(NSNotification *)notification
+{
+    
+    // Ok, when I get here the table selection changed -
+	// 
+	NSTableView *view = (NSTableView *)[notification object];
+	
+	// What row is selected?
+	int rowIndex = [view selectedRow];
+    
+	// Make sure we have a row selected ...
+	if (rowIndex!=-1)
+	{
+		// Ok, I have a legit selection, clear out the dataArray - the rest of the code 
+		// is about repopulating the array - 
+        
+        // Force a click?
+        [view performClickOnCellAtColumn:0 row:rowIndex];
+    }
+
+}
 - (void) tableSelectionChanged:(NSNotification *)notification
 {
 	
-	// Ok, when I get here the table selection changed -
+    // Ok, when I get here the table selection changed -
 	// 
 	NSTableView *view = (NSTableView *)[notification object];
 	
@@ -124,6 +149,9 @@
 	{
 		// Ok, I have a legit selection, clear out the dataArray - the rest of the code 
 		// is about repopulating the array - 
+        
+        // Force a click?
+        [view performClickOnCellAtColumn:0 row:rowIndex];
         
         // There *must* be a totaly better way to do this ...
 	
@@ -157,6 +185,15 @@
 			[view reloadData];
 			[strXPath release];
 		}
+        else if ([notSureWhatThisIs isEqualToString:@"required"])
+        {
+            // Clear -
+            [[self dataArray] removeAllObjects];
+            
+            // Add YES/NO -
+            [[self dataArray] addObject:@"YES"];
+            [[self dataArray] addObject:@"NO"];
+        }
         
         // Ok, these blocks of code deal with graphviz options -
         else if ([notSureWhatThisIs isEqual:@"edge_color"])

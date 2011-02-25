@@ -49,6 +49,7 @@
 
 // Ok, so let's setup an action -
 -(IBAction)updateTableValues:(NSButton *)sender;
+-(IBAction)tableClicked:(id)sender;
 -(IBAction)addAttribute:(id)sender;
 -(IBAction)removeAttribute:(id)sender;
 
