@@ -71,6 +71,8 @@
 }
 
 
+
+
 #pragma mark --------------------------------
 #pragma mark Methods to customize data cell
 #pragma mark --------------------------------
@@ -131,6 +133,11 @@
 	
 	[browserCell autorelease];
 	return browserCell;	
+}
+
+-(BOOL)outlineView:(NSOutlineView *)outlineView shouldEditTableColumn:(NSTableColumn *)tableColumn item:(id)item
+{
+    return NO;
 }
 
 
