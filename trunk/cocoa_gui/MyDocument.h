@@ -31,7 +31,7 @@
 @interface MyDocument : NSDocument
 {
 	@private
-	TranslatorWindowController *translatorWindowController;	// Custom window controller -
+	//TranslatorWindowController *translatorWindowController;	// Custom window controller -
 	
 }
 @end

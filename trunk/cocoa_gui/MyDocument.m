@@ -46,7 +46,9 @@
 -(void)dealloc
 {
 	// release my instance variables -
-	[translatorWindowController release];
+    
+    // Get the list of window controller and dealloc them?
+    
 
 	// Deallocate my super -
 	[super dealloc];
@@ -64,18 +66,11 @@
 - (void)makeWindowControllers
 {
 	
-	if (translatorWindowController==nil)
-	{
-		// Ok, we need to alloc init our custom window controller -
-		translatorWindowController = [[TranslatorWindowController alloc] init];
+    // Ok, we need to alloc init our custom window controller -
+    TranslatorWindowController *translatorWindowController = [[TranslatorWindowController alloc] init];
 		
-		// Ok, we need to add this to the list of window controllers 
-		[self addWindowController:translatorWindowController];
-	}
-	else 
-	{
-		// Not sure why I have this?
-	}
+    // Ok, we need to add this to the list of window controllers 
+    [self addWindowController:translatorWindowController];
 	
 }
 
@@ -94,7 +89,8 @@
 
     // For applications targeted for Panther or earlier systems, you should use the deprecated API -dataRepresentationOfType:. In this case you can also choose to override -fileWrapperRepresentationOfType: or -writeToFile:ofType: instead.
 
-	// Ok, from my window controller I need to get the xmlTree -
+	/*
+    // Ok, from my window controller I need to get the xmlTree -
 	NSXMLDocument *xmlDocument = [[translatorWindowController xmlTreeModel] xmlDocument];
 	if (xmlDocument!=nil)
 	{
@@ -102,7 +98,9 @@
 	}
 	else {
 		return nil;
-	}
+	}*/
+    
+    return nil;
 }
 
 - (BOOL)readFromData:(NSData *)data ofType:(NSString *)typeName error:(NSError **)outError
@@ -112,7 +110,7 @@
     // You can also choose to override -readFromFileWrapper:ofType:error: or -readFromURL:ofType:error: instead. 
     
     // For applications targeted for Panther or earlier systems, you should use the deprecated API -loadDataRepresentation:ofType. In this case you can also choose to override -readFromFile:ofType: or -loadFileWrapperRepresentation:ofType: instead.
-    
+    /*
     if (data!=nil)
 	{
 		// Get window controller -
@@ -134,6 +132,7 @@
 		}
 		
 	}
+     */
 	
 	
 	

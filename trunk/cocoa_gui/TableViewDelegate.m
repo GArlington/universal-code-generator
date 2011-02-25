@@ -52,6 +52,7 @@
 @synthesize tableData;
 @synthesize selectedXMLNode;
 @synthesize window;
+@synthesize outlineView;
 
 #pragma mark --------------------------------
 #pragma mark init and dealloc
@@ -81,6 +82,7 @@
 	// release my outlets -
 	self.tableView = nil;
 	self.window = nil;
+    self.outlineView = nil;
 	
 	// deallocate my super ...
 	[super dealloc];
@@ -132,8 +134,11 @@
 {
 	// Ok, when I get here -- the tree node selection has changed
 	// Get the selected object and xml node -
-	NSOutlineView *view = (NSOutlineView *)[notification object];
+	// NSOutlineView *view = (NSOutlineView *)[notification object];
 	
+    // Local version of outline view - this way we don't respond to another window controllers tree -
+    NSOutlineView *view = [self outlineView];
+    
 	// Get the selected row -
 	int selectedRow = [view selectedRow];
 	
