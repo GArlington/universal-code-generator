@@ -36,10 +36,12 @@
 -(void)setup;
 -(void)openPanelDidEnd:(NSOpenPanel *)openPanel returnCode:(int)returnCode contextInfo:(void *)contextInfo;
 -(void)createXMLDocumentFromFile:(NSString *)file;
+
 -(void)popupButtonSelected:(NSNotification *)notification;
 -(void)treeNodeDataChanged:(NSNotification *)notifcation;
 -(void)treeSelectionChanged:(NSNotification *)notification;
 -(void)codeGenerationCompleted:(NSNotification *)notification;
+
 -(void)removeTreeNodeAlertEnded:(NSAlert *)alert code:(int)choice context:(void *)v;
 -(void)savePanelDidEnd:(NSSavePanel *)savePanel returnCode:(int)returnCode contextInfo:(void *)contextInfo;
 -(void)executeCodeGenJob;
@@ -1129,8 +1131,11 @@
 	// Ok, so when I get here the tree selection has changed -
 	
 	// Get the selected object and xml node -
-	NSOutlineView *view = (NSOutlineView *)[notification object];
-	[view abortEditing];
+	//NSOutlineView *view = (NSOutlineView *)[notification object];
+	
+    // Get local tree on this window -
+    NSOutlineView *view = [self treeView];
+    [view abortEditing];
     
 	// Get the selected row -
 	int selectedRow = [view selectedRow];

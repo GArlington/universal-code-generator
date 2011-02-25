@@ -33,7 +33,8 @@
 	@private
 	IBOutlet NSTableView *tableView;				// Pointer to the table -
 	IBOutlet NSWindow *window;						// Pointer to the window -
-	TableComboBoxDataSource *comboDataSource;		// ComboBox data source -
+	IBOutlet NSOutlineView *outlineView;            // Pointer to the 
+    TableComboBoxDataSource *comboDataSource;		// ComboBox data source -
 	NSMutableArray *tableData;						// Array holding table data -
 	NSXMLElement *selectedXMLNode;					// The selected *data model node* (not the GUI node) 
 
@@ -45,7 +46,7 @@
 @property (retain) NSMutableArray *tableData;
 @property (retain) NSXMLElement *selectedXMLNode;
 @property (retain) NSWindow *window;
-
+@property (retain) NSOutlineView *outlineView;
 
 // Ok, so let's setup an action -
 -(IBAction)updateTableValues:(NSButton *)sender;
