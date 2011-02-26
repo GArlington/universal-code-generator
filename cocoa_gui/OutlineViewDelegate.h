@@ -28,16 +28,22 @@
 #import <Cocoa/Cocoa.h>
 #import "TreeIconModel.h"
 
+
+
 @interface OutlineViewDelegate : NSObject <NSOutlineViewDelegate> {
 
 	@private
 	TreeIconModel *iconModel;						// Icon model -
+    IBOutlet NSOutlineView *treeView;               // Pointer to the specification tree -
+    
 }
 
 @property (retain) TreeIconModel *iconModel;
+@property (retain) NSOutlineView *treeView;
 
 // Called to customize tree cells -
 -(NSCell *)outlineView:(NSOutlineView *)outlineView dataCellForTableColumn:(NSTableColumn *)tableColumn item:(id)item;
 -(BOOL)outlineView:(NSOutlineView *)outlineView shouldEditTableColumn:(NSTableColumn *)tableColumn item:(id)item;
+
 
 @end

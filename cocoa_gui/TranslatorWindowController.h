@@ -99,5 +99,4 @@
 -(void)createXMLDocumentFromFile:(NSString *)file;
 -(void)createXMLDocumentFromData:(NSData *)data;
 
-
 @end

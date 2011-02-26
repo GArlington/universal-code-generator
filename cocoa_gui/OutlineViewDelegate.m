@@ -28,6 +28,8 @@
 #import "OutlineViewDelegate.h"
 #import "NSXMLNode_Category.h"
 
+// Define the node type for drag and drop -
+#define UNIVERSAL_TREE_NODE_TYPE    @"MyUNIVERSALTreeNodeTypePboardType"
 
 // Private utility methods -
 @interface OutlineViewDelegate (hidden)
@@ -38,7 +40,9 @@
 
 @implementation OutlineViewDelegate
 
+// Synthesize statements -
 @synthesize iconModel;
+@synthesize treeView;
 
 #pragma mark --------------------------------
 #pragma mark init and dealloc
@@ -59,6 +63,8 @@
 	// release my instance variables -
 	[iconModel release];
 	
+    // Release my tree view -
+    self.treeView = nil;
 	
 	// dellocate my parent -
 	[super dealloc];
@@ -68,6 +74,13 @@
 {
 	// Initialize the system icons -
 	self.iconModel = [TreeIconModel sharedInstance];
+    
+    // Register the tree view for drag and drop activity?
+	[[self treeView] registerForDraggedTypes:[NSArray arrayWithObjects:UNIVERSAL_TREE_NODE_TYPE,NSPasteboardTypeString, NSPasteboardTypePNG,nil]];
+	[[self treeView] setDraggingSourceOperationMask:NSDragOperationEvery forLocal:YES];
+	[[self treeView] setDraggingSourceOperationMask:NSDragOperationEvery forLocal:NO];
+	[[self treeView] setVerticalMotionCanBeginDrag:YES];
+	[[self treeView] setAutoresizesOutlineColumn:NO];
 }
 
 
@@ -139,6 +152,136 @@
 {
     return NO;
 }
+
+#pragma mark ------------------------------------------
+#pragma mark  - Drag and Drop methods -
+#pragma mark ------------------------------------------
+- (BOOL)outlineView:(NSOutlineView *)outlineView isGroupItem:(id)item 
+{
+	BOOL flag = NO;
+	NSXMLElement *node = (NSXMLElement *)[item representedObject];
+	
+	if ([node isLeaf])
+	{
+		flag = NO;
+	}
+	else {
+		flag = NO;
+	}
+	
+	
+	return flag;
+}
+
+-(BOOL)outlineView:(NSOutlineView *)ov shouldSelectItem:(id)item
+{
+	return YES;
+}
+
+-(void)outlineViewAction:(id)sender
+{
+}
+
+-(NSDragOperation)outlineView:(NSOutlineView *)ov validateDrop:(id <NSDraggingInfo>)info proposedItem:(id)item proposedChildIndex:(NSInteger)childIndex
+{
+	NSDragOperation result = NSDragOperationCopy;
+	return result;
+}
+
+
+-(BOOL)outlineView:(NSOutlineView *)outlineView writeItems:(NSArray *)items toPasteboard:(NSPasteboard *)pboard
+{
+	
+	// Get the selected item -
+    
+    NSLog(@"Drag...started...");
+    
+	// Provide data for our custom type, and simple NSStrings.
+    [pboard declareTypes:[NSArray arrayWithObjects:UNIVERSAL_TREE_NODE_TYPE,NSStringPboardType, nil] owner:self];
+	
+    // the actual data doesn't matter since SIMPLE_BPOARD_TYPE drags aren't recognized by anyone but us!.
+    [pboard setData:[NSData data] forType:UNIVERSAL_TREE_NODE_TYPE]; 
+    
+    // Put string data on the pboard... notice you can drag into TextEdit!
+    [pboard setString:@"UNIVERSAL_SPECIFICATION_TREE_NODE" forType:UNIVERSAL_TREE_NODE_TYPE];
+	
+	// return yes -
+	return YES;
+}
+
+-(BOOL)shouldCollapseAutoExpandedItemsForDeposited:(BOOL)deposited
+{
+	return YES;
+}
+
+
+-(BOOL)outlineView:(NSOutlineView *)ov acceptDrop:(id <NSDraggingInfo>)info item:(id)item childIndex:(NSInteger)childIndex
+{
+	// Method attributes -
+	BOOL flag = NO;
+	
+	
+	NSLog(@"Going to accept the drop for %@",[item description]);
+	
+	// Check to see if we have a legal childIndex (no negatives)
+	if (childIndex!=-1)
+	{
+		// Get the posterboard -
+		NSPasteboard *pb = [NSPasteboard pasteboardWithName:NSDragPboard];
+		
+		// Get the types -
+		if (pb!=nil)
+		{
+			// Get the array of types -
+			NSArray *types = [pb types];
+			
+            // Check to see if we have the correct type -
+			if ([types containsObject:UNIVERSAL_TREE_NODE_TYPE])
+			{
+				// Get the string -
+				//NSString *value = [pb stringForType:UNIVERSAL_TREE_NODE_TYPE];
+				
+				// Ok, so when I get here -- I have the *string* of the type that I need to create ... now what?
+				
+				// Ok, first create a new xml element -
+				//NSXMLElement *dropNode = [[[NSXMLElement alloc] initWithName:value] autorelease];
+				
+				// Ok, so I need to determine if I the guy has an attribute -
+				// 
+				
+				// Setup the XPath query string -
+				NSMutableString *strXPath = [[NSMutableString alloc] initWithCapacity:140];
+                
+				// Add the dropNode to the parent at index?
+				//[[self s] insertChild:dropNode atIndex:childIndex];
+				
+				// Ok, so I don't have access to the model - what can I do? I sent a notfication to refresh my pointer to the tree .. I should 
+				// figure out how to do this with the controller...all of this should be doable w/the OutlineController ...
+				NSString *MyNotificationName = @"RefreshTreeModel";
+				NSNotification *myNotification = [NSNotification notificationWithName:MyNotificationName object:nil]; 
+				
+				// Send an update -
+				[[NSNotificationQueue defaultQueue] enqueueNotification:myNotification postingStyle:NSPostNow coalesceMask:NSNotificationCoalescingOnName forModes:nil];
+				
+				// What did we get?
+				//NSLog(@"Accept drop ...%@ at index = %d of parent %@",value,childIndex,[[self selectedXMLNode] displayName]);
+				flag = YES;
+				
+				// Release the xpath string -
+				[strXPath release];
+			}
+		}
+	}
+	
+	// return the boolean flag -
+	return flag;
+}
+
+- (void)outlineView:(NSOutlineView *)outlineView didDragTableColumn:(NSTableColumn *)tableColumn
+{
+    NSLog(@"Starting to drag ...");
+}
+
 
 
 @end
