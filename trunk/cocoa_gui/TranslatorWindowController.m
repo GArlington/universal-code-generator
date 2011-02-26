@@ -29,7 +29,6 @@
 #import "NSXMLElement_Category.h"
 
 
-
 // Private utility methods -
 @interface TranslatorWindowController (hidden)
 
@@ -41,6 +40,7 @@
 -(void)treeNodeDataChanged:(NSNotification *)notifcation;
 -(void)treeSelectionChanged:(NSNotification *)notification;
 -(void)codeGenerationCompleted:(NSNotification *)notification;
+-(void)refreshTreeModel:(NSNotification *)notifcation;
 
 -(void)removeTreeNodeAlertEnded:(NSAlert *)alert code:(int)choice context:(void *)v;
 -(void)savePanelDidEnd:(NSSavePanel *)savePanel returnCode:(int)returnCode contextInfo:(void *)contextInfo;
@@ -152,7 +152,8 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(treeNodeDataChanged:) name:@"TreeNodeDataChanged" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(treeSelectionChanged:) name:NSOutlineViewSelectionDidChangeNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(codeGenerationCompleted:) name:NSTaskDidTerminateNotification object:nil];
-	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTreeModel:) name:@"RefreshTreeModel" object:nil];
+	    
 	// Load the popup mapping tree -
 	NSString* templateName = [[NSBundle mainBundle] pathForResource:@"Templates" ofType:@"xml"];
 	NSURL *fileURL = [NSURL fileURLWithPath:templateName];
@@ -178,10 +179,17 @@
 	
 	// Ok, so we need to have the window pop-up when I start -
 	[[self window] makeKeyAndOrderFront:nil];
+    [[self window] setReleasedWhenClosed:YES];
     
     // Load the window controller -
     self.customSheetController = [[MyCustomSheetController alloc] initWithWindow:[self window]];
     [[self customSheetController] setApplicationWindow:[self window]];
+    
+    // Setup D & D for the tree -
+    [[self treeView] registerForDraggedTypes:[NSArray arrayWithObjects:NSPasteboardTypeString,NSPasteboardTypePNG,nil]];
+    [[self treeView] setDraggingSourceOperationMask:NSDragOperationEvery forLocal:NO];
+    [[self treeView] setAutoresizesOutlineColumn:NO];
+
 }
 
 #pragma mark --------------------------------
@@ -1100,6 +1108,13 @@
 	
 }
 
+-(void)refreshTreeModel:(NSNotification *)notifcation
+{    
+	// Update the tree pointer -
+	self.xmlTreeModel.xmlDocument = [[self selectedXMLNode] rootDocument];
+}
+
+
 -(void)codeGenerationCompleted:(NSNotification *)notification
 {
 	// Ok, reenable the code gen button -
@@ -1113,17 +1128,31 @@
 
 -(void)treeNodeDataChanged:(NSNotification *)notifcation
 {
-	// Ok, grab the window and set the documented edited flag -
-	[[self window] setDocumentEdited:YES];
-	
-	// Ok, the ccmlTree did load. We need to change the enabled status of the save button -
-	[[self saveAsButton] setEnabled:YES];
-	
-	// Update the tree reference -
-	if ([self selectedXMLNode]!=nil)
-	{
-		self.xmlTreeModel.xmlDocument = [[self selectedXMLNode] rootDocument];
-	}
+	// Get the window -
+    NSWindow *tmpWindow = (NSWindow *)[notifcation object];
+    
+    // Get the titles of the windows?
+    NSString *tmpWindowTitle = [tmpWindow title];
+    NSString *myWindowTitle = [[self window] title];
+    
+    if ([myWindowTitle isEqualToString:tmpWindowTitle])
+    {
+        // Ok, grab the window and set the documented edited flag -
+        [[self window] setDocumentEdited:YES];
+        
+        // Ok, the ccmlTree did load. We need to change the enabled status of the save button -
+        [[self saveAsButton] setEnabled:YES];
+        
+        // Update the tree reference -
+        if ([self selectedXMLNode]!=nil)
+        {
+            self.xmlTreeModel.xmlDocument = [[self selectedXMLNode] rootDocument];
+        }
+    }
+    else
+    {
+        
+    }
 }
 
 -(void)treeSelectionChanged:(NSNotification *)notification
@@ -1157,4 +1186,5 @@
 		}
 	}
 }
+
 @end

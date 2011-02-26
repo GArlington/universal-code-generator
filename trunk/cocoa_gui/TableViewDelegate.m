@@ -267,7 +267,7 @@
 	
 	// Have the tree reload data -
 	NSString *MyNotificationName = @"TreeNodeDataChanged";
-	NSNotification *myNotification = [NSNotification notificationWithName:MyNotificationName object:nil]; 
+	NSNotification *myNotification = [NSNotification notificationWithName:MyNotificationName object:[self window]]; 
 	
 	// Send an update -
 	[[NSNotificationQueue defaultQueue] enqueueNotification:myNotification postingStyle:NSPostNow coalesceMask:NSNotificationCoalescingOnName forModes:nil];
@@ -622,7 +622,7 @@
 			
 			// Fire an event -
 			NSString *MyNotificationName = @"TreeNodeDataChanged";
-			NSNotification *myNotification = [NSNotification notificationWithName:MyNotificationName object:nil]; 
+			NSNotification *myNotification = [NSNotification notificationWithName:MyNotificationName object:[self window]]; 
 			[[NSNotificationQueue defaultQueue] enqueueNotification:myNotification postingStyle:NSPostNow coalesceMask:NSNotificationCoalescingOnName forModes:nil];
 		}
 		
@@ -669,7 +669,7 @@
 			
 			// Fire an event -
 			NSString *MyNotificationName = @"TreeNodeDataChanged";
-			NSNotification *myNotification = [NSNotification notificationWithName:MyNotificationName object:nil]; 
+			NSNotification *myNotification = [NSNotification notificationWithName:MyNotificationName object:[self window]]; 
 			[[NSNotificationQueue defaultQueue] enqueueNotification:myNotification postingStyle:NSPostNow coalesceMask:NSNotificationCoalescingOnName forModes:nil];
 		}
 		
