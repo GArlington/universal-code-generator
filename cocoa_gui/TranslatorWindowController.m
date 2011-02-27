@@ -86,6 +86,14 @@
 #pragma mark --------------------------------
 #pragma mark init and dealloc methods
 #pragma mark --------------------------------
+// fire up this mofo ..
+- (void)awakeFromNib
+{
+	// Ok, I'm out of the "nib" -- 
+	[self setup];
+	
+}
+
 -(id) init
 {
 	// Initialize me ...
@@ -185,11 +193,11 @@
     self.customSheetController = [[MyCustomSheetController alloc] initWithWindow:[self window]];
     [[self customSheetController] setApplicationWindow:[self window]];
     
-    // Setup D & D for the tree -
-    [[self treeView] registerForDraggedTypes:[NSArray arrayWithObjects:NSPasteboardTypeString,NSPasteboardTypePNG,nil]];
+    // Register the tree view for drag and drop activity?
+	[[self treeView] registerForDraggedTypes:[NSArray arrayWithObjects:NSPasteboardTypeString,NSPasteboardTypePNG,nil]];
+    [[self treeView] setDraggingSourceOperationMask:NSDragOperationEvery forLocal:YES];
     [[self treeView] setDraggingSourceOperationMask:NSDragOperationEvery forLocal:NO];
-    [[self treeView] setAutoresizesOutlineColumn:NO];
-
+    [[self treeView] setAutoresizesOutlineColumn:NO];    
 }
 
 #pragma mark --------------------------------

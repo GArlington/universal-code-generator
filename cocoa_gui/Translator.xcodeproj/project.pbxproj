@@ -31,6 +31,7 @@
 		AD3D350D13030FB100F7D2F5 /* SUNDIALS.xml in Resources */ = {isa = PBXBuildFile; fileRef = AD3D350C13030FB100F7D2F5 /* SUNDIALS.xml */; };
 		AD41297F130E347A00C5F0E8 /* FBA.xml in Resources */ = {isa = PBXBuildFile; fileRef = AD41297E130E347A00C5F0E8 /* FBA.xml */; };
 		AD6B1BDB1304A62D00E464D7 /* GRAPHVIZ.xml in Resources */ = {isa = PBXBuildFile; fileRef = AD6B1BDA1304A62D00E464D7 /* GRAPHVIZ.xml */; };
+		AD7BC18D13196D7F00A56512 /* DDTreeNodeProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = AD7BC18C13196D7F00A56512 /* DDTreeNodeProxy.m */; };
 		AD8408A812FF274D00B2A270 /* C-GSL.xml in Resources */ = {isa = PBXBuildFile; fileRef = AD8408A712FF274D00B2A270 /* C-GSL.xml */; };
 		AD8408AA12FF7BC400B2A270 /* MyCustomSheet.xib in Resources */ = {isa = PBXBuildFile; fileRef = AD8408A912FF7BC400B2A270 /* MyCustomSheet.xib */; };
 		AD8408B312FF7F5600B2A270 /* MyCustomSheetController.m in Sources */ = {isa = PBXBuildFile; fileRef = AD8408B212FF7F5500B2A270 /* MyCustomSheetController.m */; };
@@ -124,6 +125,8 @@
 		AD3D350C13030FB100F7D2F5 /* SUNDIALS.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = SUNDIALS.xml; sourceTree = "<group>"; };
 		AD41297E130E347A00C5F0E8 /* FBA.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = FBA.xml; sourceTree = "<group>"; };
 		AD6B1BDA1304A62D00E464D7 /* GRAPHVIZ.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = GRAPHVIZ.xml; sourceTree = "<group>"; };
+		AD7BC18B13196D7F00A56512 /* DDTreeNodeProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDTreeNodeProxy.h; sourceTree = "<group>"; };
+		AD7BC18C13196D7F00A56512 /* DDTreeNodeProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDTreeNodeProxy.m; sourceTree = "<group>"; };
 		AD8408A712FF274D00B2A270 /* C-GSL.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "C-GSL.xml"; sourceTree = "<group>"; };
 		AD8408A912FF7BC400B2A270 /* MyCustomSheet.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyCustomSheet.xib; sourceTree = "<group>"; };
 		AD8408B112FF7F5400B2A270 /* MyCustomSheetController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyCustomSheetController.h; sourceTree = "<group>"; };
@@ -309,6 +312,8 @@
 				AD8E885D12E8E9E10055C601 /* XMLAttributeWrapper.m */,
 				AD8E8C7B12EC92E60055C601 /* TreeNodeNamingModel.h */,
 				AD8E8C7C12EC92E60055C601 /* TreeNodeNamingModel.m */,
+				AD7BC18B13196D7F00A56512 /* DDTreeNodeProxy.h */,
+				AD7BC18C13196D7F00A56512 /* DDTreeNodeProxy.m */,
 			);
 			name = model;
 			sourceTree = "<group>";
@@ -551,6 +556,7 @@
 				AD8E8A7B12E9FD7C0055C601 /* TableComboBoxDataSource.m in Sources */,
 				AD8E8C7D12EC92E60055C601 /* TreeNodeNamingModel.m in Sources */,
 				AD8408B312FF7F5600B2A270 /* MyCustomSheetController.m in Sources */,
+				AD7BC18D13196D7F00A56512 /* DDTreeNodeProxy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

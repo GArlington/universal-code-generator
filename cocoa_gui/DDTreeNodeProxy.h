@@ -1,4 +1,6 @@
-// Copyright (c) 2011 Varner Lab
+// Copyright (c) 2011 Varnerlab
+// Chemical and Biomolecular Engineering,
+// Cornell University
 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -17,36 +19,27 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-
 //
-//  OutlineViewDelegate.h
+//  DDTreeNodeProxy.h
 //  Translator
 //
-//  Created by Jeffrey Varner on 1/20/11.
+//  Created by Jeffrey Varner on 2/26/11.
+//
+
+#import <Foundation/Foundation.h>
 
 
-#import <Cocoa/Cocoa.h>
-#import "TreeIconModel.h"
-#import "DDTreeNodeProxy.h"
+@interface DDTreeNodeProxy : NSObject <NSCoding> {
 
-
-
-@interface OutlineViewDelegate : NSObject <NSOutlineViewDelegate> {
-
-	@private
-	TreeIconModel *iconModel;						// Icon model -
-    IBOutlet NSOutlineView *treeView;               // Pointer to the specification tree -
-    NSXMLElement *selectedXMLNode;
+    @private
+    NSCoder *coderInstance;
+    NSXMLElement *xmlNode;
+    
     
 }
 
-@property (retain) TreeIconModel *iconModel;
-@property (retain) NSOutlineView *treeView;
-@property (retain) NSXMLElement *selectedXMLNode;
-
-// Called to customize tree cells -
--(NSCell *)outlineView:(NSOutlineView *)outlineView dataCellForTableColumn:(NSTableColumn *)tableColumn item:(id)item;
--(BOOL)outlineView:(NSOutlineView *)outlineView shouldEditTableColumn:(NSTableColumn *)tableColumn item:(id)item;
+@property (retain) NSCoder *coderInstance;
+@property (retain) NSXMLElement *xmlNode;
 
 
 @end
