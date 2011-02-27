@@ -35,6 +35,7 @@
 @interface OutlineViewDelegate (hidden)
 
 -(void)setup;
+-(void)treeSelectionChanged:(NSNotification *)notification;
 
 @end
 
@@ -43,10 +44,17 @@
 // Synthesize statements -
 @synthesize iconModel;
 @synthesize treeView;
+@synthesize selectedXMLNode;
 
 #pragma mark --------------------------------
 #pragma mark init and dealloc
 #pragma mark --------------------------------
+-(void)awakeFromNib
+{
+	// Call the setup -
+	[self setup];
+}
+
 -(id)init
 {
 	self = [super init];
@@ -62,6 +70,7 @@
 {
 	// release my instance variables -
 	[iconModel release];
+    [selectedXMLNode release];
 	
     // Release my tree view -
     self.treeView = nil;
@@ -75,14 +84,47 @@
 	// Initialize the system icons -
 	self.iconModel = [TreeIconModel sharedInstance];
     
+    // Register for notifications -
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(treeSelectionChanged:) name:NSOutlineViewSelectionDidChangeNotification object:nil];
+    
+    
     // Register the tree view for drag and drop activity?
 	[[self treeView] registerForDraggedTypes:[NSArray arrayWithObjects:UNIVERSAL_TREE_NODE_TYPE,NSPasteboardTypeString, NSPasteboardTypePNG,nil]];
 	[[self treeView] setDraggingSourceOperationMask:NSDragOperationEvery forLocal:YES];
-	[[self treeView] setDraggingSourceOperationMask:NSDragOperationEvery forLocal:NO];
 	[[self treeView] setVerticalMotionCanBeginDrag:YES];
 	[[self treeView] setAutoresizesOutlineColumn:NO];
 }
 
+
+#pragma mark --------------------------------
+#pragma mark Notifications methods -
+#pragma mark --------------------------------
+-(void)treeSelectionChanged:(NSNotification *)notification
+{
+	// Ok, so when I get here the tree selection has changed -
+	
+    // Get local tree on this window -
+    NSOutlineView *view = [self treeView];
+    [view abortEditing];
+    
+	// Get the selected row -
+	int selectedRow = [view selectedRow];
+	
+	if (selectedRow!=-1)
+	{
+		
+		// Get the treeNode -
+		NSTreeNode *node = (NSTreeNode *)[view itemAtRow:selectedRow];
+		
+		// Check to see if we call representedObject?
+		if ([node respondsToSelector:@selector(representedObject)])
+		{
+			// Set my pointer to currently selected node -
+            self.selectedXMLNode = (NSXMLElement *)[node representedObject];
+            
+        }
+	}
+}
 
 
 
@@ -104,7 +146,7 @@
 	[browserCell setLeaf:YES];
 	
 	// Set the size -
-	NSSize size = NSMakeSize (22, 22);
+	NSSize size = NSMakeSize (21, 21);
 	
 	// Ok, we need to check to see if a tag has a special icon -
 	NSString *specialTag = [[self iconModel] getIconKeyForTagName:[tmpNode name]];
@@ -130,6 +172,7 @@
 			NSImage *tmpImage = [[self iconModel] getIconForKey:@"ROOT"];
 			[tmpImage setSize:size];
 			[browserCell setImage:tmpImage];
+            
 			
 			//[browserCell setImage:[[self iconTable] valueForKey:@"FOLDER"]];
 		}
@@ -151,6 +194,22 @@
 -(BOOL)outlineView:(NSOutlineView *)outlineView shouldEditTableColumn:(NSTableColumn *)tableColumn item:(id)item
 {
     return NO;
+}
+
+- (void)outlineView:(NSOutlineView *)outlineView willDisplayCell:(id)cell forTableColumn:(NSTableColumn *)tableColumn item:(id)item
+{
+    // Cast 2 the correct type -
+    NSBrowserCell *browserCell = (NSBrowserCell *)cell;
+    
+    // Ok
+    if ([browserCell isHighlighted])
+    {
+        [browserCell setBackgroundStyle:NSBackgroundStyleDark];
+    }
+    else
+    {
+        [browserCell setBackgroundStyle:NSBackgroundStyleLight];
+    }
 }
 
 #pragma mark ------------------------------------------
@@ -192,18 +251,16 @@
 -(BOOL)outlineView:(NSOutlineView *)outlineView writeItems:(NSArray *)items toPasteboard:(NSPasteboard *)pboard
 {
 	
-	// Get the selected item -
-    
-    NSLog(@"Drag...started...");
-    
 	// Provide data for our custom type, and simple NSStrings.
-    [pboard declareTypes:[NSArray arrayWithObjects:UNIVERSAL_TREE_NODE_TYPE,NSStringPboardType, nil] owner:self];
+    [pboard declareTypes:[NSArray arrayWithObjects:UNIVERSAL_TREE_NODE_TYPE, nil] owner:self];
 	
-    // the actual data doesn't matter since SIMPLE_BPOARD_TYPE drags aren't recognized by anyone but us!.
-    [pboard setData:[NSData data] forType:UNIVERSAL_TREE_NODE_TYPE]; 
+    // Archive the data from the selectedXMLNode -
+    DDTreeNodeProxy *proxy = [[DDTreeNodeProxy alloc] init];
+    [proxy setXmlNode:[self selectedXMLNode]];
+    [pboard setData:[NSKeyedArchiver archivedDataWithRootObject:proxy] forType:UNIVERSAL_TREE_NODE_TYPE]; 
     
-    // Put string data on the pboard... notice you can drag into TextEdit!
-    [pboard setString:@"UNIVERSAL_SPECIFICATION_TREE_NODE" forType:UNIVERSAL_TREE_NODE_TYPE];
+    // release the proxy -
+    [proxy autorelease];
 	
 	// return yes -
 	return YES;
@@ -220,15 +277,13 @@
 	// Method attributes -
 	BOOL flag = NO;
 	
-	
-	NSLog(@"Going to accept the drop for %@",[item description]);
-	
+
 	// Check to see if we have a legal childIndex (no negatives)
 	if (childIndex!=-1)
 	{
 		// Get the posterboard -
-		NSPasteboard *pb = [NSPasteboard pasteboardWithName:NSDragPboard];
-		
+		NSPasteboard *pb = [info draggingPasteboard];
+        		
 		// Get the types -
 		if (pb!=nil)
 		{
@@ -238,22 +293,22 @@
             // Check to see if we have the correct type -
 			if ([types containsObject:UNIVERSAL_TREE_NODE_TYPE])
 			{
-				// Get the string -
-				//NSString *value = [pb stringForType:UNIVERSAL_TREE_NODE_TYPE];
-				
 				// Ok, so when I get here -- I have the *string* of the type that I need to create ... now what?
-				
-				// Ok, first create a new xml element -
-				//NSXMLElement *dropNode = [[[NSXMLElement alloc] initWithName:value] autorelease];
-				
-				// Ok, so I need to determine if I the guy has an attribute -
-				// 
-				
-				// Setup the XPath query string -
-				NSMutableString *strXPath = [[NSMutableString alloc] initWithCapacity:140];
+                // Get the data in the drop -
+                NSData *dropData = [pb dataForType:UNIVERSAL_TREE_NODE_TYPE];
                 
+                // Create a new proxy -
+                DDTreeNodeProxy *treeNodeProxy = [NSKeyedUnarchiver unarchiveObjectWithData:dropData];
+                
+				// Ok, get the xml node from the proxy -
+				NSXMLElement *dropNode = [treeNodeProxy xmlNode];
+                               
 				// Add the dropNode to the parent at index?
-				//[[self s] insertChild:dropNode atIndex:childIndex];
+                // Get my parent node and index -
+				NSXMLElement *parent = (NSXMLElement *)[item representedObject];
+				
+				// Add the copy to the end of the list -
+				[parent insertChild:dropNode atIndex:childIndex];
 				
 				// Ok, so I don't have access to the model - what can I do? I sent a notfication to refresh my pointer to the tree .. I should 
 				// figure out how to do this with the controller...all of this should be doable w/the OutlineController ...
@@ -266,9 +321,6 @@
 				// What did we get?
 				//NSLog(@"Accept drop ...%@ at index = %d of parent %@",value,childIndex,[[self selectedXMLNode] displayName]);
 				flag = YES;
-				
-				// Release the xpath string -
-				[strXPath release];
 			}
 		}
 	}
