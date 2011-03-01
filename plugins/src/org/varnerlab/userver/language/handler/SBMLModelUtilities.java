@@ -1189,7 +1189,8 @@ public class SBMLModelUtilities {
 		String strPath = _propTable.getProperty("PATH_NETWORK_DIRECTORY")+"/"+_propTable.getProperty("OUTPUT_SPECIES_FILENAME");
         GIOL.write(strPath,buffer);
 	}
-		
+	
+	
 	
 	// Build the stoichiometric matrix -
     public static void buildStoichiometricMatrix(double[][] dblSTMatrix,Model model_wrapper,Vector<Reaction> listRates,Vector<Species> listSpecies) throws Exception
@@ -1270,6 +1271,86 @@ public class SBMLModelUtilities {
             }
         }
     }
+    
+    // Build the stoichiometric matrix -
+    public static void buildStoichiometricMatrixFloat(float[][] dblSTMatrix,Model model_wrapper,Vector<Reaction> listRates,Vector<Species> listSpecies) throws Exception
+    {
+        
+        // Get the dimension of the system -
+        int NUMBER_OF_SPECIES = 0; 
+        int NUMBER_OF_RATES = 0;
+        
+        // Get the system dimension -
+        NUMBER_OF_SPECIES = (int)listSpecies.size();
+        NUMBER_OF_RATES = (int)listRates.size(); 
+        
+        System.out.println("Dimension "+NUMBER_OF_SPECIES+" by "+NUMBER_OF_RATES);
+        
+        // Go through and put everything as zeros by default -
+        for (int scounter=0;scounter<NUMBER_OF_SPECIES;scounter++)
+        {
+            for (int rcounter=0;rcounter<NUMBER_OF_RATES;rcounter++)
+            {
+                dblSTMatrix[scounter][rcounter]=0;
+            }
+        }
+        
+        // ListOf listSpecies = model_wrapper.getListOfSpecies();
+        for (int scounter=0;scounter<NUMBER_OF_SPECIES;scounter++)
+        {
+            // Get the species reference -
+            Species species = (Species)listSpecies.get(scounter);
+            String strSpecies = species.getId();
+            
+            System.out.println("Processing species  - "+strSpecies);
+            
+            // Ok, I need to go through the rates and determine if this species is involved -
+            for (int rcounter=0;rcounter<NUMBER_OF_RATES;rcounter++)
+            {
+                // Get the Reaction object -
+                Reaction rxn_obj = (Reaction)listRates.get(rcounter);
+                
+                // Get the 'radius' of this rate -
+                int NUMBER_OF_REACTANTS = (int)rxn_obj.getNumReactants();
+                int NUMBER_OF_PRODUCTS = (int)rxn_obj.getNumProducts();
+                
+                // go through the reactants of this reaction -
+                for (int reactant_index=0;reactant_index<NUMBER_OF_REACTANTS;reactant_index++)
+                {
+                    // Get the species reference -
+                    SpeciesReference species_ref = rxn_obj.getReactant(reactant_index);
+                    String strReactant = species_ref.getSpecies();
+                          
+                    if (strReactant.equalsIgnoreCase(strSpecies))
+                    {       
+                    	float tmp = (float)species_ref.getStoichiometry();
+                        if (tmp>=0.0)
+                        {
+                            dblSTMatrix[scounter][rcounter]=-1*tmp;
+                        }
+                        else
+                        {
+                            dblSTMatrix[scounter][rcounter]=tmp;
+                        }
+                    }
+                    
+                }
+                
+                // go through the products of this reaction -
+                for (int product_index=0;product_index<NUMBER_OF_PRODUCTS;product_index++)
+                {
+                    // Get the species reference -
+                    SpeciesReference species_ref = rxn_obj.getProduct(product_index);
+                    String strProduct = species_ref.getSpecies();
+                     
+                    if (strProduct.equalsIgnoreCase(strSpecies))
+                    {
+                        dblSTMatrix[scounter][rcounter]=(float)species_ref.getStoichiometry();
+                    }
+                }
+            }
+        }
+    }
 	
 	// check for reversible rates - insert *directly after* the reversible rate  
     public static void convertReversibleRates(Model model_wrapper,Vector<Reaction> vecReactions) throws Exception
@@ -1290,7 +1371,7 @@ public class SBMLModelUtilities {
                 // If the rate is reversible then I need to split -
            
                 // Create a new reaction object -
-                Reaction rxn_new = new Reaction(2,4);
+                Reaction rxn_new = model_wrapper.createReaction();
                 String strNewName = "_REVERSE_"+strOldName;
                 String strNewID = "_REVERSE_"+strOldID;
                 rxn_new.setName(strNewName);
