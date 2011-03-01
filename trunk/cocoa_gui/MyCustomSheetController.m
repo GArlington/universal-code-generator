@@ -85,7 +85,11 @@
 
 - (void)setup
 {
+    // Populate the value of the textLabel -
+    [[self textLabel] setStringValue:[[self selectedXMLNode] name]];
     
+    // Change the title on the window -
+    [[self window] setTitle:@"Edit the name of the tree node ..."];
 }
 
 #pragma mark -----------------------------------------------
@@ -99,16 +103,11 @@
         //Check the myCustomSheet instance variable to make sure the custom sheet does not already exist.
         [NSBundle loadNibNamed: @"MyCustomSheet" owner: self];
         
+        // Call setup -
+        [self setup];
         
-        /*
-        // Ok, so we want this window to act as a sheet -
-        [NSApp beginSheet: [self window]
-           modalForWindow: [self applicationWindow]
-            modalDelegate: self
-           didEndSelector: NULL
-              contextInfo: nil];
-         */
-         
+        // Make sure it is front -
+        [[self window] performSelector:@selector(makeKeyAndOrderFront:) withObject:nil afterDelay:0.0];
     }
     
     // Sheet is up here.

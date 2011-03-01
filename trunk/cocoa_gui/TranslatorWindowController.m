@@ -1082,11 +1082,17 @@
 		
 		NSArray *displayName = [[self xmlDocument] nodesForXPath:strXPath error:&errObject];
 		NSXMLElement *displayNode = (NSXMLElement *)[displayName lastObject];
-		
-		//NSLog(@"What was selected %@",[displayNode stringValue]);
-		
-		// Ok, so now we need to figure which item is selected -
-		[[self fileTypePopupButton] selectItemWithTitle:[displayNode stringValue]];
+		NSString *tmpString = [displayNode stringValue];
+        if (tmpString!=nil)
+        {
+            // Ok, so now we need to figure which item is selected -
+            [[self fileTypePopupButton] selectItemWithTitle:[displayNode stringValue]];
+        }
+        else
+        {
+            // Ok, so if we get here then I don't have a type - 
+            [[self fileTypePopupButton] selectItemWithTitle:@"Load custom specification ..."]; 
+        }
 		
 	}
 	else {
@@ -1191,6 +1197,7 @@
             
             // Update the pointer on the cutsom sheet -
             [[self customSheetController] setSelectedXMLNode:[self selectedXMLNode]];
+            [[[self customSheetController] textLabel] setStringValue:[[self selectedXMLNode] name]];
 		}
 	}
 }

@@ -204,7 +204,7 @@
     // Ok
     if ([browserCell isHighlighted])
     {
-        [browserCell setBackgroundStyle:NSBackgroundStyleDark];
+        [browserCell setBackgroundStyle:NSBackgroundStyleLight];
     }
     else
     {
