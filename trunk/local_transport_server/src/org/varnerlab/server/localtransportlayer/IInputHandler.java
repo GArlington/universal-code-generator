@@ -57,7 +57,7 @@ public interface IInputHandler {
     public void setProperties(Hashtable prop);
 
     /**
-     * Passes an instance of the UNIVERSAL Logger instance to the InputHandler.
+     * Passes an instance of the UNIVERSAL Logger to the InputHandler.\n 
      * The GUI captures all standard out and standard error 
      * @param log   Logger instance created by UNIVERSAL.
      */
