@@ -61,7 +61,7 @@ public class XMLPropTree implements IInputHandler {
 	public static final String FullyQualifiedPath = "FULLY_QUALIFIED_PATH";
 	
 
-	/*
+	/**
 	 * Returns an instance of the XML document edited in the GUI
 	 * @param null
 	 */
@@ -70,7 +70,7 @@ public class XMLPropTree implements IInputHandler {
 		return (_docPropTree);
 	}
 
-	/*
+	/**
 	 * Return the string value obtained from executing the XPath query passed in as an argument
 	 * @param String strXPath
 	 * @return String - get property from uxml tree by executing string in strXPath
@@ -93,7 +93,7 @@ public class XMLPropTree implements IInputHandler {
 		return(strProp);
 	}
 	
-	/*
+	/**
 	 * Return the path for the keyname passed in as an argument. Executes a xpath lookup in the path
 	 * block of the specification tree:
 	 * 
@@ -116,7 +116,7 @@ public class XMLPropTree implements IInputHandler {
 		return pathString;
 	}
 	
-	/*
+	/**
 	 * Return the package name for the keyName. Executes a xpath lookup in the package block
 	 * of the specification tree:
 	 * 
@@ -139,7 +139,7 @@ public class XMLPropTree implements IInputHandler {
 		return packageString;
 	}
 	
-	/*
+	/**
 	 * Returns a Hashatble<String,String> with path and file name information for a specific blockname.
 	 * 
 	 * Hashtable keys:
@@ -205,7 +205,7 @@ public class XMLPropTree implements IInputHandler {
 		return hashtable;
 	}
 	
-	/*
+	/**
 	 * Returns information held in the block with name blockName
 	 * 
 	 * Index 0: Holds filename
@@ -270,7 +270,7 @@ public class XMLPropTree implements IInputHandler {
 		return arrList;
 	}
 	
-	/*
+	/**
 	 * Load the uxnml specification file from disk
 	 * 
 	 * @param object - Path to the uxml file (called internally by UNIVERSAL)
