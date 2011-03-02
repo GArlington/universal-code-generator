@@ -400,13 +400,38 @@
 	// This stops from deleting the entire tree, but still is a little funky ...
 	if ([self selectedXMLNode]!=nil)
 	{
-		// Popup the alert panel as a sheet - 
-		NSAlert *alertPanel = [NSAlert alertWithMessageText:@"Delete configuration treenode?" 
+		// Setup the mutable string -
+        NSMutableString *nodeListString = [[[NSMutableString alloc] initWithCapacity:100] autorelease];
+        [nodeListString appendString:@"\n"];
+        
+        // Get the set of selected nodes -
+        NSIndexSet *selectedIndexSet = [[self treeView] selectedRowIndexes];
+        NSUInteger index=[selectedIndexSet firstIndex];
+        while(index != NSNotFound) 
+        {
+            
+            // Get the tree node -
+            NSTreeNode *treeNode = (NSTreeNode *)[[self treeView] itemAtRow:index];
+            
+            // Get the xml node -
+            NSXMLElement *xmlNode = [treeNode representedObject];
+            
+            // Put the name on the list -
+            [nodeListString appendString:[xmlNode displayName]];
+            [nodeListString appendString:@"\n"];
+            
+            // Get the next index -
+            index=[selectedIndexSet indexGreaterThanIndex: index];
+        }
+        
+        // Popup the alert panel as a sheet - 
+		NSAlert *alertPanel = [NSAlert alertWithMessageText:@"Delete configuration treenode(s)?" 
 											  defaultButton:@"Delete"
 											alternateButton:@"Cancel" 
 												otherButton:nil 
-								  informativeTextWithFormat:@"Do you really want to delete the %@ node?",[[self selectedXMLNode] displayName]]; 
+								  informativeTextWithFormat:@"Do you really want to delete: %@",nodeListString]; 
 		
+        
 		// Pop-up that mofo - when the user selects a button, the didEndSelector gets called
 		[alertPanel beginSheetModalForWindow:[[self treeView] window] modalDelegate:self didEndSelector:@selector(removeTreeNodeAlertEnded:code:context:) contextInfo:NULL];	
 	}
@@ -420,25 +445,42 @@
 		// This stops from deleting the entire tree, but still is a little funky ... fixed the funky w/the notification below
 		if ([self selectedXMLNode]!=nil)
 		{
-			// Get the parent node -
-			NSXMLElement *parent = (NSXMLElement *)[[self selectedXMLNode] parent];
-			
-			// Get my index -
-			int myIndex = [[self selectedXMLNode] index];
-			
-			// Remove me from my parent -
-			[parent removeChildAtIndex:myIndex]; 
-			
-			// reset the reference -
-			self.xmlTreeModel.xmlDocument = [parent rootDocument];
-			
-			// Ok, so the tree should have refreshed - set the selected node -
-			self.selectedXMLNode = nil;
-			
-			// Notfy everyone that the selected node has changed -- this should update the selected node -
-			NSNotification *myNotification = [NSNotification notificationWithName:NSOutlineViewSelectionDidChangeNotification object:[self treeView]]; 
-			[[NSNotificationQueue defaultQueue] enqueueNotification:myNotification postingStyle:NSPostNow coalesceMask:NSNotificationCoalescingOnName forModes:nil];
-		}
+			// Ok, let's get the index set of the selected elements -
+            NSIndexSet *selectedIndexSet = [[self treeView] selectedRowIndexes];
+            NSUInteger index=[selectedIndexSet firstIndex];
+            while(index != NSNotFound) 
+            {
+                
+                // Get the tree node -
+                NSTreeNode *treeNode = (NSTreeNode *)[[self treeView] itemAtRow:index];
+                
+                // Get the xml node -
+                NSXMLElement *xmlNode = [treeNode representedObject];
+                
+                // Get the parent node -
+                NSXMLElement *parent = (NSXMLElement *)[xmlNode parent];
+
+                // Get my index -
+                int myIndex = [xmlNode index];
+                
+                // Remove me from my parent -
+                [parent removeChildAtIndex:myIndex]; 
+                
+                // reset the reference -
+                self.xmlTreeModel.xmlDocument = [parent rootDocument];
+                
+                // Ok, so the tree should have refreshed - set the selected node -
+                self.selectedXMLNode = nil;
+                
+                // Get the next index -
+                index=[selectedIndexSet indexGreaterThanIndex: index];
+            }
+        
+            // Notfy everyone that the selected node has changed -- this should update the selected node -
+            NSNotification *myNotification = [NSNotification notificationWithName:NSOutlineViewSelectionDidChangeNotification object:[self treeView]]; 
+            [[NSNotificationQueue defaultQueue] enqueueNotification:myNotification postingStyle:NSPostNow coalesceMask:NSNotificationCoalescingOnName forModes:nil];
+        
+        }
 	}
 }
 
@@ -1181,6 +1223,7 @@
     [view abortEditing];
     
 	// Get the selected row -
+    //NSIndexSet *rowIndexSet = [view selectedRowIndexes];
 	int selectedRow = [view selectedRow];
 	
 	if (selectedRow!=-1)
