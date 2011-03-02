@@ -34,12 +34,14 @@
     @private
     NSCoder *coderInstance;
     NSXMLElement *xmlNode;
-    
-    
 }
 
+// Properties -
 @property (retain) NSCoder *coderInstance;
 @property (retain) NSXMLElement *xmlNode;
+
+// Methods to set up the object tree -
+
 
 
 @end

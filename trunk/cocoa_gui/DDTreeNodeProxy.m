@@ -28,6 +28,7 @@
 
 #import "DDTreeNodeProxy.h"
 
+
 @interface DDTreeNodeProxy (hidden) 
 
     // Methods -
@@ -76,12 +77,12 @@
     // Ok, so I have an xmlNode - we need to get the attributes and values for this node
     NSLog(@"Starting to encode ...");
     
+    // Ok, so we need to get see if this tree node has kids, if so then I need encode those bitchez first ... (oh yea, I went with the "z").
+    // All I have to say is ... NO SALID ... NO JUSTICE! 
     
     // Ok, get the attributes for this node -
     NSArray *keyList = [[self xmlNode] attributes];
     NSMutableArray *keyNameArray = [[NSMutableArray alloc] initWithCapacity:10];
-    
-    NSLog(@"How many keys ... %d for node %@",[keyList count],[[self xmlNode] name]);
     
     for (NSXMLNode *attributeNode in keyList)
     {
@@ -91,8 +92,6 @@
         
         // Add to keyName array -
         [keyNameArray addObject:attributeName];
-        
-        NSLog(@"We should be saving %@ = %@",attributeName,attributeValue);
         
         // encode this pair -
         [encoder encodeObject:attributeValue forKey:attributeName];
