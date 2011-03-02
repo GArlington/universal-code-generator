@@ -177,6 +177,7 @@
 	return labelText;
 }
 
+
 -(BOOL)isLeaf
 {
 	// return [self kind] == NSXMLTextKind ? YES : NO;
