@@ -302,7 +302,7 @@
                 
 				// Ok, get the xml node from the proxy -
 				NSXMLElement *dropNode = [treeNodeProxy xmlNode];
-                               
+                
 				// Add the dropNode to the parent at index?
                 // Get my parent node and index -
 				NSXMLElement *parent = (NSXMLElement *)[item representedObject];
