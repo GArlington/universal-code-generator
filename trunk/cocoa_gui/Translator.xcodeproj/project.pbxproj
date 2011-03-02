@@ -656,7 +656,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				ONLY_ACTIVE_ARCH = NO;
 				PREBINDING = NO;
-				PRODUCT_NAME = "Universal Code Generation Engine v1.0";
+				PRODUCT_NAME = "Universal v1.0";
 				SDKROOT = macosx;
 			};
 			name = Release;
