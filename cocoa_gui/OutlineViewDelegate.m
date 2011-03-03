@@ -253,15 +253,42 @@
 	
 	// Provide data for our custom type, and simple NSStrings.
     [pboard declareTypes:[NSArray arrayWithObjects:UNIVERSAL_TREE_NODE_TYPE, nil] owner:self];
-	
-    // Archive the data from the selectedXMLNode -
-    DDTreeNodeProxy *proxy = [[DDTreeNodeProxy alloc] init];
-    [proxy setXmlNode:[self selectedXMLNode]];
-    [pboard setData:[NSKeyedArchiver archivedDataWithRootObject:proxy] forType:UNIVERSAL_TREE_NODE_TYPE]; 
     
-    // release the proxy -
-    [proxy autorelease];
+    // Build an array to hold list of node proxy's
+    NSMutableArray *nodeArray = [[[NSMutableArray alloc] initWithCapacity:10] autorelease];
 	
+    // Get the selected node paths -
+    if ([self selectedXMLNode]!=nil)
+    {
+        NSIndexSet *selectedIndexSet = [[self treeView] selectedRowIndexes];
+        NSUInteger index=[selectedIndexSet firstIndex];
+        while(index != NSNotFound) 
+        {
+            
+            // Get the tree node -
+            NSTreeNode *treeNode = (NSTreeNode *)[[self treeView] itemAtRow:index];
+            
+            // Get the xml node -
+            NSXMLElement *xmlNode = [treeNode representedObject];
+            
+            // Archive the data from the selectedXMLNode -
+            DDTreeNodeProxy *proxy = [[[DDTreeNodeProxy alloc] init] autorelease];
+            
+            // Ok, add the node to the proxy -
+            [proxy setXmlNode:xmlNode];
+            
+            // Add the proxy's to the list -
+            [nodeArray addObject:proxy];
+                    
+            // Get the next index -
+            index=[selectedIndexSet indexGreaterThanIndex: index];
+        }
+    }
+    
+    // Add the node array to the paste board -
+    [pboard setData:[NSKeyedArchiver archivedDataWithRootObject:nodeArray] forType:UNIVERSAL_TREE_NODE_TYPE]; 
+    
+   	
 	// return yes -
 	return YES;
 }
@@ -297,33 +324,45 @@
                 // Get the data in the drop -
                 NSData *dropData = [pb dataForType:UNIVERSAL_TREE_NODE_TYPE];
                 
-                // Create a new proxy -
-                DDTreeNodeProxy *treeNodeProxy = [NSKeyedUnarchiver unarchiveObjectWithData:dropData];
+                // Get the mutable array from the archiver  -
+                NSMutableArray *nodeArray = [NSKeyedUnarchiver unarchiveObjectWithData:dropData];
                 
-				// Ok, get the xml node from the proxy -
-				NSXMLElement *dropNode = [treeNodeProxy xmlNode];
+                // Go through the list -
+                for (DDTreeNodeProxy *treeNodeProxy in nodeArray)
+                {
                 
-				// Add the dropNode to the parent at index?
-                // Get my parent node and index -
-				NSXMLElement *parent = (NSXMLElement *)[item representedObject];
+                    // Ok, get the xml node from the proxy -
+                    NSXMLElement *dropNode = [treeNodeProxy xmlNode];
+                    
+                    // Add the dropNode to the parent at index?
+                    // Get my parent node and index -
+                    NSXMLElement *parent = (NSXMLElement *)[item representedObject];
 				
-				// Add the copy to the end of the list -
-				[parent insertChild:dropNode atIndex:childIndex];
+                    // Add the copy to the end of the list -
+                    [parent insertChild:dropNode atIndex:childIndex];
 				
-				// Ok, so I don't have access to the model - what can I do? I sent a notfication to refresh my pointer to the tree .. I should 
-				// figure out how to do this with the controller...all of this should be doable w/the OutlineController ...
-				NSString *MyNotificationName = @"RefreshTreeModel";
-				NSNotification *myNotification = [NSNotification notificationWithName:MyNotificationName object:nil]; 
+                    // Ok, so I don't have access to the model - what can I do? I sent a notfication to refresh my pointer to the tree .. I should 
+                    // figure out how to do this with the controller...all of this should be doable w/the OutlineController ...
+                    NSString *MyNotificationName = @"RefreshTreeModel";
+                    NSNotification *myNotification = [NSNotification notificationWithName:MyNotificationName object:nil]; 
 				
-				// Send an update -
-				[[NSNotificationQueue defaultQueue] enqueueNotification:myNotification postingStyle:NSPostNow coalesceMask:NSNotificationCoalescingOnName forModes:nil];
+                    // Send an update -
+                    [[NSNotificationQueue defaultQueue] enqueueNotification:myNotification postingStyle:NSPostNow coalesceMask:NSNotificationCoalescingOnName forModes:nil];
+                }
 				
 				// What did we get?
 				//NSLog(@"Accept drop ...%@ at index = %d of parent %@",value,childIndex,[[self selectedXMLNode] displayName]);
-				flag = YES;
 			}
+            
+            // We have accepted the drop -
+            flag = YES;
 		}
 	}
+    else
+    {
+        // We will *not* accept the drop -
+        flag = NO;
+    }
 	
 	// return the boolean flag -
 	return flag;
