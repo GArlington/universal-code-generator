@@ -404,6 +404,15 @@
                                                selector:@selector(launchCustomSheet) 
                                                userInfo:nil 
                                                 repeats:NO];
+            
+            
+                // Have the tree reload data -
+                NSString *MyNotificationName = @"TreeNodeDataChanged";
+                NSNotification *myNotification = [NSNotification notificationWithName:MyNotificationName object:nil]; 
+                
+                // Send an update -
+                [[NSNotificationQueue defaultQueue] enqueueNotification:myNotification postingStyle:NSPostNow coalesceMask:NSNotificationCoalescingOnName forModes:nil];
+            
             }
         }
         else
@@ -437,6 +446,13 @@
                                                selector:@selector(launchCustomSheet) 
                                                userInfo:nil 
                                                 repeats:NO];
+                
+                // Have the tree reload data -
+                NSString *MyNotificationName = @"TreeNodeDataChanged";
+                NSNotification *myNotification = [NSNotification notificationWithName:MyNotificationName object:nil]; 
+                
+                // Send an update -
+                [[NSNotificationQueue defaultQueue] enqueueNotification:myNotification postingStyle:NSPostNow coalesceMask:NSNotificationCoalescingOnName forModes:nil];
             }
         }    
     }
