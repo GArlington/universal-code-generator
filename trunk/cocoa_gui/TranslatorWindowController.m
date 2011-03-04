@@ -365,11 +365,12 @@
 	}
     
     // Let's create a timer have it fire in a couple of seconds -
-	[NSTimer scheduledTimerWithTimeInterval:1.0 
+	/*[NSTimer scheduledTimerWithTimeInterval:1.0 
 									 target:self 
 								   selector:@selector(launchCustomSheet) 
 								   userInfo:nil 
 									repeats:NO];
+     */
 
     
 
@@ -383,7 +384,7 @@
     
 	if (tmpString!=nil)
 	{
-        if ([tmpString isEqualToString:@"Add generic node"])
+        if ([tmpString isEqualToString:@"Create generic node"])
         {
             // Get my current node and copy it -
             if ([self selectedXMLNode]!=nil)
@@ -399,11 +400,12 @@
                 self.xmlTreeModel.xmlDocument = [[self selectedXMLNode] rootDocument];	
                 
                 // Let's create a timer have it fire in a couple of seconds -
-                [NSTimer scheduledTimerWithTimeInterval:0.1 
+                /*[NSTimer scheduledTimerWithTimeInterval:0.1 
                                                  target:self 
                                                selector:@selector(launchCustomSheet) 
                                                userInfo:nil 
                                                 repeats:NO];
+                 */
             
             
                 // Have the tree reload data -
@@ -456,11 +458,12 @@
                 self.xmlTreeModel.xmlDocument = [[self selectedXMLNode] rootDocument];	
                 
                 // Let's create a timer have it fire in a couple of seconds -
-                [NSTimer scheduledTimerWithTimeInterval:0.1 
+                /*[NSTimer scheduledTimerWithTimeInterval:0.1 
                                                  target:self 
                                                selector:@selector(launchCustomSheet) 
                                                userInfo:nil 
                                                 repeats:NO];
+                 */
                 
                 // Have the tree reload data -
                 NSString *MyNotificationName = @"TreeNodeDataChanged";
@@ -470,7 +473,7 @@
                 [[NSNotificationQueue defaultQueue] enqueueNotification:myNotification postingStyle:NSPostNow coalesceMask:NSNotificationCoalescingOnName forModes:nil];
             }
         }
-        else if ([tmpString isEqualToString:@"Add generic group"])
+        else if ([tmpString isEqualToString:@"Create generic group"])
         {
             
             // so if I get here - then I need to create 
@@ -488,19 +491,25 @@
                 // Add copyNode to Parent -
                 [copyParent addChild:copyNode];
                 
-                
+
                 // Add the copy to the end of the list -
                 [[self selectedXMLNode] addChild:copyParent];
                 
                 // reset the reference -
-                self.xmlTreeModel.xmlDocument = [[self selectedXMLNode] rootDocument];	
+                self.xmlTreeModel.xmlDocument = [[self selectedXMLNode] rootDocument];
+                
+                NSInteger row = [[self treeView] rowForItem:copyParent];
+                [[self treeView] scrollRowToVisible:row];
+                
+                // Ok, so how do I make this node selected?
                 
                 // Let's create a timer have it fire in a couple of seconds -
-                [NSTimer scheduledTimerWithTimeInterval:0.1 
+                /*[NSTimer scheduledTimerWithTimeInterval:0.1 
                                                  target:self 
                                                selector:@selector(launchCustomSheet) 
                                                userInfo:nil 
                                                 repeats:NO];
+                 */
                 
                 // Have the tree reload data -
                 NSString *MyNotificationName = @"TreeNodeDataChanged";

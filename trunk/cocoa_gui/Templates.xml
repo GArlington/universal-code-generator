@@ -37,6 +37,10 @@
 		<display name="Generate FBA code (*.m)" filename="FBA"></display>
 	</mapping>
     
+    <mapping type="DFBA" working_dir="./templates/">
+		<display name="Generate dynamic FBA code (*.m)" filename="DFBA"></display>
+	</mapping>
+    
 	<mapping type="SUNDIALS" working_dir="./templates/">
 		<display name="Sundials model (*.c)" filename="SUNDIALS"></display>
 	</mapping>

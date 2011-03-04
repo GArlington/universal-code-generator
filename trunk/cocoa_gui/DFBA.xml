@@ -1,0 +1,81 @@
+<?xml version="1.0" standalone="yes"?>
+<Model type="FBA" required="YES" username="" version="v1.0" name="">
+    <Configuration>
+        <ListOfPackages>
+            <package required="YES" symbol="INPUT_HANDLER_PACKAGE" package_name="org.varnerlab.userver.input.handler"></package>
+            <package required="YES" symbol="OUTPUT_HANDLER_PACKAGE" package_name="org.varnerlab.userver.output.handler"></package>
+            <package required="YES" symbol="OUTPUT_HANDLER_DFBA_PACKAGE" package_name="org.varnerlab.userver.output.handler.dfba"></package>
+            <package required="YES" symbol="DEFAULT_LANGUAGE_PACKAGE" package_name="org.varnerlab.userver.language.handler"></package>
+            <package required="YES" symbol="DEFAULT_BCX_PACKAGE" package_name="org.varnerlab.userver.language.handler.bcx"></package>
+        </ListOfPackages>
+        <ListOfPaths>
+            <path required="YES" symbol="UNIVERSAL_INPUT_PATH" path_location="/Users/jeffreyvarner/Desktop/UniversalServer-v1.0/jobs/test_metabolic_project"></path>
+            <path required="YES" symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" path_location="/Users/jeffreyvarner/Desktop/UniversalServer-v1.0/jobs/test_metabolic_project/src"></path>
+            <path required="YES" symbol="UNIVERSAL_NETWORK_OUTPUT_PATH" path_location="/Users/jeffreyvarner/Desktop/UniversalServer-v1.0/jobs/test_metabolic_project/network"></path>
+            <path required="YES" symbol="UNIVERSAL_DEBUG_OUTPUT_PATH" path_location="/Users/jeffreyvarner/Desktop/UniversalServer-v1.0/jobs/test_metabolic_project/src"></path>
+            <path required="YES" symbol="UNIVERSAL_SERVER_ROOT_DIRECTORY" path_location="/Users/jeffreyvarner/Desktop/UniversalServer-v1.0"></path>
+            <path required="YES" symbol="UNIVERSAL_SERVER_JAR_DIRECTORY" path_location="/Users/jeffreyvarner/Desktop/UniversalServer-v1.0/dist"></path>
+            <path required="YES" symbol="UNIVERSAL_PLUGINS_JAR_DIRECTORY" path_location="/Users/jeffreyvarner/Desktop/UniversalServer-v1.0/plugins"></path>
+        </ListOfPaths>
+        <ListOfClasses>
+            <InputHandlerClasses>
+                <class required="NO" package="INPUT_HANDLER_PACKAGE" classname="LoadSBMLFile"></class>
+                <class required="NO" package="INPUT_HANDLER_PACKAGE" classname="LoadVarnerFlatFile"></class>
+                <class required="NO" package="INPUT_HANDLER_PACKAGE" classname="LoadMOBCXFile"></class>
+                <class required="NO" package="INPUT_HANDLER_PACKAGE" classname="LoadBCXFile"></class>
+            </InputHandlerClasses>
+            <OutputHandlerClasses>
+                <class required="NO" package="OUTPUT_HANDLER_PACKAGE" classname="WriteOctaveMModel"></class>
+				<class required="NO" package="OUTPUT_HANDLER_PACKAGE" classname="WriteMatlabMModel"></class>
+				<class required="NO" package="OUTPUT_HANDLER_PACKAGE" classname="WriteOctaveCModel"></class>
+				<class required="NO" package="OUTPUT_HANDLER_PACKAGE" classname="WriteGSLModel"></class>
+				<class required="NO" package="OUTPUT_HANDLER_PACKAGE" classname="WriteScilabModel"></class>
+				<class required="NO" package="OUTPUT_HANDLER_PACKAGE" classname="WriteVarnerFlatFile"></class>
+				<class required="NO" package="OUTPUT_HANDLER_PACKAGE" classname="WriteGraphvizDotFile"></class>
+				<class required="NO" package="OUTPUT_HANDLER_PACKAGE" classname="WriteSBMLFile"></class>
+				<class required="NO" package="OUTPUT_HANDLER_PACKAGE" classname="WriteMOBCXFiles"></class>
+				<class required="NO" package="OUTPUT_HANDLER_PACKAGE" classname="WriteBCXFiles"></class>
+                <class required="NO" package="OUTPUT_HANDLER_PACKAGE" classname="WriteSundialsModel"></class>
+                <class required="NO" package="OUTPUT_HANDLER_PACKAGE" classname="WriteSIFFileFromBioPAX"></class>
+                <class required="NO" package="OUTPUT_HANDLER_PACKAGE" classname="WriteMetabolicFiles"></class>
+                <class required="NO" package="OUTPUT_HANDLER_DFBA_PACKAGE" classname="WriteOctaveMDFBAFiles"></class>
+            </OutputHandlerClasses>
+        </ListOfClasses>
+        <ServerConfiguration>
+            <ListOfPlugins>
+                <plugin_jar_directory required="YES" path_symbol="UNIVERSAL_PLUGINS_JAR_DIRECTORY" filename="UServer-v2.0.jar"></plugin_jar_directory>
+                <plugin_jar_directory required="YES" path_symbol="UNIVERSAL_PLUGINS_JAR_DIRECTORY" filename="libsbmlj.jar"></plugin_jar_directory>
+            </ListOfPlugins>
+            <ListOfArguments>
+                <argument required="YES" index="1" symbol="-Xmx2000M"></argument>
+                <argument required="YES" index="2" symbol="-Djava.library.path=/sw/lib"></argument>
+                <argument required="YES" index="3" symbol="-classpath ./dist/CGEGateway-v1.0.jar"></argument>
+                <argument required="YES" index="4" symbol="org.varnerlab.server.localtransportlayer.Main"></argument>
+            </ListOfArguments>
+        </ServerConfiguration>
+    </Configuration>
+    <Handler>
+        <InputHandler required="YES" package="INPUT_HANDLER_PACKAGE" input_classname="LoadSBMLFile"></InputHandler>
+        <OutputHandler required="YES" package="OUTPUT_HANDLER_PACKAGE" output_classname="WriteMetabolicFiles"></OutputHandler>
+    </Handler>
+    <InputOptions>
+        <NetworkFile required="YES" path_symbol="UNIVERSAL_INPUT_PATH" filename=""></NetworkFile>
+    </InputOptions>
+    <OutputOptions>
+        <DataFile required="YES" path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="DataFile.m"></DataFile>
+        <KineticDataFile required="YES" path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="KineticDataFile.m"></KineticDataFile>
+        <VolumetricFlowFile required="YES" path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="FlowFile.dat"></VolumetricFlowFile>
+        <ExtracellularMassBalanceFunction required="YES" path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="ExtracellularMassBalances.m"></ExtracellularMassBalanceFunction>
+        <DriverFile required="YES" path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="FluxDriver.m"></DriverFile>
+        <StoichiometricMatrix required="YES" path_symbol="UNIVERSAL_NETWORK_OUTPUT_PATH" filename="Network.dat"></StoichiometricMatrix>
+        <BoundsFile required="NO" path_symbol="UNIVERSAL_NETWORK_OUTPUT_PATH" filename="FB.dat"></BoundsFile>
+        <DebugOutputFile required="NO" path_symbol="UNIVERSAL_DEDUG_OUTPUT_PATH" filename="Debug.txt"></DebugOutputFile>
+        <ExtracellularTagName required="YES" name="Extra_organism"></ExtracellularTagName>
+    </OutputOptions>
+    
+    <RequiredSBMLInformation>
+		<listOfKineticExtracellularReactions>
+		</listOfKineticExtracellularReactions>
+	</RequiredSBMLInformation>
+    
+</Model>
