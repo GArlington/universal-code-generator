@@ -383,7 +383,7 @@
     
 	if (tmpString!=nil)
 	{
-        if ([tmpString isEqualToString:@"Add tree node ..."])
+        if ([tmpString isEqualToString:@"Add generic node"])
         {
             // Get my current node and copy it -
             if ([self selectedXMLNode]!=nil)
@@ -415,7 +415,62 @@
             
             }
         }
-        else
+        else if ([tmpString isEqualToString:@"Add SBML reaction group"])
+        {
+            
+            // so if I get here - then I need to create 
+            
+            // Get my current node and copy it -
+            if ([self selectedXMLNode]!=nil)
+            {
+                // Create a copy -
+                NSXMLElement *listOfReactants = [[[NSXMLElement alloc] init] autorelease];
+                [listOfReactants setName:@"listOfReactants"];
+                
+                NSXMLElement *listOfProducts = [[[NSXMLElement alloc] init] autorelease];
+                [listOfProducts setName:@"listOfProducts"];
+
+                NSXMLElement *copyParent = [[[NSXMLElement alloc] init] autorelease];
+                [copyParent setName:@"reaction"];
+                
+                // Create a list of attributes -
+                NSMutableDictionary *attrDictionary = [[[NSMutableDictionary alloc] initWithCapacity:10] autorelease];
+                
+                // Setup the attributes -
+                [attrDictionary setObject:@"" forKey:@"id"];
+                [attrDictionary setObject:@"" forKey:@"name"];
+                [attrDictionary setObject:@"" forKey:@"reversible"];
+                [attrDictionary setObject:@"" forKey:@"fast"];
+                
+                // Add attributes to reaction -
+                [copyParent setAttributesAsDictionary:attrDictionary];
+                
+                // Add copyNode to Parent -
+                [copyParent addChild:listOfReactants];
+                [copyParent addChild:listOfProducts];
+                
+                // Add the copy to the end of the list -
+                [[self selectedXMLNode] addChild:copyParent];
+                
+                // reset the reference -
+                self.xmlTreeModel.xmlDocument = [[self selectedXMLNode] rootDocument];	
+                
+                // Let's create a timer have it fire in a couple of seconds -
+                [NSTimer scheduledTimerWithTimeInterval:0.1 
+                                                 target:self 
+                                               selector:@selector(launchCustomSheet) 
+                                               userInfo:nil 
+                                                repeats:NO];
+                
+                // Have the tree reload data -
+                NSString *MyNotificationName = @"TreeNodeDataChanged";
+                NSNotification *myNotification = [NSNotification notificationWithName:MyNotificationName object:nil]; 
+                
+                // Send an update -
+                [[NSNotificationQueue defaultQueue] enqueueNotification:myNotification postingStyle:NSPostNow coalesceMask:NSNotificationCoalescingOnName forModes:nil];
+            }
+        }
+        else if ([tmpString isEqualToString:@"Add generic group"])
         {
             
             // so if I get here - then I need to create 

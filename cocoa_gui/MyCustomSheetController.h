@@ -50,6 +50,7 @@
 - (IBAction)closeCustomSheet:(NSButton *)sender;
 - (IBAction)changeNodeName:(NSButton *)sender;
 - (IBAction)showCustomSheet:(NSWindow *)window;
+- (IBAction)updateNodeName:(NSButton *)sender;
 
 // Method is required to close the sheet -
 - (void)sheetDidEnd:(NSWindow *)sheet returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo;
