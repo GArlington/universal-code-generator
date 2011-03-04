@@ -36,6 +36,7 @@
 
 -(void)setup;
 -(void)treeSelectionChanged:(NSNotification *)notification;
+-(void)encodeObjectTree:(DDTreeNodeProxy *)treeWrapper xmlNode:(NSXMLElement *)node;
 
 @end
 
@@ -286,9 +287,14 @@
             }
             else
             {
+                // Create a root level wrapper --
+                DDTreeNodeProxy *proxy = [[[DDTreeNodeProxy alloc] init] autorelease];
+                
                 // Ok, so this node has children ... how should I process this?
+                [self encodeObjectTree:proxy xmlNode:xmlNode];
                 
-                
+                // Ok, add to the array =
+                [nodeArray addObject:proxy];
             }
                     
             // Get the next index -
@@ -302,6 +308,40 @@
    	
 	// return yes -
 	return YES;
+}
+
+-(void)encodeObjectTree:(DDTreeNodeProxy *)treeWrapper xmlNode:(NSXMLElement *)node
+{
+    // Ok, so if the xml node is a leaf -
+    if ([node isLeaf])
+    {
+        // Ok, so I have an xmlNode that is a leaf (no children). Add me to the treeWrapper -
+        treeWrapper.xmlNode = node;
+    }
+    else
+    {
+        // Ok, If I get here, then I have children. First, I need to add myself -
+        treeWrapper.xmlNode = node;
+        
+        // Next, I need to go through the list of my kids and wrap them...
+        NSArray *xmlKids = [node children];
+        for (NSXMLElement *tmpXMLNode in xmlKids)
+        {
+            // Ok --
+            
+            // Create a new warpper -
+            DDTreeNodeProxy *newWrapperNode = [[[DDTreeNodeProxy alloc] init] autorelease];
+            
+            // Wrap me -
+            newWrapperNode.xmlNode = tmpXMLNode;
+            
+            // Add me (wrapper) to my parent -
+            [treeWrapper addChild:newWrapperNode];
+            
+            // Ok, so now I need to call me ...
+            [self encodeObjectTree:newWrapperNode xmlNode:tmpXMLNode];
+        }
+    }
 }
 
 -(BOOL)shouldCollapseAutoExpandedItemsForDeposited:(BOOL)deposited
