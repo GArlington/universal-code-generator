@@ -27,6 +27,7 @@
 //
 
 #import "DDTreeNodeProxy.h"
+#import "NSXMLElement_Category.h"
 
 
 @interface DDTreeNodeProxy (hidden) 
@@ -111,6 +112,9 @@
     // Ok, so we need to get see if this tree node has kids, if so then I need encode those bitchez first ... (oh yea, I went with the "z").
     // All I have to say is ... NO SALAD ... NO JUSTICE! 
     
+    // Ok, so we need to add the displayName to keys -
+    // NSString *nodeDisplayName = [[self xmlNode] displayName];
+    
     // Ok, do I have children?
     if ([self isLeaf])
     {
@@ -131,9 +135,19 @@
             [encoder encodeObject:attributeValue forKey:attributeName];
         }
         
+        // Create keyname string -
+        //NSMutableString *keyNameArrayString = [[[NSMutableString alloc] initWithCapacity:10] autorelease];
+        //[keyNameArrayString appendString:@"KEY_NAME_ARRAY_"];
+        //[keyNameArrayString appendString:nodeDisplayName];
+        
+        // Create node name string -
+        //NSMutableString *nodeNameArrayString = [[[NSMutableString alloc] initWithCapacity:10] autorelease];
+        //[nodeNameArrayString appendString:@"NODE_NAME_ARRAY_"];
+        //[nodeNameArrayString appendString:nodeDisplayName];
+
         // Ok, so the last thing we need to encode is the list of keys -
         [encoder encodeObject:keyNameArray forKey:@"KEY_NAME_ARRAY"];
-        [encoder encodeObject:[[self xmlNode] name] forKey:@"NODE_NAME"];
+        [encoder encodeObject:[[self xmlNode] name] forKey:@"NODE_NAME_ARRAY"];
     }
     else
     {
@@ -157,9 +171,19 @@
             [encoder encodeObject:attributeValue forKey:attributeName];
         }
         
+        // Create keyname string -
+        //NSMutableString *keyNameArrayString = [[[NSMutableString alloc] initWithCapacity:10] autorelease];
+        //[keyNameArrayString appendString:@"KEY_NAME_ARRAY_"];
+        //[keyNameArrayString appendString:nodeDisplayName];
+        
+        // Create node name string -
+        //NSMutableString *nodeNameArrayString = [[[NSMutableString alloc] initWithCapacity:10] autorelease];
+        //[nodeNameArrayString appendString:@"NODE_NAME_ARRAY_"];
+        //[nodeNameArrayString appendString:nodeDisplayName];
+        
         // Ok, so the last thing we need to encode is the list of keys -
         [encoder encodeObject:keyNameArray forKey:@"KEY_NAME_ARRAY"];
-        [encoder encodeObject:[[self xmlNode] name] forKey:@"NODE_NAME"];
+        [encoder encodeObject:[[self xmlNode] name] forKey:@"NODE_NAME_ARRAY"];
         
         // Encode my children -
         for (DDTreeNodeProxy *childNode in children)
@@ -173,8 +197,18 @@
 -(void)decodeObject:(NSCoder *)coder
 {
     
+    // Ok, so we need to add the displayName to keys -
+    // NSString *nodeDisplayName = [[self xmlNode] displayName];
+    
     if ([self isLeaf])
     {
+       
+        // Create keyname string -
+        //NSMutableString *keyNameArrayString = [[[NSMutableString alloc] initWithCapacity:10] autorelease];
+        //[keyNameArrayString appendString:@"KEY_NAME_ARRAY_"];
+        //[keyNameArrayString appendString:nodeDisplayName];
+
+                
         // Ok, now we are going to decode the object -
         NSArray *keyNameList = [coder decodeObjectForKey:@"KEY_NAME_ARRAY"];
         NSMutableDictionary *attDictionary = [[NSMutableDictionary alloc] initWithCapacity:100];
@@ -195,9 +229,14 @@
         
         // Add attributes to the xmlNode -
         [[self xmlNode] setAttributesAsDictionary:attDictionary];
+                
+        // Create node name string -
+        //NSMutableString *nodeNameArrayString = [[[NSMutableString alloc] initWithCapacity:10] autorelease];
+        //[nodeNameArrayString appendString:@"NODE_NAME_ARRAY_"];
+        //[nodeNameArrayString appendString:nodeDisplayName];
         
         // Name the node -
-        [[self xmlNode] setName:[coder decodeObjectForKey:@"NODE_NAME"]];
+        [[self xmlNode] setName:[coder decodeObjectForKey:@"NODE_NAME_ARRAY"]];
         
         // release the dictionary -
         [attDictionary release];
@@ -205,6 +244,13 @@
     else
     {
         // Decode me -
+        
+        // Create keyname string -
+        //NSMutableString *keyNameArrayString = [[[NSMutableString alloc] initWithCapacity:10] autorelease];
+        //[keyNameArrayString appendString:@"KEY_NAME_ARRAY_"];
+        //[keyNameArrayString appendString:nodeDisplayName];
+        
+    
         // Ok, now we are going to decode the object -
         NSArray *keyNameList = [coder decodeObjectForKey:@"KEY_NAME_ARRAY"];
         NSMutableDictionary *attDictionary = [[NSMutableDictionary alloc] initWithCapacity:100];
@@ -226,8 +272,14 @@
         // Add attributes to the xmlNode -
         [[self xmlNode] setAttributesAsDictionary:attDictionary];
         
+        
+        // Create node name string -
+        //NSMutableString *nodeNameArrayString = [[[NSMutableString alloc] initWithCapacity:10] autorelease];
+        //[nodeNameArrayString appendString:@"NODE_NAME_ARRAY_"];
+        //[nodeNameArrayString appendString:nodeDisplayName];
+
         // Name the node -
-        [[self xmlNode] setName:[coder decodeObjectForKey:@"NODE_NAME"]];
+        [[self xmlNode] setName:[coder decodeObjectForKey:@"NODE_NAME_ARRAY"]];
         
         // release the dictionary -
         [attDictionary release];
