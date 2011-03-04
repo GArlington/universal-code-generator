@@ -35,6 +35,7 @@
     // Methods -
     -(void)decodeObject:(NSCoder *)coder;
     -(void)setup;
+    -(NSString*) stringWithUUID; 
 
 @end
 
@@ -111,87 +112,9 @@
     
     // Ok, so we need to get see if this tree node has kids, if so then I need encode those bitchez first ... (oh yea, I went with the "z").
     // All I have to say is ... NO SALAD ... NO JUSTICE! 
-    
-    // Ok, so we need to add the displayName to keys -
-    // NSString *nodeDisplayName = [[self xmlNode] displayName];
-    
-    // Ok, do I have children?
-    if ([self isLeaf])
-    {
-        // Ok, get the attributes for this node -
-        NSArray *keyList = [[self xmlNode] attributes];
-        NSMutableArray *keyNameArray = [[NSMutableArray alloc] initWithCapacity:10];
-        
-        for (NSXMLNode *attributeNode in keyList)
-        {
-            // Ok, get the value -
-            NSString *attributeValue = [attributeNode stringValue];
-            NSString *attributeName = [attributeNode name];
-            
-            // Add to keyName array -
-            [keyNameArray addObject:attributeName];
-            
-            // encode this pair -
-            [encoder encodeObject:attributeValue forKey:attributeName];
-        }
-        
-        // Create keyname string -
-        //NSMutableString *keyNameArrayString = [[[NSMutableString alloc] initWithCapacity:10] autorelease];
-        //[keyNameArrayString appendString:@"KEY_NAME_ARRAY_"];
-        //[keyNameArrayString appendString:nodeDisplayName];
-        
-        // Create node name string -
-        //NSMutableString *nodeNameArrayString = [[[NSMutableString alloc] initWithCapacity:10] autorelease];
-        //[nodeNameArrayString appendString:@"NODE_NAME_ARRAY_"];
-        //[nodeNameArrayString appendString:nodeDisplayName];
-
-        // Ok, so the last thing we need to encode is the list of keys -
-        [encoder encodeObject:keyNameArray forKey:@"KEY_NAME_ARRAY"];
-        [encoder encodeObject:[[self xmlNode] name] forKey:@"NODE_NAME_ARRAY"];
-    }
-    else
-    {
-        // Ok, so If I get here, then I have children -
-        
-        // Encode me -
-        // Ok, get the attributes for this node -
-        NSArray *keyList = [[self xmlNode] attributes];
-        NSMutableArray *keyNameArray = [[NSMutableArray alloc] initWithCapacity:10];
-        
-        for (NSXMLNode *attributeNode in keyList)
-        {
-            // Ok, get the value -
-            NSString *attributeValue = [attributeNode stringValue];
-            NSString *attributeName = [attributeNode name];
-            
-            // Add to keyName array -
-            [keyNameArray addObject:attributeName];
-            
-            // encode this pair -
-            [encoder encodeObject:attributeValue forKey:attributeName];
-        }
-        
-        // Create keyname string -
-        //NSMutableString *keyNameArrayString = [[[NSMutableString alloc] initWithCapacity:10] autorelease];
-        //[keyNameArrayString appendString:@"KEY_NAME_ARRAY_"];
-        //[keyNameArrayString appendString:nodeDisplayName];
-        
-        // Create node name string -
-        //NSMutableString *nodeNameArrayString = [[[NSMutableString alloc] initWithCapacity:10] autorelease];
-        //[nodeNameArrayString appendString:@"NODE_NAME_ARRAY_"];
-        //[nodeNameArrayString appendString:nodeDisplayName];
-        
-        // Ok, so the last thing we need to encode is the list of keys -
-        [encoder encodeObject:keyNameArray forKey:@"PARENT_KEY_NAME_ARRAY"];
-        [encoder encodeObject:[[self xmlNode] name] forKey:@"PARENT_NODE_NAME_ARRAY"];
-        
-        // Encode my children -
-        for (DDTreeNodeProxy *childNode in children)
-        {
-            // Ok, call encode on my kids -
-            [childNode encodeWithCoder:encoder];
-        }
-    }
+       
+    // Ok, so If I get here, then my xmlNode has children -
+    [encoder encodeObject:[[self xmlNode] XMLString] forKey:@"XML_BLOCK"];
 }
 
 -(void)decodeObject:(NSCoder *)coder
@@ -200,99 +123,16 @@
     // Ok, so we need to add the displayName to keys -
     // NSString *nodeDisplayName = [[self xmlNode] displayName];
     
-    if ([self isLeaf])
+    if ([coder containsValueForKey:@"XML_BLOCK"])
     {
-       
-        // Create keyname string -
-        //NSMutableString *keyNameArrayString = [[[NSMutableString alloc] initWithCapacity:10] autorelease];
-        //[keyNameArrayString appendString:@"KEY_NAME_ARRAY_"];
-        //[keyNameArrayString appendString:nodeDisplayName];
-
-                
-        // Ok, now we are going to decode the object -
-        NSArray *keyNameList = [coder decodeObjectForKey:@"KEY_NAME_ARRAY"];
-        NSMutableDictionary *attDictionary = [[NSMutableDictionary alloc] initWithCapacity:100];
+        // Ok, so when I get here I don't just have a simple node. In fact I have a form of the xml that I copied -
+        NSString *tmpXMLString = [coder decodeObjectForKey:@"XML_BLOCK"];
         
+        // Ok, so I need to create a new XMLElement node -
+        NSXMLElement *tmpNode = [[[NSXMLElement alloc] initWithXMLString:tmpXMLString error:nil] autorelease];
         
-        // Create a new xmlNode -
-        self.xmlNode = [[NSXMLElement alloc] init];
-        
-        // Populate the properties of the xmlnode -
-        for (NSString *keyName in keyNameList)
-        {
-            // Get the value 
-            NSString *tmpValue = [coder decodeObjectForKey:keyName];
-            
-            // Add the data to the xmlNode -
-            [attDictionary setObject:tmpValue forKey:keyName];
-        }
-        
-        // Add attributes to the xmlNode -
-        [[self xmlNode] setAttributesAsDictionary:attDictionary];
-                
-        // Create node name string -
-        //NSMutableString *nodeNameArrayString = [[[NSMutableString alloc] initWithCapacity:10] autorelease];
-        //[nodeNameArrayString appendString:@"NODE_NAME_ARRAY_"];
-        //[nodeNameArrayString appendString:nodeDisplayName];
-        
-        // Name the node -
-        [[self xmlNode] setName:[coder decodeObjectForKey:@"NODE_NAME_ARRAY"]];
-        
-        // release the dictionary -
-        [attDictionary release];
-    }
-    else
-    {
-        // Decode me -
-        
-        // Create keyname string -
-        //NSMutableString *keyNameArrayString = [[[NSMutableString alloc] initWithCapacity:10] autorelease];
-        //[keyNameArrayString appendString:@"KEY_NAME_ARRAY_"];
-        //[keyNameArrayString appendString:nodeDisplayName];
-        
-    
-        // Ok, now we are going to decode the object -
-        NSArray *keyNameList = [coder decodeObjectForKey:@"PARENT_KEY_NAME_ARRAY"];
-        NSMutableDictionary *attDictionary = [[NSMutableDictionary alloc] initWithCapacity:100];
-        
-        
-        // Create a new xmlNode -
-        self.xmlNode = [[NSXMLElement alloc] init];
-        
-        // Populate the properties of the xmlnode -
-        for (NSString *keyName in keyNameList)
-        {
-            // Get the value 
-            NSString *tmpValue = [coder decodeObjectForKey:keyName];
-            
-            // Add the data to the xmlNode -
-            [attDictionary setObject:tmpValue forKey:keyName];
-        }
-        
-        // Add attributes to the xmlNode -
-        [[self xmlNode] setAttributesAsDictionary:attDictionary];
-        
-        
-        // Create node name string -
-        //NSMutableString *nodeNameArrayString = [[[NSMutableString alloc] initWithCapacity:10] autorelease];
-        //[nodeNameArrayString appendString:@"NODE_NAME_ARRAY_"];
-        //[nodeNameArrayString appendString:nodeDisplayName];
-
-        // Name the node -
-        [[self xmlNode] setName:[coder decodeObjectForKey:@"PARENT_NODE_NAME_ARRAY"]];
-        
-        // Decode my children -
-        for (DDTreeNodeProxy *childNode in children)
-        {
-            // Decode my kids -
-            [childNode decodeObject:coder];
-            
-            // Add childNode to parent -
-            [[self xmlNode] addChild:[childNode xmlNode]];
-        }
-        
-        // release the dictionary -
-        [attDictionary release];
+        // Ok, setup the node to the curent node
+        self.xmlNode = tmpNode;
     }
 }
 
@@ -307,5 +147,13 @@
     [[self children] removeAllObjects];
 }
 
+-(NSString*) stringWithUUID 
+{
+    CFUUIDRef	uuidObj = CFUUIDCreate(nil);//create a new UUID
+    //get the string representation of the UUID
+    NSString	*uuidString = (NSString*)CFUUIDCreateString(nil, uuidObj);
+    CFRelease(uuidObj);
+    return [uuidString autorelease];
+}
 
 @end
