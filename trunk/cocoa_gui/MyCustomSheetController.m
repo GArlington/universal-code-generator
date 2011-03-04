@@ -100,6 +100,7 @@
 {
     if ([self window]!=nil)
     {
+        
         //Check the myCustomSheet instance variable to make sure the custom sheet does not already exist.
         [NSBundle loadNibNamed: @"MyCustomSheet" owner: self];
         
@@ -118,6 +119,30 @@
 {
     [[self localWindow] orderOut:nil];
     [NSApp endSheet:[self localWindow]];
+}
+
+- (IBAction)updateNodeName:(NSButton *)sender
+{
+    // Ok, so when I get here, I need to grab the text from label and set the name on the node -
+    NSString *strNewName = [[self textLabel] stringValue];
+    
+    // Ok, set the name on the selected XML node -
+    if ([strNewName length]!=0)
+    {
+        // Set the text -
+        [[self selectedXMLNode] setName:strNewName];
+        
+        // Set the dirty button -
+        //[[self applicationWindow] setDocumentEdited:YES];
+        
+        // Have the tree reload data -
+        NSString *MyNotificationName = @"RefreshTreeModel";
+        NSNotification *myNotification = [NSNotification notificationWithName:MyNotificationName object:nil]; 
+        
+        // Send an update -
+        [[NSNotificationQueue defaultQueue] enqueueNotification:myNotification postingStyle:NSPostNow coalesceMask:NSNotificationCoalescingOnName forModes:nil];
+    }
+
 }
 
 - (IBAction)changeNodeName:(NSButton *)sender
