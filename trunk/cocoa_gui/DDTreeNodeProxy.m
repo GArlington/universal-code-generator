@@ -182,8 +182,8 @@
         //[nodeNameArrayString appendString:nodeDisplayName];
         
         // Ok, so the last thing we need to encode is the list of keys -
-        [encoder encodeObject:keyNameArray forKey:@"KEY_NAME_ARRAY"];
-        [encoder encodeObject:[[self xmlNode] name] forKey:@"NODE_NAME_ARRAY"];
+        [encoder encodeObject:keyNameArray forKey:@"PARENT_KEY_NAME_ARRAY"];
+        [encoder encodeObject:[[self xmlNode] name] forKey:@"PARENT_NODE_NAME_ARRAY"];
         
         // Encode my children -
         for (DDTreeNodeProxy *childNode in children)
@@ -252,7 +252,7 @@
         
     
         // Ok, now we are going to decode the object -
-        NSArray *keyNameList = [coder decodeObjectForKey:@"KEY_NAME_ARRAY"];
+        NSArray *keyNameList = [coder decodeObjectForKey:@"PARENT_KEY_NAME_ARRAY"];
         NSMutableDictionary *attDictionary = [[NSMutableDictionary alloc] initWithCapacity:100];
         
         
@@ -279,17 +279,20 @@
         //[nodeNameArrayString appendString:nodeDisplayName];
 
         // Name the node -
-        [[self xmlNode] setName:[coder decodeObjectForKey:@"NODE_NAME_ARRAY"]];
-        
-        // release the dictionary -
-        [attDictionary release];
+        [[self xmlNode] setName:[coder decodeObjectForKey:@"PARENT_NODE_NAME_ARRAY"]];
         
         // Decode my children -
         for (DDTreeNodeProxy *childNode in children)
         {
             // Decode my kids -
             [childNode decodeObject:coder];
+            
+            // Add childNode to parent -
+            [[self xmlNode] addChild:[childNode xmlNode]];
         }
+        
+        // release the dictionary -
+        [attDictionary release];
     }
 }
 

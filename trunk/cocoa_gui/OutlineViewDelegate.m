@@ -288,13 +288,13 @@
             else
             {
                 // Create a root level wrapper --
-                DDTreeNodeProxy *proxy = [[[DDTreeNodeProxy alloc] init] autorelease];
+                //DDTreeNodeProxy *proxy = [[[DDTreeNodeProxy alloc] init] autorelease];
                 
                 // Ok, so this node has children ... how should I process this?
-                [self encodeObjectTree:proxy xmlNode:xmlNode];
+                //[self encodeObjectTree:proxy xmlNode:xmlNode];
                 
                 // Ok, add to the array =
-                [nodeArray addObject:proxy];
+                //[nodeArray addObject:proxy];
             }
                     
             // Get the next index -

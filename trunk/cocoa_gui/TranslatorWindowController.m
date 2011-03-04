@@ -375,6 +375,74 @@
 
 }
 
+-(IBAction)addNewTreeNodeMenuAction:(NSMenuItem *)sender
+{
+    
+	// Get the selected item -
+	NSString *tmpString = [sender title];
+    
+	if (tmpString!=nil)
+	{
+        if ([tmpString isEqualToString:@"Add tree node ..."])
+        {
+            // Get my current node and copy it -
+            if ([self selectedXMLNode]!=nil)
+            {
+                // Create a copy -
+                NSXMLElement *copy = [[[NSXMLElement alloc] init] autorelease];
+                [copy setName:@"Node"];
+                 
+                // Add the copy to the end of the list -
+                [[self selectedXMLNode] addChild:copy];
+                
+                // reset the reference -
+                self.xmlTreeModel.xmlDocument = [[self selectedXMLNode] rootDocument];	
+                
+                // Let's create a timer have it fire in a couple of seconds -
+                [NSTimer scheduledTimerWithTimeInterval:0.1 
+                                                 target:self 
+                                               selector:@selector(launchCustomSheet) 
+                                               userInfo:nil 
+                                                repeats:NO];
+            }
+        }
+        else
+        {
+            
+            // so if I get here - then I need to create 
+            
+            // Get my current node and copy it -
+            if ([self selectedXMLNode]!=nil)
+            {
+                // Create a copy -
+                NSXMLElement *copyNode = [[[NSXMLElement alloc] init] autorelease];
+                [copyNode setName:@"Node"];
+                
+                NSXMLElement *copyParent = [[[NSXMLElement alloc] init] autorelease];
+                [copyParent setName:@"Parent"];
+
+                // Add copyNode to Parent -
+                [copyParent addChild:copyNode];
+                
+                
+                // Add the copy to the end of the list -
+                [[self selectedXMLNode] addChild:copyParent];
+                
+                // reset the reference -
+                self.xmlTreeModel.xmlDocument = [[self selectedXMLNode] rootDocument];	
+                
+                // Let's create a timer have it fire in a couple of seconds -
+                [NSTimer scheduledTimerWithTimeInterval:0.1 
+                                                 target:self 
+                                               selector:@selector(launchCustomSheet) 
+                                               userInfo:nil 
+                                                repeats:NO];
+            }
+        }    
+    }
+}
+
+
 -(IBAction)loadNameChangePanel:(NSButton *)sender
 {
     // Need to check to see if we have a selected node -
