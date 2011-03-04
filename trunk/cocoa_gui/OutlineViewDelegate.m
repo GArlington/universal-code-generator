@@ -271,14 +271,25 @@
             // Get the xml node -
             NSXMLElement *xmlNode = [treeNode representedObject];
             
-            // Archive the data from the selectedXMLNode -
-            DDTreeNodeProxy *proxy = [[[DDTreeNodeProxy alloc] init] autorelease];
+            // Ok, so if this is a leaf, then encode "normally"
+            if ([xmlNode isLeaf])
+            {
             
-            // Ok, add the node to the proxy -
-            [proxy setXmlNode:xmlNode];
+                // Archive the data from the selectedXMLNode -
+                DDTreeNodeProxy *proxy = [[[DDTreeNodeProxy alloc] init] autorelease];
             
-            // Add the proxy's to the list -
-            [nodeArray addObject:proxy];
+                // Ok, add the node to the proxy -
+                [proxy setXmlNode:xmlNode];
+            
+                // Add the proxy's to the list -
+                [nodeArray addObject:proxy];
+            }
+            else
+            {
+                // Ok, so this node has children ... how should I process this?
+                
+                
+            }
                     
             // Get the next index -
             index=[selectedIndexSet indexGreaterThanIndex: index];
@@ -330,7 +341,6 @@
                 // Go through the list -
                 for (DDTreeNodeProxy *treeNodeProxy in nodeArray)
                 {
-                
                     // Ok, get the xml node from the proxy -
                     NSXMLElement *dropNode = [treeNodeProxy xmlNode];
                     

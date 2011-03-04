@@ -34,14 +34,19 @@
     @private
     NSCoder *coderInstance;
     NSXMLElement *xmlNode;
+    DDTreeNodeProxy *parent;
+    NSMutableArray *children;
 }
 
 // Properties -
 @property (retain) NSCoder *coderInstance;
 @property (retain) NSXMLElement *xmlNode;
+@property (retain) DDTreeNodeProxy *parent;
+@property (retain) NSMutableArray *children;
 
-// Methods to set up the object tree -
-
-
+// Methods for adding/removing children -
+-(void)addChild:(DDTreeNodeProxy *)child;
+-(void)removeAllChildren;
+-(BOOL)isLeaf;
 
 @end

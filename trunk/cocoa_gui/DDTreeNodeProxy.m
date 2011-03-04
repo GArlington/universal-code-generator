@@ -33,6 +33,7 @@
 
     // Methods -
     -(void)decodeObject:(NSCoder *)coder;
+    -(void)setup;
 
 @end
 
@@ -41,12 +42,17 @@
 // synthesize -
 @synthesize coderInstance;
 @synthesize xmlNode;
+@synthesize parent;
+@synthesize children;
 
 - (id)initWithCoder:(NSCoder *)coder {
     self = [super init];
     if (self) {
         
-        NSLog(@"Going to decode ...");
+        // Set up the object -
+        [self setup];
+        
+        // Decode -
         [self decodeObject:coder];
     }
     return self;
@@ -57,6 +63,8 @@
     self = [super init];
     if (self) {
         
+        // Setup -
+        [self setup];
     }
     return self;
 }
@@ -67,77 +75,182 @@
     // Deallocate instance variables -
     self.coderInstance = nil;
     self.xmlNode = nil;
+    self.parent = nil;
+    self.children = nil;
     
     // Dealloc my super -
     [super dealloc];
 }
 
+-(void)setup
+{
+    // Setup the children array -
+    self.children = [[[NSMutableArray alloc] initWithCapacity:10] autorelease];
+}
+
+-(BOOL)isLeaf
+{
+    BOOL flag = YES;
+    
+    if ([[self children] count]!=0)
+    {
+        flag = NO;
+    }
+    else
+    {
+        flag = YES;
+    }
+    
+    return flag;
+}
+
 - (void)encodeWithCoder:(NSCoder *)encoder
 {
     // Ok, so I have an xmlNode - we need to get the attributes and values for this node
-    NSLog(@"Starting to encode ...");
     
     // Ok, so we need to get see if this tree node has kids, if so then I need encode those bitchez first ... (oh yea, I went with the "z").
-    // All I have to say is ... NO SALID ... NO JUSTICE! 
+    // All I have to say is ... NO SALAD ... NO JUSTICE! 
     
-    // Ok, get the attributes for this node -
-    NSArray *keyList = [[self xmlNode] attributes];
-    NSMutableArray *keyNameArray = [[NSMutableArray alloc] initWithCapacity:10];
-    
-    for (NSXMLNode *attributeNode in keyList)
+    // Ok, do I have children?
+    if ([self isLeaf])
     {
-        // Ok, get the value -
-        NSString *attributeValue = [attributeNode stringValue];
-        NSString *attributeName = [attributeNode name];
+        // Ok, get the attributes for this node -
+        NSArray *keyList = [[self xmlNode] attributes];
+        NSMutableArray *keyNameArray = [[NSMutableArray alloc] initWithCapacity:10];
         
-        // Add to keyName array -
-        [keyNameArray addObject:attributeName];
+        for (NSXMLNode *attributeNode in keyList)
+        {
+            // Ok, get the value -
+            NSString *attributeValue = [attributeNode stringValue];
+            NSString *attributeName = [attributeNode name];
+            
+            // Add to keyName array -
+            [keyNameArray addObject:attributeName];
+            
+            // encode this pair -
+            [encoder encodeObject:attributeValue forKey:attributeName];
+        }
         
-        // encode this pair -
-        [encoder encodeObject:attributeValue forKey:attributeName];
+        // Ok, so the last thing we need to encode is the list of keys -
+        [encoder encodeObject:keyNameArray forKey:@"KEY_NAME_ARRAY"];
+        [encoder encodeObject:[[self xmlNode] name] forKey:@"NODE_NAME"];
     }
-    
-    // Ok, so the last thing we need to encode is the list of keys -
-    [encoder encodeObject:keyNameArray forKey:@"KEY_NAME_ARRAY"];
-    [encoder encodeObject:[[self xmlNode] name] forKey:@"NODE_NAME"];
+    else
+    {
+        // Ok, so If I get here, then I have children -
+        
+        // Encode me -
+        // Ok, get the attributes for this node -
+        NSArray *keyList = [[self xmlNode] attributes];
+        NSMutableArray *keyNameArray = [[NSMutableArray alloc] initWithCapacity:10];
+        
+        for (NSXMLNode *attributeNode in keyList)
+        {
+            // Ok, get the value -
+            NSString *attributeValue = [attributeNode stringValue];
+            NSString *attributeName = [attributeNode name];
+            
+            // Add to keyName array -
+            [keyNameArray addObject:attributeName];
+            
+            // encode this pair -
+            [encoder encodeObject:attributeValue forKey:attributeName];
+        }
+        
+        // Ok, so the last thing we need to encode is the list of keys -
+        [encoder encodeObject:keyNameArray forKey:@"KEY_NAME_ARRAY"];
+        [encoder encodeObject:[[self xmlNode] name] forKey:@"NODE_NAME"];
+        
+        // Encode my children -
+        for (DDTreeNodeProxy *childNode in children)
+        {
+            // Ok, call encode on my kids -
+            [childNode encodeWithCoder:encoder];
+        }
+    }
 }
 
 -(void)decodeObject:(NSCoder *)coder
 {
     
-    NSLog(@"Starting the decode ...");
-    
-    // Ok, now we are going to decode the object -
-    NSArray *keyNameList = [coder decodeObjectForKey:@"KEY_NAME_ARRAY"];
-    NSMutableDictionary *attDictionary = [[NSMutableDictionary alloc] initWithCapacity:100];
-    
-    
-    // Create a new xmlNode -
-    self.xmlNode = [[NSXMLElement alloc] init];
-    
-    // Populate the properties of the xmlnode -
-    for (NSString *keyName in keyNameList)
+    if ([self isLeaf])
     {
-        // Get the value 
-        NSString *tmpValue = [coder decodeObjectForKey:keyName];
+        // Ok, now we are going to decode the object -
+        NSArray *keyNameList = [coder decodeObjectForKey:@"KEY_NAME_ARRAY"];
+        NSMutableDictionary *attDictionary = [[NSMutableDictionary alloc] initWithCapacity:100];
         
-        NSLog(@"Trying to decode object %@ = %@",keyName,tmpValue);
         
-        // Add the data to the xmlNode -
-        [attDictionary setObject:tmpValue forKey:keyName];
+        // Create a new xmlNode -
+        self.xmlNode = [[NSXMLElement alloc] init];
+        
+        // Populate the properties of the xmlnode -
+        for (NSString *keyName in keyNameList)
+        {
+            // Get the value 
+            NSString *tmpValue = [coder decodeObjectForKey:keyName];
+            
+            // Add the data to the xmlNode -
+            [attDictionary setObject:tmpValue forKey:keyName];
+        }
+        
+        // Add attributes to the xmlNode -
+        [[self xmlNode] setAttributesAsDictionary:attDictionary];
+        
+        // Name the node -
+        [[self xmlNode] setName:[coder decodeObjectForKey:@"NODE_NAME"]];
+        
+        // release the dictionary -
+        [attDictionary release];
     }
-    
-    // Add attributes to the xmlNode -
-    [[self xmlNode] setAttributesAsDictionary:attDictionary];
-    
-     // Name the node -
-    [[self xmlNode] setName:[coder decodeObjectForKey:@"NODE_NAME"]];
-    
-    // release the dictionary -
-    [attDictionary release];
+    else
+    {
+        // Decode me -
+        // Ok, now we are going to decode the object -
+        NSArray *keyNameList = [coder decodeObjectForKey:@"KEY_NAME_ARRAY"];
+        NSMutableDictionary *attDictionary = [[NSMutableDictionary alloc] initWithCapacity:100];
+        
+        
+        // Create a new xmlNode -
+        self.xmlNode = [[NSXMLElement alloc] init];
+        
+        // Populate the properties of the xmlnode -
+        for (NSString *keyName in keyNameList)
+        {
+            // Get the value 
+            NSString *tmpValue = [coder decodeObjectForKey:keyName];
+            
+            // Add the data to the xmlNode -
+            [attDictionary setObject:tmpValue forKey:keyName];
+        }
+        
+        // Add attributes to the xmlNode -
+        [[self xmlNode] setAttributesAsDictionary:attDictionary];
+        
+        // Name the node -
+        [[self xmlNode] setName:[coder decodeObjectForKey:@"NODE_NAME"]];
+        
+        // release the dictionary -
+        [attDictionary release];
+        
+        // Decode my children -
+        for (DDTreeNodeProxy *childNode in children)
+        {
+            // Decode my kids -
+            [childNode decodeObject:coder];
+        }
+    }
 }
 
+-(void)addChild:(DDTreeNodeProxy *)child
+{
+    // set the child -
+    [[self children] addObject:child];
+}
 
+-(void)removeAllChildren
+{
+    [[self children] removeAllObjects];
+}
 
 
 @end
