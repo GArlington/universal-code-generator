@@ -89,6 +89,9 @@
 -(IBAction)doSaveXMLFile:(NSButton *)sender;
 -(IBAction)menuSelectionAction:(NSMenuItem *)sender;
 -(IBAction)addTreeNode:(NSButton *)sender;
+
+
+-(IBAction)addNewTreeNodeMenuAction:(NSMenuItem *)sender;
 -(IBAction)removeTreeNode:(NSButton *)sender;
 -(IBAction)runCodeGenerator:(NSButton *)sender;
 -(IBAction)checkTreeCompleteness:(NSButton *)sender;
