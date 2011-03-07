@@ -105,7 +105,7 @@ public static void buildLargeScaleMatlabMassBalanceBuffer(StringBuffer massbalan
 	    
 	    massbalances.append("[uV]=");
 	    massbalances.append(strInputFunctionName);
-	    massbalances.append("(t,x,DF);\n");
+	    massbalances.append("(t,x);\n");
 	    massbalances.append("\n");
 	    massbalances.append("% Calculate DXDT\n");
 	    
@@ -147,7 +147,9 @@ public static void buildLargeScaleMatlabMassBalanceBuffer(StringBuffer massbalan
 	    	
 	    	// replace the + with a ;
 	    	massbalances.append(tmpString.substring(0,INDEX_OF_TRAILING_PLUS));
-	    	massbalances.append(";\n");
+	    	massbalances.append(" + uV(");
+	    	massbalances.append(species_index+1);
+	    	massbalances.append(",1);\n");
 	    }
 	    
 	    // add a new line -
@@ -219,7 +221,7 @@ public static void buildLargeScaleOctaveMassBalanceBuffer(StringBuffer massbalan
     
     massbalances.append("[uV]=");
     massbalances.append(strInputFunctionName);
-    massbalances.append("(t,x,DF);\n");
+    massbalances.append("(t,x,kV);\n");
     massbalances.append("\n");
     massbalances.append("% Calculate DXDT\n");
     
@@ -261,7 +263,9 @@ public static void buildLargeScaleOctaveMassBalanceBuffer(StringBuffer massbalan
     	
     	// replace the + with a ;
     	massbalances.append(tmpString.substring(0,INDEX_OF_TRAILING_PLUS));
-    	massbalances.append(";\n");
+    	massbalances.append(" + uV(");
+    	massbalances.append(species_index+1);
+    	massbalances.append(",1);\n");
     }
     
     // add a new line -

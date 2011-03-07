@@ -62,7 +62,7 @@ public class OctaveMModel {
 		ArrayList<String> arrList = propTree.processFilenameBlock("DriverFile");
     	String strFunctionName = arrList.get(1);
     	
-        driver.append("function [TSIM,X]=");
+        driver.append("function [TSIM,X,OUTPUT]=");
         driver.append(strFunctionName);
         driver.append("(pDataFile,TSTART,TSTOP,Ts,DFIN)\n");
         driver.append("\n");
@@ -124,7 +124,7 @@ public class OctaveMModel {
         driver.append("[X]=lsode(f,IC,TSIM);\n");
         driver.append("\n");
         driver.append("% Calculate the output - \n");
-        driver.append("OUTPUT = X(MEASUREMENT_INDEX_VECTOR,:);\n");
+        driver.append("OUTPUT = X(:,MEASUREMENT_INDEX_VECTOR);\n");
         driver.append("\n");
         driver.append("% return to caller - \n");
         driver.append("return;\n");
@@ -226,7 +226,7 @@ public class OctaveMModel {
         // Away we go...
         inputs.append("function uV=");
         inputs.append(strInputFunctionName);
-        inputs.append("(t,x,DF);\n");
+        inputs.append("(t,x,kV);\n");
         
         // header information -
         inputs.append("% ----------------------------------------------------------------------\n");
@@ -246,7 +246,7 @@ public class OctaveMModel {
         inputs.append("% Arguments: \n");
         inputs.append("% t	-	current time\n");
         inputs.append("% x	-	state vector (M x 1) at the current time point\n");
-        inputs.append("% DF	-	Instance of the data file struct (get parameters etc)\n");
+        inputs.append("% kV	-	Parameter vector \n");
         inputs.append("% uV -	M x 1 inputs vector\n");
         inputs.append("\n");
         inputs.append("% The default is to return a vector of zeros.\n");
@@ -330,7 +330,7 @@ public class OctaveMModel {
         
         massbalances.append("[uV]=");
         massbalances.append(strInputFunctionName);
-        massbalances.append("(t,x,DF);\n");
+        massbalances.append("(t,x);\n");
         massbalances.append("\n");
         massbalances.append("% Calculate DXDT\n");
         massbalances.append("DXDT = S*rV+uV;\n");
@@ -497,7 +497,11 @@ public class OctaveMModel {
                     }
                     else
                     {
-                    	buffer.append(";\n");
+                    	buffer.append("\t ; % \t ");
+                    	buffer.append(rcounter+1);
+                    	buffer.append("\t ");
+                    	buffer.append(rxn_obj.getName());
+                    	buffer.append("\n");
                     }
                 }       
             }

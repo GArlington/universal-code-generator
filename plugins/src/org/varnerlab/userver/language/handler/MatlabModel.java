@@ -84,7 +84,7 @@ public class MatlabModel {
         // Away we go...
         inputs.append("function uV=");
         inputs.append(strInputFunctionName);
-        inputs.append("(t,x,DF);\n");
+        inputs.append("(t,x,kV);\n");
         
         // header information -
         inputs.append("% ----------------------------------------------------------------------\n");
@@ -104,7 +104,7 @@ public class MatlabModel {
         inputs.append("% Arguments: \n");
         inputs.append("% t	-	current time\n");
         inputs.append("% x	-	state vector (M x 1) at the current time point\n");
-        inputs.append("% DF	-	Instance of the data file struct (get parameters etc)\n");
+        inputs.append("% kV	-	Parameter vector \n");
         inputs.append("% uV -	M x 1 inputs vector\n");
         inputs.append("\n");
         inputs.append("% The default is to return a vector of zeros.\n");
