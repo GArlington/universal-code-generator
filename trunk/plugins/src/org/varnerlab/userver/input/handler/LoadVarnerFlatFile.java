@@ -357,10 +357,12 @@ public class LoadVarnerFlatFile implements IInputHandler {
 			double temp = 0.0;
 			if(_dblInitialCondition != null){
 				newSpecies.setInitialConcentration(_dblInitialCondition[counter]);
+				//newSpecies.setInitialAmount(_dblInitialCondition[counter]);
 			}
 			else
 			{
-				newSpecies.setInitialAmount(temp);
+				//newSpecies.setInitialAmount(temp);
+				newSpecies.setInitialConcentration(temp);
 			}
 
 			// Add the configured species to the model -
