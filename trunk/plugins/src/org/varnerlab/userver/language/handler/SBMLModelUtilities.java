@@ -260,7 +260,7 @@ public class SBMLModelUtilities {
 	        {
 	            Species species = (Species)vecSpecies.get(pindex);
 	            datafile.append("\t");
-	            datafile.append(species.getInitialAmount());
+	            datafile.append(species.getInitialConcentration());
 	            datafile.append("\t;%\t");
 	            datafile.append(pindex+1);
 	            datafile.append("\t");
@@ -401,12 +401,16 @@ public class SBMLModelUtilities {
 	        {
 	            Species species = (Species)species_list.get(pindex);
 	            datafile.append("\t");
-	            datafile.append(species.getInitialAmount());
+	            
+	            // Ok, initial condition -or- amount?
+	          
+	    
+	            datafile.append(species.getInitialConcentration());
 	            datafile.append("\t;%\t");
 	            datafile.append(pindex+1);
-	            datafile.append("\t");
+	            datafile.append("\t ID: ");
 	            datafile.append(species.getId());
-	            datafile.append("\t");
+	            datafile.append("\t NAME: ");
 	            datafile.append(species.getName());
 	            datafile.append("\n");
 	        }
@@ -742,6 +746,28 @@ public class SBMLModelUtilities {
     {
     	
     	ArrayList<String> arrList = _xmlPropTree.processFilenameBlock("MassBalanceFunction");
+        String strFileName = arrList.get(0);
+        String strFilePath = arrList.get(2);
+        
+        // Check to make sure we have data in the string -
+        String strSBMLFile = "";
+        if (!strFileName.equalsIgnoreCase("EMPTY") && !strFilePath.equalsIgnoreCase("EMPTY"))
+        {
+        	// Path information for stoichiometric matrix -
+        	strSBMLFile = strFilePath+"/"+strFileName;
+        	GIOL.write(strSBMLFile,massbalances);
+        }
+        else
+        {
+        	// OK, there was some malfunction -
+        	throw new Exception("ERROR: We have some issue writing the massbalance equations. Check the massbalance settings.");
+        } 	
+    }
+    
+    public static void dumpExtracellularMassBalancesToDisk(StringBuffer massbalances,XMLPropTree _xmlPropTree) throws Exception
+    {
+    	
+    	ArrayList<String> arrList = _xmlPropTree.processFilenameBlock("ExtracellularMassBalanceFunction");
         String strFileName = arrList.get(0);
         String strFilePath = arrList.get(2);
         
