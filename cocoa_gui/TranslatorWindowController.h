@@ -41,6 +41,7 @@
 	NSXMLDocument *xmlDocument;							// Pointer to the xml document w/the tag children relationships -
 	NSXMLElement *selectedXMLNode;						// Node currently selected on the tree -
     MyCustomSheetController *customSheetController;     // Pointer to sheer controller -
+    NSTask *aTask;
 	
 	
 	IBOutlet NSTextField *bottomDisplayLabel;			// Bottom label to update user on status -
@@ -67,6 +68,7 @@
 @property (retain) NSXMLDocument *xmlDocument;
 @property (retain) NSXMLElement *selectedXMLNode;
 @property (retain) MyCustomSheetController *customSheetController;
+@property (retain) NSTask *aTask;
 
 
 @property (retain) IBOutlet NSTextField *bottomDisplayLabel;
@@ -94,6 +96,9 @@
 -(IBAction)addNewTreeNodeMenuAction:(NSMenuItem *)sender;
 -(IBAction)removeTreeNode:(NSButton *)sender;
 -(IBAction)runCodeGenerator:(NSButton *)sender;
+-(IBAction)stopCodeGenerator:(NSButton *)sender;
+-(IBAction)pauseCodeGenerator:(NSButton *)sender;
+
 -(IBAction)checkTreeCompleteness:(NSButton *)sender;
 -(IBAction)loadNameChangePanel:(NSButton *)sender;
 

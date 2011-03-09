@@ -81,6 +81,7 @@
 @synthesize actionButton;
 @synthesize propTableView;
 @synthesize customSheetController;
+@synthesize aTask;
 
 
 #pragma mark --------------------------------
@@ -136,6 +137,7 @@
 	self.fileTypePopupButton = nil;
 	self.actionButton = nil;
 	self.propTableView = nil;
+    self.aTask = nil;
 	
 	// deallocate the super -
 	[super dealloc];
@@ -980,8 +982,12 @@
 	NSError *errObject = nil;
 	
 	// Fire up a task and setup the args -
-	NSTask *aTask = [[NSTask alloc] init];
-	NSPipe *outPipe = [[NSPipe alloc] init];
+	
+    // Initiliaze the task -
+    self.aTask = [[NSTask alloc] init];
+	
+    
+    NSPipe *outPipe = [[NSPipe alloc] init];
 	NSPipe *errPipe = [[NSPipe alloc] init];
 	NSMutableArray *args = [NSMutableArray array];
 	NSData *inData = nil;
@@ -1012,8 +1018,9 @@
 			[readErrHandle closeFile];
 			
 			// release local stuff -
-			[aTask release];
-			[outPipe release];
+			//[aTask release];
+			self.aTask = nil;
+            [outPipe release];
 			[tmpBuffer release];
 			[strXPath release];
 			[errPipe release];
@@ -1044,7 +1051,8 @@
 			[readErrHandle closeFile];
 			
 			// release local stuff -
-			[aTask release];
+			//[aTask release];
+            self.aTask = nil;
 			[outPipe release];
 			[tmpBuffer release];
 			[strXPath release];
@@ -1078,7 +1086,7 @@
 			[strXPath appendString:@"/ExecuteJob.sh"];
 			
 			//NSLog(@"What is the launch path? %@",strXPath);
-			[aTask setLaunchPath:strXPath];
+			[[self aTask] setLaunchPath:strXPath];
 			
 			
 			// Populate the arguments -
@@ -1095,7 +1103,7 @@
 			[strXPath setString:@""];
 			NSXMLElement *pathNode = [pathStringNodeList lastObject];
 			
-			NSLog(@"What is pathNode %@",[pathNode stringValue]);
+			//NSLog(@"What is pathNode %@",[pathNode stringValue]);
 			
 			if ([[pathNode stringValue] length]!=0)
 			{
@@ -1106,13 +1114,13 @@
 				[args addObject:strXPath];
 				
 				// Set the arguments (path to the control file -)
-				[aTask setArguments:args];
-				[aTask setStandardOutput:outPipe];
-				[aTask setStandardError:errPipe];
-				[aTask setCurrentDirectoryPath:tmpNameString];
+				[[self aTask] setArguments:args];
+				[[self aTask] setStandardOutput:outPipe];
+				[[self aTask] setStandardError:errPipe];
+				[[self aTask] setCurrentDirectoryPath:tmpNameString];
 				
 				// Ok, so we at least have a 
-				[aTask launch];
+				[[self aTask] launch];
 				
 				while ((inData = [readHandle availableData]) && ([inData length]))
 				{
@@ -1133,7 +1141,8 @@
 				[readErrHandle closeFile];
 				
 				// release local stuff -
-				[aTask release];
+				//[aTask release];
+                self.aTask = nil;
 				[outPipe release];
 				[tmpBuffer release];
 				[strXPath release];
@@ -1146,7 +1155,8 @@
 				[readErrHandle closeFile];
 				
 				// release local stuff -
-				[aTask release];
+				//[aTask release];
+                self.aTask = nil;
 				[outPipe release];
 				[tmpBuffer release];
 				[strXPath release];
@@ -1174,6 +1184,55 @@
 		}
 		
 	}
+}
+
+-(IBAction)stopCodeGenerator:(NSButton *)sender
+{
+   if ([self aTask]!=nil)
+   {
+       if ([[self aTask] isRunning])
+       {
+           // Kill this task -
+           [[self aTask] terminate];
+           
+           // Shut down the animation -
+           [[self progressIndicator] stopAnimation:nil];
+       }
+       else
+       {
+           // Ok, we have a task, but it is not running - 
+           
+           // Shut down the animation -
+           [[self progressIndicator] stopAnimation:nil];
+       }
+       
+   }
+}
+
+-(IBAction)pauseCodeGenerator:(NSButton *)sender
+{
+    if ([self aTask]!=nil)
+    {
+        if ([[self aTask] isRunning])
+        {
+            
+            // Suspend the task -
+            [[self aTask] suspend];
+            
+            // Shut down the animation -
+            [[self progressIndicator] stopAnimation:nil];
+        }
+        else
+        {
+            // Ok, we have a task, but it is not running - 
+            [[self aTask] resume];
+            
+            // Shut down the animation -
+            [[self progressIndicator] startAnimation:nil];
+        }
+        
+    }
+
 }
 
 #pragma mark --------------------------------
