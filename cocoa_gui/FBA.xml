@@ -8,13 +8,13 @@
             <package required="YES" symbol="DEFAULT_BCX_PACKAGE" package_name="org.varnerlab.userver.language.handler.bcx"></package>
         </ListOfPackages>
         <ListOfPaths>
-            <path required="YES" symbol="UNIVERSAL_INPUT_PATH" path_location="/Users/jeffreyvarner/Desktop/UniversalServer-v1.0/jobs/test_metabolic_project"></path>
-            <path required="YES" symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" path_location="/Users/jeffreyvarner/Desktop/UniversalServer-v1.0/jobs/test_metabolic_project/src"></path>
-            <path required="YES" symbol="UNIVERSAL_NETWORK_OUTPUT_PATH" path_location="/Users/jeffreyvarner/Desktop/UniversalServer-v1.0/jobs/test_metabolic_project/network"></path>
-            <path required="YES" symbol="UNIVERSAL_DEBUG_OUTPUT_PATH" path_location="/Users/jeffreyvarner/Desktop/UniversalServer-v1.0/jobs/test_metabolic_project/src"></path>
-            <path required="YES" symbol="UNIVERSAL_SERVER_ROOT_DIRECTORY" path_location="/Users/jeffreyvarner/Desktop/UniversalServer-v1.0"></path>
-            <path required="YES" symbol="UNIVERSAL_SERVER_JAR_DIRECTORY" path_location="/Users/jeffreyvarner/Desktop/UniversalServer-v1.0/dist"></path>
-            <path required="YES" symbol="UNIVERSAL_PLUGINS_JAR_DIRECTORY" path_location="/Users/jeffreyvarner/Desktop/UniversalServer-v1.0/plugins"></path>
+            <path required="YES" symbol="UNIVERSAL_INPUT_PATH" path_location=""></path>
+            <path required="YES" symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" path_location=""></path>
+            <path required="YES" symbol="UNIVERSAL_NETWORK_OUTPUT_PATH" path_location=""></path>
+            <path required="YES" symbol="UNIVERSAL_DEBUG_OUTPUT_PATH" path_location=""></path>
+            <path required="YES" symbol="UNIVERSAL_SERVER_ROOT_DIRECTORY" path_location=""></path>
+            <path required="YES" symbol="UNIVERSAL_SERVER_JAR_DIRECTORY" path_location=""></path>
+            <path required="YES" symbol="UNIVERSAL_PLUGINS_JAR_DIRECTORY" path_location=""></path>
         </ListOfPaths>
         <ListOfClasses>
             <InputHandlerClasses>

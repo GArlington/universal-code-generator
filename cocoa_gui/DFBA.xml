@@ -1,5 +1,5 @@
 <?xml version="1.0" standalone="yes"?>
-<Model type="FBA" required="YES" username="" version="v1.0" name="">
+<Model type="DFBA" required="YES" username="" version="v1.0" name="">
     <Configuration>
         <ListOfPackages>
             <package required="YES" symbol="INPUT_HANDLER_PACKAGE" package_name="org.varnerlab.userver.input.handler"></package>
@@ -9,13 +9,13 @@
             <package required="YES" symbol="DEFAULT_BCX_PACKAGE" package_name="org.varnerlab.userver.language.handler.bcx"></package>
         </ListOfPackages>
         <ListOfPaths>
-            <path required="YES" symbol="UNIVERSAL_INPUT_PATH" path_location="/Users/jeffreyvarner/Desktop/UniversalServer-v1.0/jobs/test_metabolic_project"></path>
-            <path required="YES" symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" path_location="/Users/jeffreyvarner/Desktop/UniversalServer-v1.0/jobs/test_metabolic_project/src"></path>
-            <path required="YES" symbol="UNIVERSAL_NETWORK_OUTPUT_PATH" path_location="/Users/jeffreyvarner/Desktop/UniversalServer-v1.0/jobs/test_metabolic_project/network"></path>
-            <path required="YES" symbol="UNIVERSAL_DEBUG_OUTPUT_PATH" path_location="/Users/jeffreyvarner/Desktop/UniversalServer-v1.0/jobs/test_metabolic_project/src"></path>
-            <path required="YES" symbol="UNIVERSAL_SERVER_ROOT_DIRECTORY" path_location="/Users/jeffreyvarner/Desktop/UniversalServer-v1.0"></path>
-            <path required="YES" symbol="UNIVERSAL_SERVER_JAR_DIRECTORY" path_location="/Users/jeffreyvarner/Desktop/UniversalServer-v1.0/dist"></path>
-            <path required="YES" symbol="UNIVERSAL_PLUGINS_JAR_DIRECTORY" path_location="/Users/jeffreyvarner/Desktop/UniversalServer-v1.0/plugins"></path>
+            <path required="YES" symbol="UNIVERSAL_INPUT_PATH" path_location=""></path>
+            <path required="YES" symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" path_location=""></path>
+            <path required="YES" symbol="UNIVERSAL_NETWORK_OUTPUT_PATH" path_location=""></path>
+            <path required="YES" symbol="UNIVERSAL_DEBUG_OUTPUT_PATH" path_location=""></path>
+            <path required="YES" symbol="UNIVERSAL_SERVER_ROOT_DIRECTORY" path_location=""></path>
+            <path required="YES" symbol="UNIVERSAL_SERVER_JAR_DIRECTORY" path_location=""></path>
+            <path required="YES" symbol="UNIVERSAL_PLUGINS_JAR_DIRECTORY" path_location=""></path>
         </ListOfPaths>
         <ListOfClasses>
             <InputHandlerClasses>
@@ -66,16 +66,24 @@
         <KineticDataFile required="YES" path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="KineticDataFile.m"></KineticDataFile>
         <VolumetricFlowFile required="YES" path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="FlowFile.dat"></VolumetricFlowFile>
         <ExtracellularMassBalanceFunction required="YES" path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="ExtracellularMassBalances.m"></ExtracellularMassBalanceFunction>
+        <KineticsFunction required="YES" path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="Kinetics.m"></KineticsFunction>
         <DriverFile required="YES" path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="FluxDriver.m"></DriverFile>
         <StoichiometricMatrix required="YES" path_symbol="UNIVERSAL_NETWORK_OUTPUT_PATH" filename="Network.dat"></StoichiometricMatrix>
         <BoundsFile required="NO" path_symbol="UNIVERSAL_NETWORK_OUTPUT_PATH" filename="FB.dat"></BoundsFile>
         <DebugOutputFile required="NO" path_symbol="UNIVERSAL_DEDUG_OUTPUT_PATH" filename="Debug.txt"></DebugOutputFile>
-        <ExtracellularTagName required="YES" name="Extra_organism"></ExtracellularTagName>
+        
     </OutputOptions>
     
     <RequiredSBMLInformation>
-		<listOfKineticExtracellularReactions>
+		<ExtracellularTagName required="YES" name="Extraorganism"></ExtracellularTagName>
+        
+        <listOfKineticExtracellularReactions>
 		</listOfKineticExtracellularReactions>
+        
+        <listOfExtracellularSpecies>
+		</listOfExtracellularSpecies>
+
+        
 	</RequiredSBMLInformation>
     
 </Model>
