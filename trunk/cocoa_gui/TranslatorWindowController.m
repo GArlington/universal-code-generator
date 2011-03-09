@@ -799,7 +799,7 @@
 	[[self progressIndicator] startAnimation:nil];
 	
 	// Let's create a timer have it fire in a couple of seconds -
-	[NSTimer scheduledTimerWithTimeInterval:1.0 
+	[NSTimer scheduledTimerWithTimeInterval:0.1 
 									 target:self 
 								   selector:@selector(executeCodeGenJob) 
 								   userInfo:nil 
