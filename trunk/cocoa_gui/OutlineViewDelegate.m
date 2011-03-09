@@ -341,7 +341,7 @@
 	
 
 	// Check to see if we have a legal childIndex (no negatives)
-	if (childIndex!=-1)
+	if (childIndex!=-1 && [self selectedXMLNode]!=nil)
 	{
 		// Get the posterboard -
 		NSPasteboard *pb = [info draggingPasteboard];
@@ -355,7 +355,8 @@
             // Check to see if we have the correct type -
 			if ([types containsObject:UNIVERSAL_TREE_NODE_TYPE])
 			{
-				// Ok, so when I get here -- I have the *string* of the type that I need to create ... now what?
+				                
+                // Ok, so when I get here -- I have the *string* of the type that I need to create ... now what?
                 // Get the data in the drop -
                 NSData *dropData = [pb dataForType:UNIVERSAL_TREE_NODE_TYPE];
                 
@@ -371,6 +372,12 @@
                     // Add the dropNode to the parent at index?
                     // Get my parent node and index -
                     NSXMLElement *parent = (NSXMLElement *)[item representedObject];
+                    
+                    // Just to make sure all is ok, later - update the selected object w/the current item
+                    self.selectedXMLNode = parent;
+                    
+                    NSNotification *mySelectionNotification = [NSNotification notificationWithName:NSOutlineViewSelectionDidChangeNotification object:nil];
+                    [[NSNotificationCenter defaultCenter] postNotification:mySelectionNotification];
 				
                     // Add the copy to the end of the list -
                     [parent insertChild:dropNode atIndex:childIndex];
@@ -381,11 +388,12 @@
                     NSNotification *myNotification = [NSNotification notificationWithName:MyNotificationName object:nil]; 
 				
                     // Send an update -
-                    [[NSNotificationQueue defaultQueue] enqueueNotification:myNotification postingStyle:NSPostNow coalesceMask:NSNotificationCoalescingOnName forModes:nil];
+                    //[[NSNotification defaultQueue] enqueueNotification:myNotification postingStyle: coalesceMask:NSNotificationCoalescingOnName forModes:nil];
+                    [[NSNotificationCenter defaultCenter] postNotification:myNotification];
                 }
 				
 				// What did we get?
-				//NSLog(@"Accept drop ...%@ at index = %d of parent %@",value,childIndex,[[self selectedXMLNode] displayName]);
+				//NSLog(@"Accept drop ...%@ at index = %d of parent %@",childIndex,[[self selectedXMLNode] displayName]);
 			}
             
             // We have accepted the drop -
