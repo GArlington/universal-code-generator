@@ -1456,7 +1456,7 @@
 	}
     else
     {
-        NSLog(@"Monkey spank...");
+        // NSLog(@"Monkey spank...");
     }
 }
 
