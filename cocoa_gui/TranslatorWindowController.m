@@ -620,7 +620,7 @@
                 self.xmlTreeModel.xmlDocument = [parent rootDocument];
                 
                 // Ok, so the tree should have refreshed - set the selected node -
-                self.selectedXMLNode = nil;
+                self.selectedXMLNode = parent;
                 
                 // Get the next index -
                 index=[selectedIndexSet indexGreaterThanIndex: index];
@@ -1201,6 +1201,7 @@
        else
        {
            // Ok, we have a task, but it is not running - 
+           self.aTask = nil;
            
            // Shut down the animation -
            [[self progressIndicator] stopAnimation:nil];
@@ -1374,7 +1375,10 @@
 -(void)refreshTreeModel:(NSNotification *)notifcation
 {    
 	// Update the tree pointer -
-	self.xmlTreeModel.xmlDocument = [[self selectedXMLNode] rootDocument];
+    if ([self selectedXMLNode]!=nil)
+    {
+        self.xmlTreeModel.xmlDocument = [[self selectedXMLNode] rootDocument];
+    }
 }
 
 
@@ -1450,6 +1454,10 @@
             [[[self customSheetController] textLabel] setStringValue:[[self selectedXMLNode] name]];
 		}
 	}
+    else
+    {
+        NSLog(@"Monkey spank...");
+    }
 }
 
 @end
