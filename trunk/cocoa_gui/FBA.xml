@@ -65,6 +65,6 @@
         <StoichiometricMatrix required="YES" path_symbol="UNIVERSAL_NETWORK_OUTPUT_PATH" filename="Network.dat"></StoichiometricMatrix>
         <BoundsFile required="NO" path_symbol="UNIVERSAL_NETWORK_OUTPUT_PATH" filename="FB.dat"></BoundsFile>
         <DebugOutputFile required="NO" path_symbol="UNIVERSAL_DEDUG_OUTPUT_PATH" filename="Debug.txt"></DebugOutputFile>
-        <ExtracellularTagName required="YES" name="Extra_organism"></ExtracellularTagName>
+        <ExtracellularTagName required="YES" name="Extra_organism" symbol="_b"></ExtracellularTagName>
     </OutputOptions>
 </Model>

@@ -63,6 +63,7 @@
     </InputOptions>
     <OutputOptions>
         <DataFile required="YES" path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="DataFile.m"></DataFile>
+        <DriverFile required="YES" path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="SolveDFBAProblem.m"></DriverFile>
         <KineticDataFile required="YES" path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="KineticDataFile.m"></KineticDataFile>
         <VolumetricFlowFile required="YES" path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="FlowFile.dat"></VolumetricFlowFile>
         <ExtracellularMassBalanceFunction required="YES" path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="ExtracellularMassBalances.m"></ExtracellularMassBalanceFunction>
@@ -75,8 +76,8 @@
     </OutputOptions>
     
     <RequiredSBMLInformation>
-		<ExtracellularTagName required="YES" name="Extraorganism"></ExtracellularTagName>
-        
+		<ExtracellularTagName required="YES" name="Extraorganism" symbol="_b"></ExtracellularTagName>
+    
         <listOfKineticExtracellularReactions>
 		</listOfKineticExtracellularReactions>
         

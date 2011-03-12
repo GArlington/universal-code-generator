@@ -598,6 +598,7 @@
 			// Ok, let's get the index set of the selected elements -
             NSIndexSet *selectedIndexSet = [[self treeView] selectedRowIndexes];
             NSUInteger index=[selectedIndexSet firstIndex];
+            
             while(index != NSNotFound) 
             {
                 
@@ -616,8 +617,9 @@
                 // Remove me from my parent -
                 [parent removeChildAtIndex:myIndex]; 
                 
+                
                 // reset the reference -
-                self.xmlTreeModel.xmlDocument = [parent rootDocument];
+                // self.xmlTreeModel.xmlDocument = [parent rootDocument];
                 
                 // Ok, so the tree should have refreshed - set the selected node -
                 self.selectedXMLNode = parent;
@@ -625,11 +627,13 @@
                 // Get the next index -
                 index=[selectedIndexSet indexGreaterThanIndex: index];
             }
-        
+            
+            // Reset the root document node -
+            self.xmlTreeModel.xmlDocument = [[self selectedXMLNode] rootDocument];
+            
             // Notfy everyone that the selected node has changed -- this should update the selected node -
             NSNotification *myNotification = [NSNotification notificationWithName:NSOutlineViewSelectionDidChangeNotification object:[self treeView]]; 
-            [[NSNotificationQueue defaultQueue] enqueueNotification:myNotification postingStyle:NSPostNow coalesceMask:NSNotificationCoalescingOnName forModes:nil];
-        
+            [[NSNotificationCenter defaultCenter] postNotification:myNotification];
         }
 	}
 }
