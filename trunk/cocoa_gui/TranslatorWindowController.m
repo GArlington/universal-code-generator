@@ -43,6 +43,7 @@
 -(void)refreshTreeModel:(NSNotification *)notifcation;
 
 -(void)removeTreeNodeAlertEnded:(NSAlert *)alert code:(int)choice context:(void *)v;
+-(void)shutdownUnsavedWindowAlertEnded:(NSAlert *)alert code:(int)choice context:(void *)v;
 -(void)savePanelDidEnd:(NSSavePanel *)savePanel returnCode:(int)returnCode contextInfo:(void *)contextInfo;
 -(void)executeCodeGenJob;
 -(void)launchCustomSheet;
@@ -205,6 +206,51 @@
 #pragma mark --------------------------------
 #pragma mark IBAction methods
 #pragma mark --------------------------------
+
+-(IBAction)shutdownApplication:(NSButton *)sender
+{
+    // Ok, we need to check to see if the user has unsaved changes -
+    if ([[self window] isDocumentEdited])
+    {
+        // Ok, if I get here - then ask the user to save unsaved changes?
+        // Popup the alert panel as a sheet - 
+		NSAlert *alertPanel = [NSAlert alertWithMessageText:@"Do you really want to shut down all your Universal windows?" 
+											  defaultButton:@"Yes"
+											alternateButton:@"No" 
+												otherButton:nil 
+								  informativeTextWithFormat:@"You have unsaved changes on your specification tree."]; 
+		
+        
+		// Pop-up that mofo - when the user selects a button, the didEndSelector gets called
+		[alertPanel beginSheetModalForWindow:[[self treeView] window] modalDelegate:self didEndSelector:@selector(shutdownUnsavedWindowAlertEnded:code:context:) contextInfo:NULL];	
+        
+    }
+    else
+    {
+        // Ok, if I get here - then ask the user to save unsaved changes?
+        // Popup the alert panel as a sheet - 
+		NSAlert *alertPanel = [NSAlert alertWithMessageText:@"Do you really want to shut down all your Universal windows?" 
+											  defaultButton:@"Yes"
+											alternateButton:@"No" 
+												otherButton:nil 
+								  informativeTextWithFormat:@"You can close just this window by clicking on the close button on the toolbar."]; 
+		
+        
+		// Pop-up that mofo - when the user selects a button, the didEndSelector gets called
+		[alertPanel beginSheetModalForWindow:[[self treeView] window] modalDelegate:self didEndSelector:@selector(shutdownUnsavedWindowAlertEnded:code:context:) contextInfo:NULL];	
+  
+    }
+}
+
+-(void)shutdownUnsavedWindowAlertEnded:(NSAlert *)alert code:(int)choice context:(void *)v
+{
+    // Ok, when I get here I need to check to see if the user wants to shutdown any way -
+    // Check to see what button has been pushed - the default is delete 
+	if (choice==NSAlertDefaultReturn)
+	{	
+        [NSApp terminate:nil];
+    }
+}
 
 -(IBAction)checkTreeCompleteness:(NSButton *)sender
 {

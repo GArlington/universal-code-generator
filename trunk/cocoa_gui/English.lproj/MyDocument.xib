@@ -1371,7 +1371,7 @@
 						<object class="NSButton" id="948563747">
 							<reference key="NSNextResponder" ref="568628114"/>
 							<int key="NSvFlags">268</int>
-							<string key="NSFrame">{{55, 530}, {50, 32}}</string>
+							<string key="NSFrame">{{53, 530}, {50, 32}}</string>
 							<reference key="NSSuperview" ref="568628114"/>
 							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="1016235405"/>
@@ -1387,7 +1387,7 @@
 								<int key="NSButtonFlags2">162</int>
 								<object class="NSCustomResource" key="NSNormalImage">
 									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">download1</string>
+									<string key="NSResourceName">download</string>
 								</object>
 								<string key="NSAlternateContents"/>
 								<string key="NSKeyEquivalent"/>
@@ -1398,7 +1398,7 @@
 						<object class="NSButton" id="1033507461">
 							<reference key="NSNextResponder" ref="568628114"/>
 							<int key="NSvFlags">268</int>
-							<string key="NSFrame">{{138, 530}, {50, 32}}</string>
+							<string key="NSFrame">{{136, 530}, {50, 32}}</string>
 							<reference key="NSSuperview" ref="568628114"/>
 							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="561292487"/>
@@ -1425,7 +1425,7 @@
 						<object class="NSButton" id="561292487">
 							<reference key="NSNextResponder" ref="568628114"/>
 							<int key="NSvFlags">268</int>
-							<string key="NSFrame">{{196, 530}, {50, 32}}</string>
+							<string key="NSFrame">{{184, 530}, {50, 32}}</string>
 							<reference key="NSSuperview" ref="568628114"/>
 							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="469279"/>
@@ -1437,11 +1437,11 @@
 								<string key="NSContents"/>
 								<reference key="NSSupport" ref="78187581"/>
 								<reference key="NSControlView" ref="561292487"/>
-								<int key="NSButtonFlags">-2041822977</int>
+								<int key="NSButtonFlags">-2042347265</int>
 								<int key="NSButtonFlags2">162</int>
 								<object class="NSCustomResource" key="NSNormalImage">
 									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">Ball-shutdown</string>
+									<string key="NSResourceName">Ball-logoff</string>
 								</object>
 								<string key="NSAlternateContents"/>
 								<string key="NSKeyEquivalent"/>
@@ -1452,7 +1452,7 @@
 						<object class="NSButton" id="1016235405">
 							<reference key="NSNextResponder" ref="568628114"/>
 							<int key="NSvFlags">268</int>
-							<string key="NSFrame">{{96, 530}, {50, 32}}</string>
+							<string key="NSFrame">{{92, 530}, {50, 32}}</string>
 							<reference key="NSSuperview" ref="568628114"/>
 							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="1033507461"/>
@@ -1996,14 +1996,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBActionConnection" key="connection">
-						<string key="label">terminate:</string>
-						<reference key="source" ref="796877042"/>
-						<reference key="destination" ref="561292487"/>
-					</object>
-					<int key="connectionID">100258</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
 						<string key="label">addNewTreeNodeMenuAction:</string>
 						<reference key="source" ref="512844837"/>
 						<reference key="destination" ref="108398682"/>
@@ -2049,6 +2041,14 @@
 						<reference key="destination" ref="803217938"/>
 					</object>
 					<int key="connectionID">100285</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">shutdownApplication:</string>
+						<reference key="source" ref="512844837"/>
+						<reference key="destination" ref="561292487"/>
+					</object>
+					<int key="connectionID">100286</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -3221,7 +3221,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">100285</int>
+			<int key="maxID">100286</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -3355,6 +3355,7 @@
 							<string>pauseCodeGenerator:</string>
 							<string>removeTreeNode:</string>
 							<string>runCodeGenerator:</string>
+							<string>shutdownApplication:</string>
 							<string>stopCodeGenerator:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
@@ -3366,6 +3367,7 @@
 							<string>NSButton</string>
 							<string>NSButton</string>
 							<string>NSMenuItem</string>
+							<string>NSButton</string>
 							<string>NSButton</string>
 							<string>NSButton</string>
 							<string>NSButton</string>
@@ -3386,6 +3388,7 @@
 							<string>pauseCodeGenerator:</string>
 							<string>removeTreeNode:</string>
 							<string>runCodeGenerator:</string>
+							<string>shutdownApplication:</string>
 							<string>stopCodeGenerator:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
@@ -3428,6 +3431,10 @@
 							</object>
 							<object class="IBActionInfo">
 								<string key="name">runCodeGenerator:</string>
+								<string key="candidateClassName">NSButton</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">shutdownApplication:</string>
 								<string key="candidateClassName">NSButton</string>
 							</object>
 							<object class="IBActionInfo">
@@ -3562,7 +3569,7 @@
 			<object class="NSArray" key="dict.sortedKeys">
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<string>Automator</string>
-				<string>Ball-shutdown</string>
+				<string>Ball-logoff</string>
 				<string>NSActionTemplate</string>
 				<string>NSAddTemplate</string>
 				<string>NSMenuCheckmark</string>
@@ -3570,7 +3577,7 @@
 				<string>NSRemoveTemplate</string>
 				<string>NSStopProgressTemplate</string>
 				<string>backup-restore</string>
-				<string>download1</string>
+				<string>download</string>
 				<string>file-explorer</string>
 			</object>
 			<object class="NSMutableArray" key="dict.values">

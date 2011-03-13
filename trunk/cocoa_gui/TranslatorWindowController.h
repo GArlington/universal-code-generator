@@ -102,6 +102,8 @@
 -(IBAction)checkTreeCompleteness:(NSButton *)sender;
 -(IBAction)loadNameChangePanel:(NSButton *)sender;
 
+-(IBAction)shutdownApplication:(NSButton *)sender;
+
 
 // Create XML document methods -
 -(void)createXMLDocumentFromFile:(NSString *)file;
