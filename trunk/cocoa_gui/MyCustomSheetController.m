@@ -37,6 +37,7 @@
 
 @implementation MyCustomSheetController
 
+
 #pragma mark -----------------------------------------------
 #pragma mark Synthesize statements 
 #pragma mark -----------------------------------------------
@@ -49,6 +50,18 @@
 #pragma mark -----------------------------------------------
 #pragma mark init, deallocated, setup and windowdidLoad
 #pragma mark -----------------------------------------------
+
+/*
++ (MyGizmoClass*)sharedManager
+{
+    if (sharedGizmoManager == nil) {
+        sharedGizmoManager = [[super allocWithZone:NULL] init];
+    }
+    return sharedGizmoManager;
+}*/
+ 
+
+ 
 
 - (id)initWithWindow:(NSWindow *)window
 {
@@ -98,7 +111,7 @@
 
 - (IBAction)showCustomSheet:(NSWindow *)applicationWindowRef
 {
-    if ([self window]!=nil)
+    if ([self window]!=nil && [[self window] isVisible])
     {
         
         //Check the myCustomSheet instance variable to make sure the custom sheet does not already exist.

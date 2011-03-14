@@ -193,8 +193,8 @@
     [[self window] setReleasedWhenClosed:YES];
     
     // Load the window controller -
-    self.customSheetController = [[MyCustomSheetController alloc] initWithWindow:[self window]];
-    [[self customSheetController] setApplicationWindow:[self window]];
+    //self.customSheetController = [[MyCustomSheetController alloc] initWithWindow:[self window]];
+    //[[self customSheetController] setApplicationWindow:[self window]];
     
     // Register the tree view for drag and drop activity?
 	[[self treeView] registerForDraggedTypes:[NSArray arrayWithObjects:NSPasteboardTypeString,NSPasteboardTypePNG,nil]];
@@ -233,7 +233,7 @@
 											  defaultButton:@"Yes"
 											alternateButton:@"No" 
 												otherButton:nil 
-								  informativeTextWithFormat:@"You can close just this window by clicking on the close button on the toolbar."]; 
+								  informativeTextWithFormat:@"You can close just this window by clicking on the close button on the titlebar."]; 
 		
         
 		// Pop-up that mofo - when the user selects a button, the didEndSelector gets called
@@ -584,11 +584,21 @@
 
 -(void)launchCustomSheet
 {
+        
+    if ([self customSheetController]==nil)
+    {
+    
+        self.customSheetController = [[MyCustomSheetController alloc] initWithWindow:[self window]];
+        [[self customSheetController] setApplicationWindow:[self window]];
+        
+    }
+    
     // Add the currently selected node to the window controller -
     [[self customSheetController] setSelectedXMLNode:[self selectedXMLNode]];
     
     // Ok, launch the node info -
-	[[self customSheetController] showCustomSheet:[self window]];
+    [[self customSheetController] showCustomSheet:[self window]];
+    
 }
 
 -(IBAction)removeTreeNode:(NSButton *)sender
