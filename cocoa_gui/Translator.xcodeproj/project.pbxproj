@@ -15,6 +15,7 @@
 		8D15AC320486D014006FF6A4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A37F4B0FDCFA73011CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D15AC340486D014006FF6A4 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
 		AD0235231300744700B59B51 /* VFF.xml in Resources */ = {isa = PBXBuildFile; fileRef = AD0235221300744700B59B51 /* VFF.xml */; };
+		AD13BBDC132FEC0200A25DFA /* VLButton.m in Sources */ = {isa = PBXBuildFile; fileRef = AD13BBDB132FEC0200A25DFA /* VLButton.m */; };
 		AD2B9632130AD29200168F12 /* BIOPAX-SIF.xml in Resources */ = {isa = PBXBuildFile; fileRef = AD2B9631130AD29100168F12 /* BIOPAX-SIF.xml */; };
 		AD2B9634130B470D00168F12 /* MyPathWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = AD2B9633130B470C00168F12 /* MyPathWindow.xib */; };
 		AD2B9636130B58E900168F12 /* M-Matlab.xml in Resources */ = {isa = PBXBuildFile; fileRef = AD2B9635130B58E800168F12 /* M-Matlab.xml */; };
@@ -110,6 +111,8 @@
 		8D15AC360486D014006FF6A4 /* Translator-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Translator-Info.plist"; sourceTree = "<group>"; };
 		8D15AC370486D014006FF6A4 /* Translator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Translator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AD0235221300744700B59B51 /* VFF.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = VFF.xml; sourceTree = "<group>"; };
+		AD13BBDA132FEC0200A25DFA /* VLButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLButton.h; sourceTree = "<group>"; };
+		AD13BBDB132FEC0200A25DFA /* VLButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VLButton.m; sourceTree = "<group>"; };
 		AD2B9631130AD29100168F12 /* BIOPAX-SIF.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "BIOPAX-SIF.xml"; sourceTree = "<group>"; };
 		AD2B9633130B470C00168F12 /* MyPathWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyPathWindow.xib; sourceTree = "<group>"; };
 		AD2B9635130B58E800168F12 /* M-Matlab.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "M-Matlab.xml"; sourceTree = "<group>"; };
@@ -255,6 +258,7 @@
 		2A37F4ABFDCFA73011CA2CEA /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				AD13BBD9132FEB9100A25DFA /* widgets */,
 				AD8E884812E8E6FF0055C601 /* controller */,
 				AD8E884712E8E6F50055C601 /* model */,
 				2A37F4AEFDCFA73011CA2CEA /* MyDocument.h */,
@@ -295,6 +299,15 @@
 				1058C7A8FEA54F5311CA2CBB /* Other Frameworks */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		AD13BBD9132FEB9100A25DFA /* widgets */ = {
+			isa = PBXGroup;
+			children = (
+				AD13BBDA132FEC0200A25DFA /* VLButton.h */,
+				AD13BBDB132FEC0200A25DFA /* VLButton.m */,
+			);
+			name = widgets;
 			sourceTree = "<group>";
 		};
 		AD8E884712E8E6F50055C601 /* model */ = {
@@ -561,6 +574,7 @@
 				AD8E8C7D12EC92E60055C601 /* TreeNodeNamingModel.m in Sources */,
 				AD8408B312FF7F5600B2A270 /* MyCustomSheetController.m in Sources */,
 				AD7BC18D13196D7F00A56512 /* DDTreeNodeProxy.m in Sources */,
+				AD13BBDC132FEC0200A25DFA /* VLButton.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
