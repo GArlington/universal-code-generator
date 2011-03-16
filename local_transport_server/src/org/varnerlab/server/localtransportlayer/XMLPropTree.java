@@ -193,7 +193,7 @@ public class XMLPropTree implements IInputHandler {
 		if (!tmpString.isEmpty() && !strPath.isEmpty())
 		{
 		
-			System.out.println("WTF I'm inside the if - "+strPath+" is the path and "+tmpString+" is the filename.");
+			System.out.println("I'm inside the if - "+strPath+" is the path and "+tmpString+" is the filename.");
 			
 			// Lastly fully qualified path -
 			hashtable.put(XMLPropTree.FullyQualifiedPath,strPath+"/"+tmpString);
