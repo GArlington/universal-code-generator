@@ -67,6 +67,8 @@
         <KineticDataFile required="YES" path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="KineticDataFile.m"></KineticDataFile>
         <VolumetricFlowFile required="YES" path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="FlowFile.dat"></VolumetricFlowFile>
         <ExtracellularMassBalanceFunction required="YES" path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="ExtracellularMassBalances.m"></ExtracellularMassBalanceFunction>
+        <BoundsArrayMatchingFunction required="YES" path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="SpeciesBoundsMatching.m"></
+            BoundsArrayMatchingFunction>
         <KineticsFunction required="YES" path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="Kinetics.m"></KineticsFunction>
         <DriverFile required="YES" path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="FluxDriver.m"></DriverFile>
         <StoichiometricMatrix required="YES" path_symbol="UNIVERSAL_NETWORK_OUTPUT_PATH" filename="Network.dat"></StoichiometricMatrix>
