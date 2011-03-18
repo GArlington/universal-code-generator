@@ -61,7 +61,7 @@
     
     <InputOptions>
 		<NetworkFile required="YES" path_symbol="UNIVERSAL_INPUT_PATH" filename=""></NetworkFile>
-		<OrderFile required="NO" path_symbol="UNIVERSAL_INPUT_PATH" filename="Order.dat"></OrderFile>
+		<OrderFile required="NO" path_symbol="UNIVERSAL_INPUT_PATH" filename=""></OrderFile>
         <KineticParameterFile required="YES" path_symbol="UNIVERSAL_INPUT_PATH" filename="KineticParameters.dat"></KineticParameterFile>
 		<InitialConditionFile required="YES" path_symbol="UNIVERSAL_INPUT_PATH" filename="InitialConditions.dat"></InitialConditionFile>
         <StoichiometricMatrix required="YES" path_symbol="UNIVERSAL_NETWORK_OUTPUT_PATH" filename="Network.dat"></StoichiometricMatrix>
