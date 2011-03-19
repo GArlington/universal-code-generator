@@ -32,7 +32,7 @@
 
 
 
-@interface TranslatorWindowController : NSWindowController {
+@interface TranslatorWindowController : NSWindowController <NSWindowDelegate> {
 	
 	@private
 	XMLTreeModel *xmlTreeModel;							// Pointer to the tree model 

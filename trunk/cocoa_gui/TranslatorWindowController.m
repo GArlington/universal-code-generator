@@ -164,7 +164,7 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(treeSelectionChanged:) name:NSOutlineViewSelectionDidChangeNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(codeGenerationCompleted:) name:NSTaskDidTerminateNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTreeModel:) name:@"RefreshTreeModel" object:nil];
-	    
+    
 	// Load the popup mapping tree -
 	NSString* templateName = [[NSBundle mainBundle] pathForResource:@"Templates" ofType:@"xml"];
 	NSURL *fileURL = [NSURL fileURLWithPath:templateName];
@@ -1080,7 +1080,7 @@
 			// release local stuff -
 			//[aTask release];
 			self.aTask = nil;
-            [outPipe release];
+            //[outPipe release];
 			[tmpBuffer release];
 			[strXPath release];
 			[errPipe release];
@@ -1301,7 +1301,9 @@
 #pragma mark --------------------------------
 -(void)createXMLDocumentFromData:(NSData *)data
 {
-	NSError *errObject = nil;
+	NSLog(@"Populating the tree from data ...");
+    
+    NSError *errObject = nil;
 	self.xmlTreeModel.xmlDocument = [[NSXMLDocument alloc] initWithData:data options:NSXMLNodeOptionsNone error:&errObject];
     
     // Autopopulate tree entries?
@@ -1520,4 +1522,17 @@
     }
 }
 
+-(void)close
+{
+     NSLog(@"Closing the window controller - ");
+    [self autorelease];
+}
+
+#pragma mark -
+#pragma mark NSWindow delegate methods 
+#pragma mark -
+- (BOOL)windowShouldClose:(id)sender
+{
+    return YES;
+}
 @end
