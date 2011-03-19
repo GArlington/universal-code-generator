@@ -654,7 +654,7 @@
 -(void)removeTreeNodeAlertEnded:(NSAlert *)alert code:(int)choice	context:(void *)v
 {	
 	// Get the undo manager -
-    NSUndoManager *undo = [self undoManager];
+    // NSUndoManager *undo = [self undoManager];
     
     // Check to see what button has been pushed - the default is delete 
 	if (choice==NSAlertDefaultReturn)
