@@ -212,6 +212,7 @@
     // Ok, we need to check to see if the user has unsaved changes -
     if ([[self window] isDocumentEdited])
     {
+        /*
         // Ok, if I get here - then ask the user to save unsaved changes?
         // Popup the alert panel as a sheet - 
 		NSAlert *alertPanel = [NSAlert alertWithMessageText:@"Do you really want to shut down all your Universal windows?" 
@@ -222,7 +223,9 @@
 		
         
 		// Pop-up that mofo - when the user selects a button, the didEndSelector gets called
-		[alertPanel beginSheetModalForWindow:[[self treeView] window] modalDelegate:self didEndSelector:@selector(shutdownUnsavedWindowAlertEnded:code:context:) contextInfo:NULL];	
+		[alertPanel beginSheetModalForWindow:[[self treeView] window] modalDelegate:self didEndSelector:@selector(shutdownUnsavedWindowAlertEnded:code:context:) contextInfo:NULL];
+         */
+        [NSApp terminate:nil];
         
     }
     else
@@ -1052,7 +1055,8 @@
 	NSMutableArray *args = [NSMutableArray array];
 	NSData *inData = nil;
 	NSData *errData = nil;
-	NSFileHandle *readHandle = [outPipe fileHandleForReading];
+	
+    NSFileHandle *readHandle = [outPipe fileHandleForReading];
 	NSFileHandle *readErrHandle = [errPipe fileHandleForReading];
 	NSMutableString *tmpBuffer = [[NSMutableString alloc] initWithCapacity:140];
 	
@@ -1080,7 +1084,7 @@
 			// release local stuff -
 			//[aTask release];
 			self.aTask = nil;
-            //[outPipe release];
+            [outPipe release];
 			[tmpBuffer release];
 			[strXPath release];
 			[errPipe release];
@@ -1168,9 +1172,16 @@
 			if ([[pathNode stringValue] length]!=0)
 			{
 				// If I get here then I have a non-zero path string -
-				[strXPath appendString:[pathNode stringValue]];
+				
+                // First, what is the NSURL of the document?
+                NSURL *fileURL = [[self document] fileURL];
+                [[self consoleTextField] setString:[fileURL lastPathComponent]];
+                [[self consoleTextField] setString:@"\n"];
+                
+                
+                [strXPath appendString:[pathNode stringValue]];
 				[strXPath appendString:@"/"];
-				[strXPath appendString:[[[self window] title] lastPathComponent]];
+				[strXPath appendString:[fileURL lastPathComponent]];
 				[args addObject:strXPath];
 				
 				// Set the arguments (path to the control file -)
@@ -1468,6 +1479,7 @@
     {
         // Ok, grab the window and set the documented edited flag -
         [[self window] setDocumentEdited:YES];
+        [[self document] updateChangeCount:NSChangeDone];
         
         // Ok, the ccmlTree did load. We need to change the enabled status of the save button -
         [[self saveAsButton] setEnabled:YES];
