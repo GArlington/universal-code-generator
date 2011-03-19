@@ -42,7 +42,7 @@
 	NSXMLElement *selectedXMLNode;						// Node currently selected on the tree -
     MyCustomSheetController *customSheetController;     // Pointer to sheer controller -
     NSTask *aTask;
-	
+        
 	
 	IBOutlet NSTextField *bottomDisplayLabel;			// Bottom label to update user on status -
 	IBOutlet NSProgressIndicator *progressWheel;		// Pointer to progress wheel (so I can turn on/off)
@@ -69,7 +69,6 @@
 @property (retain) NSXMLElement *selectedXMLNode;
 @property (retain) MyCustomSheetController *customSheetController;
 @property (retain) NSTask *aTask;
-
 
 @property (retain) IBOutlet NSTextField *bottomDisplayLabel;
 @property (retain) IBOutlet NSProgressIndicator *progressWheel;

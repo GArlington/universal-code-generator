@@ -139,6 +139,7 @@
 	self.actionButton = nil;
 	self.propTableView = nil;
     self.aTask = nil;
+    
 	
 	// deallocate the super -
 	[super dealloc];
@@ -230,6 +231,7 @@
     }
     else
     {
+        /*
         // Ok, if I get here - then ask the user to save unsaved changes?
         // Popup the alert panel as a sheet - 
 		NSAlert *alertPanel = [NSAlert alertWithMessageText:@"Do you really want to shut down all your Universal windows?" 
@@ -240,8 +242,9 @@
 		
         
 		// Pop-up that mofo - when the user selects a button, the didEndSelector gets called
-		[alertPanel beginSheetModalForWindow:[[self treeView] window] modalDelegate:self didEndSelector:@selector(shutdownUnsavedWindowAlertEnded:code:context:) contextInfo:NULL];	
-  
+		[alertPanel beginSheetModalForWindow:[[self treeView] window] modalDelegate:self didEndSelector:@selector(shutdownUnsavedWindowAlertEnded:code:context:) contextInfo:NULL];
+         */
+        [NSApp terminate:nil];
     }
 }
 
@@ -1482,7 +1485,7 @@
         [[self document] updateChangeCount:NSChangeDone];
         
         // Ok, the ccmlTree did load. We need to change the enabled status of the save button -
-        [[self saveAsButton] setEnabled:YES];
+        [[self codeGeneratorButton] setEnabled:NO];
         
         // Update the tree reference -
         if ([self selectedXMLNode]!=nil)
