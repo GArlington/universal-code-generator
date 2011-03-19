@@ -94,6 +94,10 @@
     return @"MyDocument";
 }*/
 
+
+#pragma mark -
+#pragma mark Override methods - 
+#pragma mark -
 // Override the makeWindowControllers method -
 - (void)makeWindowControllers
 {
@@ -109,14 +113,14 @@
     // Ok, we need to add this to the list of window controllers 
     [self addWindowController:translatorWindowController];
     
-    NSLog(@"The controller retain count is - %lu",[translatorWindowController retainCount]);
+    // NSLog(@"The controller retain count is - %lu",[translatorWindowController retainCount]);
     
     // Release the controller -
     self.localWindowController = translatorWindowController;
     
-    NSLog(@"The controller retain count is - %lu",[[self localWindowController] retainCount]);
+    // NSLog(@"The controller retain count is - %lu",[[self localWindowController] retainCount]);
     
-    NSLog(@"We just made a windowcontroller. We know have %lu controllers",[[self windowControllers] count]);
+    // NSLog(@"We just made a windowcontroller. We know have %lu controllers",[[self windowControllers] count]);
     
 	
 }
@@ -166,13 +170,13 @@
     // For applications targeted for Panther or earlier systems, you should use the deprecated API -loadDataRepresentation:ofType. In this case you can also choose to override -readFromFile:ofType: or -loadFileWrapperRepresentation:ofType: instead.
     
     // Get the controller -
-    NSLog(@"readFromNSdata ...");
+    // NSLog(@"readFromNSdata ...");
     
     if (data!=nil)
     {
         
         self.dataFromFile = data;
-        NSLog(@"readFromNSdata ...branch two. We have %lu window controllers",[[self windowControllers] count]);
+        //NSLog(@"readFromNSdata ...branch two. We have %lu window controllers",[[self windowControllers] count]);
         
     }
 	
@@ -183,13 +187,19 @@
 }
 
 
-#pragma mark -
-#pragma mark Override methods - 
-#pragma mark -
 -(void)saveDocument:(id)sender
 {
     // Save the document -
     [super saveDocument:sender];
+    
+    // Update the button enabled state -
+    [[[self localWindowController] codeGeneratorButton] setEnabled:YES];
+}
+
+-(void)saveDocumentAs:(id)sender
+{
+    // Save the document -
+    [super saveDocumentAs:sender];
     
     // Update the button enabled state -
     [[[self localWindowController] codeGeneratorButton] setEnabled:YES];
