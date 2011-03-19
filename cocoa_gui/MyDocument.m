@@ -26,14 +26,40 @@
 
 #import "MyDocument.h"
 
+@interface MyDocument (hidden)
+
+-(void)setup;
+-(void)updateDocumentState:(id)sender;
+
+@end;
+
 @implementation MyDocument
 
 @synthesize dataFromFile;
 @synthesize localWindowController;
+@synthesize editedTimer;
+@synthesize editedFlag;
 
 #pragma mark --------------------------------------
 #pragma mark init and dealloc methods
 #pragma mark --------------------------------------
+- (void)setup
+{
+    
+    /*
+    // Create a timer instance -
+    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:2.0 
+                                                      target:self 
+                                                    selector:@selector(updateDocumentState:)
+                                                    userInfo:nil 
+                                                     repeats:YES];
+     
+    
+    // Grab the instance -
+    self.editedTimer = timer;
+     */
+}
+
 - (id)init
 {
     self = [super init];
@@ -41,7 +67,7 @@
     
         // Add your subclass-specific initialization here.
         // If an error occurs here, send a [self release] message and return nil.
-    
+        [self setup];
     }
     return self;
 }
@@ -53,6 +79,7 @@
     // Get the list of window controller and dealloc them?
     self.dataFromFile = nil;
     self.localWindowController = nil;
+    self.editedTimer = nil;
     
 	// Deallocate my super -
 	[super dealloc];
@@ -155,12 +182,46 @@
     return YES;
 }
 
+
+#pragma mark -
+#pragma mark Override methods - 
+#pragma mark -
+-(void)saveDocument:(id)sender
+{
+    // Save the document -
+    [super saveDocument:sender];
+    
+    // Update the button enabled state -
+    [[[self localWindowController] codeGeneratorButton] setEnabled:YES];
+}
+
 #pragma mark ----------------------------------------------
 #pragma mark - Static class methods --
 #pragma mark ----------------------------------------------
 + (BOOL)canConcurrentlyReadDocumentsOfType:(NSString *)typeName
 {
 	return YES;
+}
+
+#pragma mark -
+#pragma mark IBAction methods 
+#pragma mark -
+-(IBAction)saveSpecificationTree:(id)sender
+{
+    // Save the document -
+    [self saveDocument:sender];
+    
+    // Update the 
+}
+
+#pragma mark -
+#pragma mark Document timer methods - 
+#pragma mark -
+-(void)updateDocumentState:(id)sender
+{
+    
+    NSLog(@"Updating state...");
+    
 }
 
 

@@ -33,9 +33,17 @@
 	@private
 	NSData *dataFromFile;
     TranslatorWindowController *localWindowController;
+    BOOL editedFlag;
+    NSTimer *editedTimer;
 	
 }
 
 @property (retain) NSData *dataFromFile;
 @property (retain) TranslatorWindowController *localWindowController;
+@property (retain) NSTimer *editedTimer;
+@property (assign) BOOL editedFlag;
+
+-(IBAction)saveSpecificationTree:(id)sender;
+
+
 @end
