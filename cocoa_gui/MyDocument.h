@@ -31,7 +31,11 @@
 @interface MyDocument : NSDocument
 {
 	@private
-	//TranslatorWindowController *translatorWindowController;	// Custom window controller -
+	NSData *dataFromFile;
+    TranslatorWindowController *localWindowController;
 	
 }
+
+@property (retain) NSData *dataFromFile;
+@property (retain) TranslatorWindowController *localWindowController;
 @end

@@ -28,6 +28,9 @@
 
 @implementation MyDocument
 
+@synthesize dataFromFile;
+@synthesize localWindowController;
+
 #pragma mark --------------------------------------
 #pragma mark init and dealloc methods
 #pragma mark --------------------------------------
@@ -48,11 +51,13 @@
 	// release my instance variables -
     
     // Get the list of window controller and dealloc them?
+    self.dataFromFile = nil;
+    self.localWindowController = nil;
     
-
 	// Deallocate my super -
 	[super dealloc];
 }
+
 
 /*
 - (NSString *)windowNibName
@@ -65,14 +70,30 @@
 // Override the makeWindowControllers method -
 - (void)makeWindowControllers
 {
-	
     // Ok, we need to alloc init our custom window controller -
     TranslatorWindowController *translatorWindowController = [[TranslatorWindowController alloc] init];
-		
+    
+    // Check to see if we have data to hand to the controller -
+    if ([self dataFromFile]!=nil)
+    {
+        [translatorWindowController createXMLDocumentFromData:[self dataFromFile]];
+    }
+    
     // Ok, we need to add this to the list of window controllers 
     [self addWindowController:translatorWindowController];
+    
+    NSLog(@"The controller retain count is - %lu",[translatorWindowController retainCount]);
+    
+    // Release the controller -
+    self.localWindowController = translatorWindowController;
+    
+    NSLog(@"The controller retain count is - %lu",[[self localWindowController] retainCount]);
+    
+    NSLog(@"We just made a windowcontroller. We know have %lu controllers",[[self windowControllers] count]);
+    
 	
 }
+
 
 
 - (void)windowControllerDidLoadNib:(NSWindowController *) aController
@@ -89,16 +110,22 @@
 
     // For applications targeted for Panther or earlier systems, you should use the deprecated API -dataRepresentationOfType:. In this case you can also choose to override -fileWrapperRepresentationOfType: or -writeToFile:ofType: instead.
 
-	/*
-    // Ok, from my window controller I need to get the xmlTree -
-	NSXMLDocument *xmlDocument = [[translatorWindowController xmlTreeModel] xmlDocument];
-	if (xmlDocument!=nil)
-	{
-		return [xmlDocument XMLData];
-	}
-	else {
-		return nil;
-	}*/
+    // Get the controller -
+    TranslatorWindowController *controller = (TranslatorWindowController *)[[self windowControllers] lastObject];     
+	
+    if (controller !=nil)
+    {
+        // Ok, from my window controller I need to get the xmlTree -
+        NSXMLDocument *xmlDocument = [[controller xmlTreeModel] xmlDocument];
+        
+        if (xmlDocument!=nil)
+        {
+            return [xmlDocument XMLDataWithOptions:NSXMLNodePrettyPrint];
+        }
+        else {
+            return nil;
+        }
+    }
     
     return nil;
 }
@@ -110,36 +137,31 @@
     // You can also choose to override -readFromFileWrapper:ofType:error: or -readFromURL:ofType:error: instead. 
     
     // For applications targeted for Panther or earlier systems, you should use the deprecated API -loadDataRepresentation:ofType. In this case you can also choose to override -readFromFile:ofType: or -loadFileWrapperRepresentation:ofType: instead.
-    /*
+    
+    // Get the controller -
+    NSLog(@"readFromNSdata ...");
+    
     if (data!=nil)
-	{
-		// Get window controller -
-		//CCMLProjectWindowController *controller = (CCMLProjectWindowController *)[[self windowControllers] lastObject];
-		if (translatorWindowController!=nil)
-		{
-			[translatorWindowController createXMLDocumentFromData:data];
-		}
-		else {
-			// Ok, we need to alloc init our custom window controller -
-			translatorWindowController  = [[TranslatorWindowController alloc] init];
-			
-			// Ok, we need to add this to the list of window controllers 
-			[self addWindowController:translatorWindowController];
-			
-			// Create the document -
-			[translatorWindowController createXMLDocumentFromData:data];
-			
-		}
-		
-	}
-     */
-	
-	
+    {
+        
+        self.dataFromFile = data;
+        NSLog(@"readFromNSdata ...branch two. We have %lu window controllers",[[self windowControllers] count]);
+        
+    }
 	
 	if ( outError != NULL ) {
 		*outError = [NSError errorWithDomain:NSOSStatusErrorDomain code:unimpErr userInfo:NULL];
 	}
     return YES;
 }
+
+#pragma mark ----------------------------------------------
+#pragma mark - Static class methods --
+#pragma mark ----------------------------------------------
++ (BOOL)canConcurrentlyReadDocumentsOfType:(NSString *)typeName
+{
+	return YES;
+}
+
 
 @end
