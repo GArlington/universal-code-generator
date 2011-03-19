@@ -374,7 +374,7 @@
 			for (NSXMLElement *node in listOfChildren)
 			{
 				// Ok, get the file name, and load from the bundle -
-				NSString* templateName = [[NSBundle mainBundle] pathForResource:[node stringValue] ofType:@"xml"];
+				NSString* templateName = [[NSBundle mainBundle] pathForResource:[node stringValue] ofType:@"uxml"];
 				
 				//NSLog(@"TemplateName - %@",templateName);
 				
@@ -1367,6 +1367,11 @@
 {
 	// Create a URL from the file string -
 	NSURL *fileURL = [NSURL fileURLWithPath:file];
+    
+    // Set the fileURL on the document so I can get to it later -
+    [[self document] setFileURL:fileURL];
+    
+    // Create error instance -
 	NSError *errObject = nil;
 	
 	// What is my current dir?
@@ -1387,7 +1392,7 @@
 	
 	// ---- Calls to setup other GUI features ------ //
 	// ok - set the window title 
-	[[self window] setTitle:file];
+	[[self window] setTitle:[fileURL lastPathComponent]];
 	
 	// Figure out what combo item has been selected -
 	NSMutableString *strXPath = [[NSMutableString alloc] initWithCapacity:140];
