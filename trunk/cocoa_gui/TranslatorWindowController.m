@@ -54,6 +54,7 @@
 -(void)populateServerPathLocation:(NSString *)xpath suffix:(NSString *)strSuffix;
 -(void)populatUsernameInSpecificationTree:(NSString *)xpath suffix:(NSString *)strSuffix;
 
+
 @end
 
 
@@ -649,9 +650,13 @@
 	}
 }
 
+
 -(void)removeTreeNodeAlertEnded:(NSAlert *)alert code:(int)choice	context:(void *)v
 {	
-	// Check to see what button has been pushed - the default is delete 
+	// Get the undo manager -
+    NSUndoManager *undo = [self undoManager];
+    
+    // Check to see what button has been pushed - the default is delete 
 	if (choice==NSAlertDefaultReturn)
 	{	
 		// This stops from deleting the entire tree, but still is a little funky ... fixed the funky w/the notification below
@@ -679,7 +684,6 @@
                 // Remove me from my parent -
                 [parent removeChildAtIndex:myIndex]; 
                 
-                
                 // reset the reference -
                 // self.xmlTreeModel.xmlDocument = [parent rootDocument];
                 
@@ -699,7 +703,6 @@
         }
 	}
 }
-
 
 
 // Open and load an XML file -
@@ -1555,5 +1558,9 @@
 - (BOOL)windowShouldClose:(id)sender
 {
     return YES;
+}
+- (NSUndoManager *)windowWillReturnUndoManager:(NSWindow *)window
+{
+    return [[self document] undoManager];
 }
 @end
