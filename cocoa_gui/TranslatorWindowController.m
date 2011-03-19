@@ -100,12 +100,15 @@
 {
 	// Initialize me ...
 	self = [super initWithWindowNibName:@"MyDocument"];
-	
+    
 	// Ok, so if self is not nil, then call setup -
 	if (self!=nil)
 	{
 		// put setup code here ... or call setup
 		[self setup];
+        
+        // Load 
+        [[self consoleTextField] insertText:@"Starting the window controller ...\n"];
 	}
 	
 	// return me -
@@ -176,9 +179,6 @@
 	
 	// Set the selected popbutton item -
 	[[self popupButton] selectItemAtIndex:1];
-	
-	// Load 
-	[[self consoleTextField] insertText:@"Loaded window controller ...\n"];
 	
 	// Set some attributes on the progress bar -
 	[[self progressIndicator] setIndeterminate:YES];
@@ -1178,8 +1178,9 @@
 				
                 // First, what is the NSURL of the document?
                 NSURL *fileURL = [[self document] fileURL];
-                [[self consoleTextField] setString:[fileURL lastPathComponent]];
-                [[self consoleTextField] setString:@"\n"];
+                [[self consoleTextField] insertText:@"Code generation specification file: "];
+                [[self consoleTextField] insertText:[fileURL lastPathComponent]];
+                [[self consoleTextField] insertText:@"\n"];
                 
                 
                 [strXPath appendString:[pathNode stringValue]];
