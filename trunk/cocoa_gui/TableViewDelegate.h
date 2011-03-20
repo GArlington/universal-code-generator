@@ -26,6 +26,7 @@
 
 #import <Cocoa/Cocoa.h>
 #import "TableComboBoxDataSource.h"
+#import "TreeIconModel.h"
 
 
 @interface TableViewDelegate : NSObject <NSTableViewDelegate,NSTableViewDataSource> {
@@ -37,6 +38,7 @@
     TableComboBoxDataSource *comboDataSource;		// ComboBox data source -
 	NSMutableArray *tableData;						// Array holding table data -
 	NSXMLElement *selectedXMLNode;					// The selected *data model node* (not the GUI node) 
+    TreeIconModel *iconModel;
 
 }
 
@@ -47,6 +49,7 @@
 @property (retain) NSXMLElement *selectedXMLNode;
 @property (retain) NSWindow *window;
 @property (retain) NSOutlineView *outlineView;
+@property (retain) TreeIconModel *iconModel;
 
 // Ok, so let's setup an action -
 -(IBAction)updateTableValues:(NSButton *)sender;
