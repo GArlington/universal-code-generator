@@ -53,6 +53,7 @@
 @synthesize selectedXMLNode;
 @synthesize window;
 @synthesize outlineView;
+@synthesize iconModel;
 
 #pragma mark --------------------------------
 #pragma mark init and dealloc
@@ -83,6 +84,7 @@
 	self.tableView = nil;
 	self.window = nil;
     self.outlineView = nil;
+    self.iconModel = nil;
 	
 	// deallocate my super ...
 	[super dealloc];
@@ -97,7 +99,10 @@
 {
 	// Ok, fire up the combo box data source -
 	self.comboDataSource = [[TableComboBoxDataSource alloc] init];
-	
+    
+    // Get the icon model -
+	self.iconModel = [TreeIconModel sharedInstance];
+    
 	// Configure the table to use combobox data cells -
 	NSComboBoxCell *comboBoxCell = [[NSComboBoxCell alloc] init];
 	[comboBoxCell setUsesDataSource:YES];
