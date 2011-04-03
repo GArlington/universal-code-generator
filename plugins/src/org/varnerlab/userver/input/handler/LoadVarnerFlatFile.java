@@ -516,15 +516,18 @@ public class LoadVarnerFlatFile implements IInputHandler {
 		if (strModelName.isEmpty())
 		{
 			_modelWrapper.setName("TEST_MODEL");
+			//_modelWrapper.setId("TEST_MODEL");
 		}
 		else
 		{
 			_modelWrapper.setName(strModelName);
+			//_modelWrapper.setId(strModelName);
 		}
 		
 		// Ok, we need to set a default compartment -
 		Compartment tmpCompartment = _modelWrapper.createCompartment();
 		tmpCompartment.setName(strModelName);
+		tmpCompartment.setId(strModelName);
 		_modelWrapper.addCompartment(tmpCompartment);
 	}
 
