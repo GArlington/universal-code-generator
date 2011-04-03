@@ -115,6 +115,7 @@ public class WriteMetabolicFiles implements IOutputHandler {
 		String strSpeciesFileName = propTree.getProperty(".//DebugOutputFile/@filename");
 		String strTagName = propTree.getProperty(".//ExtracellularTagName/@name");
 		String strDriverName = propTree.getProperty(".//DriverFile/@filename");
+		String strExtracellularSymbol = propTree.getProperty(".//ExtracellularTagName/@symbol");
 		
 		String strProject = propTree.getProperty(".//path[@symbol=\"UNIVERSAL_SOURCE_OUTPUT_PATH\"]/@path_location");
 		String strNetworkDir = propTree.getProperty(".//path[@symbol=\"UNIVERSAL_NETWORK_OUTPUT_PATH\"]/@path_location");
@@ -129,6 +130,7 @@ public class WriteMetabolicFiles implements IOutputHandler {
 		_propTable.put("OUTPUT_SPECIES_FILENAME", strSpeciesFileName);
 		_propTable.put("EXTRACELLULAR_TAGNAME", strTagName);
 		_propTable.put("DRIVER_FILENAME", strDriverName);
+		_propTable.put("EXTRACELLULAR_SYMBOL", strExtracellularSymbol);
 	}
 	
 	

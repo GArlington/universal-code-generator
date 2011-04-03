@@ -41,6 +41,330 @@ import org.w3c.dom.NodeList;
 public class DFBAOctaveMMatlabMModelUtilities {
 
 	
+	
+	public static void buildBoundsMatchingFile(Model model_wrapper,StringBuffer buffer,Vector<Species> vecSpecies,XMLPropTree xmlPropTree) throws Exception
+	{
+		// Method attributes -
+		Hashtable<String,String> pathTableBounbdsArrayFile = xmlPropTree.buildFilenameBlockDictionary("BoundsArrayMatchingFunction");
+		
+		// Get the strMatching file name -
+		String strMatchingName = pathTableBounbdsArrayFile.get("FUNCTION_NAME");
+		buffer.append("function BOUNDS_ARRAY = ");
+		buffer.append(strMatchingName);
+	    buffer.append("(rV,DF_NETWORK);\n");
+	    buffer.append("\n");
+        buffer.append("% ----------------------------------------------------------------------\n");
+		buffer.append("% ");
+	    buffer.append(strMatchingName);
+	    buffer.append(".m was generated using the UNIVERSAL code generator system.\n");
+	    buffer.append("% Username: ");
+	    buffer.append(xmlPropTree.getProperty(".//Model/@username"));
+	    buffer.append("\n");
+	    buffer.append("% Type: ");
+	    buffer.append(xmlPropTree.getProperty(".//Model/@type"));
+	    buffer.append("\n");
+	    buffer.append("% Version: ");
+	    buffer.append(xmlPropTree.getProperty(".//Model/@version"));
+	    buffer.append("\n");
+	    buffer.append("% \n");
+	    buffer.append("% Arguments: \n");
+	    buffer.append("% rV - Extracellular rate vector - \n");
+	    buffer.append("% DF_NETWORK - Instance of the data file structure for the FBA problem \n");
+	    buffer.append("% BOUNDS_ARRAY - Array of extracellular bounds \n");
+	    buffer.append("% ----------------------------------------------------------------------\n");
+	    buffer.append("\n");
+	    
+	    buffer.append("% The user should implement custom code here. \n");
+	    buffer.append("% Return the current bounds array by default - overide if needed \n");
+	    buffer.append("BOUNDS_ARRAY = DF_NETWORK.SPECIES_BOUND_ARRAY;\n");
+	    buffer.append("\n");
+	    
+	    
+	    // return -
+	    buffer.append("return;\n");
+		
+	}
+	
+	public static void buildDriverFile(Model model_wrapper,StringBuffer buffer,Vector<Species> vecSpecies,XMLPropTree xmlPropTree) throws Exception
+	{
+		// Method attributes -
+		Hashtable<String,String> pathTableDriverFile = xmlPropTree.buildFilenameBlockDictionary("DriverFile");
+		Hashtable<String,String> pathTableKDataFile = xmlPropTree.buildFilenameBlockDictionary("DataFile");
+		Hashtable<String,String> pathTableMassbalanceFile = xmlPropTree.buildFilenameBlockDictionary("ExtracellularMassBalanceFunction");
+		Hashtable<String,String> pathTableKineticsFile = xmlPropTree.buildFilenameBlockDictionary("KineticsFunction");
+		Hashtable<String,String> pathTableBounbdsArrayFile = xmlPropTree.buildFilenameBlockDictionary("BoundsArrayMatchingFunction");
+		
+		String strDriverFunctionName = pathTableDriverFile.get("FUNCTION_NAME");
+		buffer.append("function [TSIM,X,FLUX] = ");
+		buffer.append(strDriverFunctionName);
+		buffer.append("(pFBADataDile,pFBACalculation,OBJINDEX,MINMAX_FLAG,IDX_GROWTH_RATE,TSTART,TSTOP,Ts,DFIN)\n");
+        buffer.append("\n");
+        buffer.append("% ----------------------------------------------------------------------\n");
+		buffer.append("% ");
+	    buffer.append(strDriverFunctionName);
+	    buffer.append(".m was generated using the UNIVERSAL code generator system.\n");
+	    buffer.append("% Username: ");
+	    buffer.append(xmlPropTree.getProperty(".//Model/@username"));
+	    buffer.append("\n");
+	    buffer.append("% Type: ");
+	    buffer.append(xmlPropTree.getProperty(".//Model/@type"));
+	    buffer.append("\n");
+	    buffer.append("% Version: ");
+	    buffer.append(xmlPropTree.getProperty(".//Model/@version"));
+	    buffer.append("\n");
+	    buffer.append("% \n");
+	    buffer.append("% Arguments: \n");
+	    
+	    buffer.append("% pFBADataFile  - pointer to the FBA datafile \n");
+	    buffer.append("% pFBACalculation  - pointer to the FBA calculation function \n");
+        buffer.append("% TSTART  - Time start \n");
+        buffer.append("% TSTOP  - Time stop \n");
+        buffer.append("% Ts - Time step \n");
+        buffer.append("% DFIN  - Custom data file instance \n");
+        buffer.append("% TSIM - Simulation time vector \n");
+        buffer.append("% X - Simulation state array (NTIME x NSPECIES) \n");
+	    buffer.append("% FLUX - Flux array (NTIME x NFLUXES) \n");
+	    buffer.append("% ----------------------------------------------------------------------\n");
+	    buffer.append("\n");
+	    
+	    String strKDataFileName = pathTableKDataFile.get("FUNCTION_NAME");
+	    buffer.append("% ------------------------------------------------------ %\n");
+	    buffer.append("% Load the data file for the kinetic balances \n");
+	    buffer.append("% ------------------------------------------------------ %\n");
+	    buffer.append("DF_KINETICS = ");
+	    buffer.append(strKDataFileName);
+	    buffer.append("(TSTART,TSTOP,Ts);\n");
+	    buffer.append("\n");
+	    buffer.append("% ------------------------------------------------------ %\n");
+	    buffer.append("% Load the data file for the intracellular balances \n");
+	    buffer.append("% ------------------------------------------------------ %\n");
+	    buffer.append("DF_NETWORK = feval(pFBADataFile,TSTART,TSTOP,Ts,[]);\n");
+	    buffer.append("\n");
+	    
+	    
+	    buffer.append("% ------------------------------------------------------ %\n");
+	    buffer.append("% Declare some global variables used by the ODEs \n");
+	    buffer.append("% ------------------------------------------------------ %\n");
+        buffer.append("global DF_KINETICS;\n");
+        buffer.append("global LP_SOLUTION_GROWTH_RATE;\n");
+	    buffer.append("\n");
+	    buffer.append("% ------------------------------------------------------ %\n");
+	    buffer.append("% Declare ODE mass balance function handle -\n");
+	    buffer.append("% ------------------------------------------------------ %\n");
+	    
+	    String strMassBalanceFunctionName = pathTableMassbalanceFile.get("FUNCTION_NAME");
+	    
+	    buffer.append("f = @(x,t)");
+	    buffer.append(strMassBalanceFunctionName);
+	    buffer.append("(x,t);\n");
+	    buffer.append("\n");
+	    buffer.append("% ------------------------------------------------------ %\n");
+	    buffer.append("% Main simulation loop  \n");
+	    buffer.append("% ------------------------------------------------------ %\n");
+	    buffer.append("TSIM = TSTART:Ts:TSTOP;\n");
+	    buffer.append("NUMBER_OF_TIME_STEPS = length(TSIM);\n");
+	    buffer.append("LP_SOLUTION_GROWTH_RATE = 0; \t % Set the initial growth rate to 0, only for the first step\n");
+	    buffer.append("IC = DF_KINETICS.INITIAL_CONDITIONS;\n");
+	    buffer.append("for time_step_index = 1:NUMBER_OF_TIME_STEPS-1\n");
+	    buffer.append("\n");
+	    buffer.append("\t % Solve the ODE balances governing extracelluar states - default solver is LSODE \n");
+	    buffer.append("\t T1 = TSIM(time_step_index);\n");
+	    buffer.append("\t T2 = TSIM(time_step_index+1);\n");
+	    buffer.append("\t TSIM_LOCAL = T1:Ts:T2;\n");
+	    buffer.append("\n");
+	    buffer.append("\t % Call the ODE solver -\n");
+	    buffer.append("\t [XSTEP]=lsode(f,IC,TSIM_LOCAL);\n");
+	    buffer.append("\t CURRENT_STATE = XSTEP(end,:);\n");
+	    buffer.append("\n");
+	    buffer.append("\t % Calculate the extracellular kinetic uptake/production rates - \n");
+	    
+	    // Call the kinetics function -
+	    String strKineticsFunctionName = pathTableKineticsFile.get("FUNCTION_NAME");
+		buffer.append("\t rV = ");
+		buffer.append(strKineticsFunctionName);
+		buffer.append("(CURRENT_STATE,kV)\n");
+	    buffer.append("\n");
+	    buffer.append("\t % Match the bounds constraints with the update/secretion rates - \n");
+	    buffer.append("\t BOUNDS_ARRAY = ");
+	    
+	    String strMatchingName = pathTableBounbdsArrayFile.get("FUNCTION_NAME");
+	    buffer.append(strMatchingName);
+	    buffer.append("(rV,DF_NETWORK);\n");
+	    buffer.append("\n");
+	    buffer.append("\t % Update the bounds array - \n");
+	    buffer.append("\t DF_NETWORK.SPECIES_BOUND_ARRAY = BOUNDS_ARRAY;\n");
+	    buffer.append("\n");
+	    buffer.append("\t % Calculate the intracellular flux (FBA problem) - \n");
+	    buffer.append("\t [FLUX,STATUS_FLAG,UPTAKE] = feval(pFBACalculation,pFBADataDile,OBJINDEX,MINMAX_FLAG,DF_NETWORK);\n");
+	    buffer.append("\n");
+	    buffer.append("\t % Set the growth rate - \n");
+	    buffer.append("\t LP_SOLUTION_GROWTH_RATE = FLUX(IDX_GROWTH_RATE,1);\n");
+	    buffer.append("end;\n");
+	    buffer.append("\n");
+	}
+	
+	private static void buildExternalReactionList(Model model_wrapper,StringBuffer buffer,Vector<Species> vecSpecies,XMLPropTree xmlPropTree) throws Exception
+	{
+		// Method attributes --
+		Document xmlDoc = (Document)xmlPropTree.getResource(null);
+		XPathFactory  xpFactory = XPathFactory.newInstance();
+		XPath xpath = xpFactory.newXPath();
+		ArrayList<String> globalSpeciesList = new ArrayList<String>();
+		
+		int NUMBER_EXTERNAL_SPECIES = vecSpecies.size();
+		//buffer.append("qV = zeros(");
+		//buffer.append(NUMBER_EXTERNAL_SPECIES);
+		//buffer.append(",1);\n");
+		
+		for (int external_species_index=0;external_species_index<NUMBER_EXTERNAL_SPECIES;external_species_index++)
+		{
+		
+			// Get the name of the extracellular species -
+			Species external_species = vecSpecies.get(external_species_index);
+			String strExternalSpeciesName = external_species.getId();
+			
+		
+			buffer.append("qV(");
+			buffer.append(external_species_index+1);
+			buffer.append(",1) \t = \t (");
+		
+			// Ok, get the list of reactions that are extracellular *and* that we are modeling kinetically -
+			// We are going to do this by do a xpath hit on the *actual* xmltree 
+			String strXPath = ".//RequiredSBMLInformation/listOfKineticExtracellularReactions/reaction/@id";
+			NodeList nodeList = (NodeList)xpath.evaluate(strXPath,xmlDoc,XPathConstants.NODESET);
+			int NUMBER_OF_REACTIONS= nodeList.getLength();
+			int global_counter = 0;
+			for (int index = 0;index<NUMBER_OF_REACTIONS;index++)
+			{
+				// Get the current reaction id -
+				Node tmpIDNode = nodeList.item(index);
+			
+				// Get the id string -
+				String strNodeID = tmpIDNode.getNodeValue();
+			
+				// Ok, so now we need to get a list of species for this rate -
+				String strXPathSpeciesRefs = ".//RequiredSBMLInformation/listOfKineticExtracellularReactions/reaction[@id='"+strNodeID+"']/listOfReactants/speciesReference/@species";
+				NodeList speciesNodeList = (NodeList)xpath.evaluate(strXPathSpeciesRefs,xmlDoc,XPathConstants.NODESET);
+				ArrayList<String> speciesListReactants = new ArrayList<String>();
+				ArrayList<String> stCoeffListReactants = new ArrayList<String>();
+				int NUMBER_OF_SPECIES = speciesNodeList.getLength();
+				for (int species_index=0;species_index<NUMBER_OF_SPECIES;species_index++)
+				{
+					// Get the species node -
+					Node speciesNode = speciesNodeList.item(species_index);
+					String strSpeciesName = speciesNode.getNodeValue();
+					
+					if (!strSpeciesName.isEmpty())
+					{
+					
+						// Add name to list -
+						speciesListReactants.add(strSpeciesName);
+						
+						if (!globalSpeciesList.contains(strSpeciesName))
+						{
+							globalSpeciesList.add(strSpeciesName);
+						}
+					
+						// Get the stoichiometric coefficients -
+						String strSTCoeff =  ".//RequiredSBMLInformation/listOfKineticExtracellularReactions/reaction[@id='"+strNodeID+"']/listOfReactants/speciesReference[@species='"+strSpeciesName+"']/@stoichiometry";
+						Node stCoeffNode = (Node)xpath.evaluate(strSTCoeff,xmlDoc,XPathConstants.NODE);
+						String strStrCoeff = stCoeffNode.getNodeValue();
+					
+						// Add st coeff to list -
+						stCoeffListReactants.add(strStrCoeff);
+					}
+				}
+				
+				// Ok, so now we need to get a list of species for this rate -
+				String strXPathSpeciesRefsProducts = ".//RequiredSBMLInformation/listOfKineticExtracellularReactions/reaction[@id='"+strNodeID+"']/listOfProducts/speciesReference/@species";
+				NodeList speciesNodeListProducts = (NodeList)xpath.evaluate(strXPathSpeciesRefsProducts,xmlDoc,XPathConstants.NODESET);
+				ArrayList<String> speciesListProducts = new ArrayList<String>();
+				ArrayList<String> stCoeffListProducts = new ArrayList<String>();
+				int NUMBER_OF_PRODUCTS = speciesNodeListProducts.getLength();
+				for (int species_index=0;species_index<NUMBER_OF_PRODUCTS;species_index++)
+				{
+					// Get the species node -
+					Node speciesNode = speciesNodeListProducts.item(species_index);
+					String strSpeciesName = speciesNode.getNodeValue();
+					
+					if (!strSpeciesName.isEmpty())
+					{
+						// Add name to list -
+						speciesListProducts.add(strSpeciesName);
+						
+						if (!globalSpeciesList.contains(strSpeciesName))
+						{
+							globalSpeciesList.add(strSpeciesName);
+						}
+					
+						// Get the stoichiometric coefficients -
+						String strSTCoeff =  ".//RequiredSBMLInformation/listOfKineticExtracellularReactions/reaction[@id='"+strNodeID+"']/listOfProducts/speciesReference[@species='"+strSpeciesName+"']/@stoichiometry";
+						Node stCoeffNode = (Node)xpath.evaluate(strSTCoeff,xmlDoc,XPathConstants.NODE);
+						String strStrCoeff = stCoeffNode.getNodeValue();
+					
+						// Add st coeff to list -
+						stCoeffListProducts.add(strStrCoeff);
+					}
+				}
+				
+				// Ok, when I get here I have the reactants for this reaction -
+				// Is my externalSpecies involved in this reaction?
+				if (speciesListReactants.contains(strExternalSpeciesName))
+				{
+					// Get the index -
+					int local_index = speciesListReactants.indexOf(strExternalSpeciesName);
+					
+					// Get the stcoeff value -
+					String strLocalCoeffVal = stCoeffListReactants.get(local_index);
+					
+					// Ok, so I need to add this reaction to the list -
+					buffer.append("-");
+					buffer.append(strLocalCoeffVal);
+					buffer.append("*");
+					buffer.append("rV(");
+					buffer.append(index+1);
+					buffer.append(",1)");	
+				}
+				else if (speciesListProducts.contains(strExternalSpeciesName))
+				{
+					// Get the index -
+					int local_index = speciesListProducts.indexOf(strExternalSpeciesName);
+					
+					// Get the stcoeff value -
+					String strLocalCoeffVal = stCoeffListProducts.get(local_index);
+					
+					// Ok, so I need to add this reaction to the list -
+					buffer.append(strLocalCoeffVal);
+					buffer.append("*");
+					buffer.append("rV(");
+					buffer.append(index+1);
+					buffer.append(",1)");	
+				}
+				else
+				{
+					// Ok, so If I get here, then I have an external variable that is not involved in any reactions -
+				}
+			}
+			
+			
+			// Ok, when I get here I have gone through all the reactions - I have may have a malfunction??
+			if (!globalSpeciesList.contains(strExternalSpeciesName))
+			{
+				// We have a problem -- we have an external species *not* involved in any reactions?
+				buffer.append("0);\n");
+				//buffer.append(strExternalSpeciesName);
+				//buffer.append(" is an extracellular species that is NOT involved in any uptake/production reactions?\n");
+				
+			}
+			else
+			{
+			
+				// close out and go around again -
+				buffer.append(");\n");
+			}
+		}
+	}
+	
 	public static void buildExtracellularKinetics(Model model_wrapper,StringBuffer buffer,Vector<Species> vecSpecies,XMLPropTree xmlPropTree) throws Exception
 	{
 		// Method attributes -
@@ -446,7 +770,6 @@ public class DFBAOctaveMMatlabMModelUtilities {
         buffer.append("% ---------------------------------------- \n");
         buffer.append("% Declare the global variables -\n");
         buffer.append("% ---------------------------------------- \n");
-        buffer.append("global DF_NETWORK;\n");
         buffer.append("global DF_KINETICS;\n");
         buffer.append("global LP_SOLUTION_GROWTH_RATE;\n");
         buffer.append("\n");
@@ -558,7 +881,7 @@ public class DFBAOctaveMMatlabMModelUtilities {
 	public static void buildKineticDataFile(Model model_wrapper,StringBuffer buffer,Vector<Species> vecSpecies,XMLPropTree xmlPropTree) throws Exception
 	{
 		// Method attributes -
-		Hashtable<String,String> pathTableKineticDataFile = xmlPropTree.buildFilenameBlockDictionary("KineticDataFile");
+		Hashtable<String,String> pathTableKineticDataFile = xmlPropTree.buildFilenameBlockDictionary("DataFile");
 		Hashtable<String,String> pathTableFlowFile = xmlPropTree.buildFilenameBlockDictionary("VolumetricFlowFile");
 		
 		// Get the file name information -
@@ -571,7 +894,7 @@ public class DFBAOctaveMMatlabMModelUtilities {
 		// Populate -
 		buffer.append("[KDF]=");
 		buffer.append(strKFileName);
-		buffer.append("(TSIM);\n");
+		buffer.append("(TSTART,TSTOP,Ts);\n");
 		buffer.append("% ----------------------------------------------------------------------\n");
 		buffer.append("% ");
 	    buffer.append(strKFileName);
