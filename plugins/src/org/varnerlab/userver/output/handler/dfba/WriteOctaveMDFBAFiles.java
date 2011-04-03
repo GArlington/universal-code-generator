@@ -70,11 +70,14 @@ public class WriteOctaveMDFBAFiles implements IOutputHandler {
         StringBuffer kinetics_buffer = new StringBuffer();
         StringBuffer datafile_buffer = new StringBuffer();
         StringBuffer extracellular_buffer = new StringBuffer();
+        StringBuffer driver_buffer = new StringBuffer();
+        StringBuffer matching_buffer = new StringBuffer();
 		Hashtable<String,String> pathTableExtracellular = _xmlPropTree.buildFilenameBlockDictionary("ExtracellularMassBalanceFunction");
 		
 		// Get the large-scaled flag?
         String strLargeScaleFlag = _xmlPropTree.getProperty(".//Model/@large_scale_optimized");
         String strExtracellularTag = _xmlPropTree.getProperty(".//ExtracellularCompartmentName/@name");
+        String strExtracellularSymbol = _xmlPropTree.getProperty(".//ExtracellularCompartmentName/@symbol");
         
 		// Get the resource type (SBML model tree)
         Model model_wrapper = (Model)object;
@@ -86,11 +89,12 @@ public class WriteOctaveMDFBAFiles implements IOutputHandler {
         {
         	// Get the species -
         	Species species_tmp = (Species)species_list_tmp.get(scounter);
+        	String strID = species_tmp.getId();
         	
         	// Check the compartment - look for extracellular flag -
         	String strCompartment = species_tmp.getCompartment();
         	
-        	if (strCompartment.equalsIgnoreCase(strExtracellularTag))
+        	if (strCompartment.equalsIgnoreCase(strExtracellularTag) && strID.contains(strExtracellularSymbol))
         	{
         		vecSpecies.add(species_tmp);
         	}
@@ -100,11 +104,15 @@ public class WriteOctaveMDFBAFiles implements IOutputHandler {
         DFBAOctaveMMatlabMModelUtilities.buildExtracellularKinetics(model_wrapper,kinetics_buffer, vecSpecies, _xmlPropTree);
         DFBAOctaveMMatlabMModelUtilities.buildKineticDataFile(model_wrapper, datafile_buffer, vecSpecies, _xmlPropTree);
         DFBAOctaveMMatlabMModelUtilities.buildExtracellularMassBalances(model_wrapper, extracellular_buffer, vecSpecies, _xmlPropTree);
+        DFBAOctaveMMatlabMModelUtilities.buildDriverFile(model_wrapper, driver_buffer, vecSpecies, _xmlPropTree);
+        DFBAOctaveMMatlabMModelUtilities.buildBoundsMatchingFile(model_wrapper, matching_buffer, vecSpecies, _xmlPropTree);
         
         // Dump buffers to disk -
         SBMLModelUtilities.dumpKineticsToDisk(kinetics_buffer, _xmlPropTree);
         SBMLModelUtilities.dumpDataFileToDisk(datafile_buffer, _xmlPropTree);
         SBMLModelUtilities.dumpExtracellularMassBalancesToDisk(extracellular_buffer, _xmlPropTree);
+        SBMLModelUtilities.dumpDriverToDisk(driver_buffer, _xmlPropTree);
+        SBMLModelUtilities.dumpGeneralBufferToDisk(matching_buffer, _xmlPropTree, "BoundsArrayMatchingFunction");
 	}
 
 }
