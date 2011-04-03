@@ -476,7 +476,7 @@ public class OctaveCModel {
     	ArrayList<String> arrList = propTree.processFilenameBlock("DriverFile");
     	String strFunctionName = arrList.get(1);
     	
-        driver.append("function [TSIM,X]=");
+        driver.append("function [TSIM,X,OUTPUT]=");
         driver.append(strFunctionName);
         driver.append("(pDataFile,TSTART,TSTOP,Ts,DFIN)\n");
         driver.append("\n");
@@ -537,7 +537,7 @@ public class OctaveCModel {
         driver.append("[X]=lsode(f,IC,TSIM);\n");
         driver.append("\n");
         driver.append("% Calculate the output - \n");
-        driver.append("OUTPUT = X(MEASUREMENT_INDEX_VECTOR,:);\n");
+        driver.append("OUTPUT = X(:,MEASUREMENT_INDEX_VECTOR);\n");
         driver.append("\n");
         driver.append("% return to caller - \n");
         driver.append("return;\n");

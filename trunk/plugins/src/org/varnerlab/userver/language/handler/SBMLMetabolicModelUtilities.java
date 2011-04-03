@@ -97,6 +97,7 @@ public class SBMLMetabolicModelUtilities {
         GIOL.write(strPath,buffer);
     }
 	
+	
 	public static void organizeSpeciesByCompartment(Properties _propTable,Model model_wrapper,Vector<Species> vecSpecies) throws Exception
 	{
 		// Get species -
@@ -106,12 +107,16 @@ public class SBMLMetabolicModelUtilities {
 		// Get the list of compartments -
 		ListOfCompartments compartments = model_wrapper.getListOfCompartments();
 		long NUMBER_OF_COMPARTMENTS = model_wrapper.getNumCompartments();
+		
+		System.out.println("How many compartments dowe have? "+NUMBER_OF_COMPARTMENTS);
 
 		for (long index=0;index<NUMBER_OF_COMPARTMENTS;index++)
 		{
 			// Get the current compartment -
 			Compartment current_compartment = compartments.get(index);
 			String strCompartmentID = current_compartment.getId();
+			
+			System.out.println("Processing "+strCompartmentID);
 			
 			// Collect the species in this compartment -
 			for (long species_index=0;species_index<NUMBER_OF_SPECIES;species_index++)

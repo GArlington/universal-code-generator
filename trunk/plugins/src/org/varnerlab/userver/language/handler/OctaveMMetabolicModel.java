@@ -246,13 +246,16 @@ public class OctaveMMetabolicModel {
 		// Figure out the external species -
 		// Get the extracellular species tag -
 		String strExtracellularTag = _propTable.getProperty("EXTRACELLULAR_TAGNAME");
+		String strExtracellularSymbol = _propTable.getProperty("EXTRACELLULAR_SYMBOL");
 		
 		// Get species -
 		ListOfSpecies list_species = model_wrapper.getListOfSpecies();
 		
 		// OK, so I've organized the species by compartment -
-		SBMLModelUtilities.organizeSpeciesByCompartment(_propTable,model_wrapper,vecSpeciesLocal);
+		SBMLMetabolicModelUtilities.organizeSpeciesByCompartment(_propTable,model_wrapper,vecSpeciesLocal);
 		int NUMBER_OF_SPECIES = vecSpeciesLocal.size();
+		
+		System.out.println("How many species to we have?? "+NUMBER_OF_SPECIES);
 		
 		// Collect the species in this compartment -
 		_stbDataFile.append("IDX_FREE_METABOLITES = [\n");
@@ -268,7 +271,7 @@ public class OctaveMMetabolicModel {
 			{
 				// Ok, if I'm here then I have an extracellular species - figure out if it has a _b
 				String strID = tmp.getId();
-				if (strID.contains("_b"));
+				if (strID.contains(strExtracellularSymbol));
 				{
 					
 					int INDEX = strID.indexOf("_b");
