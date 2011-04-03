@@ -89,6 +89,7 @@ public class OctaveMModel {
         driver.append("% DFIN  - Custom data file instance \n");
         driver.append("% TSIM - Simulation time vector \n");
         driver.append("% X - Simulation state array (NTIME x NSPECIES) \n");
+        driver.append("% OUTPUT - Selected species from the state array \n");
         driver.append("% ----------------------------------------------------------------------\n");
         driver.append("\n");
         
@@ -189,7 +190,7 @@ public class OctaveMModel {
         driver.append("NSTATES = DF.NUMBER_OF_STATES;\n");
         driver.append("\n");
         driver.append("% Append the initial sensitivity values - assuming zero here\n");
-        driver.append("IC = [IC; zeros(NSTATES,1);\n");
+        driver.append("IC = [IC; zeros(NSTATES,1)];\n");
         driver.append("\n");
         driver.append("% Call the ODE solver - the default is LSODE\n");
 

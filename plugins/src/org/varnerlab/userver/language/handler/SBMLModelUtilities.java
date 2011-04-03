@@ -673,6 +673,20 @@ public class SBMLModelUtilities {
         
         GIOL.write(strSBMLFile,data_buffer);
     }
+    
+    public static void dumpGeneralBufferToDisk(StringBuffer data_buffer,XMLPropTree xmlPropTree,String strTagName) throws Exception
+    {
+    	// I have populated the string buffer, dump that mofo
+    	//String strWorkingDir = _xmlPropTree.getProperty("//working_directory/text()");
+        //String strDotFileName = _xmlPropTree.getProperty("//OutputFileName/output_filename/text()");
+        //String strDotFilePath = _xmlPropTree.getProperty("//OutputFileName/output_file_path/text()");
+        
+    	// Get the output name -
+    	Hashtable<String,String> pathTable = xmlPropTree.buildFilenameBlockDictionary(strTagName);
+    	String strSBMLFile = pathTable.get("FULLY_QUALIFIED_PATH");
+        
+        GIOL.write(strSBMLFile,data_buffer);
+    }
 
     public static void dumpDebugFileToDisk(StringBuffer data_buffer,XMLPropTree _xmlPropTree) throws Exception 
     {
