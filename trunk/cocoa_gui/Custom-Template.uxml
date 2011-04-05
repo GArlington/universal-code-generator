@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<Model username="" version="v1.0" name="" type="CUSTOM-TEMPLATE" required="YES" large_scale_optimized="YES">
+
+<Configuration>
+<ListOfPackages>
+<package required="YES" symbol="INPUT_HANDLER_PACKAGE" package_name="org.varnerlab.userver.input.handler"></package>
+<package required="YES" symbol="OUTPUT_HANDLER_PACKAGE" package_name="org.varnerlab.userver.output.handler"></package>
+<package required="YES" symbol="DEFAULT_LANGUAGE_PACKAGE" package_name="org.varnerlab.userver.language.handler"></package>
+<package required="YES" symbol="DEFAULT_BCX_PACKAGE" package_name="org.varnerlab.userver.language.handler.bcx"></package>
+</ListOfPackages>
+<ListOfPaths>
+<path required="YES" symbol="UNIVERSAL_INPUT_PATH" path_location=""></path>
+<path required="YES" symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" path_location=""></path>
+<path required="YES" symbol="UNIVERSAL_NETWORK_OUTPUT_PATH" path_location=""></path>
+<path required="YES" symbol="UNIVERSAL_DEBUG_OUTPUT_PATH" path_location=""></path>
+<path required="YES" symbol="UNIVERSAL_SERVER_ROOT_DIRECTORY" path_location=""></path>
+<path required="YES" symbol="UNIVERSAL_SERVER_JAR_DIRECTORY" path_location=""></path>
+<path required="YES" symbol="UNIVERSAL_PLUGINS_JAR_DIRECTORY" path_location=""></path>
+</ListOfPaths>
+<ListOfClasses>
+<InputHandlerClasses>
+<class required="NO" package="INPUT_HANDLER_PACKAGE" classname="LoadSBMLFile"></class>
+<class required="NO" package="INPUT_HANDLER_PACKAGE" classname="LoadVarnerFlatFile"></class>
+<class required="NO" package="INPUT_HANDLER_PACKAGE" classname="LoadMOBCXFile"></class>
+<class required="NO" package="INPUT_HANDLER_PACKAGE" classname="LoadBCXFile"></class>
+</InputHandlerClasses>
+
+<OutputHandlerClasses>
+<class required="NO" package="OUTPUT_HANDLER_PACKAGE" classname="WriteOctaveMModel"></class>
+<class required="NO" package="OUTPUT_HANDLER_PACKAGE" classname="WriteMatlabMModel"></class>
+<class required="NO" package="OUTPUT_HANDLER_PACKAGE" classname="WriteOctaveCModel"></class>
+<class required="NO" package="OUTPUT_HANDLER_PACKAGE" classname="WriteGSLModel"></class>
+<class required="NO" package="OUTPUT_HANDLER_PACKAGE" classname="WriteSundialsModel"></class>
+<class required="NO" package="OUTPUT_HANDLER_PACKAGE" classname="WriteScilabModel"></class>
+<class required="NO" package="OUTPUT_HANDLER_PACKAGE" classname="WriteVarnerFlatFile"></class>
+<class required="NO" package="OUTPUT_HANDLER_PACKAGE" classname="WriteGraphvizDotFile"></class>
+<class required="NO" package="OUTPUT_HANDLER_PACKAGE" classname="WriteSBMLFile"></class>
+<class required="NO" package="OUTPUT_HANDLER_PACKAGE" classname="WriteMOBCXFiles"></class>
+<class required="NO" package="OUTPUT_HANDLER_PACKAGE" classname="WriteBCXFiles"></class>
+<class required="NO" package="OUTPUT_HANDLER_PACKAGE" classname="WriteSIFFileFromBioPAX"></class>
+<class required="NO" package="OUTPUT_HANDLER_PACKAGE" classname="WriteMetabolicFiles"></class>
+</OutputHandlerClasses>
+</ListOfClasses>
+
+<ServerConfiguration>
+<ListOfPlugins>
+<plugin_jar_directory required="YES" path_symbol="UNIVERSAL_PLUGINS_JAR_DIRECTORY" filename="UServer-v2.0.jar"></plugin_jar_directory>
+<plugin_jar_directory required="YES" path_symbol="UNIVERSAL_PLUGINS_JAR_DIRECTORY" filename="libsbmlj.jar"></plugin_jar_directory>
+</ListOfPlugins>
+<ListOfArguments>
+<argument required="YES" index="1" symbol="-Xmx2000M"></argument>
+<argument required="YES" index="2" symbol="-Djava.library.path=/sw/lib"></argument>
+<argument required="YES" index="3" symbol="-classpath ./dist/CGEGateway-v1.0.jar"></argument>
+<argument required="YES" index="4" symbol="org.varnerlab.server.localtransportlayer.Main"></argument>
+</ListOfArguments>
+</ServerConfiguration>
+
+</Configuration>
+
+
+<Handler>
+<InputHandler required="YES" input_classname="" package="INPUT_HANDLER_PACKAGE"></InputHandler>
+<OutputHandler required="YES" output_classname="WriteOctaveCModel" package="OUTPUT_HANDLER_PACKAGE"></OutputHandler>
+</Handler>
+
+<InputOptions>
+
+</InputOptions>	
+
+<OutputOptions>
+
+</OutputOptions>	
+
+</Model>
