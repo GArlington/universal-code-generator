@@ -417,6 +417,13 @@
 	
 		// Ok, I need to release copy - since I'm sure the parent has a retain -
 		[copy release];
+        
+        // Have the tree set the dirty bubble -
+        NSString *MyNotificationName = @"TreeNodeDataChanged";
+        NSNotification *myNotification = [NSNotification notificationWithName:MyNotificationName object:[self window]]; 
+        
+        // Send an update -
+        [[NSNotificationCenter defaultCenter] postNotification:myNotification];
 	}
     
     // Let's create a timer have it fire in a couple of seconds -
@@ -463,13 +470,13 @@
                  */
             
             
-                // Have the tree reload data -
+                // Have the tree set the dirty bubble -
                 NSString *MyNotificationName = @"TreeNodeDataChanged";
-                NSNotification *myNotification = [NSNotification notificationWithName:MyNotificationName object:nil]; 
+                NSNotification *myNotification = [NSNotification notificationWithName:MyNotificationName object:[self window]]; 
                 
                 // Send an update -
-                [[NSNotificationQueue defaultQueue] enqueueNotification:myNotification postingStyle:NSPostNow coalesceMask:NSNotificationCoalescingOnName forModes:nil];
-            
+                [[NSNotificationCenter defaultCenter] postNotification:myNotification];
+
             }
         }
         else if ([tmpString isEqualToString:@"Add SBML reaction group"])
@@ -520,12 +527,13 @@
                                                 repeats:NO];
                  */
                 
-                // Have the tree reload data -
+                
+                // Have the tree set the dirty bubble -
                 NSString *MyNotificationName = @"TreeNodeDataChanged";
-                NSNotification *myNotification = [NSNotification notificationWithName:MyNotificationName object:nil]; 
+                NSNotification *myNotification = [NSNotification notificationWithName:MyNotificationName object:[self window]]; 
                 
                 // Send an update -
-                [[NSNotificationQueue defaultQueue] enqueueNotification:myNotification postingStyle:NSPostNow coalesceMask:NSNotificationCoalescingOnName forModes:nil];
+                [[NSNotificationCenter defaultCenter] postNotification:myNotification];
             }
         }
         else if ([tmpString isEqualToString:@"Create generic group"])
@@ -566,12 +574,14 @@
                                                 repeats:NO];
                  */
                 
-                // Have the tree reload data -
+                
+                // Have the tree set the dirty bubble -
                 NSString *MyNotificationName = @"TreeNodeDataChanged";
-                NSNotification *myNotification = [NSNotification notificationWithName:MyNotificationName object:nil]; 
+                NSNotification *myNotification = [NSNotification notificationWithName:MyNotificationName object:[self window]]; 
                 
                 // Send an update -
-                [[NSNotificationQueue defaultQueue] enqueueNotification:myNotification postingStyle:NSPostNow coalesceMask:NSNotificationCoalescingOnName forModes:nil];
+                [[NSNotificationCenter defaultCenter] postNotification:myNotification];
+                
             }
         }    
     }
@@ -698,8 +708,17 @@
             self.xmlTreeModel.xmlDocument = [[self selectedXMLNode] rootDocument];
             
             // Notfy everyone that the selected node has changed -- this should update the selected node -
+            // Have the tree set the dirty bubble -
+            NSString *MyNotificationName = @"TreeNodeDataChanged";
+            NSNotification *myNotification = [NSNotification notificationWithName:MyNotificationName object:[self window]]; 
+            
+            // Send an update -
+            [[NSNotificationCenter defaultCenter] postNotification:myNotification];
+            
+            /*
             NSNotification *myNotification = [NSNotification notificationWithName:NSOutlineViewSelectionDidChangeNotification object:[self treeView]]; 
             [[NSNotificationCenter defaultCenter] postNotification:myNotification];
+             */
         }
 	}
 }

@@ -300,16 +300,12 @@
 												<string key="NSKeyEquivalent"/>
 												<int key="NSPeriodicDelay">400</int>
 												<int key="NSPeriodicInterval">75</int>
-												<object class="NSMenuItem" key="NSMenuItem" id="891629521">
+												<object class="NSMenuItem" key="NSMenuItem" id="873099448">
 													<reference key="NSMenu" ref="79257516"/>
-													<string key="NSTitle">Select transformation type ...</string>
+													<string key="NSTitle">Custom specification template</string>
 													<string key="NSKeyEquiv"/>
 													<int key="NSMnemonicLoc">2147483647</int>
 													<int key="NSState">1</int>
-													<object class="NSCustomResource" key="NSImage">
-														<string key="NSClassName">NSImage</string>
-														<string key="NSResourceName">autoship</string>
-													</object>
 													<reference key="NSOnImage" ref="188536377"/>
 													<reference key="NSMixedImage" ref="876361353"/>
 													<string key="NSAction">_popUpItemAction:</string>
@@ -333,7 +329,20 @@
 															<string key="NSAction">_popUpItemAction:</string>
 															<reference key="NSTarget" ref="1094471"/>
 														</object>
-														<reference ref="891629521"/>
+														<object class="NSMenuItem" id="891629521">
+															<reference key="NSMenu" ref="79257516"/>
+															<string key="NSTitle">Select transformation type ...</string>
+															<string key="NSKeyEquiv"/>
+															<int key="NSMnemonicLoc">2147483647</int>
+															<object class="NSCustomResource" key="NSImage">
+																<string key="NSClassName">NSImage</string>
+																<string key="NSResourceName">autoship</string>
+															</object>
+															<reference key="NSOnImage" ref="188536377"/>
+															<reference key="NSMixedImage" ref="876361353"/>
+															<string key="NSAction">_popUpItemAction:</string>
+															<reference key="NSTarget" ref="1094471"/>
+														</object>
 														<object class="NSMenuItem" id="883327723">
 															<reference key="NSMenu" ref="79257516"/>
 															<bool key="NSIsDisabled">YES</bool>
@@ -565,16 +574,7 @@
 															<string key="NSAction">_popUpItemAction:</string>
 															<reference key="NSTarget" ref="1094471"/>
 														</object>
-														<object class="NSMenuItem" id="873099448">
-															<reference key="NSMenu" ref="79257516"/>
-															<string key="NSTitle">Custom specification template</string>
-															<string key="NSKeyEquiv"/>
-															<int key="NSMnemonicLoc">2147483647</int>
-															<reference key="NSOnImage" ref="188536377"/>
-															<reference key="NSMixedImage" ref="876361353"/>
-															<string key="NSAction">_popUpItemAction:</string>
-															<reference key="NSTarget" ref="1094471"/>
-														</object>
+														<reference ref="873099448"/>
 														<object class="NSMenuItem" id="999667565">
 															<reference key="NSMenu" ref="79257516"/>
 															<string key="NSTitle">Load custom specification ...</string>
@@ -589,7 +589,7 @@
 													</object>
 													<reference key="NSMenuFont" ref="78187581"/>
 												</object>
-												<int key="NSSelectedIndex">1</int>
+												<int key="NSSelectedIndex">22</int>
 												<int key="NSPreferredEdge">3</int>
 												<bool key="NSUsesItemFromMenu">YES</bool>
 												<bool key="NSAltersState">YES</bool>
@@ -611,7 +611,7 @@
 															<int key="NSvFlags">8466</int>
 															<string key="NSFrameSize">{422, 404}</string>
 															<reference key="NSSuperview" ref="539916517"/>
-															<reference key="NSNextKeyView" ref="117658187"/>
+															<reference key="NSNextKeyView" ref="503160165"/>
 															<int key="NSViewLayerContentsRedrawPolicy">2</int>
 															<bool key="NSViewCanDrawConcurrently">YES</bool>
 															<bool key="NSEnabled">YES</bool>
@@ -761,7 +761,7 @@
 											</object>
 											<string key="NSFrame">{{0, 21}, {424, 422}}</string>
 											<reference key="NSSuperview" ref="781317716"/>
-											<reference key="NSNextKeyView" ref="503160165"/>
+											<reference key="NSNextKeyView" ref="539916517"/>
 											<int key="NSViewLayerContentsRedrawPolicy">2</int>
 											<int key="NSsFlags">562</int>
 											<reference key="NSVScroller" ref="117658187"/>
@@ -909,7 +909,7 @@
 																			<int key="NSvFlags">274</int>
 																			<string key="NSFrameSize">{364, 250}</string>
 																			<reference key="NSSuperview" ref="956405173"/>
-																			<reference key="NSNextKeyView" ref="426037918"/>
+																			<reference key="NSNextKeyView" ref="646983855"/>
 																			<int key="NSViewLayerContentsRedrawPolicy">2</int>
 																			<bool key="NSEnabled">YES</bool>
 																			<object class="NSTableHeaderView" key="NSHeaderView" id="992174241">
@@ -1058,7 +1058,7 @@
 															</object>
 															<string key="NSFrame">{{0, 10}, {368, 271}}</string>
 															<reference key="NSSuperview" ref="254701927"/>
-															<reference key="NSNextKeyView" ref="646983855"/>
+															<reference key="NSNextKeyView" ref="956405173"/>
 															<int key="NSViewLayerContentsRedrawPolicy">2</int>
 															<int key="NSsFlags">563</int>
 															<reference key="NSVScroller" ref="426037918"/>
@@ -1310,7 +1310,6 @@
 							<int key="NSvFlags">258</int>
 							<string key="NSFrame">{{41, 20}, {372, 17}}</string>
 							<reference key="NSSuperview" ref="568628114"/>
-							<reference key="NSNextKeyView"/>
 							<bool key="NSViewIsLayerTreeHost">YES</bool>
 							<int key="NSViewLayerContentsRedrawPolicy">2</int>
 							<bool key="NSEnabled">YES</bool>
@@ -1913,6 +1912,14 @@
 						<reference key="destination" ref="512844837"/>
 					</object>
 					<int key="connectionID">100287</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">menuSelectionAction:</string>
+						<reference key="source" ref="512844837"/>
+						<reference key="destination" ref="873099448"/>
+					</object>
+					<int key="connectionID">100312</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -3024,7 +3031,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">100311</int>
+			<int key="maxID">100312</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes"/>
 		<int key="IBDocument.localizationMode">0</int>
