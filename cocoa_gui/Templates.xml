@@ -49,6 +49,9 @@
 		<display name="GSL model (*.c)" filename="C-GSL"></display>
 	</mapping>
 
+    <mapping type="CUSTOM-TEMPLATE" working_dir="./templates/">
+		<display name="Custom specification template" filename="Custom-Template"></display>
+	</mapping>
     
 	<mapping type="BCX" working_dir="./templates/">
 		<display name="Biochemical experiment specification file (*.xml)" filename="C-Octave"></display>
