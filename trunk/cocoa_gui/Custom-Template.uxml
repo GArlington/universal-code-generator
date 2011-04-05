@@ -1,10 +1,10 @@
-<?xml version="1.0"?>
-<Model username="" version="v1.0" name="" type="CUSTOM-TEMPLATE" required="YES" large_scale_optimized="YES">
-
+<?xml version="1.0" standalone="yes"?>
+<Model type="DFBA" required="YES" username="" version="v1.0" name="">
 <Configuration>
 <ListOfPackages>
 <package required="YES" symbol="INPUT_HANDLER_PACKAGE" package_name="org.varnerlab.userver.input.handler"></package>
 <package required="YES" symbol="OUTPUT_HANDLER_PACKAGE" package_name="org.varnerlab.userver.output.handler"></package>
+<package required="YES" symbol="OUTPUT_HANDLER_DFBA_PACKAGE" package_name="org.varnerlab.userver.output.handler.dfba"></package>
 <package required="YES" symbol="DEFAULT_LANGUAGE_PACKAGE" package_name="org.varnerlab.userver.language.handler"></package>
 <package required="YES" symbol="DEFAULT_BCX_PACKAGE" package_name="org.varnerlab.userver.language.handler.bcx"></package>
 </ListOfPackages>
@@ -24,24 +24,23 @@
 <class required="NO" package="INPUT_HANDLER_PACKAGE" classname="LoadMOBCXFile"></class>
 <class required="NO" package="INPUT_HANDLER_PACKAGE" classname="LoadBCXFile"></class>
 </InputHandlerClasses>
-
 <OutputHandlerClasses>
 <class required="NO" package="OUTPUT_HANDLER_PACKAGE" classname="WriteOctaveMModel"></class>
 <class required="NO" package="OUTPUT_HANDLER_PACKAGE" classname="WriteMatlabMModel"></class>
 <class required="NO" package="OUTPUT_HANDLER_PACKAGE" classname="WriteOctaveCModel"></class>
 <class required="NO" package="OUTPUT_HANDLER_PACKAGE" classname="WriteGSLModel"></class>
-<class required="NO" package="OUTPUT_HANDLER_PACKAGE" classname="WriteSundialsModel"></class>
 <class required="NO" package="OUTPUT_HANDLER_PACKAGE" classname="WriteScilabModel"></class>
 <class required="NO" package="OUTPUT_HANDLER_PACKAGE" classname="WriteVarnerFlatFile"></class>
 <class required="NO" package="OUTPUT_HANDLER_PACKAGE" classname="WriteGraphvizDotFile"></class>
 <class required="NO" package="OUTPUT_HANDLER_PACKAGE" classname="WriteSBMLFile"></class>
 <class required="NO" package="OUTPUT_HANDLER_PACKAGE" classname="WriteMOBCXFiles"></class>
 <class required="NO" package="OUTPUT_HANDLER_PACKAGE" classname="WriteBCXFiles"></class>
+<class required="NO" package="OUTPUT_HANDLER_PACKAGE" classname="WriteSundialsModel"></class>
 <class required="NO" package="OUTPUT_HANDLER_PACKAGE" classname="WriteSIFFileFromBioPAX"></class>
 <class required="NO" package="OUTPUT_HANDLER_PACKAGE" classname="WriteMetabolicFiles"></class>
+<class required="NO" package="OUTPUT_HANDLER_DFBA_PACKAGE" classname="WriteOctaveMDFBAFiles"></class>
 </OutputHandlerClasses>
 </ListOfClasses>
-
 <ServerConfiguration>
 <ListOfPlugins>
 <plugin_jar_directory required="YES" path_symbol="UNIVERSAL_PLUGINS_JAR_DIRECTORY" filename="UServer-v2.0.jar"></plugin_jar_directory>
@@ -54,21 +53,19 @@
 <argument required="YES" index="4" symbol="org.varnerlab.server.localtransportlayer.Main"></argument>
 </ListOfArguments>
 </ServerConfiguration>
-
 </Configuration>
-
-
 <Handler>
-<InputHandler required="YES" input_classname="" package="INPUT_HANDLER_PACKAGE"></InputHandler>
-<OutputHandler required="YES" output_classname="WriteOctaveCModel" package="OUTPUT_HANDLER_PACKAGE"></OutputHandler>
+<InputHandler required="YES" package="INPUT_HANDLER_PACKAGE" input_classname="LoadSBMLFile"></InputHandler>
+<OutputHandler required="YES" package="OUTPUT_HANDLER_PACKAGE" output_classname="WriteMetabolicFiles"></OutputHandler>
 </Handler>
 
 <InputOptions>
 
-</InputOptions>	
+</InputOptions>
 
 <OutputOptions>
 
-</OutputOptions>	
+</OutputOptions>
+
 
 </Model>
