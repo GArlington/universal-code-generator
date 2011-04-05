@@ -102,7 +102,7 @@
     [[self textLabel] setStringValue:[[self selectedXMLNode] name]];
     
     // Change the title on the window -
-    [[self window] setTitle:@"Edit the name of the tree node ..."];
+    [[self localWindow] setTitle:@"Edit the name of the tree node ..."];
 }
 
 #pragma mark -----------------------------------------------
@@ -174,11 +174,10 @@
         
         // Have the tree reload data -
         NSString *MyNotificationName = @"TreeNodeDataChanged";
-        NSNotification *myNotification = [NSNotification notificationWithName:MyNotificationName object:nil]; 
+        NSNotification *myNotification = [NSNotification notificationWithName:MyNotificationName object:[self window]]; 
         
         // Send an update -
-        [[NSNotificationQueue defaultQueue] enqueueNotification:myNotification postingStyle:NSPostNow coalesceMask:NSNotificationCoalescingOnName forModes:nil];
-
+        [[NSNotificationCenter defaultCenter] postNotification:myNotification];
         
         // Close me -
         [[self localWindow] orderOut:nil];

@@ -398,7 +398,15 @@
             
             // We have accepted the drop -
             flag = YES;
-		}
+            
+            // Set the dirty bubble -
+            // Have the tree reload data -
+            NSString *MyNotificationName = @"TreeNodeDataChanged";
+            NSNotification *myNotification = [NSNotification notificationWithName:MyNotificationName object:[[self treeView] window]]; 
+            
+            // Send an update -
+            [[NSNotificationCenter defaultCenter] postNotification:myNotification];
+        }
 	}
     else
     {
