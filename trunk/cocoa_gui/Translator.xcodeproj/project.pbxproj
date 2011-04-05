@@ -32,7 +32,6 @@
 		AD3D350D13030FB100F7D2F5 /* SUNDIALS.uxml in Resources */ = {isa = PBXBuildFile; fileRef = AD3D350C13030FB100F7D2F5 /* SUNDIALS.uxml */; };
 		AD41297F130E347A00C5F0E8 /* FBA.uxml in Resources */ = {isa = PBXBuildFile; fileRef = AD41297E130E347A00C5F0E8 /* FBA.uxml */; };
 		AD4D36BF134BDE8E00EB742A /* Custom-Specification.uxml in Resources */ = {isa = PBXBuildFile; fileRef = AD4D36BE134BDE8E00EB742A /* Custom-Specification.uxml */; };
-		AD4D36C1134BDF4200EB742A /* Custom-Template.uxml in Resources */ = {isa = PBXBuildFile; fileRef = AD4D36C0134BDF4200EB742A /* Custom-Template.uxml */; };
 		AD6B1BDB1304A62D00E464D7 /* GRAPHVIZ.uxml in Resources */ = {isa = PBXBuildFile; fileRef = AD6B1BDA1304A62D00E464D7 /* GRAPHVIZ.uxml */; };
 		AD7BC18D13196D7F00A56512 /* DDTreeNodeProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = AD7BC18C13196D7F00A56512 /* DDTreeNodeProxy.m */; };
 		AD8408A812FF274D00B2A270 /* C-GSL.uxml in Resources */ = {isa = PBXBuildFile; fileRef = AD8408A712FF274D00B2A270 /* C-GSL.uxml */; };
@@ -131,7 +130,6 @@
 		AD3D350C13030FB100F7D2F5 /* SUNDIALS.uxml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = SUNDIALS.uxml; sourceTree = "<group>"; };
 		AD41297E130E347A00C5F0E8 /* FBA.uxml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = FBA.uxml; sourceTree = "<group>"; };
 		AD4D36BE134BDE8E00EB742A /* Custom-Specification.uxml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Custom-Specification.uxml"; sourceTree = "<group>"; };
-		AD4D36C0134BDF4200EB742A /* Custom-Template.uxml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Custom-Template.uxml"; sourceTree = "<group>"; };
 		AD6B1BDA1304A62D00E464D7 /* GRAPHVIZ.uxml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = GRAPHVIZ.uxml; sourceTree = "<group>"; };
 		AD7BC18B13196D7F00A56512 /* DDTreeNodeProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDTreeNodeProxy.h; sourceTree = "<group>"; };
 		AD7BC18C13196D7F00A56512 /* DDTreeNodeProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDTreeNodeProxy.m; sourceTree = "<group>"; };
@@ -372,7 +370,6 @@
 				AD41297E130E347A00C5F0E8 /* FBA.uxml */,
 				ADFDFA0C1321751500B238BD /* DFBA.uxml */,
 				AD4D36BE134BDE8E00EB742A /* Custom-Specification.uxml */,
-				AD4D36C0134BDF4200EB742A /* Custom-Template.uxml */,
 			);
 			name = templates;
 			sourceTree = "<group>";
@@ -556,7 +553,6 @@
 				AD41297F130E347A00C5F0E8 /* FBA.uxml in Resources */,
 				ADFDFA0D1321751600B238BD /* DFBA.uxml in Resources */,
 				AD4D36BF134BDE8E00EB742A /* Custom-Specification.uxml in Resources */,
-				AD4D36C1134BDF4200EB742A /* Custom-Template.uxml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
