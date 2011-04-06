@@ -63,8 +63,17 @@ public class WriteMatlabMModel implements IOutputHandler {
         StringBuffer inputs_buffer = new StringBuffer();
         StringBuffer data_buffer = new StringBuffer();
         StringBuffer kinetics_buffer = new StringBuffer();
+        
+        // Buffer required to sensitivity analysis -
+        StringBuffer pmatrix_buffer = new StringBuffer();
+        StringBuffer adj_balances = new StringBuffer();
+        StringBuffer adj_driver = new StringBuffer();
+        StringBuffer jacobian_buffer = new StringBuffer();
+        
+        
         double[][] dblSTMatrix = null;
         MatlabModel matlab = new MatlabModel();
+        OctaveMModel octave = new OctaveMModel();
         Vector<Reaction> vecReactions = new Vector<Reaction>();
         Vector<Species> vecSpecies = new Vector<Species>();
         Vector vecSpeciesOrder = new Vector();
@@ -151,6 +160,14 @@ public class WriteMatlabMModel implements IOutputHandler {
         matlab.buildInputsBuffer(inputs_buffer);
         matlab.buildKineticsBuffer(kinetics_buffer,model_wrapper);
         
+        
+        // Build the code needed to do sensitivity analysis 
+        
+        matlab.buildAdjBalFntBuffer(adj_balances, vecReactions, vecSpecies, _xmlPropTree);
+        octave.buildJacobianBuffer(jacobian_buffer, vecReactions, vecSpecies, _xmlPropTree);
+        octave.buildPMatrixBuffer(pmatrix_buffer, vecReactions, vecSpecies, _xmlPropTree);
+        matlab.buildSolveAdjBalBuffer(adj_driver, _xmlPropTree);
+        
         // Call out to the matlab class and have it build the driver buffer -
 		matlab.buildDriverBuffer(driver_buffer, _xmlPropTree);
 		SBMLModelUtilities.buildDataFileBuffer(data_buffer, model_wrapper, _xmlPropTree);
@@ -162,6 +179,10 @@ public class WriteMatlabMModel implements IOutputHandler {
         SBMLModelUtilities.dumpDataFileToDisk(data_buffer,_xmlPropTree);
         SBMLModelUtilities.dumpKineticsToDisk(kinetics_buffer, _xmlPropTree);
         SBMLModelUtilities.dumpInputFunctionToDisk(inputs_buffer, _xmlPropTree);
+        SBMLModelUtilities.dumpBMatrixToDisk(pmatrix_buffer, _xmlPropTree);
+        SBMLModelUtilities.dumpJacobianToDisk(jacobian_buffer, _xmlPropTree);
+        SBMLModelUtilities.dumpAdjFunctionFileToDisk(adj_balances, _xmlPropTree);
+        SBMLModelUtilities.dumpAdjDriverFileToDisk(adj_driver, _xmlPropTree);
 	}
 
 	public void setLogger(Logger log) {
