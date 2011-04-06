@@ -288,7 +288,7 @@ public class SBMLModelUtilities {
 	        datafile.append("\n");
 	        
 	        // Populate the measurement selection matrix -
-	        datafile.append("% Initialize tehg measurement selection matrix. Default is the identity matrix \n");
+	        datafile.append("% Initialize the measurement selection matrix. Default is the identity matrix \n");
 	        datafile.append("MEASUREMENT_INDEX_VECTOR = [1:NSTATES];\n");
 	        datafile.append("\n");
 	        datafile.append("% =========== DO NOT EDIT BELOW THIS LINE ==============\n");
@@ -433,7 +433,7 @@ public class SBMLModelUtilities {
 	        datafile.append("\n");
 	        
 	        // Populate the measurement selection matrix -
-	        datafile.append("% Initialize tehg measurement selection matrix. Default is the identity matrix \n");
+	        datafile.append("% Initialize the measurement selection matrix. Default is the identity matrix \n");
 	        datafile.append("MEASUREMENT_INDEX_VECTOR = [1:NSTATES];\n");
 	        datafile.append("\n");
 	        datafile.append("% =========== DO NOT EDIT BELOW THIS LINE ==============\n");
@@ -576,7 +576,7 @@ public class SBMLModelUtilities {
 	        datafile.append("\n");
 
 	        // Populate the measurement selection matrix -
-	        datafile.append("% Initialize tehg measurement selection matrix. Default is the identity matrix \n");
+	        datafile.append("% Initialize the measurement selection matrix. Default is the identity matrix \n");
 	        datafile.append("MEASUREMENT_MATRIX = eye(NSTATES,NSTATES);\n");
 
 	        datafile.append("% =========== DO NOT EDIT BELOW THIS LINE ==============\n");
