@@ -121,7 +121,7 @@ public class MatlabModel {
     	ArrayList<String> arrList = propTree.processFilenameBlock("DriverFile");
     	String strFunctionName = arrList.get(1);
     	
-        driver.append("function [TSIM,OUTPUT] = ");
+        driver.append("function [TSIM,X,OUTPUT] = ");
         driver.append(strFunctionName);
         driver.append("(pDataFile,TSTART,TSTOP,Ts,DFIN)\n");
         driver.append("\n");
@@ -180,7 +180,7 @@ public class MatlabModel {
         driver.append("% Calculate the output - \n");
         driver.append("OUTPUT = X(:,MEASUREMENT_INDEX_VECTOR);\n");
         driver.append("\n");
-        driver.append("% return to caller -");
+        driver.append("% return to caller - \n");
         driver.append("return;\n");
     }
     
@@ -253,4 +253,102 @@ public class MatlabModel {
         massbalances.append("% return to caller\n");
         massbalances.append("return;\n");
     } 
+    
+    public void buildAdjBalFntBuffer(StringBuffer buffer,Vector vecReactions,Vector<Species> vecSpecies,XMLPropTree propTree) throws Exception 
+    {
+    	// Call the utility class and populate the buffer -
+    	MModelUtilities.buildMatlabAdjBalFntBuffer(buffer,vecReactions, vecSpecies, model_wrapper, propTree);
+    }
+    
+    public void buildSolveAdjBalBuffer(StringBuffer driver,XMLPropTree propTree) throws Exception 
+    {
+
+          // Put in the header and go -
+      	//String strFunctionNameRaw = propTree.getProperty("//DriverFile/driver_filename/text()");
+      	//int INT_2_DOT = strFunctionNameRaw.indexOf(".");
+      	///String strFunctionName = strFunctionNameRaw.substring(0, INT_2_DOT);
+
+  	  	ArrayList<String> arrList = propTree.processFilenameBlock("AdjointDriver");
+      	String strFunctionName = arrList.get(1);
+
+          driver.append("function [TSIM,X,S]=");
+          driver.append(strFunctionName);
+          driver.append("(pDataFile,TSTART,TSTOP,Ts,pIndex,DFIN)\n");
+          driver.append("\n");
+
+          driver.append("% ----------------------------------------------------------------------\n");
+          driver.append("% ");
+          driver.append(strFunctionName);
+          driver.append(".m was generated using the UNIVERSAL code generator system.\n");
+          driver.append("% Username: ");
+          driver.append(propTree.getProperty(".//Model/@username"));
+          driver.append("\n");
+          driver.append("% Type: ");
+          driver.append(propTree.getProperty(".//Model/@type"));
+          driver.append("\n");
+          driver.append("% Version: ");
+          driver.append(propTree.getProperty(".//Model/@version"));
+          driver.append("\n");
+          driver.append("% \n");
+          driver.append("% Arguments: \n");
+          driver.append("% pDataFile  - pointer to datafile \n");
+          driver.append("% TSTART  - Time start \n");
+          driver.append("% TSTOP  - Time stop \n");
+          driver.append("% Ts - Time step \n");
+          driver.append("% DFIN  - Custom data file instance \n");
+          driver.append("% TSIM - Simulation time vector \n");
+          driver.append("% X - Simulation state array (NTIME x NSPECIES) \n");
+          driver.append("% S - Simulation sensitivity array for parameter pIndex(NTIME X NSPECIES) \n");
+          driver.append("% ----------------------------------------------------------------------\n");
+          driver.append("\n");
+
+          driver.append("% Check to see if I need to load the datafile\n");
+          driver.append("if (~isempty(DFIN))\n");
+          driver.append("\tDF = DFIN;\n");
+          driver.append("else\n");
+          driver.append("\tDF = feval(pDataFile,TSTART,TSTOP,Ts,[]);\n");
+          driver.append("end;\n");
+          driver.append("\n");
+          driver.append("% Get reqd stuff from data struct -\n");
+          driver.append("IC = DF.INITIAL_CONDITIONS;\n");
+          driver.append("TSIM = TSTART:Ts:TSTOP;\n");
+          driver.append("STM = DF.STOICHIOMETRIC_MATRIX;\n");
+          driver.append("kV = DF.PARAMETER_VECTOR;\n");
+          driver.append("NRATES = DF.NUMBER_PARAMETERS;\n");
+          driver.append("NSTATES = DF.NUMBER_OF_STATES;\n");
+          driver.append("\n");
+          driver.append("% Append the initial sensitivity values - assuming zero here\n");
+          driver.append("IC = [IC; zeros(NSTATES,1)];\n");
+          driver.append("\n");
+          //driver.append("% Call the ODE solver - the default is LSODE\n");
+
+          //@todo should use the name the user passed in..
+          //String strMassBalanceFunctionNameRaw = propTree.getProperty("//MassBalanceFunction/massbalance_filename/text()");
+          //INT_2_DOT = strMassBalanceFunctionNameRaw.indexOf(".");
+          //String strMassBalanceFunctionName = strMassBalanceFunctionNameRaw.substring(0, INT_2_DOT);
+
+          ArrayList<String> arrList2 = propTree.processFilenameBlock("AdjointBalances");
+          String strAdjointBalancesFunctionName = arrList2.get(1);
+
+          //driver.append("f = @(x,t)");
+          //driver.append(strAdjointBalancesFunctionName);
+          //driver.append("(x,t,STM,kV,NRATES,NSTATES,pIndex);\n");
+          //driver.append("[xOut]=ode15s(f,IC,TSIM);\n");
+          //driver.append("\n");
+          //driver.append("% Seperate xOut into state and sensitivity matrix\n");
+          //driver.append("X = xOut(:,1:NSTATES);\n");
+          //driver.append("S = xOut(:,NSTATES+1:end);\n");
+          //driver.append("return;\n");
+          
+     
+          driver.append("% Call the ODE solver - the default is ODE15s\n");
+          driver.append("[TOUT,XOUT]=ode15s(@");
+          driver.append(strAdjointBalancesFunctionName);
+          driver.append(",TSIM,IC,[],STM,kV,NRATES,NSTATES,pIndex);\n");
+          driver.append("\n");
+          driver.append("% Seperate xOut into state and sensitivity matrix\n");
+          driver.append("X = XOUT(:,1:NSTATES);\n");
+          driver.append("S = XOUT:,NSTATES+1:end);\n");
+          driver.append("return;\n");
+      }
 }

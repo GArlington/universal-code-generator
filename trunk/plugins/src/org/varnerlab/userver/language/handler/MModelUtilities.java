@@ -691,6 +691,99 @@ public static void buildAdjBalFntBuffer(StringBuffer buffer,Vector vecReactions,
         buffer.append("\n");
     }
 
+	public static void buildMatlabAdjBalFntBuffer(StringBuffer buffer,Vector vecReactions,Vector<Species> vecSpecies, Model model_wrapper,XMLPropTree propTree) throws Exception
+	{
+        ArrayList<String> arrList = propTree.processFilenameBlock("AdjointBalances");
+        String strSensitivityBalanceFunctionName = arrList.get(1);
+        
+        // Get info for the Jacobian matrix -
+        arrList = propTree.processFilenameBlock("JacobianMatrix");
+        String strJacobianFunctionName = arrList.get(1);
+        
+        // Get info for the PMatrix -
+        Hashtable<String,String> pathTable = propTree.buildFilenameBlockDictionary("PMatrix");
+        String strPMatrixFileName = pathTable.get("FUNCTION_NAME");
+
+        ArrayList<String> arrList2 = propTree.processFilenameBlock("MassBalanceFunction");
+        String strMassBalanceFunctionName = arrList2.get(1);
+
+        // Convert into string buffer -
+        // Ok, so when I get here I have the Jacobian - we need to convert it into a string buffer
+        buffer.append("function DXDT = ");
+        buffer.append(strSensitivityBalanceFunctionName);
+        buffer.append("(t,x,STM,kV,NRATES,NSTATES,pIndex)\n");
+        buffer.append("\n");
+        buffer.append("% ---------------------------------------------------------------------\n");
+        buffer.append("% ");
+        buffer.append(strSensitivityBalanceFunctionName);
+        buffer.append(".m was generated using the UNIVERSAL code generator system.\n");
+        buffer.append("% Username: ");
+        buffer.append(propTree.getProperty(".//Model/@username"));
+        buffer.append("\n");
+        buffer.append("% Type: ");
+		buffer.append(propTree.getProperty(".//Model/@type"));
+        buffer.append("\n");
+        buffer.append("% Version: ");
+        buffer.append(propTree.getProperty(".//Model/@version"));
+        buffer.append("\n");
+        buffer.append("% \n");
+        buffer.append("% Arguments: \n");
+        buffer.append("% x  - adjoint state vector and sensitivity for parameter pIndex vector \n");
+        buffer.append("% kV - parameter vector \n");
+        buffer.append("% t - current time \n");
+        buffer.append("% STM - stoichiometric maxtrix \n");
+        buffer.append("% NRATES - number of rates \n");
+        buffer.append("% NSTATES - number of states \n");
+        buffer.append("% pIndex - parameter index that we are looking at \n");
+        buffer.append("% DXDT - vector of delta sensitivity for parameter pIndex  wrt time \n");
+        buffer.append("% ---------------------------------------------------------------------\n");
+    	buffer.append("\n");
+        buffer.append("% Decompose x into the concentration vector c and the sensitivity vector s \n");
+        buffer.append("n = NSTATES;\n");
+        buffer.append("m = NRATES;\n");
+        buffer.append("c = x(1:n);\n");
+        buffer.append("s = x(n+1:end);\n");
+        buffer.append("\n");
+        buffer.append("% ---------------------------------------------------------------------\n");
+        buffer.append("% Calculate the Jacobian Matrix \n");
+        buffer.append("% ---------------------------------------------------------------------\n");
+        buffer.append("JM = ");
+        buffer.append(strJacobianFunctionName);
+        buffer.append("(c,kV);\n");
+        buffer.append("\n");
+
+
+        // Convert into string buffer -
+        buffer.append("% ---------------------------------------------------------------------\n");
+        buffer.append("% Calculate the P matrix\n");
+        buffer.append("% ---------------------------------------------------------------------\n");
+        buffer.append("PM = ");
+        buffer.append(strPMatrixFileName);
+        buffer.append("(c,kV);\n");
+        buffer.append("\n");
+   
+
+        buffer.append("\n");
+        buffer.append("% ---------------------------------------------------------------------\n");
+        buffer.append("% Calculate dsdt vector \n");
+        buffer.append("% ---------------------------------------------------------------------\n");
+        buffer.append("dsdt = JM*s+PM(:,pIndex);\n");
+        buffer.append("\n");
+        buffer.append("% ---------------------------------------------------------------------\n");
+        buffer.append("% Calculate dcdt vector \n");
+        buffer.append("% ---------------------------------------------------------------------\n");
+        buffer.append("dcdt = ");
+        buffer.append(strMassBalanceFunctionName);
+        buffer.append("(t,c,STM,kV,NRATES,NSTATES);\n");
+        buffer.append("\n");
+        buffer.append("% ---------------------------------------------------------------------\n");
+        buffer.append("% Construct DXDT vector \n");
+        buffer.append("% ---------------------------------------------------------------------\n");
+        buffer.append("DXDT = [dcdt;dsdt];\n");
+        buffer.append("\n");
+        buffer.append("return;\n");
+        buffer.append("\n");
+    }
 
     private static String formulatePMatrixElement(double[][] matrix,int massbalance,int parameter,Vector vecReactions,Vector<Species> vecSpecies)
     {
