@@ -72,7 +72,7 @@ public class WriteMOBCXFiles implements IOutputHandler {
 		
 		
 		// Populate the buffers -
-		// model_wrapper.buildExperimentalDataStructBuffer(expdata_buffer, bcxTree,_xmlPropTree);
+		model_wrapper.buildExperimentalDataStructBuffer(expdata_buffer, bcxTree,_xmlPropTree);
 		
 		// Process the list of experiments and generate the error files -
 		String strExpXPath = "//experiment/@id";
@@ -93,10 +93,10 @@ public class WriteMOBCXFiles implements IOutputHandler {
 			
 			// Ok, build the buffer -
 			model_wrapper.buildSimFileBuffer(exp_buffer, bcxTree, _xmlPropTree,strExpId);
-			//model_wrapper.buildErrorBuffer(err_buffer, bcxTree, _xmlPropTree, strExpId);
-			//model_wrapper.buildTestSimBuffer(testSimBuffer, bcxTree, _xmlPropTree, strExpId);
-			//model_wrapper.buildSimGroupFunctionBuffer(simGrpBuffer, bcxTree, _xmlPropTree, strExpId);
-			//model_wrapper.buildScalingFunctionBuffer(scaleBuffer, bcxTree, _xmlPropTree, strExpId);
+			model_wrapper.buildErrorBuffer(err_buffer, bcxTree, _xmlPropTree, strExpId);
+			model_wrapper.buildTestSimBuffer(testSimBuffer, bcxTree, _xmlPropTree, strExpId);
+			model_wrapper.buildSimGroupFunctionBuffer(simGrpBuffer, bcxTree, _xmlPropTree, strExpId);
+			model_wrapper.buildScalingFunctionBuffer(scaleBuffer, bcxTree, _xmlPropTree, strExpId);
 			
 			// Dump the buffer to disk -
 			SBMLModelUtilities.dumpSimulationFunctionToDisk(exp_buffer,_xmlPropTree,strExpId);
@@ -108,8 +108,8 @@ public class WriteMOBCXFiles implements IOutputHandler {
 		}
 		
 		// Build and write the MOSE and SOSE files -
-		//model_wrapper.buildMOSEBuffer(moseBuffer, bcxTree, _xmlPropTree);
-		//model_wrapper.buildSOSEBuffer(soseBuffer, bcxTree, _xmlPropTree);
+		model_wrapper.buildMOSEBuffer(moseBuffer, bcxTree, _xmlPropTree);
+		model_wrapper.buildSOSEBuffer(soseBuffer, bcxTree, _xmlPropTree);
 		
 		// Dump xOSE files to disk --
 		SBMLModelUtilities.dumpSEBufferToDisk(moseBuffer, _xmlPropTree, "MOSE.m");
