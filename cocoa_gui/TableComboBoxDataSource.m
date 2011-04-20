@@ -188,6 +188,17 @@
 			[view reloadData];
 			[strXPath release];
 		}
+        
+        else if ([notSureWhatThisIs isEqualToString:@"steady_state"])
+        {
+            // Clear -
+            [[self dataArray] removeAllObjects];
+            
+            // Add YES/NO -
+            [[self dataArray] addObject:@"YES"];
+            [[self dataArray] addObject:@"NO"];
+        }
+        
         else if ([notSureWhatThisIs isEqualToString:@"required"])
         {
             // Clear -

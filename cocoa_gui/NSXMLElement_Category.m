@@ -222,6 +222,20 @@
 				blnFLAG = NO;
 			}
 			
+            // Check for listOf -
+			NSRange stimulusRange = [[self displayName] rangeOfString:@"species_step_stimulus"];
+			if (stimulusRange.location != NSNotFound)
+			{
+				blnFLAG = NO;
+			}
+            
+            // Check for listOf -
+			NSRange speciesDataColRange = [[self displayName] rangeOfString:@"species_data_column"];
+			if (speciesDataColRange.location != NSNotFound)
+			{
+				blnFLAG = NO;
+			}
+            
 			// Check for regulated expression -
 			NSRange regRange = [[self displayName] rangeOfString:@"regulated_"];
 			if (regRange.location != NSNotFound)

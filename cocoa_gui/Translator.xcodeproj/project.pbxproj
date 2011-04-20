@@ -91,6 +91,7 @@
 		AD8E8A7B12E9FD7C0055C601 /* TableComboBoxDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = AD8E8A7A12E9FD7C0055C601 /* TableComboBoxDataSource.m */; };
 		AD8E8C4412EC871B0055C601 /* NodeNaming.xml in Resources */ = {isa = PBXBuildFile; fileRef = AD8E8C4312EC871B0055C601 /* NodeNaming.xml */; };
 		AD8E8C7D12EC92E60055C601 /* TreeNodeNamingModel.m in Sources */ = {isa = PBXBuildFile; fileRef = AD8E8C7C12EC92E60055C601 /* TreeNodeNamingModel.m */; };
+		ADED00B5135F25CF000605CE /* MOBCXTemplate.uxml in Resources */ = {isa = PBXBuildFile; fileRef = ADED00B4135F25CF000605CE /* MOBCXTemplate.uxml */; };
 		ADF2757D12FDAB0800767C75 /* Ball-shutdown.icns in Resources */ = {isa = PBXBuildFile; fileRef = ADF2757C12FDAB0800767C75 /* Ball-shutdown.icns */; };
 		ADF2758112FDAB8D00767C75 /* Ball-logoff.icns in Resources */ = {isa = PBXBuildFile; fileRef = ADF2758012FDAB8D00767C75 /* Ball-logoff.icns */; };
 		ADFDFA0D1321751600B238BD /* DFBA.uxml in Resources */ = {isa = PBXBuildFile; fileRef = ADFDFA0C1321751500B238BD /* DFBA.uxml */; };
@@ -202,6 +203,7 @@
 		AD8E8C4312EC871B0055C601 /* NodeNaming.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = NodeNaming.xml; sourceTree = "<group>"; };
 		AD8E8C7B12EC92E60055C601 /* TreeNodeNamingModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TreeNodeNamingModel.h; sourceTree = "<group>"; };
 		AD8E8C7C12EC92E60055C601 /* TreeNodeNamingModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TreeNodeNamingModel.m; sourceTree = "<group>"; };
+		ADED00B4135F25CF000605CE /* MOBCXTemplate.uxml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = MOBCXTemplate.uxml; sourceTree = "<group>"; };
 		ADF2757C12FDAB0800767C75 /* Ball-shutdown.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = "Ball-shutdown.icns"; sourceTree = "<group>"; };
 		ADF2758012FDAB8D00767C75 /* Ball-logoff.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = "Ball-logoff.icns"; sourceTree = "<group>"; };
 		ADFDFA0C1321751500B238BD /* DFBA.uxml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = DFBA.uxml; sourceTree = "<group>"; };
@@ -355,6 +357,7 @@
 		AD8E88CA12E8F5020055C601 /* templates */ = {
 			isa = PBXGroup;
 			children = (
+				ADED00B4135F25CF000605CE /* MOBCXTemplate.uxml */,
 				AD8E896112E94F540055C601 /* Templates.xml */,
 				AD8E88CB12E8F5150055C601 /* IconMapping.xml */,
 				AD8E897612E957220055C601 /* C-Octave.uxml */,
@@ -553,6 +556,7 @@
 				AD41297F130E347A00C5F0E8 /* FBA.uxml in Resources */,
 				ADFDFA0D1321751600B238BD /* DFBA.uxml in Resources */,
 				AD4D36BF134BDE8E00EB742A /* Custom-Specification.uxml in Resources */,
+				ADED00B5135F25CF000605CE /* MOBCXTemplate.uxml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
