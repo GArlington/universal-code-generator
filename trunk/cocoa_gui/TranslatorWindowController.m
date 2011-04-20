@@ -1358,21 +1358,26 @@
 	// Get the type node -
 	NSXMLElement *typeNode = (NSXMLElement *)[listOfChildren lastObject];
 	
-	// OK, so now we need to look the string visible to the user -
-	[strXPath setString:@""];
-	[strXPath appendString:@".//mapping[@type='"];
-	[strXPath appendString:[typeNode stringValue]];
-	[strXPath appendString:@"']/display/@name"];
+    
+    // Fix to make sure we can edit sbml and xml documents -
+	if (typeNode !=nil)
+    {
+        // OK, so now we need to look the string visible to the user -
+        [strXPath setString:@""];
+        [strXPath appendString:@".//mapping[@type='"];
+        [strXPath appendString:[typeNode stringValue]];
+        [strXPath appendString:@"']/display/@name"];
 	
-	//NSLog(@"What was the xpath %@",strXPath);
+        //NSLog(@"What was the xpath %@",strXPath);
 	
-	NSArray *displayName = [[self xmlDocument] nodesForXPath:strXPath error:&errObject];
-	NSXMLElement *displayNode = (NSXMLElement *)[displayName lastObject];
+        NSArray *displayName = [[self xmlDocument] nodesForXPath:strXPath error:&errObject];
+        NSXMLElement *displayNode = (NSXMLElement *)[displayName lastObject];
 	
-	//NSLog(@"What was selected %@",[displayNode stringValue]);
+        //NSLog(@"What was selected %@",[displayNode stringValue]);
 	
-	// Ok, so now we need to figure which item is selected -
-	[[self fileTypePopupButton] selectItemWithTitle:[displayNode stringValue]];
+        // Ok, so now we need to figure which item is selected -
+        [[self fileTypePopupButton] selectItemWithTitle:[displayNode stringValue]];
+    }
 	
 	// release -
 	[strXPath release];

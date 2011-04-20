@@ -21,6 +21,7 @@
 <InputHandlerClasses>
 <class required="NO" package="INPUT_HANDLER_PACKAGE" classname="LoadSBMLFile"></class>
 <class required="NO" package="INPUT_HANDLER_PACKAGE" classname="LoadVarnerFlatFile"></class>
+<class required="NO" package="INPUT_HANDLER_PACKAGE" classname="LoadMOBCXFile"></class>
 </InputHandlerClasses>
 
 <OutputHandlerClasses>
@@ -55,33 +56,27 @@
 </Configuration>
 
 <Handler>
-<InputHandler required="YES" input_classname="" package="INPUT_HANDLER_PACKAGE"></InputHandler>
-<OutputHandler required="YES" output_classname="WriteGSLModel" package="OUTPUT_HANDLER_PACKAGE"></OutputHandler>
+<InputHandler required="YES" input_classname="LoadMOBCXFile" package="INPUT_HANDLER_PACKAGE"></InputHandler>
+<OutputHandler required="YES" output_classname="WriteMOBCXFiles" package="OUTPUT_HANDLER_PACKAGE"></OutputHandler>
 </Handler>
 
 <InputOptions>
 <NetworkFile required="YES" path_symbol="UNIVERSAL_INPUT_PATH" filename=""></NetworkFile>
-<OrderFile required="NO" path_symbol="UNIVERSAL_INPUT_PATH" filename="Order.dat"></OrderFile>
-<KineticParameterFile required="YES" path_symbol="UNIVERSAL_INPUT_PATH" filename="KineticParameters.dat"></KineticParameterFile>
-<InitialConditionFile required="YES" path_symbol="UNIVERSAL_INPUT_PATH" filename="InitialConditions.dat"></InitialConditionFile>
-<StoichiometricMatrix required="YES" path_symbol="UNIVERSAL_NETWORK_OUTPUT_PATH" filename="Network.dat"></StoichiometricMatrix>
+<ModelDataFile required="YES" path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename=""></ModelDataFile>
+<DriverFile required="YES" path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="SolveMassBalances.m"></DriverFile>
 </InputOptions>	
 
 <OutputOptions>
-<MassBalanceFunction required="YES" path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="MassBalances.c"></MassBalanceFunction>
-<OutputFile required="YES" path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="Output.dat"></OutputFile>
-<TimeFile required="YES" path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="Time.dat"></TimeFile>
-<SimulationDriverFile required="YES" path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="RunModel.sh"></SimulationDriverFile>
-<BuildFile required="YES" path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="BuildModel.sh"></BuildFile>
+<DataFile required="YES" path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="DataFile.m"></DataFile>
 </OutputOptions>	
 
 
 <ListOfExperiments>
     <experiment cite="" required="YES" id="" name="" scaling="BETA" simulation_time_start="" simulation_time_step="" simulation_time_stop="" steady_state="YES">
-            <step_stimulus basis="" time="0" start_value="0" stop_value="0"></step_stimulus>
+            <species_step_stimulus basis="" time="0" value="0"></species_step_stimulus>
             <measurement_file exclude="" file_type="ASCII" filename="" id="" search_network="YES">
-                <time_data_column coefficient_of_variation="0.0" column_index_in_file="1" data_group="" id="Time" scale="1.0" species=""/>
-                <species_data_column coefficient_of_variation="0.0" column_index_in_file="2" data_group="" id="" scale="100" species=""></species_data_column>
+                <time_data_column coefficient_of_variation="0.0" column_index_in_file="1" data_group="" id="Time" scale="1.0"/>
+                <species_data_column coefficient_of_variation="0.0" column_index_in_file="2" data_group="" id="" scale="100"></species_data_column>
             </measurement_file>
     </experiment>    
 </ListOfExperiments>
