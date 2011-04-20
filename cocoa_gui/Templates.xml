@@ -48,13 +48,13 @@
     <mapping type="C-GSL" working_dir="./templates/">
 		<display name="GSL model (*.c)" filename="C-GSL"></display>
 	</mapping>
-
+    
     <mapping type="CUSTOM-SPECIFICATION" working_dir="./templates/">
 		<display name="Custom specification template" filename="Custom-Specification"></display>
 	</mapping>
     
 	<mapping type="BCX" working_dir="./templates/">
-		<display name="Biochemical experiment specification file (*.xml)" filename="C-Octave"></display>
+		<display name="Biochemical experiment specification file (*.xml)" filename="MOBCXTemplate"></display>
 	</mapping>
 	
 </Template>
