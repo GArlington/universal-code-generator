@@ -213,6 +213,7 @@ public class MOBCXModel {
         	String strSpeciesTest = species_tmp.getId();
         
         	
+        	
         	boolean blnFlag = strSpeciesTest.contains(strSpeciesSymbol);
         	
         	if (blnFlag)
@@ -230,6 +231,7 @@ public class MOBCXModel {
         			}
         		}
         		
+        		System.out.println("Found a match between "+strSpeciesSymbol+" and "+strSpeciesTest);
 
         		if (!arrayList.contains(strSpeciesTest) && !blnExclude)
         		{
@@ -238,6 +240,10 @@ public class MOBCXModel {
         			System.out.println("Adding - "+strSpeciesTest+" for species = "+strSpeciesSymbol);
         			
         		}
+        	}
+        	else
+        	{
+        		//System.out.println(strSpeciesTest+" does not contain "+strSpeciesSymbol);
         	}
         }
         
@@ -315,6 +321,10 @@ public class MOBCXModel {
 		buffer.append("TSTOP = ERROR_STRUCT.FUNCTION(OBJ_INDEX).TIME_STOP;\n");
 		buffer.append("Ts = ERROR_STRUCT.FUNCTION(OBJ_INDEX).TIME_STEP;\n");
 		buffer.append("\n");
+		//buffer.append("% Find the steady-state given the parameters in DF --\n");
+		//buffer.append("[TSS,XSS] = FindSteadyState(pDriverFile,[],DF);\n");
+		//buffer.append("DF.INITIAL_CONDITIONS = XSS(:,end);\n");
+		//buffer.append("\n");
 		buffer.append("% Evaluate the error function -- \n");
 		buffer.append("ERR_EXP = feval(pObjectiveFunction,TSTART,TSTOP,Ts,DF,EDF,THREAD_SUFFIX);\n");
 		buffer.append("ERR_VEC = ERR_EXP;\n");
@@ -362,7 +372,7 @@ public class MOBCXModel {
 		// Method attributes -
 		
 		// Get the group names -
-		String strDataGroupNamesXPath = "//experiment[@id='"+strExpID+"']/measurement_file/data_column/@data_group";
+		String strDataGroupNamesXPath = "//experiment[@id='"+strExpID+"']/measurement_file/species_data_column/@data_group";
 		ArrayList<String> groupNameList = getUniqueList(strDataGroupNamesXPath,bcxTree);
 		int NUMBER_OF_GRP_NAMES = groupNameList.size();
 		
@@ -373,7 +383,7 @@ public class MOBCXModel {
 		for (int index_grp_names = 0;index_grp_names<NUMBER_OF_GRP_NAMES;index_grp_names++)
 		{
 			// Get the column_index_in_file attribute from - 
-			String strXPath = "//experiment[@id='"+strExpID+"']/measurement_file/data_column[@data_group='"+groupNameList.get(index_grp_names)+"']/@column_index_in_file";
+			String strXPath = "//experiment[@id='"+strExpID+"']/measurement_file/species_data_column[@data_group='"+groupNameList.get(index_grp_names)+"']/@column_index_in_file";
 			String strColIDinFile = queryBCXTree(bcxTree,strXPath);
 			buffer.append(strColIDinFile);
 		
@@ -396,7 +406,7 @@ public class MOBCXModel {
 			buffer.append(grp_index+1);
 			buffer.append(") = ");
 			
-			String strDataColXPath = "//experiment[@id='"+strExpID+"']/measurement_file/data_column[@data_group='"+strGrpName+"']/@coefficient_of_variation";
+			String strDataColXPath = "//experiment[@id='"+strExpID+"']/measurement_file/species_data_column[@data_group='"+strGrpName+"']/@coefficient_of_variation";
 			
 			// Get the strCV -
 			String strCV = queryBCXTree(bcxTree,strDataColXPath);
@@ -424,7 +434,7 @@ public class MOBCXModel {
 		for (int index_grp_names = 0;index_grp_names<NUMBER_OF_GRP_NAMES;index_grp_names++)
 		{
 			// Get the column_index_in_file attribute from - 
-			String strXPath = "//experiment[@id='"+strExpID+"']/measurement_file/data_column[@data_group='"+groupNameList.get(index_grp_names)+"']/@column_index_in_file";
+			String strXPath = "//experiment[@id='"+strExpID+"']/measurement_file/species_data_column[@data_group='"+groupNameList.get(index_grp_names)+"']/@column_index_in_file";
 			String strColIDinFile = queryBCXTree(bcxTree,strXPath);
 			buffer.append(strColIDinFile);
 		
@@ -446,7 +456,7 @@ public class MOBCXModel {
 		
 		buffer.append("\n");
 		buffer.append("% Get the experimental time col - \n");
-		String strXPath = "//experiment[@id='"+strExpID+"']/measurement_file/data_column[@column_type='Time']/@column_index_in_file";
+		String strXPath = "//experiment[@id='"+strExpID+"']/measurement_file/time_data_column/@column_index_in_file";
 		String strColIDinFileTime = queryBCXTree(bcxTree,strXPath);
 		buffer.append("TEXP = DATA(:,");
 		buffer.append(strColIDinFileTime);
@@ -500,11 +510,14 @@ public class MOBCXModel {
 		// Method attributes -
 		
 		// Get the experimental data filename -
-		String strFileNameTotal = _xmlPropTree.getProperty("//experimental_data_structure_filename/text()");
+		//String strFileNameTotal = _xmlPropTree.getProperty("//experimental_data_structure_filename/text()");
 		
 		// Get the function -
-        int last_dot = strFileNameTotal.lastIndexOf(".");
-    	String strFncName = strFileNameTotal.substring(0,last_dot);
+        //int last_dot = strFileNameTotal.lastIndexOf(".");
+    	//String strFncName = strFileNameTotal.substring(0,last_dot);
+		
+		Hashtable<String,String> pathHashtable = _xmlPropTree.buildFilenameBlockDictionary("DataFile");
+        String strFncName = pathHashtable.get("FUNCTION_NAME");
 		
 		// Populate the buffer -
 		buffer.append("% Script to run the SIM_");
@@ -557,7 +570,7 @@ public class MOBCXModel {
 		buffer.append(strExpID);
 		buffer.append("(TSTART,TSTOP,Ts,DF,'TEST_CALL');\n");
 		
-		// Ok, so normally we would be done - but because I'm an outsanding teacher, advisor and all around great human being I will also provide
+		// Ok, so normally we would be done - but because I'm an outstanding educator, advisor and all around great human being I will also provide
 		// the scaled version to you bitches...
 		
 		// Check on the scaling -
@@ -602,7 +615,11 @@ public class MOBCXModel {
 		buffer.append("ERR_VEC = zeros(NUMBER_OF_OBJECTIVES,1);\n");
 		buffer.append("ERROR_STRUCT = EDF.ERROR_FUNCTION_ARRAY;\n");
 		buffer.append("\n");
-		buffer.append("% main loop -- iterate through the objectives and get the error -- \n");
+		//buffer.append("% Find the steady-state given the parameters in DF --\n");
+		//buffer.append("[TSS,XSS] = FindSteadyState(pDriverFile,[],DF);\n");
+		//buffer.append("DF.INITIAL_CONDITIONS = XSS(:,end);\n");
+		//buffer.append("\n");
+		buffer.append("% Main loop -- iterate through the objectives and get the error -- \n");
 		buffer.append("for obj_index=1:NUMBER_OF_OBJECTIVES\n");
 		buffer.append("\t % Grab the objective function pointer -- \n");
 		buffer.append("\t pObjectiveFunction = ERROR_STRUCT.FUNCTION(obj_index).POINTER;\n");
@@ -642,7 +659,7 @@ public class MOBCXModel {
 		buffer.append("\n");
 		
 
-		String strDataGroupSpeciesXPath = "//experiment[@id='"+strExpID+"']/measurement_file/data_column[@data_group='"+strGrpName+"']/@species";
+		String strDataGroupSpeciesXPath = "//experiment[@id='"+strExpID+"']/measurement_file/species_data_column[@data_group='"+strGrpName+"']/species/@id";
 		ArrayList<String> groupSpeciesList = getList(strDataGroupSpeciesXPath,bcxTree);
 		ArrayList<String> localList = new ArrayList<String>();
 		
@@ -699,7 +716,7 @@ public class MOBCXModel {
 		buffer.append("SIMULATION = [];\n");
 		buffer.append("\n");
 		buffer.append("% Process data groups -- \n");
-		String strDataGroupXPath = "//experiment[@id='"+strExpID+"']/measurement_file/data_column/@data_group";
+		String strDataGroupXPath = "//experiment[@id='"+strExpID+"']/measurement_file/species_data_column/@data_group";
 		ArrayList<String> groupList = getUniqueList(strDataGroupXPath,bcxTree);
 		int NUMBER_OF_DATA_GROUPS = groupList.size();
 		int counter = 1;
@@ -714,7 +731,7 @@ public class MOBCXModel {
 				buffer.append(" -- \n");
 				
 				// Check to see if we are using the exact name - if *no* then list the species that will be used -
-				if (strSearchNetwork.equalsIgnoreCase("TRUE"))
+				if (strSearchNetwork.equalsIgnoreCase("YES"))
 				{
 					StringBuffer commentBuffer = buildSimulationArrayComment(bcxTree,_xmlPropTree,strExpID,strGrpName);
 					buffer.append(commentBuffer);
@@ -725,9 +742,9 @@ public class MOBCXModel {
 				buffer.append("TMP_GRP = [TMP_GRP ");
 			
 				
-				if (strSearchNetwork.equalsIgnoreCase("FALSE"))
+				if (strSearchNetwork.equalsIgnoreCase("NO"))
 				{
-					String strDataGroupSpeciesXPath = "//experiment[@id='"+strExpID+"']/measurement_file/data_column[@data_group='"+strGrpName+"']/@species";
+					String strDataGroupSpeciesXPath = "//experiment[@id='"+strExpID+"']/measurement_file/species_data_column[@data_group='"+strGrpName+"']/species/@id";
 					ArrayList<String> groupSpeciesList = getList(strDataGroupSpeciesXPath,bcxTree);
 					int NUMBER_OF_SPECIES = groupSpeciesList.size();
 					for (int grp_species_index=0;grp_species_index<NUMBER_OF_SPECIES;grp_species_index++)
@@ -752,7 +769,7 @@ public class MOBCXModel {
 				}
 				else
 				{
-					String strDataGroupSpeciesXPath = "//experiment[@id='"+strExpID+"']/measurement_file/data_column[@data_group='"+strGrpName+"']/@species";
+					String strDataGroupSpeciesXPath = "//experiment[@id='"+strExpID+"']/measurement_file/species_data_column[@data_group='"+strGrpName+"']/species/@id";
 					ArrayList<String> groupSpeciesList = getList(strDataGroupSpeciesXPath,bcxTree);
 					ArrayList<String> localList = new ArrayList<String>();
 					
@@ -762,6 +779,8 @@ public class MOBCXModel {
 					{
 						// Get the species in this grp -
 						String strSpeciesSymbol = groupSpeciesList.get(grp_species_index);
+						
+						System.out.println("I should be looking at - "+strSpeciesSymbol);
 						
 						// Get the a unique list -
 						ArrayList<String> tmpLocalList = getUniqueSpeciesList(strSpeciesSymbol,strExcludeTokens);
@@ -808,7 +827,7 @@ public class MOBCXModel {
 		// Figure out all species?
 		
 		// Get the group names -
-		String strDataGroupNamesXPath = "//experiment[@id='"+strExpID+"']/measurement_file/data_column/@data_group";
+		String strDataGroupNamesXPath = "//experiment[@id='"+strExpID+"']/measurement_file/species_data_column/@data_group";
 		ArrayList<String> groupNameList = getUniqueList(strDataGroupNamesXPath,bcxTree);
 		int NUMBER_OF_GRP_NAMES = groupNameList.size();
 		
@@ -892,7 +911,7 @@ public class MOBCXModel {
 			String strGrpName = groupNameList.get(grp_index);
 			
 			// Get the scale -
-			String strScaleXPath = "//experiment[@id='"+strExpID+"']/measurement_file/data_column[@data_group='"+strGrpName+"']/@scale";
+			String strScaleXPath = "//experiment[@id='"+strExpID+"']/measurement_file/species_data_column[@data_group='"+strGrpName+"']/@scale";
 			String strScale = queryBCXTree(bcxTree,strScaleXPath);
 			
 			// put the scale lines -
@@ -909,7 +928,7 @@ public class MOBCXModel {
 		buffer.append("\n");
 		
 		buffer.append("% Get the experimental time col - \n");
-		String strXPath = "//experiment[@id='"+strExpID+"']/measurement_file/data_column[@column_type='Time']/@column_index_in_file";
+		String strXPath = "//experiment[@id='"+strExpID+"']/measurement_file/time_data_column/@column_index_in_file";
 		String strColIDinFileTime = queryBCXTree(bcxTree,strXPath);
 		buffer.append("TEXP = DATA(:,");
 		buffer.append(strColIDinFileTime);
@@ -936,7 +955,7 @@ public class MOBCXModel {
 		// Method attributes -
 		
 		// Get the group names -
-		String strDataGroupNamesXPath = "//experiment[@id='"+strExpID+"']/measurement_file/data_column/@data_group";
+		String strDataGroupNamesXPath = "//experiment[@id='"+strExpID+"']/measurement_file/species_data_column/@data_group";
 		ArrayList<String> groupNameList = getUniqueList(strDataGroupNamesXPath,bcxTree);
 		int NUMBER_OF_GRP_NAMES = groupNameList.size();
 		
@@ -954,7 +973,7 @@ public class MOBCXModel {
 		for (int index_grp_names = 0;index_grp_names<NUMBER_OF_GRP_NAMES;index_grp_names++)
 		{
 			// Get the column_index_in_file attribute from - 
-			String strXPath = "//experiment[@id='"+strExpID+"']/measurement_file/data_column[@data_group='"+groupNameList.get(index_grp_names)+"']/@column_index_in_file";
+			String strXPath = "//experiment[@id='"+strExpID+"']/measurement_file/species_data_column[@data_group='"+groupNameList.get(index_grp_names)+"']/@column_index_in_file";
 			String strColIDinFile = queryBCXTree(bcxTree,strXPath);
 			buffer.append(strColIDinFile);
 		
@@ -976,7 +995,7 @@ public class MOBCXModel {
 		
 		buffer.append("\n");
 		buffer.append("% Get the experimental time col - \n");
-		String strXPath = "//experiment[@id='"+strExpID+"']/measurement_file/data_column[@column_type='Time']/@column_index_in_file";
+		String strXPath = "//experiment[@id='"+strExpID+"']/measurement_file/time_data_column/@column_index_in_file";
 		String strColIDinFileTime = queryBCXTree(bcxTree,strXPath);
 		buffer.append("TEXP = DATA(:,");
 		buffer.append(strColIDinFileTime);
@@ -1066,7 +1085,7 @@ public class MOBCXModel {
 		buffer.append("% Calculate the VARIANCE array -- \n");
 		
 		// We need to figure out what index time is (if any) -
-		String strDataGroupNamesXPath = "//experiment[@id='"+strExpID+"']/measurement_file/data_column/@data_group";
+		String strDataGroupNamesXPath = "//experiment[@id='"+strExpID+"']/measurement_file/species_data_column/@data_group";
 		ArrayList<String> groupNameList = getUniqueList(strDataGroupNamesXPath,bcxTree);
 		int NUMBER_OF_GRP_NAMES = groupNameList.size();
 		
@@ -1074,7 +1093,7 @@ public class MOBCXModel {
 		for (int index_grp_names = 0;index_grp_names<NUMBER_OF_GRP_NAMES;index_grp_names++)
 		{
 			// Get the column_index_in_file attribute from - 
-			String strXPath = "//experiment[@id='"+strExpID+"']/measurement_file/data_column[@data_group='"+groupNameList.get(index_grp_names)+"']/@column_index_in_file";
+			String strXPath = "//experiment[@id='"+strExpID+"']/measurement_file/species_data_column[@data_group='"+groupNameList.get(index_grp_names)+"']/@column_index_in_file";
 			String strColIDinFile = queryBCXTree(bcxTree,strXPath);
 			buffer.append(strColIDinFile);
 		
@@ -1097,7 +1116,7 @@ public class MOBCXModel {
 			buffer.append(grp_index+1);
 			buffer.append(") = ");
 			
-			String strDataColXPath = "//experiment[@id='"+strExpID+"']/measurement_file/data_column[@data_group='"+strGrpName+"']/@coefficient_of_variation";
+			String strDataColXPath = "//experiment[@id='"+strExpID+"']/measurement_file/species_data_column[@data_group='"+strGrpName+"']/@coefficient_of_variation";
 			
 			// Get the strCV -
 			String strCV = queryBCXTree(bcxTree,strDataColXPath);
@@ -1359,11 +1378,15 @@ public class MOBCXModel {
 		buffer.append("function EDF = ");
 		
 		// Get the filename -
-		String strFileNameTotal = _xmlPropTree.getProperty("//experimental_data_structure_filename/text()");
+		// String strFileNameTotal = _xmlPropTree.getProperty("//experimental_data_structure_filename/text()");
+		
+		Hashtable<String,String> pathHashtable = _xmlPropTree.buildFilenameBlockDictionary("DataFile");
+        String strFncName = pathHashtable.get("FUNCTION_NAME");
+		
 		
 		// Get the function -
-        int last_dot = strFileNameTotal.lastIndexOf(".");
-    	String strFncName = strFileNameTotal.substring(0,last_dot);
+        //int last_dot = strFileNameTotal.lastIndexOf(".");
+    	//String strFncName = strFileNameTotal.substring(0,last_dot);
 		
     	buffer.append(strFncName);
     	buffer.append("(TSTART,TSTOP,Ts)\n");
@@ -1529,7 +1552,7 @@ public class MOBCXModel {
 			buffer.append(";\n");
 		}
 		
-		buffer.append("EDF.ERROR_FUNCTION_ARRAY = ERROR_STRUCT;");
+		buffer.append("EDF.ERROR_FUNCTION_ARRAY = ERROR_STRUCT;\n");
 		buffer.append("EDF.NUMBER_OF_OBJECTIVES = ");
 		buffer.append(NUMBER_OF_EXPERIMENTS);
 		buffer.append(";\n");
