@@ -644,7 +644,7 @@ public class SBMLModelUtilities {
     public static void dumpSEBufferToDisk(StringBuffer data_buffer,XMLPropTree _xmlPropTree,String strFileName) throws Exception
     {
     	// I have populated the string buffer, dump that mofo
-        String strWorkingDir = _xmlPropTree.getProperty(".//path[@symbol='UNIVERSAL_OUTPUT_PATH']/@path_location");
+        String strWorkingDir = _xmlPropTree.getProperty(".//path[@symbol='UNIVERSAL_SOURCE_OUTPUT_PATH']/@path_location");
         String strFilePath = "";
         String strSBMLFile = "";
         
@@ -947,9 +947,9 @@ public class SBMLModelUtilities {
     
     public static void dumpSimulationFunctionToDisk(StringBuffer driver,XMLPropTree _xmlPropTree,String strExpID) throws Exception
     {
-    	// I have populated the string buffer, dump that mofo
-        String strWorkingDir = _xmlPropTree.getProperty("//working_directory/text()");
-        
+    	// I have populated the string buffer, dump that mofo	
+        String strWorkingDir = _xmlPropTree.getProperty(".//path[@symbol='UNIVERSAL_SOURCE_OUTPUT_PATH']/@path_location");
+    	
         String strSBMLFile = "";
         strSBMLFile = strWorkingDir+"/SIM_"+strExpID+".m";
         
@@ -959,8 +959,9 @@ public class SBMLModelUtilities {
     public static void dumpErrorFunctionToDisk(StringBuffer driver,XMLPropTree _xmlPropTree,String strExpID) throws Exception
     {
     	// I have populated the string buffer, dump that mofo
-        String strWorkingDir = _xmlPropTree.getProperty("//working_directory/text()");
-        
+        //String strWorkingDir = _xmlPropTree.getProperty("//working_directory/text()");
+    	String strWorkingDir = _xmlPropTree.getProperty(".//path[@symbol='UNIVERSAL_SOURCE_OUTPUT_PATH']/@path_location");
+    	
         String strSBMLFile = "";
         strSBMLFile = strWorkingDir+"/ERR_"+strExpID+".m";
         
@@ -970,8 +971,9 @@ public class SBMLModelUtilities {
     public static void dumpTestSimFunctionToDisk(StringBuffer driver,XMLPropTree _xmlPropTree,String strExpID) throws Exception
     {
     	// I have populated the string buffer, dump that mofo
-        String strWorkingDir = _xmlPropTree.getProperty("//working_directory/text()");
-        
+        //String strWorkingDir = _xmlPropTree.getProperty("//working_directory/text()");
+    	String strWorkingDir = _xmlPropTree.getProperty(".//path[@symbol='UNIVERSAL_SOURCE_OUTPUT_PATH']/@path_location");
+    	
         String strSBMLFile = "";
         strSBMLFile = strWorkingDir+"/TEST_SIM_"+strExpID+".m";
         
@@ -981,8 +983,10 @@ public class SBMLModelUtilities {
     public static void dumpSimGrpFunctionToDisk(StringBuffer driver,XMLPropTree _xmlPropTree,String strExpID) throws Exception
     {
     	// I have populated the string buffer, dump that mofo
-        String strWorkingDir = _xmlPropTree.getProperty("//working_directory/text()");
+        // String strWorkingDir = _xmlPropTree.getProperty("//working_directory/text()");
         
+    	String strWorkingDir = _xmlPropTree.getProperty(".//path[@symbol='UNIVERSAL_SOURCE_OUTPUT_PATH']/@path_location");
+    	
         String strSBMLFile = "";
         strSBMLFile = strWorkingDir+"/SIMGRP_"+strExpID+".m";
         
@@ -992,8 +996,10 @@ public class SBMLModelUtilities {
     public static void dumpScaleFunctionToDisk(StringBuffer driver,XMLPropTree _xmlPropTree,String strExpID) throws Exception
     {
     	// I have populated the string buffer, dump that mofo
-        String strWorkingDir = _xmlPropTree.getProperty("//working_directory/text()");
+        // String strWorkingDir = _xmlPropTree.getProperty("//working_directory/text()");
         
+    	String strWorkingDir = _xmlPropTree.getProperty(".//path[@symbol='UNIVERSAL_SOURCE_OUTPUT_PATH']/@path_location");
+    	
         String strSBMLFile = "";
         strSBMLFile = strWorkingDir+"/SCALE_"+strExpID+".m";
         
@@ -1002,7 +1008,7 @@ public class SBMLModelUtilities {
     
     public static void dumpExpDataStructToDisk(StringBuffer driver,XMLPropTree _xmlPropTree) throws Exception
     {
-        // I have populated the string buffer, dump that mofo
+        /*// I have populated the string buffer, dump that mofo
         String strWorkingDir = _xmlPropTree.getProperty("//working_directory/text()");
         String strFileName = _xmlPropTree.getProperty("//experimental_data_structure_filename/text()");
         String strFilePath = "";
@@ -1017,7 +1023,27 @@ public class SBMLModelUtilities {
         	strSBMLFile = strWorkingDir+"/"+strFilePath+"/"+strFileName;
         }
         
-        GIOL.write(strSBMLFile,driver);
+        GIOL.write(strSBMLFile,driver);*/
+    	
+    	// Method attributes -	
+    	ArrayList<String> arrList = _xmlPropTree.processFilenameBlock("DataFile");
+		String strDataFileName = arrList.get(0);
+		String strDataFilePath = arrList.get(2);
+		String strSBMLFile = "";
+		if (!strDataFileName.equalsIgnoreCase("EMPTY") && !strDataFilePath.equalsIgnoreCase("EMPTY"))
+		{
+    	
+			//String strWorkingDir = _xmlPropTree.getProperty("//working_directory/text()");
+			//String strFileName = _xmlPropTree.getProperty("//DataFile/datafile_filename/text()");
+			//String strFilePath = _xmlPropTree.getProperty("//DataFile/datafile_path/text()");
+			strSBMLFile = strDataFilePath+"/"+strDataFileName;
+			GIOL.write(strSBMLFile,driver);
+		}
+		else
+		{
+			// We have a malfunction - throw an exception
+			throw new Exception("ERROR: Missing DataFile information. Please check your DataFile settings.");
+		}
     }
     
     public static void dumpShellCommandToDisk(StringBuffer driver,XMLPropTree _xmlPropTree) throws Exception
