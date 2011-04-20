@@ -66,21 +66,21 @@ public class LoadMOBCXFile implements IInputHandler {
 		_model = (Model)sbmlReader.getResource(null);
 		
 		// Get the resource string -
-        String strFileName = _xmlPropTree.getProperty("//Model/bcx_datafilename/text()");
-        String strWorkingDir = _xmlPropTree.getProperty("//working_directory/text()");
+        //String strFileName = _xmlPropTree.getProperty("//Model/bcx_datafilename/text()");
+        //String strWorkingDir = _xmlPropTree.getProperty("//working_directory/text()");
  
         // Formulate the path -
-        strPath = strWorkingDir+"/"+strFileName;
+        //strPath = strWorkingDir+"/"+strFileName;
         
-        System.out.println("Going to load - "+strPath);
+        //System.out.println("Going to load - "+strPath);
        
 		// Ok, bitches, let's load the bcx file and then hand the DOM tree to Ryan's loadResources method -
-		File configFile = new File(strPath);
-    	DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-    	dbFactory.setNamespaceAware(true);
-    	DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-    	_bcxPropTree = dBuilder.parse(configFile);
-    	_bcxPropTree.getDocumentElement().normalize();
+		//File configFile = new File(strPath);
+    	//DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+    	//dbFactory.setNamespaceAware(true);
+    	//DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+    	//_bcxPropTree = dBuilder.parse(configFile);
+    	_bcxPropTree = (Document)_xmlPropTree.getResource(null);
 	}
 	
 	
