@@ -24,6 +24,7 @@ package org.varnerlab.userver.language.handler;
  */
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
@@ -113,9 +114,12 @@ public class MOBCXModel {
 		// Create an instance of the SBML reader -
         _sbmlReader = new SBMLReader();
         
+        Hashtable<String,String> pathTable = _xmlPropTree.buildFilenameBlockDictionary("NetworkFile");
+    	String _strSBMLFile = pathTable.get("FULLY_QUALIFIED_PATH");
         
+        /*
         // Get the resource string -
-        String strNetworkFileName = _xmlPropTree.getProperty("//NetworkFileName/input_network_filename/text()");
+        String strNetworkFileName = _xmlPropTree.getProperty("//InputOptions/input_network_filename/text()");
         String strNetworkFileNamePath = _xmlPropTree.getProperty("//NetworkFileName/input_network_path/text()");
         String strWorkingDir = _xmlPropTree.getProperty("//working_directory/text()");
         
@@ -127,7 +131,7 @@ public class MOBCXModel {
         else
         {
         	_strSBMLFile = strWorkingDir+"/"+strNetworkFileNamePath+"/"+strNetworkFileName;
-        }
+        }*/
         
         // Set the model reference -
         _sbmlDocument = _sbmlReader.readSBML(_strSBMLFile);
@@ -1204,7 +1208,7 @@ public class MOBCXModel {
 		// Need to check to see if this experiment is a steady-state experiment -
 		String strSSXPath = "//experiment[@id='"+strExpID+"']/@steady_state";
 		String strSSValue = queryBCXTree(bcxTree,strSSXPath);
-		if (strSSValue.equalsIgnoreCase("TRUE"))
+		if (strSSValue.equalsIgnoreCase("YES"))
 		{
 			// Populate the buffer for a *steady-state* simulation -
 			populateSteadyStateSimulationBuffer(buffer,bcxTree,_xmlPropTree,strExpID);
@@ -1226,7 +1230,7 @@ public class MOBCXModel {
 			
 			
 			// Get the species symbol -
-			String strSpeciesXPath = "//experiment[@id='"+strExpID+"']/stimulus/@species";
+			String strSpeciesXPath = "//experiment[@id='"+strExpID+"']/species_step_stimulus/species/@id";
 			NodeList stimulusNodeList = (NodeList) _xpath.evaluate(strSpeciesXPath, bcxTree, XPathConstants.NODESET);
 			int NUMBER_OF_STIMULUS_SPECIES = stimulusNodeList.getLength();
 			
@@ -1251,8 +1255,11 @@ public class MOBCXModel {
 				buffer.append("\n");
 
 				// Ok, what is the time and value for this species -
-				String strStimulusTimeXPath = "//experiment[@id='"+strExpID+"']/stimulus[@species='" + strStimulusSpecies+"']/@time";
-				String strStimulusValueXPath = "//experiment[@id='"+strExpID+"']/stimulus[@species='" + strStimulusSpecies+"']/@value";
+				//String strStimulusTimeXPath = "//experiment[@id='"+strExpID+"']/stimulus/species[@species='" + strStimulusSpecies+"']/@time";
+				//String strStimulusValueXPath = "//experiment[@id='"+strExpID+"']/stimulus[@species='" + strStimulusSpecies+"']/@value";
+				String strStimulusTimeXPath = "//experiment[@id='"+strExpID+"']//species_step_stimulus/species[@id='"+strStimulusSpecies+"']/parent::species_step_stimulus/@time";
+				String strStimulusValueXPath = "//experiment[@id='"+strExpID+"']//species_step_stimulus/species[@id='"+strStimulusSpecies+"']/parent::species_step_stimulus/@value";
+				
 				String strStimulusTime = queryBCXTree(bcxTree,strStimulusTimeXPath);
 				strStimulusValue = queryBCXTree(bcxTree,strStimulusValueXPath);
 				
