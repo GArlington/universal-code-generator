@@ -189,6 +189,36 @@
 			[strXPath release];
 		}
         
+        else if ([notSureWhatThisIs isEqualToString:@"file_type"])
+        {
+            // Clear -
+            [[self dataArray] removeAllObjects];
+            
+            // Add YES/NO -
+            [[self dataArray] addObject:@"ASCII"];
+            [[self dataArray] addObject:@"MAT-BINARY"];
+        }
+
+        else if ([notSureWhatThisIs isEqualToString:@"search_network"])
+        {
+            // Clear -
+            [[self dataArray] removeAllObjects];
+            
+            // Add YES/NO -
+            [[self dataArray] addObject:@"YES"];
+            [[self dataArray] addObject:@"NO"];
+        }
+
+        else if ([notSureWhatThisIs isEqualToString:@"scaling"])
+        {
+            // Clear -
+            [[self dataArray] removeAllObjects];
+            
+            // Add YES/NO -
+            [[self dataArray] addObject:@"BETA"];
+            [[self dataArray] addObject:@"ZERO_TO_ONE"];
+        }
+        
         else if ([notSureWhatThisIs isEqualToString:@"steady_state"])
         {
             // Clear -
@@ -197,6 +227,16 @@
             // Add YES/NO -
             [[self dataArray] addObject:@"YES"];
             [[self dataArray] addObject:@"NO"];
+        }
+        
+        else if ([notSureWhatThisIs isEqualToString:@"basis"])
+        {
+            // Clear -
+            [[self dataArray] removeAllObjects];
+            
+            // Add YES/NO -
+            [[self dataArray] addObject:@"ABSOLUTE"];
+            [[self dataArray] addObject:@"PERCENTAGE"];
         }
         
         else if ([notSureWhatThisIs isEqualToString:@"required"])
