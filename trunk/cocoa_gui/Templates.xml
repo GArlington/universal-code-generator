@@ -53,7 +53,7 @@
 		<display name="Custom specification template" filename="Custom-Specification"></display>
 	</mapping>
     
-	<mapping type="BCX" working_dir="./templates/">
+	<mapping type="MOBCX" working_dir="./templates/">
 		<display name="Biochemical experiment specification file (*.xml)" filename="MOBCXTemplate"></display>
 	</mapping>
 	
