@@ -711,6 +711,12 @@ public class MOBCXModel {
 		// Ok, we need to parse the exclude string -
 		String[] strExcludeTokens = strExclude.split(",");
 		
+		// Hack to get this to run -
+		if (strExclude.isEmpty())
+		{
+			strExcludeTokens[0]="RYAN_TASSEFF_TOM_MANSELL_UBER_MONKEY";
+		}
+		
 		// Get the cols -
 		buffer.append("% Construct the SIMULATION array -- \n");
 		buffer.append("SIMULATION = [];\n");
@@ -1168,7 +1174,7 @@ public class MOBCXModel {
 		buffer.append("\n");
 		
 		// Get the species symbol -
-		String strSpeciesXPath = "//experiment[@id='"+strExpID+"']/stimulus/@species";
+		String strSpeciesXPath = "//experiment[@id='"+strExpID+"']/species_step_stimulus/species/@id";
 		NodeList stimulusNodeList = (NodeList) _xpath.evaluate(strSpeciesXPath, bcxTree, XPathConstants.NODESET);
 		int NUMBER_OF_STIMULUS_SPECIES = stimulusNodeList.getLength();
 		
@@ -1193,11 +1199,14 @@ public class MOBCXModel {
 			buffer.append("\n");
 
 			// Ok, what is the time and value for this species -
-			String strStimulusTimeXPath = "//experiment[@id='"+strExpID+"']/stimulus[@species='" + strStimulusSpecies+"']/@time";
-			String strStimulusValueXPath = "//experiment[@id='"+strExpID+"']/stimulus[@species='" + strStimulusSpecies+"']/@value";
+			// String strStimulusTimeXPath = "//experiment[@id='"+strExpID+"']/stimulus_step_stimulus[@species='" + strStimulusSpecies+"']/@time";
+			// String strStimulusValueXPath = "//experiment[@id='"+strExpID+"']/stimulus[@species='" + strStimulusSpecies+"']/@value";
+			
+			String strStimulusTimeXPath = "//experiment[@id='"+strExpID+"']//species_step_stimulus/species[@id='"+strStimulusSpecies+"']/parent::species_step_stimulus/@time";
+			String strStimulusValueXPath = "//experiment[@id='"+strExpID+"']//species_step_stimulus/species[@id='"+strStimulusSpecies+"']/parent::species_step_stimulus/@value";
 			String strStimulusTime = queryBCXTree(bcxTree,strStimulusTimeXPath);
 			String strStimulusValue = queryBCXTree(bcxTree,strStimulusValueXPath);
-			
+	
 			// what is this index?
 			int tmp_index = findSpeciesIndex(strStimulusSpecies);
 			
@@ -1211,7 +1220,18 @@ public class MOBCXModel {
 		
 		// Ok, when I get here I just need to call the FindSteadyState -
 		buffer.append("DF.INITIAL_CONDITIONS = IC;\n");
-		buffer.append("[TSS,XSS] = FindSteadyState(DF,THREAD_SUFFIX);\n");
+		buffer.append("\n");
+		buffer.append("% Grab the pointer to the driver function - \n");
+		buffer.append("pDriverFunction = @");
+		
+		// Get the function for the mass balance driver function -
+		Hashtable<String,String> pathHashtable = _xmlPropTree.buildFilenameBlockDictionary("DriverFile");
+        String strFncName = pathHashtable.get("FUNCTION_NAME");
+        buffer.append(strFncName);
+        buffer.append(";\n");
+		buffer.append("\n");
+		buffer.append("% Calculate the steady-state with the perturbation - \n");
+		buffer.append("[TSS,XSS] = FindSteadyState(pDriverFunction,DF,THREAD_SUFFIX);\n");
 		buffer.append("TSIM = TSS(end);\n");
 		buffer.append("XSIM = transpose(XSS(end,:));\n");
 		buffer.append("return;\n");
