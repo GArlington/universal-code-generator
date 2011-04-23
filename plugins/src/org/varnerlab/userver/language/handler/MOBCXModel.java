@@ -310,7 +310,7 @@ public class MOBCXModel {
 		// Method attributes -
 		
 		// Populate the buffer -
-		buffer.append("function [ERR_VEC]=SOSE(DF,EDF,OBJ_INDEX,THREAD_SUFFIX)\n");
+		buffer.append("function [ERR_VEC]=SOSE(pDriverFile,DF,EDF,OBJ_INDEX,THREAD_SUFFIX)\n");
 		buffer.append("\n");
 		buffer.append("% Grab the objective function pointer -- \n");
 		buffer.append("ERROR_STRUCT = EDF.ERROR_FUNCTION_ARRAY;\n");
@@ -326,7 +326,7 @@ public class MOBCXModel {
 		//buffer.append("DF.INITIAL_CONDITIONS = XSS(:,end);\n");
 		//buffer.append("\n");
 		buffer.append("% Evaluate the error function -- \n");
-		buffer.append("ERR_EXP = feval(pObjectiveFunction,TSTART,TSTOP,Ts,DF,EDF,THREAD_SUFFIX);\n");
+		buffer.append("ERR_EXP = feval(pObjectiveFunction,pDriverFile,TSTART,TSTOP,Ts,DF,EDF,THREAD_SUFFIX);\n");
 		buffer.append("ERR_VEC = ERR_EXP;\n");
 		buffer.append("\n");
 		buffer.append("return;\n");
@@ -608,7 +608,7 @@ public class MOBCXModel {
 		// Method attributes -
 		
 		// Populate the buffer -
-		buffer.append("function [ERR_VEC]=MOSE(DF,EDF,THREAD_SUFFIX)\n");
+		buffer.append("function [ERR_VEC]=MOSE(pDriverFile,DF,EDF,THREAD_SUFFIX)\n");
 		buffer.append("\n");
 		buffer.append("% Grab the info about the array of error function pointers from the EDF - \n");
 		buffer.append("NUMBER_OF_OBJECTIVES = EDF.NUMBER_OF_OBJECTIVES;\n");
@@ -630,7 +630,7 @@ public class MOBCXModel {
 		buffer.append("\t Ts = ERROR_STRUCT.FUNCTION(obj_index).TIME_STEP;\n");
 		buffer.append("\n");
 		buffer.append("\t % Evaluate the error function -- \n");
-		buffer.append("\t ERR_EXP = feval(pObjectiveFunction,TSTART,TSTOP,Ts,DF,EDF,THREAD_SUFFIX);\n");
+		buffer.append("\t ERR_EXP = feval(pObjectiveFunction,pDriverFile,TSTART,TSTOP,Ts,DF,EDF,THREAD_SUFFIX);\n");
 		buffer.append("\n");
 		buffer.append("\t % Grab this error value and go around again -- \n");
 		buffer.append("\t ERR_VEC(obj_index,1) = ERR_EXP;\n");
@@ -1071,14 +1071,14 @@ public class MOBCXModel {
 		// Populate the buffer -
 		buffer.append("function [ERR]=ERR_");
 		buffer.append(strExpID);
-		buffer.append("(TSTART,TSTOP,Ts,DF,EDF,THREAD_SUFFIX)\n");
+		buffer.append("(pDriverFile,TSTART,TSTOP,Ts,DF,EDF,THREAD_SUFFIX)\n");
 		buffer.append("\n");
 		
 		// Run the simulation -
 		buffer.append("% Run the simulation -- \n");
 		buffer.append("[TSIM,XSIM]=SIM_");
 		buffer.append(strExpID);
-		buffer.append("(TSTART,TSTOP,Ts,DF,THREAD_SUFFIX);\n");
+		buffer.append("(pDriverFile,TSTART,TSTOP,Ts,DF,THREAD_SUFFIX);\n");
 		buffer.append("\n");
 		
 		// Load the experimental data -
@@ -1163,7 +1163,7 @@ public class MOBCXModel {
 		// Populate the buffer -
 		buffer.append("function [TSIM,XSIM]=SIM_");
 		buffer.append(strExpID);
-		buffer.append("(TSTART,TSTOP,Ts,DF,THREAD_SUFFIX)\n");
+		buffer.append("(pDriverFile,TSTART,TSTOP,Ts,DF,THREAD_SUFFIX)\n");
 		buffer.append("\n");
 		
 		// Get the initial conditions from the DF -
@@ -1210,6 +1210,9 @@ public class MOBCXModel {
 			// what is this index?
 			int tmp_index = findSpeciesIndex(strStimulusSpecies);
 			
+			// Check for basis - (absoulte -or- relative)
+			
+			
 			// Find the index of this species -
 			buffer.append("IC(");
 			buffer.append(tmp_index);
@@ -1221,19 +1224,20 @@ public class MOBCXModel {
 		// Ok, when I get here I just need to call the FindSteadyState -
 		buffer.append("DF.INITIAL_CONDITIONS = IC;\n");
 		buffer.append("\n");
-		buffer.append("% Grab the pointer to the driver function - \n");
-		buffer.append("pDriverFunction = @");
+		//buffer.append("% Grab the pointer to the driver function - \n");
+		//buffer.append("pDriverFunction = @");
 		
 		// Get the function for the mass balance driver function -
-		Hashtable<String,String> pathHashtable = _xmlPropTree.buildFilenameBlockDictionary("DriverFile");
-        String strFncName = pathHashtable.get("FUNCTION_NAME");
-        buffer.append(strFncName);
-        buffer.append(";\n");
+		//Hashtable<String,String> pathHashtable = _xmlPropTree.buildFilenameBlockDictionary("DriverFile");
+        //String strFncName = pathHashtable.get("FUNCTION_NAME");
+        //buffer.append(strFncName);
+        //buffer.append(";\n");
 		buffer.append("\n");
 		buffer.append("% Calculate the steady-state with the perturbation - \n");
-		buffer.append("[TSS,XSS] = FindSteadyState(pDriverFunction,DF,THREAD_SUFFIX);\n");
+		buffer.append("[TSS,XSS] = FindSteadyState(pDriverFile,DF,THREAD_SUFFIX);\n");
 		buffer.append("TSIM = TSS(end);\n");
 		buffer.append("XSIM = transpose(XSS(end,:));\n");
+		buffer.append("\n");
 		buffer.append("return;\n");
 	}
 	
@@ -1257,7 +1261,7 @@ public class MOBCXModel {
 			// Populate the buffer -
 			buffer.append("function [TSIM,XSIM]=SIM_");
 			buffer.append(strExpID);
-			buffer.append("(TSTART,TSTOP,Ts,DF,THREAD_SUFFIX)\n");
+			buffer.append("(pDriverFile,TSTART,TSTOP,Ts,DF,THREAD_SUFFIX)\n");
 			buffer.append("\n");
 			
 			// Get the initial conditions from the DF -
@@ -1334,7 +1338,7 @@ public class MOBCXModel {
 						buffer.append("\n");
 						buffer.append("% Call the ODESolver - \n");
 						buffer.append("DF.INITIAL_CONDITIONS = IC;\n");
-						buffer.append("[TSIM,XSIM]=LSODECallWrapper(TSTART_LOCAL,TSTOP_LOCAL,Ts,DF,'");
+						buffer.append("[TSIM,XSIM]=feval(pDriverFile,TSTART_LOCAL,TSTOP_LOCAL,Ts,DF,'");
 						buffer.append("SIM_");
 						buffer.append(strExpID);
 						buffer.append(".dat',THREAD_SUFFIX);\n");
@@ -1378,7 +1382,7 @@ public class MOBCXModel {
 			{
 				buffer.append("% Solve the mass-balance equations.\n");
 				buffer.append("DF.INITIAL_CONDITIONS = IC;\n");
-				buffer.append("[TSIM,XSIM]=LSODECallWrapper(TSTART,TSTOP,Ts,DF,'");
+				buffer.append("[TSIM,XSIM]=feval(pDriverFile,TSTART,TSTOP,Ts,DF,'");
 				buffer.append("SIM_");
 				buffer.append(strExpID);
 				buffer.append(".dat',THREAD_SUFFIX);\n");
