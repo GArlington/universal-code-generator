@@ -74,6 +74,7 @@
 <ListOfExperiments>
     <experiment cite="" required="YES" id="" name="" scaling="BETA" simulation_time_start="" simulation_time_step="" simulation_time_stop="" steady_state="YES">
             <species_step_stimulus basis="ABSOLUTE" time="0" value="0"></species_step_stimulus>
+            <parameter_step_stimulus basis="ABSOLUTE" time="0" value="0"></parameter_step_stimulus>
             <measurement_file exclude="" file_type="ASCII" filename="" id="" search_network="YES">
                 <time_data_column coefficient_of_variation="0.0" column_index_in_file="1" data_group="Time" id="Time" scale="1.0"/>
                 <species_data_column coefficient_of_variation="0.0" column_index_in_file="2" data_group="" id="" scale="100"></species_data_column>

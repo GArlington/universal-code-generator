@@ -230,6 +230,13 @@
 			}
             
             // Check for listOf -
+			NSRange stimulusRateRange = [[self displayName] rangeOfString:@"parameter_step_stimulus"];
+			if (stimulusRateRange.location != NSNotFound)
+			{
+				blnFLAG = NO;
+			}
+            
+            // Check for listOf -
 			NSRange speciesDataColRange = [[self displayName] rangeOfString:@"species_data_column"];
 			if (speciesDataColRange.location != NSNotFound)
 			{
