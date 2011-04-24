@@ -4,7 +4,7 @@
 	<!-- List of icons -->
 	<ListOfIcons>
 		<icon symbol="Open-Folder-Full" key="FOLDER"></icon>
-		<icon symbol="themes" key="LEAF"></icon>
+		<icon symbol="preference_handler" key="LEAF"></icon>
 		<icon symbol="bubbly" key="ROOT"></icon>
 		<icon symbol="settings" key="CONFIGURATION"></icon>
 		<icon symbol="themes" key="ATTRIBUTED_FOLDER"></icon>
@@ -17,6 +17,15 @@
 		<icon symbol="Transmit-256" key="ARCHIVE_TRUCK"></icon>
 		<icon symbol="AdminNetwork-256" key="ADMIN_NETWORK"></icon>
 		<icon symbol="backup-restore" key="CLASSES"></icon>
+        <icon symbol="hxplay" key="EXPERIMENT"></icon>
+        <icon symbol="applications_science" key="LIST_OF_EXPERIMENT"></icon>
+        <icon symbol="xls" key="MEASUREMENT_FILE"></icon>
+        <icon symbol="gtweakui" key="SPECIES_STIMULUS"></icon>
+        <icon symbol="network" key="NETWORK_INTERACTION_STIMULUS"></icon>
+        <icon symbol="p32" key="SPECIES_DATA_COLUMN"></icon>
+        <icon symbol="input_options" key="INPUT_OPTIONS_FOLDER"></icon>
+        <icon symbol="output_options" key="OUTPUT_OPTIONS_FOLDER"></icon>
+        <icon symbol="preference_blue" key="HANDLER_FOLDER"></icon>
 	</ListOfIcons>
 	
 	<!-- Mapping of tag types to icons -->
@@ -26,6 +35,15 @@
 		<mapping tag_name="ServerConfiguration" icon_key="ADMIN_NETWORK"></mapping>
 		<mapping tag_name="ListOfClasses" icon_key="CLASSES"></mapping>
 		<mapping tag_name="ListOfPaths" icon_key="HOME"></mapping>
+        <mapping tag_name="ListOfExperiments" icon_key="LIST_OF_EXPERIMENT"></mapping>
+        <mapping tag_name="experiment" icon_key="EXPERIMENT"></mapping>
+        <mapping tag_name="measurement_file" icon_key="MEASUREMENT_FILE"></mapping>
+        <mapping tag_name="species_step_stimulus" icon_key="SPECIES_STIMULUS"></mapping>
+        <mapping tag_name="parameter_step_stimulus" icon_key="NETWORK_INTERACTION_STIMULUS"></mapping>
+        <mapping tag_name="species_data_column" icon_key="SPECIES_DATA_COLUMN"></mapping>
+        <mapping tag_name="InputOptions" icon_key="INPUT_OPTIONS_FOLDER"></mapping>
+        <mapping tag_name="OutputOptions" icon_key="OUTPUT_OPTIONS_FOLDER"></mapping>
+        <mapping tag_name="Handler" icon_key="HANDLER_FOLDER"></mapping>
 	</ListOfTagIconMapping>
 	
 </IconMapping>
