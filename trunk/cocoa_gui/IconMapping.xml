@@ -4,7 +4,7 @@
 	<!-- List of icons -->
 	<ListOfIcons>
 		<icon symbol="Open-Folder-Full" key="FOLDER"></icon>
-		<icon symbol="preference_handler" key="LEAF"></icon>
+		<icon symbol="themes" key="LEAF"></icon>
 		<icon symbol="bubbly" key="ROOT"></icon>
 		<icon symbol="settings" key="CONFIGURATION"></icon>
 		<icon symbol="themes" key="ATTRIBUTED_FOLDER"></icon>
