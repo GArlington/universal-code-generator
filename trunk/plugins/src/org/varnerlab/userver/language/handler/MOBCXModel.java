@@ -28,10 +28,13 @@ import java.util.Hashtable;
 
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
+import org.sbml.libsbml.ListOfParameters;
 import org.sbml.libsbml.ListOfSpecies;
 import org.sbml.libsbml.Model;
+import org.sbml.libsbml.Parameter;
 import org.sbml.libsbml.SBMLDocument;
 import org.sbml.libsbml.SBMLReader;
 import org.sbml.libsbml.Species;
@@ -1187,17 +1190,15 @@ public class MOBCXModel {
 		// Tmp flag to make sure we only execute the ODE call once -
 		boolean blnTmpFlag = true;
 		
+		// Process a rate stimulus -
+		processRateStimulus(buffer,bcxTree,_xmlPropTree,strExpID);
+		
 		for (int stimulus_index=0;stimulus_index<NUMBER_OF_STIMULUS_SPECIES;stimulus_index++)
 		{
 			// Get the id string for this experiment -
 			Node stimulusNode = stimulusNodeList.item(stimulus_index);
 			String strStimulusSpecies = stimulusNode.getNodeValue();
 			
-			// label -
-			buffer.append("% ");
-			buffer.append(strStimulusSpecies);
-			buffer.append("\n");
-
 			// Ok, what is the time and value for this species -
 			// String strStimulusTimeXPath = "//experiment[@id='"+strExpID+"']/stimulus_step_stimulus[@species='" + strStimulusSpecies+"']/@time";
 			// String strStimulusValueXPath = "//experiment[@id='"+strExpID+"']/stimulus[@species='" + strStimulusSpecies+"']/@value";
@@ -1211,14 +1212,41 @@ public class MOBCXModel {
 			int tmp_index = findSpeciesIndex(strStimulusSpecies);
 			
 			// Check for basis - (absoulte -or- relative)
+			String strBasisXPath = "//experiment[@id='"+strExpID+"']//species_step_stimulus/species[@id='"+strStimulusSpecies+"']/parent::species_step_stimulus/@basis";
+			String strStimulusBasis = queryBCXTree(bcxTree,strBasisXPath);
 			
-			
-			// Find the index of this species -
-			buffer.append("IC(");
-			buffer.append(tmp_index);
-			buffer.append(",1) = ");
-			buffer.append(strStimulusValue);
-			buffer.append(";\n");
+			if (strStimulusBasis.equalsIgnoreCase("ABSOLUTE"))
+			{
+				// Find the index of this species -
+				// label -
+				buffer.append("% ");
+				buffer.append(strStimulusSpecies);
+				buffer.append("\n");
+				buffer.append("IC(");
+				buffer.append(tmp_index);
+				buffer.append(",1) = ");
+				buffer.append(strStimulusValue);
+				buffer.append(";\n");
+				buffer.append("\n");
+				
+			}
+			else if (strStimulusBasis.equalsIgnoreCase("PERCENTAGE"))
+			{
+				// Find the index of this species -
+				// label -
+				buffer.append("% ");
+				buffer.append(strStimulusSpecies);
+				buffer.append("\n");
+				buffer.append("IC(");
+				buffer.append(tmp_index);
+				buffer.append(",1) = ");
+				buffer.append(strStimulusValue);
+				buffer.append("*IC(");
+				buffer.append(tmp_index);
+				buffer.append(",1)");
+				buffer.append(";\n");
+				buffer.append("\n");
+			}
 		}
 		
 		// Ok, when I get here I just need to call the FindSteadyState -
@@ -1268,8 +1296,16 @@ public class MOBCXModel {
 			buffer.append("% Get the initial conditions from the DataFile -\n");
 			buffer.append("IC = DF.INITIAL_CONDITIONS;\n");
 			buffer.append("\n");
-			buffer.append("% Setup the stimulus -- \n");
+			
+			buffer.append("% Set the pointer to the DataFile (model parameters).\n");
+			Hashtable<String,String> pathHashtable = _xmlPropTree.buildFilenameBlockDictionary("ModelDataFile");
+	        String strFncName = pathHashtable.get("FUNCTION_NAME");
+	        buffer.append("pDataFile = @");
+	        buffer.append(strFncName);
+	        buffer.append(";\n");
 			buffer.append("\n");
+			
+			buffer.append("% Setup the stimulus -- \n");
 			
 			
 			// Get the species symbol -
@@ -1285,6 +1321,7 @@ public class MOBCXModel {
 			
 			// Tmp flag to make sure we only execute the ODE call once -
 			boolean blnTmpFlag = true;
+			boolean blnUpdateParameters = true;
 			
 			for (int stimulus_index=0;stimulus_index<NUMBER_OF_STIMULUS_SPECIES;stimulus_index++)
 			{
@@ -1292,10 +1329,6 @@ public class MOBCXModel {
 				Node stimulusNode = stimulusNodeList.item(stimulus_index);
 				String strStimulusSpecies = stimulusNode.getNodeValue();
 				
-				// label -
-				buffer.append("% ");
-				buffer.append(strStimulusSpecies);
-				buffer.append("\n");
 
 				// Ok, what is the time and value for this species -
 				//String strStimulusTimeXPath = "//experiment[@id='"+strExpID+"']/stimulus/species[@species='" + strStimulusSpecies+"']/@time";
@@ -1313,13 +1346,46 @@ public class MOBCXModel {
 				if (strStimulusTime.equalsIgnoreCase("0.0") || strStimulusTime.equalsIgnoreCase("0"))
 				{
 				
-					// Find the index of this species -
-					buffer.append("IC(");
-					buffer.append(tmp_index);
-					buffer.append(",1) = ");
-					buffer.append(strStimulusValue);
-					buffer.append(";\n");
-					buffer.append("\n");
+					// Process a rate stimulus -
+					if (blnUpdateParameters)
+					{
+						processRateStimulus(buffer,bcxTree,_xmlPropTree,strExpID);
+						blnUpdateParameters = false;
+					}
+						
+					// Check for basis - (absoulte -or- relative)
+					String strBasisXPath = "//experiment[@id='"+strExpID+"']//species_step_stimulus/species[@id='"+strStimulusSpecies+"']/parent::species_step_stimulus/@basis";
+					String strStimulusBasis = queryBCXTree(bcxTree,strBasisXPath);
+					
+					if (strStimulusBasis.equalsIgnoreCase("ABSOLUTE"))
+					{
+						// Find the index of this species -
+						// label -
+						buffer.append("% ");
+						buffer.append(strStimulusSpecies);
+						buffer.append("\n");
+						buffer.append("IC(");
+						buffer.append(tmp_index);
+						buffer.append(",1) = ");
+						buffer.append(strStimulusValue);
+						buffer.append(";\n");
+					}
+					else if (strStimulusBasis.equalsIgnoreCase("PERCENTAGE"))
+					{
+						// Find the index of this species -
+						// label -
+						buffer.append("% ");
+						buffer.append(strStimulusSpecies);
+						buffer.append("\n");
+						buffer.append("IC(");
+						buffer.append(tmp_index);
+						buffer.append(",1) = ");
+						buffer.append(strStimulusValue);
+						buffer.append("*IC(");
+						buffer.append(tmp_index);
+						buffer.append(",1)");
+						buffer.append(";\n");
+					}
 				}
 				else
 				{
@@ -1338,7 +1404,7 @@ public class MOBCXModel {
 						buffer.append("\n");
 						buffer.append("% Call the ODESolver - \n");
 						buffer.append("DF.INITIAL_CONDITIONS = IC;\n");
-						buffer.append("[TSIM,XSIM]=feval(pDriverFile,TSTART_LOCAL,TSTOP_LOCAL,Ts,DF,'");
+						buffer.append("[TSIM,XSIM]=feval(pDriverFile,pDataFile,TSTART_LOCAL,TSTOP_LOCAL,Ts,DF,'");
 						buffer.append("SIM_");
 						buffer.append(strExpID);
 						buffer.append(".dat',THREAD_SUFFIX);\n");
@@ -1352,16 +1418,54 @@ public class MOBCXModel {
 						
 						buffer.append("% Issue the stimulus - \n");
 						buffer.append("IC = transpose(XSIM(end,:));\n");
+						buffer.append("\n");
 						
 						// set the flag to false, so when I come around again I don't get into this block -
 						blnTmpFlag = false;
 					}
 				
-					buffer.append("IC(");
-					buffer.append(tmp_index);
-					buffer.append(",1) = ");
-					buffer.append(strStimulusValue);
-					buffer.append(";\n");
+					// Check for basis - (absoulte -or- relative)
+					String strBasisXPath = "//experiment[@id='"+strExpID+"']//species_step_stimulus/species[@id='"+strStimulusSpecies+"']/parent::species_step_stimulus/@basis";
+					String strStimulusBasis = queryBCXTree(bcxTree,strBasisXPath);
+					
+					// process the parameter change -
+					if (blnUpdateParameters)
+					{
+						processRateStimulus(buffer,bcxTree,_xmlPropTree,strExpID);
+						blnUpdateParameters = false;
+					}
+					
+					if (strStimulusBasis.equalsIgnoreCase("ABSOLUTE"))
+					{
+						// Find the index of this species -
+						// label -
+						buffer.append("% ");
+						buffer.append(strStimulusSpecies);
+						buffer.append("\n");
+						buffer.append("IC(");
+						buffer.append(tmp_index);
+						buffer.append(",1) = ");
+						buffer.append(strStimulusValue);
+						buffer.append(";\n");
+						buffer.append("\n");
+					}
+					else if (strStimulusBasis.equalsIgnoreCase("PERCENTAGE"))
+					{
+						// Find the index of this species -
+						// label -
+						buffer.append("% ");
+						buffer.append(strStimulusSpecies);
+						buffer.append("\n");
+						buffer.append("IC(");
+						buffer.append(tmp_index);
+						buffer.append(",1) = ");
+						buffer.append(strStimulusValue);
+						buffer.append("*IC(");
+						buffer.append(tmp_index);
+						buffer.append(",1)");
+						buffer.append(";\n");
+						buffer.append("\n");
+					}
 				}
 			}
 					
@@ -1382,7 +1486,7 @@ public class MOBCXModel {
 			{
 				buffer.append("% Solve the mass-balance equations.\n");
 				buffer.append("DF.INITIAL_CONDITIONS = IC;\n");
-				buffer.append("[TSIM,XSIM]=feval(pDriverFile,TSTART,TSTOP,Ts,DF,'");
+				buffer.append("[TSIM,XSIM]=feval(pDriverFile,pDataFile,TSTART,TSTOP,Ts,DF,'");
 				buffer.append("SIM_");
 				buffer.append(strExpID);
 				buffer.append(".dat',THREAD_SUFFIX);\n");
@@ -1603,5 +1707,91 @@ public class MOBCXModel {
 		return(strProp);
 	}
 	
+	
+	private void processRateStimulus(StringBuffer buffer,Document bcxTree,XMLPropTree _xmlPropTree,String strExpID)
+	{
+		// Ok, when I get here -- I need to process the rate stimulus block -
+		
+		try 
+		{
+			// First, let's see if this block is populated -
+			String strSpeciesXPath = "//experiment[@id='"+strExpID+"']/parameter_step_stimulus/parameter/@name";
+			NodeList stimulusNodeList = (NodeList) _xpath.evaluate(strSpeciesXPath, bcxTree, XPathConstants.NODESET);
+			int NUMBER_OF_STIMULUS_PARAMETERS = stimulusNodeList.getLength();
+			for (int index=0;index<NUMBER_OF_STIMULUS_PARAMETERS;index++)
+			{
+				// Ok - if I get here, then I should have some rates that I need to process -
+				
+				// Get the parameter name -
+				String parameterName = stimulusNodeList.item(index).getNodeValue();
+				
+				// Find this parameter in the parameter list -
+				ListOfParameters pList = _model.getListOfParameters();
+				long LOCAL_LENGTH = pList.size();
+				int counter = 0;
+				for (long local_index=0;local_index<LOCAL_LENGTH;local_index++)
+				{
+					Parameter parameterObj = pList.get(local_index);
+					String testParameterName = parameterObj.getName();
+					
+					if (testParameterName.equalsIgnoreCase(parameterName))
+					{
+						break;
+					}
+					else
+					{
+						counter++;
+					}
+				}
+				
+				
+				// Check for basis - (absoulte -or- relative)
+				String strBasisXPath = "//experiment[@id='"+strExpID+"']//parameter_step_stimulus/parameter[@name='"+parameterName+"']/parent::parameter_step_stimulus/@basis";	
+				String strStimulusBasis = queryBCXTree(bcxTree,strBasisXPath);
+				String strStimulusValueXPath = "//experiment[@id='"+strExpID+"']//parameter_step_stimulus/parameter[@name='"+parameterName+"']/parent::parameter_step_stimulus/@value";
+				String strStimulusValue = queryBCXTree(bcxTree,strStimulusValueXPath);
+				
+				
+				if (strStimulusBasis.equalsIgnoreCase("ABSOLUTE"))
+				{
+					// Ok, when I get here I should have the parameter index - write the buffer -
+					buffer.append("% Update parameter values -\n");
+					buffer.append("k = DF.PARAMETER_VECTOR;\n");
+					buffer.append("k(");
+					buffer.append(counter+1);
+					buffer.append(",1) = ");
+					buffer.append(strStimulusValue);
+					buffer.append(";\n");
+				}
+				else if (strStimulusBasis.equalsIgnoreCase("PERCENTAGE"))
+				{
+					// Find the index of this species -
+					buffer.append("% Update parameter values -\n");
+					buffer.append("k = DF.PARAMETER_VECTOR;\n");
+					buffer.append("k(");
+					buffer.append(counter+1);
+					buffer.append(",1) = ");
+					buffer.append(strStimulusValue);
+					buffer.append("*k(");
+					buffer.append(counter+1);
+					buffer.append(",1)");
+					buffer.append(";\n");
+				}
+			}
+			
+			// Ok, so we have processed all the parameter changes -
+			
+			if (NUMBER_OF_STIMULUS_PARAMETERS!=0)
+			{
+				// Update the DF -
+				buffer.append("DF.PARAMETER_VECTOR = k;\n");
+				buffer.append("\n");
+			}
+		}
+		catch (XPathExpressionException error)
+		{
+			// do nothing - just return the empty buffer?
+		}
+	}
 	
 }
