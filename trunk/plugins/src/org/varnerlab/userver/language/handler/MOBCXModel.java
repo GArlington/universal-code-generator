@@ -68,6 +68,31 @@ public class MOBCXModel {
 		buffer.append("(TSIM,SIMULATION,DATA,VARIANCE,IDX_VEC)\n");
 		buffer.append("\n");
 		
+		
+		buffer.append("% ----------------------------------------------------------------------\n");
+        buffer.append("% SCALE_");
+        buffer.append(strExpID);
+        buffer.append(".m was generated using the UNIVERSAL code generator system.\n");
+        buffer.append("% Username: ");
+        buffer.append(_xmlPropTree.getProperty(".//Model/@username"));
+        buffer.append("\n");
+        buffer.append("% Type: ");
+        buffer.append(_xmlPropTree.getProperty(".//Model/@type"));
+        buffer.append("\n");
+        buffer.append("% Version: ");
+        buffer.append(_xmlPropTree.getProperty(".//Model/@version"));
+        buffer.append("\n");
+        buffer.append("% \n");
+        buffer.append("% Arguments: \n");
+        buffer.append("% TSIM  - Simulation time vector \n");
+        buffer.append("% SIMULATION  - Simulated variables (NTIME x NSPECIES) \n");
+        buffer.append("% DATA  - Measured data array \n");
+        buffer.append("% VARIANCE - Uncertainty in the simulation \n");
+        buffer.append("% IDX_VEC  - Custom data file instance \n");
+        buffer.append("% ERR_ARR - Array of scaled error values \n");
+        buffer.append("% ----------------------------------------------------------------------\n");
+        buffer.append("\n");
+		
 		// XPath to determine scaling -
 		String strScalingXPath = "//experiment[@id='"+strExpID+"']/@scaling";
 		String strScaling = queryBCXTree(bcxTree,strScalingXPath);
@@ -102,6 +127,26 @@ public class MOBCXModel {
 		buffer.append(strExpID);
 		buffer.append("(XSIM)\n");
 		buffer.append("\n");
+		
+		buffer.append("% ----------------------------------------------------------------------\n");
+        buffer.append("% SIMGRP_");
+        buffer.append(strExpID);
+        buffer.append(".m was generated using the UNIVERSAL code generator system.\n");
+        buffer.append("% Username: ");
+        buffer.append(_xmlPropTree.getProperty(".//Model/@username"));
+        buffer.append("\n");
+        buffer.append("% Type: ");
+        buffer.append(_xmlPropTree.getProperty(".//Model/@type"));
+        buffer.append("\n");
+        buffer.append("% Version: ");
+        buffer.append(_xmlPropTree.getProperty(".//Model/@version"));
+        buffer.append("\n");
+        buffer.append("% \n");
+        buffer.append("% Arguments: \n");
+        buffer.append("% XSIM - Simulation data (raw data to be grouped) \n");
+        buffer.append("% SIMULATION  - Data organized into simulation group  \n");
+        buffer.append("% ----------------------------------------------------------------------\n");
+        buffer.append("\n");
 		
 		// Build the simulation array -
 		buildSimulationArray(buffer,bcxTree,_xmlPropTree,strExpID);
@@ -315,6 +360,30 @@ public class MOBCXModel {
 		// Populate the buffer -
 		buffer.append("function [ERR_VEC]=SOSE(pDriverFile,DF,EDF,OBJ_INDEX,THREAD_SUFFIX)\n");
 		buffer.append("\n");
+		
+		buffer.append("% ----------------------------------------------------------------------\n");
+        buffer.append("% SOSE");
+        buffer.append(".m was generated using the UNIVERSAL code generator system.\n");
+        buffer.append("% Username: ");
+        buffer.append(_xmlPropTree.getProperty(".//Model/@username"));
+        buffer.append("\n");
+        buffer.append("% Type: ");
+        buffer.append(_xmlPropTree.getProperty(".//Model/@type"));
+        buffer.append("\n");
+        buffer.append("% Version: ");
+        buffer.append(_xmlPropTree.getProperty(".//Model/@version"));
+        buffer.append("\n");
+        buffer.append("% \n");
+        buffer.append("% Arguments: \n");
+        buffer.append("% pDriverFile - Pointer to the simulation driver file - \n");
+        buffer.append("% DF  - Custom data file instance \n");
+        buffer.append("% EDF  - Experimental data file instance \n");
+        buffer.append("% OBJ_INDEX - Objective function index vector \n");
+        buffer.append("% THREAD_SUFFIX  - Optional arguement used for multithreaded jobs \n");
+        buffer.append("% ERR_VEC - Error values for this objective \n");
+        buffer.append("% ----------------------------------------------------------------------\n");
+        buffer.append("\n");
+		
 		buffer.append("% Grab the objective function pointer -- \n");
 		buffer.append("ERROR_STRUCT = EDF.ERROR_FUNCTION_ARRAY;\n");
 		buffer.append("pObjectiveFunction = ERROR_STRUCT.FUNCTION(OBJ_INDEX).POINTER;\n");
@@ -523,8 +592,31 @@ public class MOBCXModel {
         String strFncName = pathHashtable.get("FUNCTION_NAME");
 		
 		// Populate the buffer -
+        buffer.append("% ----------------------------------------------------------------------\n");
+        buffer.append("% TEST_");
+        buffer.append(strExpID);
+        buffer.append(".m was generated using the UNIVERSAL code generator system.\n");
+        buffer.append("% Username: ");
+        buffer.append(_xmlPropTree.getProperty(".//Model/@username"));
+        buffer.append("\n");
+        buffer.append("% Type: ");
+        buffer.append(_xmlPropTree.getProperty(".//Model/@type"));
+        buffer.append("\n");
+        buffer.append("% Version: ");
+        buffer.append(_xmlPropTree.getProperty(".//Model/@version"));
+        buffer.append("\n");
+        buffer.append("% \n");
+        buffer.append("% Description: \n");
+        buffer.append("% Test script to calculate the error for the ");
+        buffer.append(strExpID);
+        buffer.append(" experiment. \n");
+        buffer.append("% Use this script to determine if your experiment is doing what you think it is doing ... \n");
+        buffer.append("% ----------------------------------------------------------------------\n");
+        buffer.append("\n");
+        
+        
 		buffer.append("% Script to run the SIM_");
-		buffer.append(strExpID);
+		
 		buffer.append(" -- \n");
 		buffer.append("\n");
 		buffer.append("% Load the experimental data -- \n");
@@ -537,6 +629,15 @@ public class MOBCXModel {
 		buffer.append(strExpID);
 		buffer.append(";\n");
 		buffer.append("\n");
+		
+		buffer.append("% Set the pointer to the DriverFile .\n");
+		Hashtable<String,String> pathHashtableDriver = _xmlPropTree.buildFilenameBlockDictionary("DriverFile");
+        String strFncNameDriver = pathHashtableDriver.get("FUNCTION_NAME");
+        buffer.append("pDriverFile = @");
+        buffer.append(strFncNameDriver);
+        buffer.append(";\n");
+		buffer.append("\n");
+		
 		buffer.append("% Load the test parameters - \n");
 		buffer.append("% EDIT THIS BLOCK \n");
 		buffer.append("\n");
@@ -563,15 +664,17 @@ public class MOBCXModel {
 		buffer.append(";\n");
 		buffer.append("\n");
 		
+		
 		buffer.append("% Find steady-state - \n");
-		buffer.append("[TSS,XSS] = FindSteadyState(DF,'TEST_CALL');\n");
+		//buffer.append("[TSS,XSS] = FindSteadyState(DF,'TEST_CALL');\n");
+		buffer.append("[TSS,XSS] = FindSteadyState(pDriverFile,[],DF,[]);\n");
 		buffer.append("IC = XSS(:,end);\n");
 		buffer.append("DF.INITIAL_CONDITIONS = IC;\n");
 		buffer.append("\n");
 		buffer.append("% Call the SIM_x.m function - \n");
 		buffer.append("[TSIM,XSIM]=SIM_");
 		buffer.append(strExpID);
-		buffer.append("(TSTART,TSTOP,Ts,DF,'TEST_CALL');\n");
+		buffer.append("(pDriverFile,TSTART,TSTOP,Ts,DF,'TEST_CALL');\n");
 		
 		// Ok, so normally we would be done - but because I'm an outstanding educator, advisor and all around great human being I will also provide
 		// the scaled version to you bitches...
@@ -613,6 +716,33 @@ public class MOBCXModel {
 		// Populate the buffer -
 		buffer.append("function [ERR_VEC]=MOSE(pDriverFile,DF,EDF,THREAD_SUFFIX)\n");
 		buffer.append("\n");
+		
+		buffer.append("% ----------------------------------------------------------------------\n");
+        buffer.append("% MOSE");
+        buffer.append(".m was generated using the UNIVERSAL code generator system.\n");
+        buffer.append("% Username: ");
+        buffer.append(_xmlPropTree.getProperty(".//Model/@username"));
+        buffer.append("\n");
+        buffer.append("% Type: ");
+        buffer.append(_xmlPropTree.getProperty(".//Model/@type"));
+        buffer.append("\n");
+        buffer.append("% Version: ");
+        buffer.append(_xmlPropTree.getProperty(".//Model/@version"));
+        buffer.append("\n");
+        buffer.append("% \n");
+        buffer.append("% Arguments: \n");
+        buffer.append("% pDriverFile - Pointer to the simulation driver file - \n");
+        buffer.append("% TSTART  - Time start \n");
+        buffer.append("% TSTOP  - Time stop \n");
+        buffer.append("% Ts - Time step \n");
+        buffer.append("% DF  - Custom data file instance \n");
+        buffer.append("% EDF  - Experimental data file instance \n");
+        buffer.append("% THREAD_SUFFIX  - Optional arguement used for multithreaded jobs \n");
+        buffer.append("% ERR_VEC - Error vector (NOBJECTIVES x 1) returned back to caller \n");
+        buffer.append("% ----------------------------------------------------------------------\n");
+        buffer.append("\n");
+		
+		
 		buffer.append("% Grab the info about the array of error function pointers from the EDF - \n");
 		buffer.append("NUMBER_OF_OBJECTIVES = EDF.NUMBER_OF_OBJECTIVES;\n");
 		buffer.append("ERR_VEC = zeros(NUMBER_OF_OBJECTIVES,1);\n");
@@ -1077,6 +1207,33 @@ public class MOBCXModel {
 		buffer.append("(pDriverFile,TSTART,TSTOP,Ts,DF,EDF,THREAD_SUFFIX)\n");
 		buffer.append("\n");
 		
+		buffer.append("% ----------------------------------------------------------------------\n");
+        buffer.append("% ERR_");
+        buffer.append(strExpID);
+        buffer.append(".m was generated using the UNIVERSAL code generator system.\n");
+        buffer.append("% Username: ");
+        buffer.append(_xmlPropTree.getProperty(".//Model/@username"));
+        buffer.append("\n");
+        buffer.append("% Type: ");
+        buffer.append(_xmlPropTree.getProperty(".//Model/@type"));
+        buffer.append("\n");
+        buffer.append("% Version: ");
+        buffer.append(_xmlPropTree.getProperty(".//Model/@version"));
+        buffer.append("\n");
+        buffer.append("% \n");
+        buffer.append("% Arguments: \n");
+        buffer.append("% pDriverFile - Pointer to the simulation driver file - \n");
+        buffer.append("% TSTART  - Time start \n");
+        buffer.append("% TSTOP  - Time stop \n");
+        buffer.append("% Ts - Time step \n");
+        buffer.append("% DF  - Custom data file instance \n");
+        buffer.append("% EDF  - Experimental data file instance \n");
+        buffer.append("% THREAD_SUFFIX  - Optional arguement used for multithreaded jobs \n");
+        buffer.append("% ERR - Returns the scaled error to MOSE or SOSE \n");
+        buffer.append("% ----------------------------------------------------------------------\n");
+        buffer.append("\n");
+		
+		
 		// Run the simulation -
 		buffer.append("% Run the simulation -- \n");
 		buffer.append("[TSIM,XSIM]=SIM_");
@@ -1208,6 +1365,9 @@ public class MOBCXModel {
 			String strStimulusTime = queryBCXTree(bcxTree,strStimulusTimeXPath);
 			String strStimulusValue = queryBCXTree(bcxTree,strStimulusValueXPath);
 	
+			// Ok, when I get a value - it could be a list -
+			String[] strValueList = strStimulusValue.split(",");
+			
 			// what is this index?
 			int tmp_index = findSpeciesIndex(strStimulusSpecies);
 			
@@ -1225,7 +1385,7 @@ public class MOBCXModel {
 				buffer.append("IC(");
 				buffer.append(tmp_index);
 				buffer.append(",1) = ");
-				buffer.append(strStimulusValue);
+				buffer.append(strValueList[stimulus_index]);
 				buffer.append(";\n");
 				buffer.append("\n");
 				
@@ -1240,7 +1400,7 @@ public class MOBCXModel {
 				buffer.append("IC(");
 				buffer.append(tmp_index);
 				buffer.append(",1) = ");
-				buffer.append(strStimulusValue);
+				buffer.append(strValueList[stimulus_index]);
 				buffer.append("*IC(");
 				buffer.append(tmp_index);
 				buffer.append(",1)");
@@ -1292,6 +1452,32 @@ public class MOBCXModel {
 			buffer.append("(pDriverFile,TSTART,TSTOP,Ts,DF,THREAD_SUFFIX)\n");
 			buffer.append("\n");
 			
+			buffer.append("% ----------------------------------------------------------------------\n");
+	        buffer.append("% SIM_");
+	        buffer.append(strExpID);
+	        buffer.append(".m was generated using the UNIVERSAL code generator system.\n");
+	        buffer.append("% Username: ");
+	        buffer.append(_xmlPropTree.getProperty(".//Model/@username"));
+	        buffer.append("\n");
+	        buffer.append("% Type: ");
+	        buffer.append(_xmlPropTree.getProperty(".//Model/@type"));
+	        buffer.append("\n");
+	        buffer.append("% Version: ");
+	        buffer.append(_xmlPropTree.getProperty(".//Model/@version"));
+	        buffer.append("\n");
+	        buffer.append("% \n");
+	        buffer.append("% Arguments: \n");
+	        buffer.append("% pDriverFile - Pointer to the simulation driver file - \n");
+	        buffer.append("% TSTART  - Time start \n");
+	        buffer.append("% TSTOP  - Time stop \n");
+	        buffer.append("% Ts - Time step \n");
+	        buffer.append("% DF  - Custom data file instance \n");
+	        buffer.append("% THREAD_SUFFIX  - Optional arguement used for multithreaded jobs \n");
+	        buffer.append("% TSIM - Simulated time vector that is returned to caller \n");
+	        buffer.append("% XSIM - Simulated state variable (model solution NTIME x NSTATES) \n");
+	        buffer.append("% ----------------------------------------------------------------------\n");
+	        buffer.append("\n");
+			
 			// Get the initial conditions from the DF -
 			buffer.append("% Get the initial conditions from the DataFile -\n");
 			buffer.append("IC = DF.INITIAL_CONDITIONS;\n");
@@ -1339,6 +1525,9 @@ public class MOBCXModel {
 				String strStimulusTime = queryBCXTree(bcxTree,strStimulusTimeXPath);
 				strStimulusValue = queryBCXTree(bcxTree,strStimulusValueXPath);
 				
+				// Ok, when I get a value - it could be a list -
+				String[] strValueList = strStimulusValue.split(",");
+				
 				// what is this index?
 				int tmp_index = findSpeciesIndex(strStimulusSpecies);
 				
@@ -1367,7 +1556,7 @@ public class MOBCXModel {
 						buffer.append("IC(");
 						buffer.append(tmp_index);
 						buffer.append(",1) = ");
-						buffer.append(strStimulusValue);
+						buffer.append(strValueList[stimulus_index]);
 						buffer.append(";\n");
 					}
 					else if (strStimulusBasis.equalsIgnoreCase("PERCENTAGE"))
@@ -1380,7 +1569,7 @@ public class MOBCXModel {
 						buffer.append("IC(");
 						buffer.append(tmp_index);
 						buffer.append(",1) = ");
-						buffer.append(strStimulusValue);
+						buffer.append(strValueList[stimulus_index]);
 						buffer.append("*IC(");
 						buffer.append(tmp_index);
 						buffer.append(",1)");
@@ -1404,7 +1593,7 @@ public class MOBCXModel {
 						buffer.append("\n");
 						buffer.append("% Call the ODESolver - \n");
 						buffer.append("DF.INITIAL_CONDITIONS = IC;\n");
-						buffer.append("[TSIM,XSIM]=feval(pDriverFile,pDataFile,TSTART_LOCAL,TSTOP_LOCAL,Ts,DF,'");
+						buffer.append("[TSIM1,XSIM1]=feval(pDriverFile,pDataFile,TSTART_LOCAL,TSTOP_LOCAL,Ts,DF,'");
 						buffer.append("SIM_");
 						buffer.append(strExpID);
 						buffer.append(".dat',THREAD_SUFFIX);\n");
@@ -1417,7 +1606,7 @@ public class MOBCXModel {
 						buffer.append("\n");
 						
 						buffer.append("% Issue the stimulus - \n");
-						buffer.append("IC = transpose(XSIM(end,:));\n");
+						buffer.append("IC = transpose(XSIM1(end,:));\n");
 						buffer.append("\n");
 						
 						// set the flag to false, so when I come around again I don't get into this block -
@@ -1445,7 +1634,7 @@ public class MOBCXModel {
 						buffer.append("IC(");
 						buffer.append(tmp_index);
 						buffer.append(",1) = ");
-						buffer.append(strStimulusValue);
+						buffer.append(strValueList[stimulus_index]);
 						buffer.append(";\n");
 						buffer.append("\n");
 					}
@@ -1459,7 +1648,7 @@ public class MOBCXModel {
 						buffer.append("IC(");
 						buffer.append(tmp_index);
 						buffer.append(",1) = ");
-						buffer.append(strStimulusValue);
+						buffer.append(strValueList[stimulus_index]);
 						buffer.append("*IC(");
 						buffer.append(tmp_index);
 						buffer.append(",1)");
@@ -1486,11 +1675,22 @@ public class MOBCXModel {
 			{
 				buffer.append("% Solve the mass-balance equations.\n");
 				buffer.append("DF.INITIAL_CONDITIONS = IC;\n");
-				buffer.append("[TSIM,XSIM]=feval(pDriverFile,pDataFile,TSTART,TSTOP,Ts,DF,'");
+				buffer.append("[TSIM2,XSIM2]=feval(pDriverFile,pDataFile,TSTART,TSTOP,Ts,DF,'");
 				buffer.append("SIM_");
 				buffer.append(strExpID);
 				buffer.append(".dat',THREAD_SUFFIX);\n");
 				buffer.append("\n");
+				
+				// Ok, so we need to append the first time block -
+				buffer.append("% Check for TSIM1 and XSIM1 \n");
+				buffer.append("if (~isempty(TSIM1))\n");
+				buffer.append("\t TSIM = [TSIM1 TSIM2];\n");
+				buffer.append("\t XSIM = [XSIM1 ; XSIM2];\n");
+				buffer.append("else\n");
+				buffer.append("\t TSIM = [TSIM2];\n");
+				buffer.append("\t XSIM = [XSIM2];\n");
+				buffer.append("end;\n");
+				
 				buffer.append("return;\n");
 			}
 		}
@@ -1518,6 +1718,31 @@ public class MOBCXModel {
 		
     	buffer.append(strFncName);
     	buffer.append("(TSTART,TSTOP,Ts)\n");
+    	
+    	buffer.append("% ----------------------------------------------------------------------\n");
+        buffer.append("% ");
+    	buffer.append(strFncName);
+        buffer.append(".m was generated using the UNIVERSAL code generator system.\n");
+        buffer.append("% Username: ");
+        buffer.append(_xmlPropTree.getProperty(".//Model/@username"));
+        buffer.append("\n");
+        buffer.append("% Type: ");
+        buffer.append(_xmlPropTree.getProperty(".//Model/@type"));
+        buffer.append("\n");
+        buffer.append("% Version: ");
+        buffer.append(_xmlPropTree.getProperty(".//Model/@version"));
+        buffer.append("\n");
+        buffer.append("% \n");
+        buffer.append("% Arguments: \n");
+        buffer.append("% pDriverFile - Pointer to the simulation driver file - \n");
+        buffer.append("% TSTART  - Time start \n");
+        buffer.append("% TSTOP  - Time stop \n");
+        buffer.append("% Ts - Time step \n");
+        buffer.append("% EDF  - Experimental data file instance \n");
+        buffer.append("% ----------------------------------------------------------------------\n");
+        buffer.append("\n");
+    	
+    	
 		buffer.append("% Load the files from disk that hold the experimental data.\n");
 		buffer.append("\n");
 		
@@ -1603,6 +1828,16 @@ public class MOBCXModel {
 				buffer.append("load('");
 				buffer.append(strFileName);
 				buffer.append("');\n");
+			}
+			else if (strFileType.equalsIgnoreCase("mat-binary"))
+			{
+				buffer.append("TMP = ");
+				buffer.append("load('");
+				buffer.append(strFileName);
+				buffer.append("');\n");
+				buffer.append(strExpId);
+				buffer.append(" = ");
+				buffer.append("TMP.DATA;\n");
 			}
 			
 			// Put a new line and go around again -
@@ -1751,6 +1986,8 @@ public class MOBCXModel {
 				String strStimulusValueXPath = "//experiment[@id='"+strExpID+"']//parameter_step_stimulus/parameter[@name='"+parameterName+"']/parent::parameter_step_stimulus/@value";
 				String strStimulusValue = queryBCXTree(bcxTree,strStimulusValueXPath);
 				
+				// Ok, when I get a value - it could be a list -
+				String[] strValueList = strStimulusValue.split(",");
 				
 				if (strStimulusBasis.equalsIgnoreCase("ABSOLUTE"))
 				{
@@ -1760,7 +1997,7 @@ public class MOBCXModel {
 					buffer.append("k(");
 					buffer.append(counter+1);
 					buffer.append(",1) = ");
-					buffer.append(strStimulusValue);
+					buffer.append(strValueList[index]);
 					buffer.append(";\n");
 				}
 				else if (strStimulusBasis.equalsIgnoreCase("PERCENTAGE"))
@@ -1771,7 +2008,7 @@ public class MOBCXModel {
 					buffer.append("k(");
 					buffer.append(counter+1);
 					buffer.append(",1) = ");
-					buffer.append(strStimulusValue);
+					buffer.append(strValueList[index]);
 					buffer.append("*k(");
 					buffer.append(counter+1);
 					buffer.append(",1)");
