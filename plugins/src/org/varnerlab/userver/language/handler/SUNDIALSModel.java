@@ -37,6 +37,7 @@ import java.util.Vector;
 
 import org.sbml.libsbml.ListOfSpecies;
 import org.sbml.libsbml.Model;
+import org.sbml.libsbml.Reaction;
 import org.sbml.libsbml.Species;
 import org.varnerlab.server.localtransportlayer.XMLPropTree;
 
@@ -59,6 +60,70 @@ public class SUNDIALSModel {
 		_xmlPropTree = prop;
 	}
 	
+    
+    
+    public void buildHardCodeMassBalanceEquations(StringBuffer buffer,Model model_wrapper,Vector<Reaction> vecReactions,Vector<Species> vecSpecies) throws Exception {
+
+    	// Get the dimension of the system -
+    	int NUMBER_OF_SPECIES = vecSpecies.size();
+    	int NUMBER_OF_RATES = vecReactions.size();
+    	int NROWS = NUMBER_OF_SPECIES;
+    	int NCOLS = NUMBER_OF_RATES;
+        
+        // Create a local copy of the stoichiometric matrix -
+        double[][] matrix = new double[NROWS][NCOLS];
+        SBMLModelUtilities.buildStoichiometricMatrix(matrix, model_wrapper,vecReactions,vecSpecies);
+
+        buffer.append("static int MassBalances(realtype t, N_Vector StateVector, N_Vector dxdt, void *user_data)\n");
+        buffer.append("{\n");
+        buffer.append("\t// Prep some stuff\n");
+        buffer.append("\tint i, j;\n");
+        buffer.append("\trealtype tmp;\n");
+        buffer.append("\tstruct params* Parameters = user_data;\n");
+        buffer.append("\tN_Vector rateVector;\n\n");
+
+        buffer.append("\t// Allocate rateVector memory\n");
+        buffer.append("\trateVector = N_VNew_Serial(NUMBER_OF_RATES);\n");
+        buffer.append("\t\tif (check_flag((void *)rateVector, \"N_VNew_Serial\", 0)) return(1);\n\n");
+
+        buffer.append("\t// Grab the kinetics\n");
+        buffer.append("\tKinetics(t, StateVector, (Parameters->pRateConstantVector), rateVector);\n\n");
+        
+        buffer.append("\t//Calculate dxdt\n");
+        buffer.append("\tcalcDxDt(StateVector, dxdt, rateVector);\n\n");
+        
+        buffer.append("\t// Free up rateVector memory\n");
+        buffer.append("\tN_VDestroy(rateVector);\n\n");
+
+        buffer.append("\treturn(0);\n");
+        buffer.append("}\n\n");
+
+        buffer.append("static void calcDxDt(N_Vector x, N_Vector dxdt, N_Vector rateVector)\n");
+        buffer.append("{\n");
+        
+        // Generate dx/dt for large scale optimization
+        for (int i=0; i<NROWS; i++)
+        {
+            buffer.append("\tNV_Ith_S(dxdt,");
+    		buffer.append(i);
+    		buffer.append(") =\n"); 
+            for (int j=0; j<NCOLS; j++) 
+            {
+                if (matrix[i][j]!=0)
+                {
+                    buffer.append("\t\t");
+					buffer.append(String.valueOf(matrix[i][j]));
+					buffer.append("*NV_Ith_S(rateVector,");
+                    buffer.append(j);
+                    buffer.append(") + \n");
+                }
+            }
+            buffer.append("\t\t0;\n");
+        }
+        buffer.append("}\n\n");
+    }
+        
+    
     public void buildMassBalanceEquations(StringBuffer buffer) throws Exception {
         // Ok, so we need to build the buffer with the mass balance equations in it -
 
@@ -182,7 +247,7 @@ public class SUNDIALSModel {
         }
 
         // Ok, so when I get here, then I can add the return line -
-        buffer.append("}\n");
+        buffer.append("}\n\n");
     }
 
 
@@ -688,7 +753,7 @@ public class SUNDIALSModel {
         buffer.append("\n");
         buffer.append(" *\n");
 		buffer.append(" * Template written by Robert Dromms. Edited by JV\n");
-		buffer.append(" * Created 2009-06-19 15:32\n");
+		buffer.append(" * Created 2009-06\n");
 		buffer.append(" * Based off example code provided in SUNDIALS documentation: cvRoberts_dns.c\n");
 		buffer.append(" * ---------------------------------------------------------------------- */\n");
 		buffer.append("\n");
@@ -715,11 +780,12 @@ public class SUNDIALSModel {
 		buffer.append("// Functions to grab the kinetics rate constants and ic\'s from files\n");
 		buffer.append("static int getRateConstants(const char* filename, N_Vector RateConstantVector);\n");
 		buffer.append("static int getICs(const char* filename, N_Vector StateVector);\n");
-		buffer.append("static int getSTM(const char* filename, DlsMat STM);\n");
+//		buffer.append("static int getSTM(const char* filename, DlsMat STM);\n");
 		buffer.append("\n");
 		
 		buffer.append("// Functions called by the solver\n");
 		buffer.append("static int MassBalances(realtype t, N_Vector StateVector, N_Vector dxdt, void *user_data);\n");
+		buffer.append("static void calcDxDt(N_Vector x, N_Vector dxdt, N_Vector rateVector);\n");
 		buffer.append("static void Kinetics(realtype t, N_Vector x, N_Vector rateConstVector, N_Vector rateVector);\n");
 		buffer.append("static int JacTimesVec(N_Vector v, N_Vector Jv, realtype t, N_Vector x, N_Vector fx, void *user_data, N_Vector tmp);\n");
 		buffer.append("\n");
@@ -734,7 +800,7 @@ public class SUNDIALSModel {
 		buffer.append("// Parameter struct \n");
 		buffer.append("struct params\n");
 		buffer.append("{\n");
-		buffer.append("\tDlsMat pSTM;\n");
+//		buffer.append("\tDlsMat pSTM;\n");
 		buffer.append("\tN_Vector pRateConstantVector;\n");
 		buffer.append("};\n\n");
 
@@ -746,16 +812,20 @@ public class SUNDIALSModel {
 		buffer.append("\t * 1. Data output file name\n");
 		buffer.append("\t * 2. Kinetics rate constants / parameters file\n");
 		buffer.append("\t * 3. Initial conditions file\n");
-		buffer.append("\t * 4. STM data file\n");
+/*		buffer.append("\t * 4. STM data file\n");
 		buffer.append("\t * 5. Start Time\n");
 		buffer.append("\t * 6. End Time\n");
-		buffer.append("\t * 7. Time step size\n");
+		buffer.append("\t * 7. Time step size\n");*/
+		buffer.append("\t * 4. Start Time\n");
+		buffer.append("\t * 5. End Time\n");
+		buffer.append("\t * 6. Time step size\n");
 		buffer.append("\t */\n\n");
 
 		buffer.append("\tclock_t start = clock();\n\n");
 
 		buffer.append("\t//Check number of arguments\n");
-		buffer.append("\tif (argc != 8)\n");
+		//buffer.append("\tif (argc != 8)\n");
+		buffer.append("\tif (argc != 7)\n");
 		buffer.append("\t{\n");
 		buffer.append("\t\tprintf(\"Incorrect number of arguments.\\n\");\n");
 		buffer.append("\t\treturn(1);\n");
@@ -772,18 +842,21 @@ public class SUNDIALSModel {
 		buffer.append("\tchar *pOutputDataFile = argv[1];\t\t// Assign data output file\n");
 		buffer.append("\tchar *pInputKineticsFile = argv[2];\t\t// Get kinetics datafile name\n");
 		buffer.append("\tchar *pInputICFile = argv[3];\t\t\t// Get ic datafile name\n");
-		buffer.append("\tchar *pSTMFile = argv[4];\t\t\t// Get STM datafile name\n");
+/*		buffer.append("\tchar *pSTMFile = argv[4];\t\t\t// Get STM datafile name\n");
 		buffer.append("\tsscanf(argv[5], \"%lf\", &dblTime);\t\t// Start time\n");
-		buffer.append("\tsscanf(argv[6], \"%lf\", &dblTSTOP);\t\t// Stop time\n");
+		buffer.append("\tsscanf(argv[6], \"%lf\", &dblTSTOP);\t\t// Stop time\n");		
 		buffer.append("\tsscanf(argv[7], \"%lf\", &dblTs);\t\t\t// Time step size\n\n");
+*/		buffer.append("\tsscanf(argv[4], \"%lf\", &dblTime);\t\t// Start time\n");
+		buffer.append("\tsscanf(argv[5], \"%lf\", &dblTSTOP);\t\t// Stop time\n");		
+		buffer.append("\tsscanf(argv[6], \"%lf\", &dblTs);\t\t\t// Time step size\n\n");
 
 		buffer.append("\t//Allocate N_Vectors, DlsMats\n");
 		buffer.append("\tStateVector = N_VNew_Serial(NUMBER_OF_STATES);\n");
 		buffer.append("\t\tif (check_flag((void *)StateVector, \"N_VNew_Serial\", 0)) return(1);\n");
 		buffer.append("\tParameters.pRateConstantVector = N_VNew_Serial(NUMBER_OF_RATES);\n");
 		buffer.append("\t\tif (check_flag((void *)Parameters.pRateConstantVector, \"N_VNew_Serial\", 0)) return(1);\n");
-		buffer.append("\tParameters.pSTM = NewDenseMat(NUMBER_OF_STATES, NUMBER_OF_RATES);\n");
-		buffer.append("\t\tif (check_flag((void *)Parameters.pSTM, \"NewDenseMat\", 0)) return(1);\n\n");
+	//	buffer.append("\tParameters.pSTM = NewDenseMat(NUMBER_OF_STATES, NUMBER_OF_RATES);\n");
+	//	buffer.append("\t\tif (check_flag((void *)Parameters.pSTM, \"NewDenseMat\", 0)) return(1);\n\n");
 
 		buffer.append("\t// Generate timestep array\n");
 		buffer.append("\tnTimes = floor((dblTSTOP-dblTime)/dblTs)+1;\n");
@@ -798,8 +871,8 @@ public class SUNDIALSModel {
 		buffer.append("\t\tif (flag != 0) return(1);\n");
 		buffer.append("\tflag = getICs(pInputICFile, StateVector);\n");
 		buffer.append("\t\tif (flag != 0) return(1);\n");
-		buffer.append("\tflag = getSTM(pSTMFile, Parameters.pSTM);\n");
-		buffer.append("\t\tif (flag != 0) return(1);\n\n");
+//		buffer.append("\tflag = getSTM(pSTMFile, Parameters.pSTM);\n");
+//		buffer.append("\t\tif (flag != 0) return(1);\n\n");
 
 		buffer.append("\t/********************Set up the ODE solver*******************/\n\n");
 		buffer.append("\t// Create ODE solver memory block\n");
@@ -859,8 +932,8 @@ public class SUNDIALSModel {
 
 		buffer.append("\t// Free N_Vectors\n");
 		buffer.append("\tN_VDestroy_Serial(StateVector);\n");
-		buffer.append("\tN_VDestroy_Serial(Parameters.pRateConstantVector);\n");
-		buffer.append("\tDestroyMat(Parameters.pSTM);\n\n");
+		buffer.append("\tN_VDestroy_Serial(Parameters.pRateConstantVector);\n\n");
+//		buffer.append("\tDestroyMat(Parameters.pSTM);\n\n");
 
 		buffer.append("\t// Free integrator memory\n");
 		buffer.append("\tCVodeFree(&cvode_mem);\n\n");
@@ -934,7 +1007,7 @@ public class SUNDIALSModel {
 
 		buffer.append("\treturn(s);\n");
 		buffer.append("}\n\n");
-
+/*
 		buffer.append("static int getSTM(const char* filename, DlsMat STM)\n");
 		buffer.append("{\n");
 		buffer.append("\tint i=0, j=0;\n");
@@ -970,7 +1043,7 @@ public class SUNDIALSModel {
 		buffer.append("\t\treturn(0);\n");
 		buffer.append("\t}\n");
 		buffer.append("}\n\n");
-
+*/
 		buffer.append("static int getRateConstants(const char* filename, N_Vector RateConstantVector)\n");
 		buffer.append("{\n");
 		buffer.append("\tint i=0, j=0;\n");
@@ -1343,8 +1416,8 @@ public class SUNDIALSModel {
     	buffer.append(strParameters);
     	buffer.append(" ");
     	buffer.append(strInitialCondtions);
-    	buffer.append(" ");
-    	buffer.append(strSTMatrix);
+ //   	buffer.append(" ");
+ //   	buffer.append(strSTMatrix);
     	buffer.append(" $2 $3 $4\n");
     	
         // buffer.append("./modelCode output.dat kinetics.dat ic.dat stm.dat $1 $2 $3\n");
@@ -1478,6 +1551,8 @@ public class SUNDIALSModel {
             }
         }
 
+        /* Don't actually need the Jacobian....
+         * 
         // Ok, so when I get here I have the Jacobian - we need to convert it into a string buffer
         buffer.append("\n");
         buffer.append("static int Jac(int N, realtype t, N_Vector x, N_Vector fx, DlsMat J, void *user_data, N_Vector tmp1, N_Vector tmp2, N_Vector tmp3)\n");
@@ -1515,9 +1590,9 @@ public class SUNDIALSModel {
 
         buffer.append("\n\treturn(0);\n");
         buffer.append("}\n\n");
+*/
 
-
-        // Function for Model.c solver methods using krylov subspaces
+        // Function for solver methods using krylov subspaces, also used for single paramater sensitivity analysis
         buffer.append("static int JacTimesVec(N_Vector v, N_Vector Jv, realtype t, N_Vector x, N_Vector fx, void *user_data, N_Vector tmp)\n");
         buffer.append("{\n");
         buffer.append("\tN_Vector k;\n");
@@ -1545,7 +1620,7 @@ public class SUNDIALSModel {
         buffer.append("\treturn(0);\n");
         buffer.append("}\n\n");
 
-        buffer.append("// DSDT RHS function\n");
+ /*       buffer.append("// DSDT RHS function\n");
         buffer.append("static void calcDSDT(N_Vector x, N_Vector dxdt, DlsMat Jac, DlsMat PMat)\n");
         buffer.append("{\n");
         buffer.append("\tint j;\n\n");
@@ -1573,7 +1648,13 @@ public class SUNDIALSModel {
         }
 
         buffer.append("\t}\n");
+        
+        
+        
         buffer.append("}\n");
+        
+        
+        */
     }
 
 
