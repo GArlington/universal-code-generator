@@ -125,12 +125,17 @@ public class WriteSundialsModel implements IOutputHandler {
         // Build the matrix -
         SBMLModelUtilities.buildStoichiometricMatrix(dblSTMatrix, model_wrapper,vecReactions,vecSpecies);
 		
-		// Generate Model.c
-		sundialsModel.buildMassBalanceBuffer(bufferModelC,model_wrapper);
-		sundialsModel.buildMassBalanceEquations(bufferModelC);
+        
+		// Generate Model.c      
+        sundialsModel.buildMassBalanceBuffer(bufferModelC,model_wrapper);
+        
+		//sundialsModel.buildMassBalanceEquations(bufferModelC);	// Non-Large Scale Optimized
+       	sundialsModel.buildHardCodeMassBalanceEquations(bufferModelC, model_wrapper, vecReactions, vecSpecies);	// Large Scale Optimized
+
 		sundialsModel.buildKineticsBuffer(bufferModelC,model_wrapper,vecReactions,vecSpecies);
 		sundialsModel.buildJacobianBuffer(bufferModelC,model_wrapper,vecReactions,vecSpecies);
 		SBMLModelUtilities.dumpMassBalancesToDisk(bufferModelC, _xmlPropTree);
+		
 		
 		// Build a data file buffer -
         SBMLModelUtilities.buildDataFileBuffer(bufferDataFile, model_wrapper, _xmlPropTree,vecReactions,vecSpecies);
