@@ -1,5 +1,5 @@
 <?xml version="1.0" standalone="yes"?>
-<Model type="DFBA" required="YES" username="" version="v1.0" name="">
+<Model type="DFBA" required="YES" username="" version="v1.0" name="" large_scale_optimized="YES">
     <Configuration>
         <ListOfPackages>
             <package required="YES" symbol="INPUT_HANDLER_PACKAGE" package_name="org.varnerlab.userver.input.handler"></package>
@@ -56,7 +56,7 @@
     </Configuration>
     <Handler>
         <InputHandler required="YES" package="INPUT_HANDLER_PACKAGE" input_classname="LoadSBMLFile"></InputHandler>
-        <OutputHandler required="YES" package="OUTPUT_HANDLER_PACKAGE" output_classname="WriteMetabolicFiles"></OutputHandler>
+        <OutputHandler required="YES" package="OUTPUT_HANDLER_DFBA_PACKAGE" output_classname="WriteOctaveMDFBAFiles"></OutputHandler>
     </Handler>
     <InputOptions>
         <NetworkFile required="YES" path_symbol="UNIVERSAL_INPUT_PATH" filename=""></NetworkFile>
@@ -66,26 +66,25 @@
         <DriverFile required="YES" path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="SolveDFBAProblem.m"></DriverFile>
         <KineticDataFile required="YES" path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="KineticDataFile.m"></KineticDataFile>
         <VolumetricFlowFile required="YES" path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="FlowFile.dat"></VolumetricFlowFile>
-        <ExtracellularMassBalanceFunction required="YES" path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="ExtracellularMassBalances.m"></ExtracellularMassBalanceFunction>
-        <BoundsArrayMatchingFunction required="YES" path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="SpeciesBoundsMatching.m"></
-            BoundsArrayMatchingFunction>
+        <ExtracellularMassBalanceFunction required="YES" path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="ExtracellularMassBalances.m">
+        </ExtracellularMassBalanceFunction>
+        <BoundsArrayMatchingFunction required="YES" path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="SpeciesBoundsMatching.m">
+        </BoundsArrayMatchingFunction>
         <KineticsFunction required="YES" path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="Kinetics.m"></KineticsFunction>
         <DriverFile required="YES" path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="FluxDriver.m"></DriverFile>
         <StoichiometricMatrix required="YES" path_symbol="UNIVERSAL_NETWORK_OUTPUT_PATH" filename="Network.dat"></StoichiometricMatrix>
         <BoundsFile required="NO" path_symbol="UNIVERSAL_NETWORK_OUTPUT_PATH" filename="FB.dat"></BoundsFile>
-        <DebugOutputFile required="NO" path_symbol="UNIVERSAL_DEDUG_OUTPUT_PATH" filename="Debug.txt"></DebugOutputFile>
-        
+        <DebugOutputFile required="NO" path_symbol="UNIVERSAL_DEDUG_OUTPUT_PATH" filename="Debug.txt"></DebugOutputFile>        
     </OutputOptions>
     
     <RequiredSBMLInformation>
-		<ExtracellularTagName required="YES" name="Extraorganism" symbol="_b"></ExtracellularTagName>
+		<ExtracellularCompartmentName required="YES" name="Extraorganism" symbol="_b"></ExtracellularCompartmentName>
     
         <listOfKineticExtracellularReactions>
 		</listOfKineticExtracellularReactions>
         
         <listOfExtracellularSpecies>
 		</listOfExtracellularSpecies>
-
         
 	</RequiredSBMLInformation>
     
