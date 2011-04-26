@@ -602,13 +602,15 @@
 -(void)launchCustomSheet
 {
         
-    if ([self customSheetController]==nil)
+    /*if ([self customSheetController]==nil)
     {
     
-        self.customSheetController = [[MyCustomSheetController alloc] initWithWindow:[self window]];
-        [[self customSheetController] setApplicationWindow:[self window]];
-        
-    }
+                
+    }*/
+    
+    self.customSheetController = [[MyCustomSheetController alloc] initWithWindow:[self window]];
+    [[self customSheetController] setApplicationWindow:[self window]];
+
     
     // Add the currently selected node to the window controller -
     [[self customSheetController] setSelectedXMLNode:[self selectedXMLNode]];
