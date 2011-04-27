@@ -195,6 +195,8 @@ public class LoadVarnerFlatFile implements IInputHandler {
 			// Ok, so here I need to check if I have a forward or reversable reaction
 			String strReverseFlag = (String)record.getData(IReactionFile.REVERSE);
 			String strRxnNameTest = (String)record.getData(IReactionFile.RXNNAME);
+			
+			System.out.println("Processing reaction - "+strRxnNameTest);
 
 			if (strReverseFlag.equalsIgnoreCase("-inf") && strRxnNameTest!="")
 			{
