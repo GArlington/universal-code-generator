@@ -274,7 +274,7 @@ public class OctaveMMetabolicModel {
 				if (strID.contains(strExtracellularSymbol));
 				{
 					
-					int INDEX = strID.indexOf("_b");
+					int INDEX = strID.indexOf(strExtracellularSymbol);
 					System.out.println("WTF - "+strID+" index="+INDEX+" at counter="+counter);
 					if (INDEX>1)
 					{
