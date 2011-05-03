@@ -97,6 +97,28 @@ public class SBMLMetabolicModelUtilities {
         GIOL.write(strPath,buffer);
     }
 	
+	public static void dumpStoichiometricMatrixToDisk(Properties _propTable,int NR,int NC,float[][] dblSTMatrix) throws Exception
+    {
+        // Method attributes -
+        String strPath = "";
+        StringBuffer buffer = new StringBuffer();
+        
+        for (int scounter=0;scounter<NR;scounter++)
+        {
+            for (int rcounter=0;rcounter<NC;rcounter++)
+            {
+                buffer.append(dblSTMatrix[scounter][rcounter]);
+                buffer.append("\t");
+            }
+            
+            buffer.append("\n");
+        }
+              
+        // Get the path and dump -2- disk 
+        // Create the path string -
+		strPath = _propTable.getProperty("PATH_NETWORK_DIRECTORY")+"/"+_propTable.getProperty("OUTPUT_STM_FILENAME");
+        GIOL.write(strPath,buffer);
+    }
 	
 	public static void organizeSpeciesByCompartment(Properties _propTable,Model model_wrapper,Vector<Species> vecSpecies) throws Exception
 	{
@@ -204,6 +226,121 @@ public class SBMLMetabolicModelUtilities {
         GIOL.write(strPath,buffer);
 	}
 		
+	
+	public static void buildStoichiometricMatrix(float[][] dblSTMatrix,Model model_wrapper) throws Exception
+	{
+		// Get the dimension of the system -
+        int NUMBER_OF_SPECIES = 0; 
+        int NUMBER_OF_RATES = 0;
+        Vector<Species> vecSpecies = new Vector<Species>();
+        
+        // Get the system dimension -
+        NUMBER_OF_SPECIES = (int)model_wrapper.getNumSpecies(); 
+        NUMBER_OF_RATES = (int)model_wrapper.getNumReactions(); 
+        
+        // Go through and put everything as zeros by default -
+        for (int scounter=0;scounter<NUMBER_OF_SPECIES;scounter++)
+        {
+            for (int rcounter=0;rcounter<NUMBER_OF_RATES;rcounter++)
+            {
+                dblSTMatrix[scounter][rcounter]=0.0f;
+            }
+        }
+         
+        // When I get here, I have a st. matrix w/all zeros - 
+        // put in the correct values - 
+        ListOfReactions listRates = model_wrapper.getListOfReactions();
+        ListOfSpecies listSpecies = model_wrapper.getListOfSpecies();
+       
+        // Get the list of compartments -
+		ListOfCompartments compartments = model_wrapper.getListOfCompartments();
+		long NUMBER_OF_COMPARTMENTS = model_wrapper.getNumCompartments();
+		for (long compartment_index=0;compartment_index<NUMBER_OF_COMPARTMENTS;compartment_index++)
+		{
+			// Get the current compartment -
+			Compartment current_compartment = compartments.get(compartment_index);
+			String strCompartmentID = current_compartment.getId();
+			
+			// Collect the species in this compartment -
+			for (long species_index=0;species_index<NUMBER_OF_SPECIES;species_index++)
+			{
+				// Get the species -
+				Species tmp = listSpecies.get(species_index);
+				
+				// Check the compartment -
+				String strCompartment = tmp.getCompartment();
+				if (strCompartment.equalsIgnoreCase(strCompartmentID))
+				{
+					vecSpecies.addElement(tmp);
+				}
+			}
+		}
+			
+		// Go through the species list and build st matrix for elements in this compartment -
+		int NUM_SPECIES_COMPARTMENT = vecSpecies.size();		
+		for (int scounter=0;scounter<NUM_SPECIES_COMPARTMENT;scounter++)
+        {
+            // Get the species reference -
+            Species species = (Species)vecSpecies.get(scounter);
+            String strSpecies = species.getId();
+   
+            
+            System.out.println("\t Processing "+strSpecies+" counter="+scounter+" of "+NUMBER_OF_SPECIES);
+            	
+        	// Ok, I need to go through the rates and determine if this species is involved -
+            for (int rcounter=0;rcounter<NUMBER_OF_RATES;rcounter++)
+            {          		
+            	// Get the Reaction object -
+                Reaction rxn_obj = (Reaction)listRates.get(rcounter);
+                
+                // Get the 'radius' of this rate -
+                int NUMBER_OF_REACTANTS = (int)rxn_obj.getNumReactants();
+                int NUMBER_OF_PRODUCTS = (int)rxn_obj.getNumProducts();
+                
+                // Get the list of reactants and products -
+                ListOf reactant_list = rxn_obj.getListOfReactants();
+                ListOf product_list = rxn_obj.getListOfProducts();
+                
+                // go through the reactants of this reaction -
+                for (int reactant_index=0;reactant_index<NUMBER_OF_REACTANTS;reactant_index++)
+                {
+                    // Get the species reference -
+                    SpeciesReference species_ref = (SpeciesReference)reactant_list.get(reactant_index);
+                    String strReactant = species_ref.getSpecies();
+                    
+                    if (strReactant.equalsIgnoreCase(strSpecies))
+                    {
+                       
+                        double tmp = species_ref.getStoichiometry();
+                        if (tmp>=0.0)
+                        {
+                            dblSTMatrix[scounter][rcounter]=(float)(-1.0*tmp);
+                        }
+                        else
+                        {
+                            dblSTMatrix[scounter][rcounter]=(float)(tmp);
+                        }
+                    }
+                    
+                }
+                
+                // go through the products of this reaction -
+                for (int product_index=0;product_index<NUMBER_OF_PRODUCTS;product_index++)
+                {
+                    // Get the species reference -
+                    SpeciesReference species_ref = (SpeciesReference)product_list.get(product_index);
+                    String strProduct = species_ref.getSpecies();
+                    
+                    //System.out.println("Comparing NP="+NUMBER_OF_PRODUCTS+" to "+strProduct+"="+strSpecies+"?");
+                    
+                    if (strProduct.equalsIgnoreCase(strSpecies))
+                    {
+                    	dblSTMatrix[scounter][rcounter]=(float)species_ref.getStoichiometry();
+                    }
+                }
+            }
+        }
+	}
 	
 	// Build the stoichiometric matrix -
     public static void buildStoichiometricMatrix(double[][] dblSTMatrix,Model model_wrapper) throws Exception

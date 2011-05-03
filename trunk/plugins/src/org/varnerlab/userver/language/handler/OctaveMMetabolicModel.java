@@ -275,7 +275,7 @@ public class OctaveMMetabolicModel {
 				{
 					
 					int INDEX = strID.indexOf(strExtracellularSymbol);
-					System.out.println("WTF - "+strID+" index="+INDEX+" at counter="+counter);
+					System.out.println("Processing - "+strID+" index="+INDEX+" at counter="+counter);
 					if (INDEX>1)
 					{
 						_stbDataFile.append("\t");
