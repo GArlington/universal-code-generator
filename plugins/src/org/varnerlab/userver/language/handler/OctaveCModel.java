@@ -76,6 +76,7 @@ public class OctaveCModel {
     	int NUMBER_OF_RATES = vecReactions.size();
     	int NROWS = NUMBER_OF_SPECIES;
     	int NCOLS = NUMBER_OF_RATES;
+    	StringBuffer tmpBuffer = new StringBuffer();
         
         // Create a local copy of the stoichiometric matrix -
         double[][] matrix = new double[NROWS][NCOLS];
@@ -90,7 +91,8 @@ public class OctaveCModel {
         buffer.append("{\n");
         
         buffer.append("\t// Formulate the mass balance equations -- use sparse representation \n");
-        // Changing this line: buffer.append("\tdx=STMATRIX*rV;\n"); -
+        
+        /*// Changing this line: buffer.append("\tdx=STMATRIX*rV;\n"); - - THIS IMPL MADE ME F*ING CRAZY so I changed it...jv 5-3-20112
 		for (int i=0;i<NROWS;i++) // Loop through the species
 		{
 			for (int j=0;j<NCOLS;j++) // Loop through the reactions
@@ -117,7 +119,73 @@ public class OctaveCModel {
 			{
 				buffer.append(";\n");
 			}
-		}
+		}*/
+        
+        // Ok, go through the species and reactions -
+        for (int species_index=0;species_index<NROWS;species_index++)
+        {
+        	// Set the null-species flag -
+        	boolean blnNullSpecies = true;
+        	
+        	
+        	// populate the dxdt --
+        	buffer.append("\t");
+        	buffer.append("dx(");
+        	buffer.append(species_index);
+        	buffer.append(",0) = ");
+        	
+        	// Need to check to see of this row has any reactions at all ..
+        	for (int rate_index=0;rate_index<NCOLS;rate_index++)
+        	{
+        		// Ok, get the stoichiometric matrix -
+        		double tmpValue = matrix[species_index][rate_index];
+        		
+        		if (tmpValue!=0.0)
+        		{
+        			blnNullSpecies = false;
+        			break;
+        		}
+        	}
+        	
+        	if (!blnNullSpecies)
+        	{
+        	
+	        	// Ok, go through the rates --
+	        	for (int rate_index=0;rate_index<NCOLS;rate_index++)
+	        	{
+	        		// Ok, get the stoichiometric matrix -
+	        		double tmpValue = matrix[species_index][rate_index];
+	        		
+	        		// Check to see, if we have a non-zero
+	        		if (tmpValue!=0.0)
+	        		{
+	        			// Build a term -
+	        			tmpBuffer.append(tmpValue);
+	        			tmpBuffer.append("*rV(");
+	        			tmpBuffer.append(rate_index);
+	        			tmpBuffer.append(",0)+");
+	        		}	
+	        	}
+	        	
+	        	// Grab the contents of the buffer -
+	        	String tmpString = tmpBuffer.toString();
+	        	
+	        	// Clear out the buffer -
+	        	tmpBuffer.delete(0, tmpBuffer.length());
+	        	
+	        	// Ok, so when I get here, I'll have a trailing +
+	        	int INDEX_OF_TRAILING_PLUS = tmpString.lastIndexOf("+");
+	        	
+	        	// replace the + with a ;
+	        	buffer.append(tmpString.substring(0,INDEX_OF_TRAILING_PLUS));
+	        	buffer.append(";\n");
+        	}
+        	else
+        	{
+        		// Ok, if I get here then I have a species w/no reactions (can arise when dealing w/partitioned systems)
+        		buffer.append("0;\n");
+        	}
+        }
 		
 		// Close out -
 		buffer.append("}\n");
@@ -185,6 +253,7 @@ public class OctaveCModel {
         {
             // Get the reaction object 
             Reaction rxn_obj = (Reaction)vecReactions.get(rcounter);
+            Parameter parameter_obj = (Parameter)parameter_list_tmp.get(rcounter);
             
             if (rxn_obj.isSetKineticLaw())
             {
@@ -214,8 +283,9 @@ public class OctaveCModel {
                 ListOf reactant_list = rxn_obj.getListOfReactants();
                   
                 // Ok, so if this rate is 
-                buffer.append("k_");
-                buffer.append(rcounter);
+                //buffer.append("k_");
+                //buffer.append(rcounter);
+                buffer.append(parameter_obj.getName());
                 buffer.append("*");
                 
                 // Get the number of modifiers -
