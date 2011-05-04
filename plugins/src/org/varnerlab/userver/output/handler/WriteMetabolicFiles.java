@@ -68,7 +68,7 @@ public class WriteMetabolicFiles implements IOutputHandler {
 		int NUMBER_OF_SPECIES = (int)list_species.size();
         
 		// Initialize and populate the matrix -
-		double[][] dblArr = new double[(int)NUMBER_OF_SPECIES][(int)NUMBER_OF_REACTIONS];
+		float[][] dblArr = new float[(int)NUMBER_OF_SPECIES][(int)NUMBER_OF_REACTIONS];
 		SBMLMetabolicModelUtilities.buildStoichiometricMatrix(dblArr, model_wrapper);
         
         // Create the data file, bounds file and calculate flux driver -
