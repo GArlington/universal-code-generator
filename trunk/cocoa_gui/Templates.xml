@@ -25,6 +25,10 @@
 		<display name="File type translation (flatfile to SBML conversion)" filename="SBML"></display>
 	</mapping>
 	
+    <mapping type="SBMLPARTITION" working_dir="./templates/">
+		<display name="File type translation (generate partitioned SBML files)" filename="SBMLP"></display>
+	</mapping>
+    
 	<mapping type="VFF" working_dir="./templates/">
 		<display name="File type translation (SBML to flatfile conversion)" filename="VFF"></display>
 	</mapping>

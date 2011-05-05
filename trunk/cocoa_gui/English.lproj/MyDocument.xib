@@ -285,7 +285,7 @@
 										<object class="NSPopUpButton" id="129083923">
 											<reference key="NSNextResponder" ref="781317716"/>
 											<int key="NSvFlags">270</int>
-											<string key="NSFrame">{{-1, 443}, {427, 26}}</string>
+											<string key="NSFrame">{{0, 443}, {427, 26}}</string>
 											<reference key="NSSuperview" ref="781317716"/>
 											<reference key="NSWindow"/>
 											<reference key="NSNextKeyView" ref="960926867"/>
@@ -306,9 +306,9 @@
 												<string key="NSKeyEquivalent"/>
 												<int key="NSPeriodicDelay">400</int>
 												<int key="NSPeriodicInterval">75</int>
-												<object class="NSMenuItem" key="NSMenuItem" id="873099448">
+												<object class="NSMenuItem" key="NSMenuItem" id="243037437">
 													<reference key="NSMenu" ref="79257516"/>
-													<string key="NSTitle">Custom specification template</string>
+													<string key="NSTitle">File type translation (generate partitioned SBML files)</string>
 													<string key="NSKeyEquiv"/>
 													<int key="NSMnemonicLoc">2147483647</int>
 													<int key="NSState">1</int>
@@ -568,6 +568,7 @@
 															<string key="NSAction">_popUpItemAction:</string>
 															<reference key="NSTarget" ref="1094471"/>
 														</object>
+														<reference ref="243037437"/>
 														<object class="NSMenuItem" id="106867111">
 															<reference key="NSMenu" ref="79257516"/>
 															<bool key="NSIsDisabled">YES</bool>
@@ -580,7 +581,17 @@
 															<string key="NSAction">_popUpItemAction:</string>
 															<reference key="NSTarget" ref="1094471"/>
 														</object>
-														<reference ref="873099448"/>
+														<object class="NSMenuItem" id="873099448">
+															<reference key="NSMenu" ref="79257516"/>
+															<string key="NSTitle">Custom specification template</string>
+															<string key="NSKeyEquiv"/>
+															<int key="NSMnemonicLoc">2147483647</int>
+															<int key="NSState">1</int>
+															<reference key="NSOnImage" ref="188536377"/>
+															<reference key="NSMixedImage" ref="876361353"/>
+															<string key="NSAction">_popUpItemAction:</string>
+															<reference key="NSTarget" ref="1094471"/>
+														</object>
 														<object class="NSMenuItem" id="999667565">
 															<reference key="NSMenu" ref="79257516"/>
 															<string key="NSTitle">Load custom specification ...</string>
@@ -595,7 +606,7 @@
 													</object>
 													<reference key="NSMenuFont" ref="78187581"/>
 												</object>
-												<int key="NSSelectedIndex">22</int>
+												<int key="NSSelectedIndex">21</int>
 												<int key="NSPreferredEdge">3</int>
 												<bool key="NSUsesItemFromMenu">YES</bool>
 												<bool key="NSAltersState">YES</bool>
@@ -618,7 +629,7 @@
 															<string key="NSFrameSize">{422, 404}</string>
 															<reference key="NSSuperview" ref="539916517"/>
 															<reference key="NSWindow"/>
-															<reference key="NSNextKeyView" ref="117658187"/>
+															<reference key="NSNextKeyView" ref="503160165"/>
 															<int key="NSViewLayerContentsRedrawPolicy">2</int>
 															<bool key="NSViewCanDrawConcurrently">YES</bool>
 															<bool key="NSEnabled">YES</bool>
@@ -775,7 +786,7 @@
 											<string key="NSFrame">{{0, 21}, {424, 422}}</string>
 											<reference key="NSSuperview" ref="781317716"/>
 											<reference key="NSWindow"/>
-											<reference key="NSNextKeyView" ref="503160165"/>
+											<reference key="NSNextKeyView" ref="539916517"/>
 											<int key="NSViewLayerContentsRedrawPolicy">2</int>
 											<int key="NSsFlags">562</int>
 											<reference key="NSVScroller" ref="117658187"/>
@@ -930,7 +941,7 @@
 																			<string key="NSFrameSize">{364, 250}</string>
 																			<reference key="NSSuperview" ref="956405173"/>
 																			<reference key="NSWindow"/>
-																			<reference key="NSNextKeyView" ref="426037918"/>
+																			<reference key="NSNextKeyView" ref="646983855"/>
 																			<int key="NSViewLayerContentsRedrawPolicy">2</int>
 																			<bool key="NSEnabled">YES</bool>
 																			<object class="NSTableHeaderView" key="NSHeaderView" id="992174241">
@@ -1086,7 +1097,7 @@
 															<string key="NSFrame">{{0, 10}, {368, 271}}</string>
 															<reference key="NSSuperview" ref="254701927"/>
 															<reference key="NSWindow"/>
-															<reference key="NSNextKeyView" ref="646983855"/>
+															<reference key="NSNextKeyView" ref="956405173"/>
 															<int key="NSViewLayerContentsRedrawPolicy">2</int>
 															<int key="NSsFlags">563</int>
 															<reference key="NSVScroller" ref="426037918"/>
@@ -1375,7 +1386,6 @@
 							<string key="NSFrame">{{41, 20}, {372, 17}}</string>
 							<reference key="NSSuperview" ref="568628114"/>
 							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView"/>
 							<bool key="NSViewIsLayerTreeHost">YES</bool>
 							<int key="NSViewLayerContentsRedrawPolicy">2</int>
 							<bool key="NSEnabled">YES</bool>
@@ -1991,6 +2001,14 @@
 					</object>
 					<int key="connectionID">100312</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">menuSelectionAction:</string>
+						<reference key="source" ref="512844837"/>
+						<reference key="destination" ref="243037437"/>
+					</object>
+					<int key="connectionID">100314</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -2271,6 +2289,7 @@
 							<reference ref="226331529"/>
 							<reference ref="883327723"/>
 							<reference ref="873099448"/>
+							<reference ref="243037437"/>
 						</object>
 						<reference key="parent" ref="1094471"/>
 					</object>
@@ -2729,6 +2748,11 @@
 						<reference key="object" ref="873099448"/>
 						<reference key="parent" ref="79257516"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">100313</int>
+						<reference key="object" ref="243037437"/>
+						<reference key="parent" ref="79257516"/>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -2857,6 +2881,7 @@
 					<string>100307.IBPluginDependency</string>
 					<string>100308.IBPluginDependency</string>
 					<string>100311.IBPluginDependency</string>
+					<string>100313.IBPluginDependency</string>
 					<string>5.IBEditorWindowLastContentRect</string>
 					<string>5.IBPluginDependency</string>
 					<string>5.IBWindowTemplateEditedContentRect</string>
@@ -3080,6 +3105,7 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>{{617, 166}, {842, 570}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>{{617, 166}, {842, 570}}</string>
@@ -3101,7 +3127,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">100312</int>
+			<int key="maxID">100314</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
