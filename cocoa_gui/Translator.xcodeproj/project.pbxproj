@@ -28,6 +28,7 @@
 		AD2BEA9A12EFD20200D8972D /* drive.icns in Resources */ = {isa = PBXBuildFile; fileRef = AD2BEA9912EFD20200D8972D /* drive.icns */; };
 		AD2BEA9C12EFD24D00D8972D /* down.icns in Resources */ = {isa = PBXBuildFile; fileRef = AD2BEA9B12EFD24D00D8972D /* down.icns */; };
 		AD2BEA9E12EFD2AD00D8972D /* download.icns in Resources */ = {isa = PBXBuildFile; fileRef = AD2BEA9D12EFD2AD00D8972D /* download.icns */; };
+		AD34B8071370517A001D7A18 /* SBMLP.uxml in Resources */ = {isa = PBXBuildFile; fileRef = AD34B8061370517A001D7A18 /* SBMLP.uxml */; };
 		AD37E52612F0B6F300151864 /* Automator.icns in Resources */ = {isa = PBXBuildFile; fileRef = AD37E52512F0B6F300151864 /* Automator.icns */; };
 		AD3D350D13030FB100F7D2F5 /* SUNDIALS.uxml in Resources */ = {isa = PBXBuildFile; fileRef = AD3D350C13030FB100F7D2F5 /* SUNDIALS.uxml */; };
 		AD41297F130E347A00C5F0E8 /* FBA.uxml in Resources */ = {isa = PBXBuildFile; fileRef = AD41297E130E347A00C5F0E8 /* FBA.uxml */; };
@@ -145,6 +146,7 @@
 		AD2BEA9912EFD20200D8972D /* drive.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = drive.icns; sourceTree = "<group>"; };
 		AD2BEA9B12EFD24D00D8972D /* down.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = down.icns; sourceTree = "<group>"; };
 		AD2BEA9D12EFD2AD00D8972D /* download.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = download.icns; sourceTree = "<group>"; };
+		AD34B8061370517A001D7A18 /* SBMLP.uxml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = SBMLP.uxml; sourceTree = "<group>"; };
 		AD37E52512F0B6F300151864 /* Automator.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Automator.icns; sourceTree = "<group>"; };
 		AD3D350C13030FB100F7D2F5 /* SUNDIALS.uxml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = SUNDIALS.uxml; sourceTree = "<group>"; };
 		AD41297E130E347A00C5F0E8 /* FBA.uxml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = FBA.uxml; sourceTree = "<group>"; };
@@ -409,6 +411,7 @@
 				AD41297E130E347A00C5F0E8 /* FBA.uxml */,
 				ADFDFA0C1321751500B238BD /* DFBA.uxml */,
 				AD4D36BE134BDE8E00EB742A /* Custom-Specification.uxml */,
+				AD34B8061370517A001D7A18 /* SBMLP.uxml */,
 			);
 			name = templates;
 			sourceTree = "<group>";
@@ -629,6 +632,7 @@
 				ADEFF27C136472FC0021CB68 /* p60.icns in Resources */,
 				ADEFF27E136479BE0021CB68 /* preference_handler.icns in Resources */,
 				ADEFF28013647AE90021CB68 /* preference_blue.icns in Resources */,
+				AD34B8071370517A001D7A18 /* SBMLP.uxml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
