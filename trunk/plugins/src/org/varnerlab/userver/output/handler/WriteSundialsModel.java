@@ -148,11 +148,12 @@ public class WriteSundialsModel implements IOutputHandler {
 		
 		// Generate RunModel.sh, and the code reqrd to run the model from Octave
 		sundialsModel.buildShellCommand(bufferRunModel,_xmlPropTree);
-		sundialsModel.buildOctavePlugin(bufferPlugin);
+		sundialsModel.buildOctavePlugin(bufferPlugin,_xmlPropTree);
 		sundialsModel.buildLSODECallWrapper(bufferLSODEWrapper, _xmlPropTree);
+		
 		SBMLModelUtilities.dumpShellCommandToDisk(bufferRunModel, _xmlPropTree);
-		SBMLModelUtilities.dumpSunsialsPluginToDisk(bufferPlugin, _xmlPropTree);
-		SBMLModelUtilities.dumpLSODECallWrapperSundialsToDisk(bufferLSODEWrapper, _xmlPropTree);
+		SBMLModelUtilities.dumpSundialsPluginToDisk(bufferPlugin, _xmlPropTree);
+		//SBMLModelUtilities.dumpLSODECallWrapperSundialsToDisk(bufferLSODEWrapper, _xmlPropTree);
 	}
 
 	public void setLogger(Logger log) {
