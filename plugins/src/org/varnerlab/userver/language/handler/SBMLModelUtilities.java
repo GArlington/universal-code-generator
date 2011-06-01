@@ -1056,18 +1056,13 @@ public class SBMLModelUtilities {
         GIOL.write(strSBMLFile,driver);
     }
     
-    public static void dumpSunsialsPluginToDisk(StringBuffer driver,XMLPropTree _xmlPropTree) throws Exception
+    public static void dumpSundialsPluginToDisk(StringBuffer driver,XMLPropTree _xmlPropTree) throws Exception
     {
-        // I have populated the string buffer, dump that mofo
-        //String strWorkingDir = _xmlPropTree.getProperty("//working_directory/text()");
-        //String strFilePath = _xmlPropTree.getProperty("//MassBalanceFunction/massbalance_path/text()");
-        String strFileName = "SolveSundialsModel.m";
-     
-        // Process info for the parameters file -
-    	Hashtable<String,String> pathParameters = _xmlPropTree.buildFilenameBlockDictionary("MassBalanceFunction");
-    	String strParameters = pathParameters.get("FILENAME_PATH");
-    	String strSBMLFile = strParameters+"/"+strFileName;
-               
+    	// I have populated the string buffer, dump to disk -
+        Hashtable<String,String> pathHashtable = _xmlPropTree.buildFilenameBlockDictionary("SundialsPluginFunction");
+        String strSBMLFile = pathHashtable.get("FULLY_QUALIFIED_PATH");
+        
+        // Write to disk -
         GIOL.write(strSBMLFile,driver);
     }
     
@@ -1076,15 +1071,17 @@ public class SBMLModelUtilities {
         // I have populated the string buffer, dump that mofo
         //String strWorkingDir = _xmlPropTree.getProperty("//working_directory/text()");
         //String strFilePath = _xmlPropTree.getProperty("//MassBalanceFunction/massbalance_path/text()");
-        String strFileName = "LSODECallWrapper.m";
+        //String strFileName = "LSODECallWrapper.m";
         
         // Process info for the parameters file -
-    	Hashtable<String,String> pathParameters = _xmlPropTree.buildFilenameBlockDictionary("MassBalanceFunction");
-    	String strParameters = pathParameters.get("FILENAME_PATH");
-    	String strSBMLFile = strParameters+"/"+strFileName;
+    	Hashtable<String,String> pathParameters = _xmlPropTree.buildFilenameBlockDictionary("LSODECallWrapperFunction");
+    	String strFileName = pathParameters.get("FULLY_QUALIFIED_PATH");
+    	String strSBMLFile = strFileName;
         
+    	System.out.println("What is the LSODE driver name - "+strSBMLFile);
+    	
         // Dump to disk -
-        GIOL.write(strSBMLFile,driver);
+        //GIOL.write(strSBMLFile,driver);
     }
     
 

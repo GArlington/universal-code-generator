@@ -1244,9 +1244,13 @@ public class SUNDIALSModel {
     	
     	// Get the info -
     	String strExeName = pathHashtable.get("FUNCTION_NAME");
-    	String strModelName = pathHashtable.get("FILENAME_WITH_EXTENSION");
+    	String strPath = pathHashtable.get("FILENAME_PATH");
+    	String strModelName = pathHashtable.get("FULLY_QUALIFIED_PATH");
     	
+    	driver.append("#!/bin/tcsh\n");
     	driver.append("gcc -o ");
+    	driver.append(strPath);
+    	driver.append("/");
     	driver.append(strExeName);
     	driver.append(" ");
     	driver.append(strModelName);
@@ -1424,12 +1428,26 @@ public class SUNDIALSModel {
     }
     
     // code to dump the octave plugin to disk -
-    public void buildOctavePlugin(StringBuffer buffer) throws Exception
+    public void buildOctavePlugin(StringBuffer buffer,XMLPropTree xmlPropTree) throws Exception
     {
-    	buffer.append("function [TSIM,X]=SolveSundialsModel(TSTART,TSTOP,Ts,OUTNAME)\n");
+    	
+    	// Ok, so we need to make the function name fluid -
+    	Hashtable<String,String> pathOutput = xmlPropTree.buildFilenameBlockDictionary("SundialsPluginFunction");
+    	String strFunctionName = pathOutput.get("FUNCTION_NAME");
+    	
+    	// Build the buffer -
+    	buffer.append("function [TSIM,X] = ");
+    	buffer.append(strFunctionName);
+    	buffer.append("(TSTART,TSTOP,Ts,OUTNAME)\n");
     	buffer.append("\n");
     	buffer.append("\t% Formulate the command string -\n");
-    	buffer.append("\tcmd = ['ulimit -s hard && ./RunModel.sh ',OUTNAME,' ',num2str(TSTART),' ',num2str(TSTOP),' ',num2str(Ts)];\n");
+    	
+    	Hashtable<String,String> runModelData = xmlPropTree.buildFilenameBlockDictionary("SimulationDriverFile");
+    	String strRunModelFunctionName = runModelData.get("FILENAME_WITH_EXTENSION");
+    	
+    	buffer.append("\tcmd = ['ulimit -s hard && ./");
+    	buffer.append(strRunModelFunctionName);
+    	buffer.append(" ',OUTNAME,' ',num2str(TSTART),' ',num2str(TSTOP),' ',num2str(Ts)];\n");
     	buffer.append("\tdisp(cmd);\n");
     	buffer.append("\n");
     	buffer.append("\t% Call the command string -\n");
