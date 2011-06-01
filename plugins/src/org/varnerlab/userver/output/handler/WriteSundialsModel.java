@@ -152,7 +152,11 @@ public class WriteSundialsModel implements IOutputHandler {
 		sundialsModel.buildLSODECallWrapper(bufferLSODEWrapper, _xmlPropTree);
 		
 		SBMLModelUtilities.dumpShellCommandToDisk(bufferRunModel, _xmlPropTree);
-		SBMLModelUtilities.dumpSundialsPluginToDisk(bufferPlugin, _xmlPropTree);
+		SBMLModelUtilities.dumpGeneralBufferToDisk(bufferPlugin, _xmlPropTree, "SundialsPluginFunction");
+		SBMLModelUtilities.dumpGeneralBufferToDisk(bufferLSODEWrapper, _xmlPropTree, "LSODECallWrapperFunction");
+		
+		
+		//SBMLModelUtilities.dumpSundialsPluginToDisk(bufferPlugin, _xmlPropTree);
 		//SBMLModelUtilities.dumpLSODECallWrapperSundialsToDisk(bufferLSODEWrapper, _xmlPropTree);
 	}
 
