@@ -110,10 +110,12 @@ public class WritePartitionedSBMLFiles implements IOutputHandler {
         // Load the lib -
         System.loadLibrary("sbmlj");
         
-        // Load the partition file -
-        String strPartitionFileName = (String)_propTable.get("PARTITION_FILE_PATH");
-        int[] partitionArray = readPartitionFile(strPartitionFileName);
-        
+       // Load the partition file -
+       String strPartitionFileName = (String)_propTable.get("PARTITION_FILE_PATH");
+       int[] partitionArray = readPartitionFile(strPartitionFileName);
+       
+       System.out.println("How many reactions are we partitioning? "+partitionArray.length);
+       
         // Get info on the SBML file name -
         String strSBMLFileMaster = (String)_propTable.get("SBML_FILENAME"); 
         String strOutputPath = (String)_propTable.get("OUTPUT_PATH");
@@ -121,6 +123,8 @@ public class WritePartitionedSBMLFiles implements IOutputHandler {
         // Ok, so we need to get the number of partitions - and process each one ...
         String strNumberOfPartitons = (String)_propTable.get("NUMBER_OF_PARTITIONS");
         int NUMBER_OF_PARTITIONS = Integer.parseInt(strNumberOfPartitons);
+       
+        
         for (int partition_index = 0;partition_index<NUMBER_OF_PARTITIONS;partition_index++)
         {
         	// Process partition j -
@@ -129,26 +133,36 @@ public class WritePartitionedSBMLFiles implements IOutputHandler {
         	Vector<Reaction> vecReactions = new Vector<Reaction>();
         	Vector<Parameter> vecParameters = new Vector<Parameter>();
         	
+        	System.out.println("Processing partition number "+partition_index);
+        	
         	// Get the reactions and parameters for this parition -
         	partitionReactionList(master_model_wrapper,vecReactions,vecParameters,partitionArray,partition_index);
-        	
+        	        	
         	// Create new string buffer -
         	StringBuffer tmpBuffer = new StringBuffer();
         	
         	// Add compartment to model -
     		addCompartmentsToModel(tmpBuffer,master_model_wrapper);
+    		
+    		System.out.println("Added compartments to partition number "+partition_index);
         	
         	// Add the species to the model -
     		addSpeciesToModel(tmpBuffer,master_model_wrapper);
+    		
+    		System.out.println("Added species to partition number "+partition_index);
     	
     		// Add the parameters to the model -
     		addParametersToModel(tmpBuffer,vecParameters);
     		
+    		System.out.println("Added parameters to partition number "+partition_index);
+    		
     		// Add the reactions to the model -
     		addReactionsToModel(tmpBuffer,vecReactions);
     		        	
+    		System.out.println("Added reactions to partition number "+partition_index);
+    		
     		// Create the filename -
-    		String strFullSBMLFileName = strSBMLFileMaster+"_PARTITION_"+partition_index+".xml";
+    		String strFullSBMLFileName = strSBMLFileMaster+"_PARTITION.xml."+partition_index;
     		String strFinalPath = strOutputPath+"/"+strFullSBMLFileName;
     		
     		StringBuffer buffer = new StringBuffer();
@@ -187,6 +201,9 @@ public class WritePartitionedSBMLFiles implements IOutputHandler {
 	{
 		Iterator iter = vecParameters.iterator();
 		
+		System.out.println("How many parameters do we have? "+vecParameters.size());
+		
+		
 		buffer.append("<listOfParameters>\n");
 		while (iter.hasNext())
 		{
@@ -194,7 +211,16 @@ public class WritePartitionedSBMLFiles implements IOutputHandler {
 			Parameter tmpObject = (Parameter)iter.next();
 			
 			buffer.append("\t");
-			buffer.append(tmpObject.toSBML());
+			
+			if (tmpObject!=null)
+			{
+				buffer.append(tmpObject.toSBML());
+			}
+			else
+			{
+				buffer.append("DANGER - NULL PARAMETER?");
+			}
+			
 			buffer.append("\n");
 			
 		}
@@ -211,7 +237,16 @@ public class WritePartitionedSBMLFiles implements IOutputHandler {
 			// Get the tmpObject -
 			Reaction tmpObject = (Reaction)iter.next();
 		
-			buffer.append(tmpObject.toSBML());
+			if (tmpObject!=null)
+			{
+				buffer.append(tmpObject.toSBML());
+			}
+			else
+			{
+				buffer.append("DANGER - NULL REACTION?");
+			}
+			
+			
 			buffer.append("\n");
 			
 		}
@@ -245,7 +280,7 @@ public class WritePartitionedSBMLFiles implements IOutputHandler {
 		// Method attributes -
 		ListOfReactions list_reactions = model_wrapper.getListOfReactions();
 		ListOfParameters list_parameters = model_wrapper.getListOfParameters();
-		
+				
 		// Find intPartitionIndex in the vector -
 		int NUMBER_OF_RATES = arrPartitions.length;
 		for (int rate_index = 0;rate_index<NUMBER_OF_RATES;rate_index++)
