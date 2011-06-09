@@ -92,6 +92,7 @@
 		AD8E8A7B12E9FD7C0055C601 /* TableComboBoxDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = AD8E8A7A12E9FD7C0055C601 /* TableComboBoxDataSource.m */; };
 		AD8E8C4412EC871B0055C601 /* NodeNaming.xml in Resources */ = {isa = PBXBuildFile; fileRef = AD8E8C4312EC871B0055C601 /* NodeNaming.xml */; };
 		AD8E8C7D12EC92E60055C601 /* TreeNodeNamingModel.m in Sources */ = {isa = PBXBuildFile; fileRef = AD8E8C7C12EC92E60055C601 /* TreeNodeNamingModel.m */; };
+		ADBDC72313883F7D00AB15CB /* MyOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = ADBDC72213883F7D00AB15CB /* MyOperation.m */; };
 		ADED00B5135F25CF000605CE /* MOBCXTemplate.uxml in Resources */ = {isa = PBXBuildFile; fileRef = ADED00B4135F25CF000605CE /* MOBCXTemplate.uxml */; };
 		ADEFF25E13645B180021CB68 /* applications_science.icns in Resources */ = {isa = PBXBuildFile; fileRef = ADEFF25D13645B180021CB68 /* applications_science.icns */; };
 		ADEFF26013645BD70021CB68 /* hxplay.icns in Resources */ = {isa = PBXBuildFile; fileRef = ADEFF25F13645BD70021CB68 /* hxplay.icns */; };
@@ -223,6 +224,8 @@
 		AD8E8C4312EC871B0055C601 /* NodeNaming.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = NodeNaming.xml; sourceTree = "<group>"; };
 		AD8E8C7B12EC92E60055C601 /* TreeNodeNamingModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TreeNodeNamingModel.h; sourceTree = "<group>"; };
 		AD8E8C7C12EC92E60055C601 /* TreeNodeNamingModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TreeNodeNamingModel.m; sourceTree = "<group>"; };
+		ADBDC72113883F7D00AB15CB /* MyOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyOperation.h; sourceTree = "<group>"; };
+		ADBDC72213883F7D00AB15CB /* MyOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyOperation.m; sourceTree = "<group>"; };
 		ADED00B4135F25CF000605CE /* MOBCXTemplate.uxml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = MOBCXTemplate.uxml; sourceTree = "<group>"; };
 		ADEFF25D13645B180021CB68 /* applications_science.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = applications_science.icns; sourceTree = "<group>"; };
 		ADEFF25F13645BD70021CB68 /* hxplay.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = hxplay.icns; sourceTree = "<group>"; };
@@ -378,6 +381,8 @@
 		AD8E884812E8E6FF0055C601 /* controller */ = {
 			isa = PBXGroup;
 			children = (
+				ADBDC72113883F7D00AB15CB /* MyOperation.h */,
+				ADBDC72213883F7D00AB15CB /* MyOperation.m */,
 				AD8E884B12E8E7EA0055C601 /* TaskController.h */,
 				AD8E884C12E8E7EA0055C601 /* TaskController.m */,
 				AD8E886612E8EBEF0055C601 /* TranslatorWindowController.h */,
@@ -659,6 +664,7 @@
 				AD8408B312FF7F5600B2A270 /* MyCustomSheetController.m in Sources */,
 				AD7BC18D13196D7F00A56512 /* DDTreeNodeProxy.m in Sources */,
 				AD13BBDC132FEC0200A25DFA /* VLButton.m in Sources */,
+				ADBDC72313883F7D00AB15CB /* MyOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
