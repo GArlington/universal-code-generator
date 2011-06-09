@@ -35,8 +35,10 @@ import java.util.Properties;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
+import org.sbml.libsbml.ListOf;
 import org.sbml.libsbml.ListOfSpecies;
 import org.sbml.libsbml.Model;
+import org.sbml.libsbml.Parameter;
 import org.sbml.libsbml.Reaction;
 import org.sbml.libsbml.Species;
 import org.varnerlab.server.localtransportlayer.XMLPropTree;
@@ -364,6 +366,8 @@ public class SUNDIALSModel {
 		buffer.append("\t// Generate timestep array\n");
 		buffer.append("\tnTimes = floor((dblTSTOP-dblTime)/dblTs)+1;\n");
 		buffer.append("\trealtype TSIM[nTimes];\n");
+		buffer.append("\n");
+		buffer.append("\t#pragma omp parallel for ordered\n");
 		buffer.append("\tfor (i = 0; i<nTimes; i++)\n");
 		buffer.append("\t{\n");
 		buffer.append("\t\tTSIM[i] = dblTime + i*dblTs;\n");
@@ -576,6 +580,8 @@ public class SUNDIALSModel {
 		buffer.append("\t\t}\n");
 		buffer.append("\t\telse\n");
 		buffer.append("\t\t{\n");
+		buffer.append("\n");
+		buffer.append("\t\t\t#pragma omp parallel for ordered\n");
 		buffer.append("\t\t\tfor (j=0; j<NUMBER_OF_RATES; j++)\n");
 		buffer.append("\t\t\t{\n");
 		buffer.append("\t\t\t\tNV_Ith_S(RateConstantVector, j) = tmpVector[j];\n");
@@ -611,6 +617,8 @@ public class SUNDIALSModel {
 		buffer.append("\t\t}\n");
 		buffer.append("\t\telse\n");
 		buffer.append("\t\t{\n");
+		buffer.append("\n");
+		buffer.append("\t\t\t#pragma omp parallel for ordered\n");
 		buffer.append("\t\t\tfor (j=0; j<NUMBER_OF_STATES; j++)\n");
 		buffer.append("\t\t\t{\n");
 		buffer.append("\t\t\t\tNV_Ith_S(StateVector, j) = tmpVector[j];\n");
@@ -861,6 +869,8 @@ public class SUNDIALSModel {
 		buffer.append("\t// Generate timestep array\n");
 		buffer.append("\tnTimes = floor((dblTSTOP-dblTime)/dblTs)+1;\n");
 		buffer.append("\trealtype TSIM[nTimes];\n");
+		buffer.append("\n");
+		buffer.append("\t#pragma omp parallel for ordered\n");
 		buffer.append("\tfor (i = 0; i<nTimes; i++)\n");
 		buffer.append("\t{\n");
 		buffer.append("\t\tTSIM[i] = dblTime + i*dblTs;\n");
@@ -1070,6 +1080,8 @@ public class SUNDIALSModel {
 		buffer.append("\t\t}\n");
 		buffer.append("\t\telse\n");
 		buffer.append("\t\t{\n");
+		buffer.append("\n");
+		buffer.append("\t\t\t#pragma omp parallel for ordered\n");
 		buffer.append("\t\t\tfor (j=0; j<NUMBER_OF_RATES; j++)\n");
 		buffer.append("\t\t\t{\n");
 		buffer.append("\t\t\t\tNV_Ith_S(RateConstantVector, j) = tmpVector[j];\n");
@@ -1105,6 +1117,8 @@ public class SUNDIALSModel {
 		buffer.append("\t\t}\n");
 		buffer.append("\t\telse\n");
 		buffer.append("\t\t{\n");
+		buffer.append("\n");
+		buffer.append("\t\t\t#pragma omp parallel for ordered\n");
 		buffer.append("\t\t\tfor (j=0; j<NUMBER_OF_STATES; j++)\n");
 		buffer.append("\t\t\t{\n");
 		buffer.append("\t\t\t\tNV_Ith_S(StateVector, j) = tmpVector[j];\n");
@@ -1248,7 +1262,7 @@ public class SUNDIALSModel {
     	String strModelName = pathHashtable.get("FULLY_QUALIFIED_PATH");
     	
     	driver.append("#!/bin/tcsh\n");
-    	driver.append("gcc -o ");
+    	driver.append("gcc -fopenmp -o ");
     	driver.append(strPath);
     	driver.append("/");
     	driver.append(strExeName);
@@ -1342,21 +1356,164 @@ public class SUNDIALSModel {
 		driver.append("}\n\n");
     }
 
-    public void buildDataFileBuffer(StringBuffer buffer) throws Exception {
-        //currently unused in SUNDIALS.
-
-        //Use this to dump my kinetics/ic files?
-
-        // Ok, build the data file. This is the same as Matlab -
-
-        // Setup matlabModel and call the buildDataFile method -
-        // matlabModel.setAlphabetVector(this._alphabetVector);
-        // matlabModel.setProperties(this._propTable);
-        // matlabModel.setReactionVector(this._rxnVector);
-        // matlabModel.setRowWrapperVector(this._vecRowWrappers);
-
-        // Build the buffer -
-        // matlabModel.buildDataFileBuffer(buffer);
+    
+    
+    
+    public void buildDataFileBuffer(StringBuffer datafile,Model model,XMLPropTree propTree,Vector<Reaction> vecReactions,Vector<Species> vecSpecies) throws Exception
+    {
+    	// Method attributes -
+		ArrayList<String> arrList = propTree.processFilenameBlock("DataFile");
+		String strDataFileNameRaw = arrList.get(0);
+		String strDataFileName = arrList.get(1);
+		
+		// Check to make sure we have content -
+		if (!strDataFileNameRaw.equalsIgnoreCase("EMPTY") && !strDataFileName.equalsIgnoreCase("EMPTY"))
+		{
+		
+			//String strDataFileNameRaw = (String)propTree.getProperty("//DataFile/datafile_filename/text()");
+	    	//int INT_TO_DOT = strDataFileNameRaw.indexOf(".");
+	    	//String strDataFileName = strDataFileNameRaw.substring(0, INT_TO_DOT);
+	    	
+	    	// Put in the header and go forward my undercover brotha...
+	        datafile.append("function DF=");
+	        datafile.append(strDataFileName);
+	        datafile.append("(TSTART,TSTOP,Ts,INDEX)\n");
+	        
+	        datafile.append("% ----------------------------------------------------------------------\n");
+	        datafile.append("% ");
+	        datafile.append(strDataFileName);
+	        datafile.append(".m was generated using the UNIVERSAL code generator system.\n");
+	        datafile.append("% Username: ");
+	        datafile.append(propTree.getProperty(".//Model/@username"));
+	        datafile.append("\n");
+	        datafile.append("% Type: ");
+	        datafile.append(propTree.getProperty(".//Model/@type"));
+	        datafile.append("\n");
+	        datafile.append("% Version: ");
+	        datafile.append(propTree.getProperty(".//Model/@version"));
+	        datafile.append("\n");
+	        datafile.append("% \n");
+	        datafile.append("% Arguments: \n");
+	        datafile.append("% TSTART  - Time start \n");
+	        datafile.append("% TSTOP  - Time stop \n");
+	        datafile.append("% Ts - Time step \n");
+	        datafile.append("% INDEX - Parameter set index (for ensemble calculations) \n");
+	        datafile.append("% DF  - Data file instance \n");
+	        datafile.append("% ----------------------------------------------------------------------\n");
+	        datafile.append("\n");
+	        //datafile.append("% Load the stoichiometric matrix --\n");
+	        //datafile.append("S=load('");
+	       
+	        // I need to get the file name, not the entire path -
+	        //ArrayList<String> arrListStMatrix = propTree.processFilenameBlock("StoichiometricMatrix");
+	        //String strSTMNameRaw = arrListStMatrix.get(0);
+	        //String strSTMPath = arrListStMatrix.get(2);
+	        //String strPathToSTMFile = strSTMPath+"/"+strSTMNameRaw;
+	        
+	        //String strSTMNameRaw = (String)propTree.getProperty("//StoichiometricMatrix/stoichiometric_matrix_filename/text()");
+	    	//String strSTMPath = (String)propTree.getProperty("//StoichiometricMatrix/stoichiometric_matrix_path/text()");
+	        //String strWorkingDirectory = (String)propTree.getProperty("//working_directory/text()");
+	       
+	    	//INT_TO_DOT = strSTMNameRaw.indexOf(".");
+	    	//String strSTMName = strSTMNameRaw.substring(0, INT_TO_DOT);
+	                
+	        //datafile.append(strPathToSTMFile);
+	        //datafile.append("');\n");
+	        //datafile.append("[NROWS,NCOLS]=size(S);\n");
+	        datafile.append("NROWS = ");
+	        datafile.append(vecSpecies.size());
+	        datafile.append("\n");
+	        
+	        datafile.append("NCOLS = ");
+	        datafile.append(vecReactions.size());
+	        datafile.append("\n");
+	        
+	        datafile.append("\n");
+	        datafile.append("% Formulate the rate constant vector k --\n");
+	        datafile.append("k=zeros(NCOLS,1);\n");
+	        datafile.append("\n");
+	        datafile.append("% Parameter vector --");
+	        datafile.append("\n");
+	        
+	        // Put the initial values of parameters -
+	        Vector vecOut = new Vector();
+	        SBMLModelUtilities.buildReactionStringVector(model, vecReactions, vecOut);
+	        datafile.append("k=[\n");
+	        ListOf parameter_list = model.getListOfParameters();
+	        int NUMBER_OF_PARAMETERS = (int)model.getNumParameters();
+	        for (int pindex=0;pindex<NUMBER_OF_PARAMETERS;pindex++)
+	        {
+	        	
+	        	Parameter parameter = (Parameter)parameter_list.get(pindex);        
+	            Reaction rate = (Reaction)vecReactions.get(pindex);
+	            
+	            datafile.append("\t");
+	            datafile.append(parameter.getValue());
+	            datafile.append("\t;\t%\t");
+	            datafile.append(pindex+1);
+	            datafile.append("\t");
+	            datafile.append(rate.getName());
+	            datafile.append("\t");
+	            datafile.append(vecOut.get(pindex));
+	            datafile.append("\n");
+	        }
+	        datafile.append("];\n");
+	        datafile.append("\n");
+	        datafile.append("% Initial conditions --\n");
+	        
+	        // Put the initial condition -
+	        datafile.append("IC=[\n");
+	        //ListOf species_list = model.getListOfSpecies();
+	        int NUMBER_OF_SPECIES = (int)vecSpecies.size();
+	        for (int pindex=0;pindex<NUMBER_OF_SPECIES;pindex++)
+	        {
+	            Species species = (Species)vecSpecies.get(pindex);
+	            datafile.append("\t");
+	            datafile.append(species.getInitialConcentration());
+	            datafile.append("\t;%\t");
+	            datafile.append(pindex+1);
+	            datafile.append("\t");
+	            datafile.append(species.getId());
+	            datafile.append("\t");
+	            datafile.append(species.getName());
+	            datafile.append("\n");
+	        }
+	        
+	        datafile.append("];\n");
+	        datafile.append("\n");
+	        datafile.append("% Load parameter sets from disk -\n");
+	        datafile.append("NPARAMETERS=length(k);\n");
+	        datafile.append("NSTATES=length(IC);\n");
+	        datafile.append("kV = [k ; IC];\n");
+	        datafile.append("% Ok, override the choice of parameters above, load from disk -\n");
+	        datafile.append("if (~isempty(INDEX))\n");
+	        datafile.append("\tcmd=['load PSET_',num2str(INDEX),'.mat'];\n");
+	        datafile.append("\teval(cmd);\n");
+	        datafile.append("\tkV = kP;\n");
+	        datafile.append("\t% get k and IC -\n");
+	        datafile.append("\tk=kV(1:NPARAMETERS);\n");
+	        datafile.append("\tIC=kV((NPARAMETERS+1):end);\n");
+	        datafile.append("end;\n");
+	        datafile.append("\n");
+	        
+	        // Populate the measurement selection matrix -
+	        datafile.append("% Initialize the measurement selection matrix. Default is the identity matrix \n");
+	        datafile.append("MEASUREMENT_INDEX_VECTOR = [1:NSTATES];\n");
+	        datafile.append("\n");
+	        datafile.append("% =========== DO NOT EDIT BELOW THIS LINE ==============\n");
+	        datafile.append("DF.RATE_CONSTANT_VECTOR=k;\n");
+	        datafile.append("DF.INITIAL_CONDITIONS=IC;\n");
+	        datafile.append("DF.NUMBER_PARAMETERS=NPARAMETERS;\n");
+	        datafile.append("DF.NUMBER_OF_STATES=NSTATES;\n");
+	        datafile.append("DF.PARAMETER_VECTOR=kV;\n");
+	        datafile.append("DF.MEASUREMENT_SELECTION_VECTOR = MEASUREMENT_INDEX_VECTOR;\n");
+	        datafile.append("% ======================================================\n");
+	        datafile.append("return;\n");
+		}
+		else
+		{
+			throw new Exception("ERROR: Missing DataFile information. Please check your DataFile settings.");
+		}
     }
 
     private String getFileName(String xpath,XMLPropTree xmlPropTree)
@@ -1482,9 +1639,15 @@ public class SUNDIALSModel {
     	Hashtable<String,String> pathICFile = xmlPropTree.buildFilenameBlockDictionary("InitialConditionFile");
     	String strInitialCondtions = pathICFile.get("FILENAME_WITH_EXTENSION");
     	
+    	// Grab the call wrapper data -
+    	Hashtable<String,String> lsodeCallWrapperFile = xmlPropTree.buildFilenameBlockDictionary("LSODECallWrapperFunction");
+    	String lsodeCallWrapperFunctionName = lsodeCallWrapperFile.get("FUNCTION_NAME");
+    	
     	
     	// Populate the buffer -
-    	buffer.append("function [TSIM,X]=LSODECallWrapper(TSTART,TSTOP,Ts,DF,OUTNAME)\n");
+    	buffer.append("function [TSIM,X]=");
+    	buffer.append(lsodeCallWrapperFunctionName);
+    	buffer.append("(TSTART,TSTOP,Ts,DF,OUTNAME)\n");
     	buffer.append("\n");
     	buffer.append("\t% Get the parameters and the ICs from the DF and dump them to disk -- \n");
         buffer.append("\tkV = DF.RATE_CONSTANT_VECTOR;\n");
@@ -1502,7 +1665,15 @@ public class SUNDIALSModel {
         // Code the try catch block -
     	buffer.append("\ttry\n");
     	buffer.append("\t\t% Call the SUNDIALS code -\n");
-    	buffer.append("\t\t[TSIM,X]=SolveSundialsModel(TSTART,TSTOP,Ts,OUTNAME);\n");	
+    	
+    	// Get the sundials plugin -
+    	Hashtable<String,String> sundialsFileWrapper = xmlPropTree.buildFilenameBlockDictionary("SundialsPluginFunction");
+    	String sundialsFunctionName = sundialsFileWrapper.get("FUNCTION_NAME");
+    	
+    	buffer.append("\t\t[TSIM,X]=");
+    	buffer.append(sundialsFunctionName);
+    	buffer.append("(TSTART,TSTOP,Ts,OUTNAME);\n");
+    	buffer.append("\n");
     	buffer.append("\tcatch\n");
     	buffer.append("\t\t% Do populate the return arrays w/zeros -\n");
     	buffer.append("\t\tNS = DF.NUMBER_OF_STATES;\n");	
