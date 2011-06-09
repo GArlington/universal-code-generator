@@ -138,7 +138,7 @@ public class WriteSundialsModel implements IOutputHandler {
 		
 		
 		// Build a data file buffer -
-        SBMLModelUtilities.buildDataFileBuffer(bufferDataFile, model_wrapper, _xmlPropTree,vecReactions,vecSpecies);
+        sundialsModel.buildDataFileBuffer(bufferDataFile, model_wrapper, _xmlPropTree,vecReactions,vecSpecies);
         SBMLModelUtilities.dumpDataFileToDisk(bufferDataFile,_xmlPropTree);
         
 		// Generate Build.sh
