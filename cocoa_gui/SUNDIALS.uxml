@@ -74,6 +74,8 @@
         <SimulationDriverFile required="YES" path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="RunModel.sh"></SimulationDriverFile>
         <BuildFile required="YES" path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="BuildModel.sh"></BuildFile>
         <DataFile required="YES" path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="DataFile.m"></DataFile>
+        <SundialsPluginFunction required="YES" path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="SolveSundialsModel.m"></SundialsPluginFunction>
+		<LSODECallWrapperFunction required="YES" path_symbol="UNIVERSAL_SOURCE_OUTPUT_PATH" filename="LSODECallWrapper.m"></LSODECallWrapperFunction>
 	</OutputOptions>	
     
     
